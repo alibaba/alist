@@ -1,5 +1,3 @@
-# 
-
 <p align="center"><img width="36" height="36" src="https://gw.alicdn.com/tfs/TB1LyIurStYBeNjSspkXXbU8VXa-128-128.png"></p>
 
 <p align="center">NoForm, 可能是最好的表单框架</p>
@@ -16,7 +14,7 @@
 $ npm install --save noform
 ```
 
-### 快速使用
+### 快速使用
 
 [快速开始](https://github.com/alibaba/noform/wiki/quickstart)
 
