@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+
+<head>
+<title>{{title}}</title>
+</head>
+
+<body>
+  <p>组件 DEMO</p>
+  <ul>
+    {% for doc in docs %}
+    <li><a href="{{doc.url}}">{{doc.name}}</a></li>
+    {% endfor %}
+  </ul>
+</body>
+
+</html>
