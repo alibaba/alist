@@ -71,11 +71,10 @@ function renderOption (props = {}) { // 处理
     }
 }
 
-const fetchFileUrl = '/basedata/attachment/get.json?fileName=';
+const fetchFileUrl = '';
 const defaultFileUploadProps = {
     prefix: 'next-',
     type: 'file',
-    scene: 'onetouchFileUploadRule',
     fileList: [],
     language: 'zh-cn',
     uploadBtnText: '',
@@ -279,7 +278,7 @@ function Upload (props) {
     const { className = '' } = props;
 
     if (props.status === 'preview') {
-        return <Next.Upload {...defaultFileUploadProps} data={{ scene: 'onetouchFileUploadRule' }} {...others} onChange={onChange} className={`${className || ''} next-preview-upload`} disabled fileList={value} />
+        return <Next.Upload {...defaultFileUploadProps} {...others} onChange={onChange} className={`${className || ''} next-preview-upload`} disabled fileList={value} />
     }
 
     const onChange = (origin) => {
@@ -287,7 +286,7 @@ function Upload (props) {
         props.onChange && props.onChange(fileList);
     }
 
-    return <Next.Upload {...defaultFileUploadProps} data={{ scene: 'onetouchFileUploadRule' }} {...others} onChange={onChange} fileList={value} />
+    return <Next.Upload {...defaultFileUploadProps} {...others} onChange={onChange} fileList={value} />
 }
 
 function ImageUpload (props) {
@@ -296,7 +295,7 @@ function ImageUpload (props) {
     const { className = '' } = props;
 
     if (props.status === 'preview') {
-        return <Next.Upload.ImageUpload data={{ scene: 'onetouchFileUploadRule' }} {...others} onChange={onChange} className={`${className || ''} next-preview-upload`} disabled fileList={value} />
+        return <Next.Upload.ImageUpload {...others} onChange={onChange} className={`${className || ''} next-preview-upload`} disabled fileList={value} />
     }
 
     const onChange = (origin) => {
@@ -304,7 +303,7 @@ function ImageUpload (props) {
         props.onChange && props.onChange(fileList);
     }
 
-    return <Next.Upload.ImageUpload data={{ scene: 'onetouchFileUploadRule' }} {...others} onChange={onChange} fileList={value} />
+    return <Next.Upload.ImageUpload {...others} onChange={onChange} fileList={value} />
 }
 
 function AutoComplete (props) {
