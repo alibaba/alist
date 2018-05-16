@@ -9,7 +9,24 @@
     "cov": "node builder/index.js test --coverage",
     "build": "node builder/index.js build",
     "profile": "node builder/index.js profile"
-  },    
+  },
+  "armor": {
+    "entry": [
+      "index.js",
+      "index.scss",
+      "wrapper.js",
+      "dialog.js",
+      "wrapper.scss",
+      "dialog.scss"
+    ],
+    "src2lib": true
+  },
+  "just": {
+    "type": "component/b2b-next-comp",
+    "build": {
+      "after": "npm run build"
+    }
+  },
   "main": "lib/index.js",  
   "dependencies": {
     "async-validator": "^1.8.2",
