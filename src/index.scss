@@ -1,0 +1,97 @@
+@mixin gen($n){
+    $i: 0;
+    @for $i from 1 through 24 {
+        &.col-#{$i}{
+            display: inline-block;
+            width: ($i * 100% / $n);
+        }
+    }
+}
+.no-form{
+    width: 100%;
+    &-item{
+        width: 100%;
+        position: relative;
+        &-loading-suffix{
+            position: absolute;
+            right: 0;
+        }
+        & + & {
+            margin-top: 12px;
+        }
+        &-label{
+            line-height: 28px;
+            text-align: right;
+            @include gen(24);
+            .required &:before{
+                content: '*';
+                color: red;
+                margin: 0 5px 0 2px;
+            }
+            &:after{
+                content: ':';
+                margin: 0 12px 0 2px;
+            }
+            &:empty:after{
+                content: '';
+                margin: 0;
+            }
+        }
+        &-control{
+            display: inline-block;
+            vertical-align: top;
+            @include gen(24);
+        }
+        &-top{
+            display: block;
+        }
+        &-content{
+            display: flex;
+            &-elem > *{
+                width: 100%;
+                min-width: 200px;
+                box-sizing: border-box;
+            }
+            &-elem{
+                flex: initial;
+                display: inline-block;
+                &.is-preview{
+                    line-height: 28px;
+                }
+            }
+            &-suffix{
+                padding-left: 12px;
+                box-sizing: border-box;
+            }
+            &-prefix{
+                padding-right: 12px;
+                box-sizing: border-box;
+            }
+            &-suffix, &-prefix{
+                line-height: 28px;
+            }
+            .no-form-full &-suffix{
+                flex: 0;
+                white-space: nowrap;
+            }
+            .no-form-full &-elem{
+                flex: 1;
+                display: block;
+            }
+            .no-form-full &-prefix{
+                flex: 0;
+                white-space: nowrap;
+            }
+        }
+        &-help{
+            display: block;
+        }
+        &-error{
+            display: block;
+            color: red;
+        }
+        &-loading{
+
+        }
+    }
+}
