@@ -8,6 +8,7 @@
     "test": "node builder/index.js test",
     "cov": "node builder/index.js test --coverage",
     "build": "node builder/index.js build",
+    "umd": "node builder/index.js umd",
     "profile": "node builder/index.js profile"
   },
   "armor": {

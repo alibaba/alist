@@ -13,7 +13,7 @@ module.exports = {
   resolveApp: resolveApp,
   appDir: appDirectory,
   dotenv: resolveApp('.env'),
-  appBuild: resolveApp('lib'),
+  appBuild: resolveApp('dist'),
   appDocs: resolveApp('docs'),
   appSrc: resolveApp('src'),
   appIndexJs: resolveApp('src/index.js'),

@@ -21,3 +21,4 @@ $ npm install --save noform
 ### 文档
 
 [中文文档](https://github.com/alibaba/noform/wiki)
+[Docs](https://github.com/alibaba/noform/wiki)
