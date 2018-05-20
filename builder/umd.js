@@ -15,7 +15,6 @@ process.on('unhandledRejection', err => {
 require('./lib/env')
 
 const sass = require('node-sass');
-const entry = require('./entry');
 const paths = require('./lib/paths');
 const webpack = require('webpack');
 const path = require('path');

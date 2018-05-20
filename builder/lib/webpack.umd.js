@@ -2,20 +2,12 @@ const path = require('path');
 
 const root = process.cwd();
 const dist = path.join(root, 'dist');
-const entry = require('../entry');
+const entryOuts = require('../entryOuts');
 const babelLoaderOpts = require('../lib/babelConfig');
 
 const mode = 'production';
-const config = {
-    // mode: 'development',
+const basicConfig = {
     mode: mode,
-    entry: entry,
-    output: {
-        library: 'noform',
-        path: dist,
-        filename: '[name].js',
-        libraryTarget: "umd"
-    },
     module: {
         rules: [
             {
@@ -30,10 +22,10 @@ const config = {
     },
     externals: {
         "react": {
-        root: 'React',
-        commonjs2: 'react',
-        commonjs: 'react',
-        amd: 'react'
+            root: 'React',
+            commonjs2: 'react',
+            commonjs: 'react',
+            amd: 'react'
         },
         "react-dom": {
             root: 'ReactDOM',
@@ -45,5 +37,13 @@ const config = {
     resolve: {
         extensions: ['.js', '.jsx'],
     }
-}
+};
+
+const config = entryOuts.map((entryOutItem) => {
+    return {
+        ...entryOutItem,
+        ...basicConfig
+    };
+});
+
 module.exports = config;
