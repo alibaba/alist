@@ -1,23 +1,27 @@
+import * as Antd from 'antd';
+import { mount } from 'enzyme';
 import React from 'react';
 import Form, { FormItem, Item } from '../../src';
-import { TableRepeater } from '../../src/repeater';
-import * as Antd from 'antd';
-import wrapper from '../../src/wrapper/antd';
-import { mount } from 'enzyme';
-// import simulateEvent from 'simulate-event';
 
+import repeaterWrapper from '../../src/repeater';
+import wrapper from '../../src/wrapper/antd';
+import dialogWrapper from '../../src/dialog/antd';
+
+// import simulateEvent from 'simulate-event';
+const { TableRepeater } = repeaterWrapper(dialogWrapper(Antd));
 
 const { Input } = wrapper(Antd);
-
 function filter(value, key) {
     return value.filter(item => item.drawerName.startsWith(key));
 }
-describe('Repeater', () => { // eslint-disable-line
-    let form = null, formCore = null;
-    beforeEach(() => { // eslint-disable-line
-        form = mount(<Form onMount={core => {
-            formCore = core;
-        }}>
+describe('Repeater', () => {
+    let form = null;
+    let formCore = null;
+    function formmount(core) {
+        formCore = core;
+    }
+    beforeEach(() => {
+        form = mount(<Form onMount={formmount}>
             <Item name="repeat">
                 <TableRepeater filter={filter}>
                     <FormItem label="开票人" name="drawerName"><Input /></FormItem>
@@ -30,12 +34,12 @@ describe('Repeater', () => { // eslint-disable-line
             </Item>
         </Form>);
     });
-    it('should render', () => { // eslint-disable-line
+    it('should render', () => {
         formCore.setValue('repeat', [{}]);
     });
-    it('should add', () => { // eslint-disable-line
-        // console.log(form.find(TableRepeater).get(0).doAdd);
-        form.find(TableRepeater).get(0).doAdd({
+    it('should add', () => {
+        // console.log(form.find(TableRepeater).instance().doAdd);
+        form.find(TableRepeater).instance().doAdd({
             drawerName: '开票人',
             taxpayerNumber: '税号',
             branchName: '子公司',
@@ -53,12 +57,12 @@ describe('Repeater', () => { // eslint-disable-line
                 denyReason: '拒绝原因',
                 creatorName: '创建人',
                 $idx: 0,
-            }]
+            }],
         }));
     });
-    it('should update', () => { // eslint-disable-line
-        // console.log(form.find(TableRepeater).get(0).doAdd);
-        form.find(TableRepeater).get(0).doAdd({
+    it('should update', () => {
+        // console.log(form.find(TableRepeater).instance().doAdd);
+        form.find(TableRepeater).instance().doAdd({
             drawerName: '开票人',
             taxpayerNumber: '税号',
             branchName: '子公司',
@@ -76,11 +80,11 @@ describe('Repeater', () => { // eslint-disable-line
                 denyReason: '拒绝原因',
                 creatorName: '创建人',
                 $idx: 0,
-            }]
+            }],
         }));
 
 
-        form.find(TableRepeater).get(0).doUpdate({
+        form.find(TableRepeater).instance().doUpdate({
             drawerName: 'xxxxx',
             taxpayerNumber: '税号',
             branchName: '子公司',
@@ -97,11 +101,11 @@ describe('Repeater', () => { // eslint-disable-line
                 denyReason: '拒绝原因',
                 creatorName: '创建人',
                 $idx: 0,
-            }]
+            }],
         }));
     });
-    it('should delete', () => { // eslint-disable-line
-        form.find(TableRepeater).get(0).doAdd({
+    it('should delete', () => {
+        form.find(TableRepeater).instance().doAdd({
             drawerName: '开票人',
             taxpayerNumber: '税号',
             branchName: '子公司',
@@ -119,22 +123,23 @@ describe('Repeater', () => { // eslint-disable-line
                 denyReason: '拒绝原因',
                 creatorName: '创建人',
                 $idx: 0,
-            }]
+            }],
         }));
 
 
-        form.find(TableRepeater).get(0).doDelete(0);
+        form.find(TableRepeater).instance().doDelete(0);
         expect(JSON.stringify(formCore.getValue())).toEqual(JSON.stringify({
-            repeat: []
+            repeat: [],
         }));
     });
-    it('should add by click add button', async () => { // eslint-disable-line
-        form.find('[role="repeater-add"]').simulate('click');
+    it('should add by click add button', async () => {
+        form.find('button[role="repeater-add"]').simulate('click');
         // simulateEvent.simulate(document.querySelector('.next-dialog-footer .next-btn-primary'), 'click');
         // console.log('@@@@', form.getValue());
     });
-    it('should update by click update', () => { // eslint-disable-line
-        form.find(TableRepeater).get(0).doAdd({
+    return;
+    it('should update by click update', () => {
+        form.find(TableRepeater).instance().doAdd({
             drawerName: '开票人',
             taxpayerNumber: '税号',
             branchName: '子公司',
@@ -146,8 +151,8 @@ describe('Repeater', () => { // eslint-disable-line
         form.find('[role="repeater-update"]').simulate('click');
         document.querySelector('.next-dialog-footer .next-btn-primary').click();
     });
-    it('should delete by click delete', () => { // eslint-disable-line
-        form.find(TableRepeater).get(0).doAdd({
+    it('should delete by click delete', () => {
+        form.find(TableRepeater).instance().doAdd({
             drawerName: '开票人',
             taxpayerNumber: '税号',
             branchName: '子公司',
@@ -158,7 +163,7 @@ describe('Repeater', () => { // eslint-disable-line
 
         form.find('[role="repeater-delete"]').simulate('click');
         expect(JSON.stringify(formCore.getValue())).toEqual(JSON.stringify({
-            repeat: []
+            repeat: [],
         }));
     });
 });

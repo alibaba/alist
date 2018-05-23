@@ -18,6 +18,7 @@ class Form extends Component {
         value: null,
         error: null,
         status: STATUS_ENUMS.EDIT,
+        globalStatus: STATUS_ENUMS.EDIT,
         props: null,
     };
     static propTypes = {
@@ -27,10 +28,11 @@ class Form extends Component {
         onMount: PropTypes.func,
         map: PropTypes.func,
         core: PropTypes.instanceOf(FormCore),
-        validateConfig: PropTypes.objectOf(PropTypes.object),
+        validateConfig: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
         value: PropTypes.object,
         error: PropTypes.object,
-        status: PropTypes.object,
+        status: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+        globalStatus: PropTypes.string,
         props: PropTypes.object,
     }
 

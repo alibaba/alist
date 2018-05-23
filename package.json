@@ -66,6 +66,7 @@
     "escape-string-regexp": "^1.0.5",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-jest": "^21.15.1",
     "eslint-plugin-mocha": "^5.0.0",
     "eslint-plugin-react": "^7.8.2",
     "fast-sass-loader": "^1.4.0",

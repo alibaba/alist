@@ -6,7 +6,7 @@
         "airbnb"
     ],
     "parser": "babel-eslint",
-    "plugins": ["mocha"],
+    "plugins": ["jest", "mocha"],
     "rules": {
         "indent": ["error", 4],
         "react/jsx-indent": ["error", 4],
@@ -17,6 +17,8 @@
         "camelcase": 0,
         "no-multi-assign": 0,
         "no-param-reassign": 0,
-        "react/require-default-props": 0
+        "react/require-default-props": 0,
+        "react/jsx-indent-props": 0,
+        "react/jsx-closing-tag-location": 0
     }
 }

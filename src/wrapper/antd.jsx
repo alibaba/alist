@@ -86,7 +86,6 @@ function Input(props) {
     if (props.status === 'preview') return renderValue(formatValue(value)); // 处理预览态
     return <Antd.Input {...props} {...valueProps} />;
 }
-Input.propTypes = Antd.Input.propTypes;
 
 function Textarea(props) {
     const { error, status, value } = props;

@@ -12,7 +12,7 @@ class FormItem extends Component {
         children: null,
     }
     static propTypes = {
-        name: PropTypes.string,
+        name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         value: PropTypes.object,
         children: PropTypes.any,
     }
