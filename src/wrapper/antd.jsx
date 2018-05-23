@@ -28,9 +28,8 @@ function formatBoolValue(value) {
 function getValueProps(props, opts = {}) {
     const valueProps = {};
     const { keyname = 'value', defaultValue = '', format = noop } = opts;
-    const targetValue = props[keyname];
     if ('value' in props) {
-        valueProps[keyname] = format(targetValue || defaultValue);
+        valueProps[keyname] = format(props.value || defaultValue);
     }
 
     return valueProps;
@@ -129,7 +128,10 @@ function RadioGroup(props) {
 }
 
 function Checkbox(props) {
-    const valueProps = getValueProps(props, { format: formatBoolValue });
+    const valueProps = getValueProps(props, {
+        format: formatBoolValue,
+        keyname: 'checked',
+    });
 
     if (props.status === 'preview') {
         const checked = formatBoolValue(props.value);
@@ -150,7 +152,10 @@ function Checkbox(props) {
 }
 
 function Radio(props) {
-    const valueProps = getValueProps(props, { format: formatBoolValue });
+    const valueProps = getValueProps(props, {
+        format: formatBoolValue,
+        keyname: 'checked',
+    });
 
     if (props.status === 'preview') {
         const checked = formatBoolValue(props.value);
@@ -171,7 +176,10 @@ function Radio(props) {
 }
 
 function Switch(props) {
-    const valueProps = getValueProps(props, { format: formatBoolValue });
+    const valueProps = getValueProps(props, {
+        format: formatBoolValue,
+        keyname: 'checked',
+    });
 
     if (props.status === 'preview') {
         const checked = formatBoolValue(props.value);
