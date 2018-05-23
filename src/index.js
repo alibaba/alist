@@ -1,13 +1,6 @@
-import Form from './component/Form';
-import FormItem from './component/FormItem';
-import Item from './component/Item';
-import If from './component/If';
-import FormCore from './core/form';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
 
-export {
-    Form as default,
-    Item,
-    FormItem,
-    If,
-    FormCore,
-};
+ReactDOM.render(<App />, document.getElementById('root'));

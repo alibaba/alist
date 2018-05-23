@@ -1,0 +1,73 @@
+p code {
+    background: #9260B7;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin: 0 2px;
+}
+
+.content-body {
+    a {
+        color: #9260B7;
+        margin: 0 4px;
+        font-weight: 700;
+    }
+}
+
+
+ul {
+    display: block;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 40px;
+}
+
+blockquote {
+    background: #FDFDFD;
+    padding: 4px 1em;
+    margin-left: 0;
+    border-left: 4px solid #9c80b3;
+    color: #8c8c8c;
+    margin: 1em 0;
+
+    p {
+        margin: 0;
+    }
+}
+
+.demo-code-wrapper {
+    display: flex;
+
+    .run-btn {
+        cursor: pointer;
+    }
+    
+    .demo-parsed-content {
+        width: 100%;
+        flex: initial;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid rgba(230, 230, 230, 0.99);
+        border-radius: 8px;
+
+        iframe {
+            width: 100%;
+            flex: 1;
+            border-radius: 8px;
+            padding: 16px 0;
+        }
+    }
+
+    .demo-raw-content {
+        flex: 1;
+        width: 100%;
+        
+    }
+}
+
+.react-codemirror2 {
+    font-size: 12px;
+    line-height: 16px;
+}
