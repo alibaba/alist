@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+        html, body {
+          background: #f5f5f5;
+        }
+        #demo {
+          padding: 16px;
+          background: #fff; 
+          height: 100%;
+        }
+
+        #demo-loading {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          background: #a78bbb;
+          justify-content: center;
+          align-items: center;
+          font-size: 78px;
+          color: #fff;
+          font-weight: 700;
+          font-style: italic;
+          position: relative;
+          overflow: hidden;
+        }
+
+        #demo-loading:after{  
+            position: absolute;  
+            left: -100%;              /*改变left的值，让其相对box影藏*/  
+            top: 0;          
+            width: 30%;  
+            height: 100%;  
+            content: "";  
+            /* Safari 5.1 - 6.0 */  
+          background: -webkit-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,.3) 50%,rgba(255,255,255,0) 100%);  
+          /* Opera 11.1 - 12.0 */  
+          background: -o-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,.3) 50%,rgba(255,255,255,0) 100%);  
+          /* Firefox 3.6 - 15 */  
+          background: -moz-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,.3) 50%,rgba(255,255,255,0) 100%);  
+          /* 标准的语法 */  
+          background: linear-gradient(to right,rgba(255,255,255,0) 0,rgba(255,255,255,.3) 50%,rgba(255,255,255,0) 100%);  
+              transform: skewX(-45deg);  
+          transition: 1s ease;  /*图一效果*/  
+          animation: blink 2s infinite linear;
+        }
+
+
+        @-webkit-keyframes blink {
+            0%{
+              left: -100%;            
+            }
+            50%{
+              left: 50%;
+            }
+            100%{
+              left: 150%;
+            }        
+        }
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/noform/dist/index.css">
+    <link rel="stylesheet" href="https://unpkg.com/noform/dist/index.css">
+    <link rel="stylesheet" href="https://unpkg.com/noform/dist/wrapper/antd.css">
+    <!-- <link rel="stylesheet" href="https://unpkg.com/noform/dist/wrapper/zent.min.css"> -->
+    <link rel="stylesheet" href="./antd.min.css">
+    <script src="./react.min.js"></script>
+    <script src="./react-dom.min.js"></script>        
+    <script src="./moment.min.js"></script>
+    <script src="./antd.min.js"></script>
+    <!-- <script src="./zent.min.js"></script> -->
+    <title>React App</title>        
+  </head>
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>    
+    <script src="./babel.min.js"></script>
+    <script src="https://unpkg.com/noform/dist/index.js"></script> 
+    <script src="https://unpkg.com/noform/dist/wrapper/antd.js"></script>
+    <!-- <script src="https://unpkg.com/noform/dist/wrapper/zent.js"></script> -->
+    <script src="https://unpkg.com/noform/dist/wrapper/next.js"></script>
+    <script src="https://unpkg.com/noform/dist/dialog/antd.js"></script>
+    <script src="https://unpkg.com/noform/dist/dialog/next.js"></script>
+    <script src="https://unpkg.com/noform/dist/dialog/zent.js"></script>   
+    <div id="demo">
+      <div id="demo-loading">
+        DEMO
+      </div>
+
+    </div>    
+
+    <script>
+      var resizeTimer = null;
+      var uniqueId = window.frameElement.title;
+      var mountNode = document.getElementById('demo');
+      mountNode.addEventListener('DOMSubtreeModified', () => {
+        if (resizeTimer) {
+          clearTimeout(resizeTimer);
+        }
+
+        resizeTimer = setTimeout(() => {
+          window.top.postMessage(JSON.stringify({
+            id: uniqueId,
+            event: 'resize',
+            height: document.documentElement.scrollHeight
+          }), '*');
+        }, 300);        
+      });
+      
+      var paylod = {
+        id: uniqueId,
+        event: 'loaded'
+      };
+
+      window.addEventListener("message", (e) => {
+        var payload = JSON.parse(e.data);
+        if (payload.id === 'reload') {
+          var script = document.createElement('script');
+          script.type = 'text/babel';
+          script.innerHTML = payload.content;
+          document.body.appendChild(script);
+
+          var DOMContentLoaded_event = document.createEvent("Event")
+          DOMContentLoaded_event.initEvent("DOMContentLoaded", true, true)
+          setTimeout(() => {
+            window.document.dispatchEvent(DOMContentLoaded_event)
+          }, 300);
+        }
+      });
+      
+      window.onload = () => {
+        window.top.postMessage(JSON.stringify(paylod), '*');
+      };
+    </script>
+  </body>
+</html>

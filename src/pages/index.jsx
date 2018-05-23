@@ -11,7 +11,11 @@ class Main extends React.Component {
     render() {
         return <div>
             <Header />      
-            <Layout />
+            <Layout>
+                <div className="homepage-wrapper">
+                    <h1>noform - 可能是最好的表单解决方案</h1>
+                </div>
+            </Layout>
         </div>
     }
 }

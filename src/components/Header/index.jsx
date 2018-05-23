@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import './index.less';
 
 class Header extends React.Component {
@@ -12,9 +13,9 @@ class Header extends React.Component {
                 
             </div>
             <header>
-                <a href="/" className="nav-logo">
+                <Link to={"/docs?md=easy/easy"} className="nav-logo">
                     <img src="https://gw.alicdn.com/tfs/TB1WeOJix9YBuNjy0FfXXXIsVXa-186-25.png" />
-                </a>
+                </Link>
             </header>
         </div>
     }

@@ -1,16 +1,14 @@
-# 接入ant.design
+# 接入Zent
 
-由于ant.design拥有众多较高质量的组件，因此 NoForm有面向ant.design的插件机制。
-这个插件使的NoForm无缝使用ant.design的表单组件，提升开发效率。
-
-插件将ant.design涉及表单的组件的数据返回和状态都进行了适配, 结合NoForm达到开箱即用的效果，下面是示例效果。
+[Zent](https://github.com/youzan/zent)来自有赞，它是个很酷的组件库。
+有人说是迷你版的antd，总之，结合zentWrapper可以达到开箱即用的效果。
 
 ```onlydemo
 
 const { default: Form, FormItem, FormCore } = noform;
-    const { antd: antdWrapper } = noformWrapper;
+    const { zent: zentWrapper } = noformWrapper;
     const { Input, Select, Checkbox, Radio, Switch, Slider, DatePicker, TimePicker,
-  Rate, Cascader, TreeSelect, Upload, Button, Modal, Icon, InputNumber, AutoComplete, Mention } = antdWrapper(antd);
+  Rate, Cascader, TreeSelect, Upload, Button, Modal, Icon, InputNumber, AutoComplete, Mention } = zentWrapper(zent);
 
     const { Textarea } = Input;
     const { Group: RadioGroup } = Radio;
@@ -38,7 +36,8 @@ const { default: Form, FormItem, FormCore } = noform;
         render() { // 注入核心        
             return <Form core={this.core} layout={{ label: 6, control: 18 }}>
                 <FormItem label="input" name="input"><Input /></FormItem>
-                <FormItem label="AutoComplete" name="AutoComplete"><AutoComplete options={dataSource} /></FormItem>                
+                { /* <FormItem label="AutoComplete" name="AutoComplete"><AutoComplete options={dataSource} /></FormItem> */ }
+                { /* <FormItem label="Mention" name="Mention"><Mention suggestions={['aaaaa', 'bbbbb', 'cccc']} /></FormItem> */ }
                 <FormItem label="Textarea" name="Textarea"><Textarea /></FormItem>
                 <FormItem label="select" name="select"><Select options={dataSource} /></FormItem>
                 <FormItem label="Checkbox" name="Checkbox"><Checkbox >选中</Checkbox></FormItem>
@@ -81,7 +80,7 @@ const { default: Form, FormItem, FormCore } = noform;
 
     import { default: Form, FormItem, FormCore } from 'noform';
     import * as antd from 'antd';
-    import { antd: antdWrapper } from 'noform/dist/wrapper/antd';
+    import { antd: antdWrapper } from 'noform/dist/wrapper/zent';
     const { Input, Select, Checkbox, Radio, Switch, Slider, DatePicker, TimePicker,
   Rate, Cascader, TreeSelect, Upload, Button, Modal, Icon, InputNumber } = antdWrapper(antd);
 

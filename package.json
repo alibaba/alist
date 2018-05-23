@@ -13,7 +13,7 @@
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.4"
   },
-  "homepage": "https://quirkyshop.github.io/noformdocs",
+  "homepage": "https://alibaba.github.io/noform",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",

@@ -10,9 +10,12 @@
 ```jsx
 
 class Input extends React.Component {
-    state = {
-        v: ''
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: ''
+        };
+    }
 
     componentWillReceiveProps = (nextProps) => {
         if (nextProps.value !== this.state.value) {
@@ -22,8 +25,9 @@ class Input extends React.Component {
         }
     }
 
-    onChange = (e) => {
-        this.props.onChange && this.props.onChange(e.target.value);
+    onChange = (e) => {        
+        const formatValue = `format: ${e.target.value}`; // 在这里可以做一些value的调整
+        this.props.onChange && this.props.onChange(formatValue);
     }
 
     render() {
@@ -36,3 +40,18 @@ class Input extends React.Component {
 # 适配组件状态
 
 
+```jsx
+
+const Input = (props) => {
+    const returnEle = '';
+    const { status } = props;
+    switch (status) {
+        case 'edit': returnEle = '编辑态'; break;
+        case 'preview': returnEle = '预览态'; break;
+        case 'disabled': returnEle = '禁用态'; break;
+    }
+
+    return <div>{returnEle}</div>
+}
+
+```

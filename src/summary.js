@@ -22,15 +22,6 @@ export default {
           "exists": true,
           "external": false,
           "introduction": false
-        },
-        {
-          "path": "/docs?md=easy/demo",
-          "title": "3分钟上手超好用表单！",
-          "level": "1.2",
-          "articles": [],
-          "exists": true,
-          "external": false,
-          "introduction": false
         }
       ],
       "exists": false,
@@ -139,25 +130,6 @@ export default {
           "path": "/docs?md=dialog/antd",
           "title": "接入ant.design",
           "level": "5.1",
-          "articles": [],
-          "exists": true,
-          "external": false,
-          "introduction": false
-        }
-      ],
-      "exists": false,
-      "external": false,
-      "introduction": false
-    },
-    {
-      "path": "",
-      "title": "Example",
-      "level": "6",
-      "articles": [
-        {
-          "path": "/docs?md=example/basic",
-          "title": "实战场景",
-          "level": "6.1",
           "articles": [],
           "exists": true,
           "external": false,
