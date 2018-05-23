@@ -28,7 +28,11 @@ function formatBoolValue (value) {
 function getValueProps (props, opts = {}) {
     let valueProps = {};
     const { keyname = 'value', defaultValue = '', format = noop } = opts;
-    const targetValue = props[keyname];
+    let targetValue = props[keyname];
+    if (!(keyname in props) && ('value' in props)) {
+        targetValue = props['value'];
+    }
+
     if ('value' in props) {
         valueProps[keyname] = format(targetValue || defaultValue);
     }
@@ -132,7 +136,10 @@ function RadioGroup (props) {
 }
 
 function Checkbox (props) {
-    const valueProps = getValueProps(props, { format: formatBoolValue });
+    const valueProps = getValueProps(props, {
+        format: formatBoolValue,
+        keyname: 'checked'
+    });
 
     if (props.status === 'preview') {
         const checked = formatBoolValue(props.value);
@@ -154,7 +161,10 @@ function Checkbox (props) {
 }
 
 function Radio (props) {
-    const valueProps = getValueProps(props, { format: formatBoolValue });
+    const valueProps = getValueProps(props, {
+        format: formatBoolValue,
+        keyname: 'checked'
+    });
 
     if (props.status === 'preview') {
         const checked = formatBoolValue(props.value);
@@ -176,7 +186,10 @@ function Radio (props) {
 }
 
 function Switch (props) {
-    const valueProps = getValueProps(props, { format: formatBoolValue });
+    const valueProps = getValueProps(props, {
+        format: formatBoolValue,
+        keyname: 'checked'
+    });
 
     if (props.status === 'preview') {
         const checked = formatBoolValue(props.value);

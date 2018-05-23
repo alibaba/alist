@@ -144,9 +144,21 @@ class Form {
     // 设置单子段
     setItem(type, name, value) {
         this.isSetting = true;
-        this[type][name] = value;
+        let formatValue = value;
+
+        // 处理props的情况，merge合并
+        if (type === 'props') {
+            const lastProps = this[type][name] || {};
+            formatValue = value || {};
+            formatValue = {
+                ...lastProps,
+                ...formatValue
+            }
+        }
+        
+        this[type][name] = formatValue;
         const targetItem = this.children.find(child => child.name === name);
-        if (targetItem) targetItem.set(type, value);
+        if (targetItem) targetItem.set(type, formatValue);
         
         this.isSetting = false;
         this.hasEmitted = false;
@@ -182,9 +194,25 @@ class Form {
             return;
         }
         
+
+        // 处理props的情况，merge合并
+        let formatValue = value;
+        if (type === 'props') {
+            formatValue = value || {};
+            Object.keys(formatValue).forEach((propsKey) => {
+                const targetProps = formatValue[propsKey] || {};
+                const lastProps = this[type][propsKey] || {};
+
+                formatValue[propsKey] = {
+                    ...lastProps,
+                    ...targetProps
+                };                
+            });
+        }
+
         this[type] = {
             ...this[type],
-            ...value
+            ...formatValue
         };
         
         if (type === 'value') {
