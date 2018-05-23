@@ -11,19 +11,19 @@ const DialogFormWrapper = (AntdSource) => {
                 ...others,
                 className: `${className || ''} dialog-form-wrapper`,
                 iconType: true,
-            }
+            };
         },
         dialogInstance: (dialogInstance) => {
             dialogInstance.hide = dialogInstance.destroy;
             return dialogInstance;
         },
-        btnLoadingProps: 'loading'
+        btnLoadingProps: 'loading',
     };
 
     return new DialogFormFactory({
         Dialog: Modal,
         Button,
-        compatiMap
+        compatiMap,
     });
 };
 

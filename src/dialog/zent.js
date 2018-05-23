@@ -6,38 +6,32 @@ class CompatiMap {
         this.Dialog = Dialog;
     }
 
-    getUniqueId = () => {
-        const words = 'abcdefghijklmnopqrstuvwxyz';
-        
-        let name = '';
-        for (var i = 0; i< 10; i ++) {
-            const randomIdx = parseInt(Math.random()*26);
-            name += words[randomIdx];
-        }
-
-        return name;
-    }
+    getUniqueId = () => Math.random().toString(36).slice(2)
 
     show = (options) => {
-        const { className, content, footer, ...others } = options;
+        const {
+            className, content, footer, ...others
+        } = options;
         const dialogId = this.getUniqueId();
-        const footerElements = footer && footer(this.hide) || null;
+        let footerElements = null;
+        if (footer) {
+            footerElements = footer(this.hide);
+        }
         return {
             ...others,
             dialogId,
             children: content,
             footer: footerElements,
-            className: `${className || ''} zent-dialog-form-wrapper`
-        }
+            className: `${className || ''} zent-dialog-form-wrapper`,
+        };
     }
 
     dialogInstance = (hide) => {
-        let dialogInstance = {};
+        const dialogInstance = {};
         dialogInstance.hide = hide;
-        window.xhide = hide;
 
         return dialogInstance;
-    }    
+    }
 }
 
 const DialogFormWrapper = (ZentSource) => {
@@ -45,11 +39,11 @@ const DialogFormWrapper = (ZentSource) => {
     Dialog.show = Dialog.openDialog;
 
     const compatiMap = new CompatiMap(Dialog);
-    
+
     return new DialogFormFactory({
         Dialog,
         Button,
-        compatiMap
+        compatiMap,
     });
 };
 

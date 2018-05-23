@@ -4,8 +4,18 @@ import { ANY_CHANGE, BLUR, FOCUS } from '../static';
 
 const isFunction = func => typeof func === 'function';
 const isObject = obj => Object.prototype.toString.call(obj) === '[object Object]';
-
+const noop = () => { };
 class Item extends Component {
+    static defaultProps = {
+        onBlur: noop,
+        onFocus: noop,
+    }
+    static propTypes = {
+        onBlur: PropTypes.func,
+        onFocus: PropTypes.func,
+        children: PropTypes.any,
+        render: PropTypes.func,
+    }
     static contextTypes = {
         form: PropTypes.object,
         ifCore: PropTypes.object,
@@ -16,15 +26,13 @@ class Item extends Component {
         ifCore: PropTypes.object,
     };
 
-    getChildContext() {
-        return { item: this, form: null, ifCore: null };
-    }
-
     constructor(jsxProps, context) {
         super(jsxProps, context);
         const { form } = context;
         this.form = form;
-        let { name, value, error, defaultValue } = jsxProps;
+        const {
+            name, value, error, defaultValue,
+        } = jsxProps;
 
         const option = {
             error,
@@ -75,6 +83,10 @@ class Item extends Component {
         this.core.jsx = this;
     }
 
+    getChildContext() {
+        return { item: this, form: null, ifCore: null };
+    }
+
     componentDidMount() {
         // 绑定更新函数
         this.core.on(ANY_CHANGE, this.update);
@@ -83,7 +95,7 @@ class Item extends Component {
             this.form.setProps(this.core.name, this.childForm.getAll('props'));
             this.form.setStatus(this.core.name, this.childForm.getAll('status'));
             this.form.setError(this.core.name, this.childForm.getAll('error'));
-            this.childForm.on(ANY_CHANGE, type => {
+            this.childForm.on(ANY_CHANGE, (type) => {
                 if (type === 'value') {
                     return;
                 }
@@ -93,52 +105,56 @@ class Item extends Component {
         this.didMount = true;
         this.forceUpdate();
     }
+    shouldComponentUpdate() {
+        return false;
+    }
     componentWillUnmount() {
         this.core.removeListener(ANY_CHANGE, this.update);
         this.didMount = false;
     }
-    shouldComponentUpdate() {
-        return false;
-    }
-    update = () => {
-        this.didMount && this.forceUpdate();
-    }
-    bindForm(childForm) {
-        this.childForm = childForm;
-    }
     onChange = (e, opts = {}) => {
         const { escape = false } = opts; // 直接用原生对象不进行判断
 
-        let value = e;
+        let val = e;
         if (!escape) {
             if (e && e.target) {
                 if ('value' in e.target) {
-                    value = e.target.value;
+                    val = e.target.value;
                 } else if ('checked' in e.target) {
-                    value = e.target.checked;
+                    val = e.target.checked;
                 }
             }
-    
-            if (isObject(value)) {
-                let tmpStr = JSON.stringify(value);
-                try {
-                    value = JSON.parse(tmpStr);
-                } catch (e) {}
-            }
-        } 
 
-        this.core.set('value', value);
+            if (isObject(val)) {
+                const tmpStr = JSON.stringify(val);
+                try {
+                    val = JSON.parse(tmpStr);
+                } catch (exception) {
+                    val = {};
+                }
+            }
+        }
+
+        this.core.set('value', val);
     }
     onBlur = () => {
         this.core.emit(BLUR, this.core.name);
-        if(typeof this.props.onBlur === 'function'){
-            this.props.onBlur()
+        if (typeof this.props.onBlur === 'function') {
+            this.props.onBlur();
         }
     }
     onFocus = () => {
         this.core.emit(FOCUS, this.core.name);
-        if(typeof this.props.onFocus === 'function'){
-            this.props.onFocus()
+        if (typeof this.props.onFocus === 'function') {
+            this.props.onFocus();
+        }
+    }
+    bindForm = (childForm) => {
+        this.childForm = childForm;
+    }
+    update = () => {
+        if (this.didMount) {
+            this.forceUpdate();
         }
     }
     render() {
@@ -151,14 +167,26 @@ class Item extends Component {
         if (this.didMount && this.core.get('status') === 'hidden') {
             return null;
         }
-        const name = this.core.name;
+        const { name } = this.core;
         const value = this.form.getItemValue(name);
         const props = this.form.getItemProps(name);
         const error = this.form.getItemError(name);
         const status = this.form.getItemStatus(name);
 
         const { onChange, onBlur, onFocus } = this;
-        const { className, label, top, prefix, suffix, help, validateConfig, full, layout, when, ...others } = props || {};
+        const {
+            className,
+            label,
+            top,
+            prefix,
+            suffix,
+            help,
+            validateConfig,
+            full,
+            layout,
+            when,
+            ...others
+        } = props || {};
         const component = React.Children.only(this.props.children);
         let disabled = false;
 
@@ -166,7 +194,9 @@ class Item extends Component {
             disabled = true;
         }
 
-        return React.cloneElement(component, { disabled, name, value, error, status, onChange, onBlur, onFocus, ...others });
+        return React.cloneElement(component, {
+            disabled, name, value, error, status, onChange, onBlur, onFocus, ...others,
+        });
     }
 }
 

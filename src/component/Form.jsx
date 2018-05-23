@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import deepEqual from 'deep-equal';
 import FormCore from '../core/form';
-import { CHANGE, FOCUS, BLUR } from '../static';
+import { STATUS_ENUMS, CHANGE, FOCUS, BLUR } from '../static';
 
 const noop = () => {};
 
@@ -12,8 +12,27 @@ class Form extends Component {
         onFocus: noop,
         onBlur: noop,
         onMount: noop,
-        map: v => v
+        map: v => v,
+        core: null,
+        validateConfig: null,
+        value: null,
+        error: null,
+        status: STATUS_ENUMS.EDIT,
+        props: null,
     };
+    static propTypes = {
+        onChange: PropTypes.func,
+        onFocus: PropTypes.func,
+        onBlur: PropTypes.func,
+        onMount: PropTypes.func,
+        map: PropTypes.func,
+        core: PropTypes.instanceOf(FormCore),
+        validateConfig: PropTypes.objectOf(PropTypes.object),
+        value: PropTypes.object,
+        error: PropTypes.object,
+        status: PropTypes.object,
+        props: PropTypes.object,
+    }
 
     static contextTypes = {
         item: PropTypes.object,
@@ -25,14 +44,14 @@ class Form extends Component {
 
     constructor(props, context) {
         super(props, context);
-        const item = context.item;
+        const { item } = context;
 
         // 初始化core
         if (props.core) {
             this.core = props.core;
         } else {
-             // 无core则自定义生成不需要处理onChange, 使用jsx上的
-            const { onChange, ...others} = props;
+            // 无core则自定义生成不需要处理onChange, 使用jsx上的
+            const { onChange, ...others } = props;
             this.core = new FormCore(others);
         }
 
@@ -46,8 +65,15 @@ class Form extends Component {
         if (item) this.item = item;
     }
 
+
+    getChildContext() {
+        // 传递form
+        return { form: this.core };
+    }
     componentDidMount() {
-        const { onMount, validateConfig, map, value, core } = this.props;
+        const {
+            validateConfig, map, value, core,
+        } = this.props;
         this.props.onMount(this.core); // 返回core
 
         // 校验规则
@@ -90,11 +116,6 @@ class Form extends Component {
         if (!deepEqual(nextProps.error, this.props.error)) {
             this.core.setError(nextProps.error);
         }
-    }
-
-    getChildContext() {
-        // 传递form
-        return { form: this.core };
     }
 
     // 核心变化时，通知jsx属性绑定的onChange

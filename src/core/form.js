@@ -3,19 +3,20 @@ import { VALUE_CHANGE, CHANGE } from '../static';
 import ItemCore from './item';
 
 // 工具方法
-const isArray = (obj) => Array.isArray(obj);
-const isObject = (obj) => Object.prototype.toString.call(obj) === '[object Object]';
-const genName = () => '__anonymouse__' + Math.random().toString(36);
+const isObject = obj => Object.prototype.toString.call(obj) === '[object Object]';
+const genName = () => `__anonymouse__${Math.random().toString(36)}`;
 const noop = () => {};
 
 class Form {
     constructor(option = {}) {
-        const { validateConfig, onChange, value, values, status, globalStatus, interceptor } = option || {};
+        const {
+            validateConfig, onChange, value, values, status, globalStatus, interceptor,
+        } = option || {};
 
         this.onChange = onChange || noop;
         this.children = [];
         this.childrenMap = {};
-        
+
         // TODO: 依赖status作为属性的例子需要改掉
         this.globalStatus = globalStatus || 'edit';
 
@@ -31,7 +32,7 @@ class Form {
         this.emitter = new EventEmitter();
         this.emitter.setMaxListeners(1000); // TODO: 最大值
 
-        Array.from(['Value', 'Status', 'Error', 'Props']).forEach(name => {
+        Array.from(['Value', 'Status', 'Error', 'Props']).forEach((name) => {
             // 多字段
             this[`set${name}`] = this.set.bind(this, name.toLowerCase());
             this[`get${name}`] = this.get.bind(this, name.toLowerCase());
@@ -50,7 +51,7 @@ class Form {
     }
 
     // 上报change事件到JSX
-    handleChange = (name, value) => {
+    handleChange = (name) => {
         if (!this.silent && !this.hasEmitted) { // 变化的keys必须为数组
             this.onChange(this.settingBatchKeys || [name], this.value, this);
             this.emit(CHANGE, this.value, this.settingBatchKeys || [name]);
@@ -69,7 +70,7 @@ class Form {
     async validateItem(name, cb = x => x) {
         const arrName = [].concat(name);
         const validators = [];
-        this.children.forEach(child => {
+        this.children.forEach((child) => {
             if (arrName.indexOf(child.name) !== -1) {
                 validators.push(child.validate());
             }
@@ -80,10 +81,10 @@ class Form {
         const retErr = {};
         let hasError = false;
 
-        this.children.forEach((child) => {            
+        this.children.forEach((child) => {
             if (child.name && arrName.indexOf(child.name) !== -1) {
                 const idx = arrName.indexOf(child.name);
-                
+
                 if (errs[idx] && child.status !== 'hidden') {
                     hasError = true;
                     retErr[child.name] = errs[idx];
@@ -106,7 +107,7 @@ class Form {
     // 检验
     async validate(cb = x => x) {
         const validators = [];
-        this.children.forEach(child => {
+        this.children.forEach((child) => {
             validators.push(child.validate());
         });
 
@@ -147,7 +148,7 @@ class Form {
         this[type][name] = value;
         const targetItem = this.children.find(child => child.name === name);
         if (targetItem) targetItem.set(type, value);
-        
+
         this.isSetting = false;
         this.hasEmitted = false;
     }
@@ -155,10 +156,10 @@ class Form {
     // 重置value
     reset() {
         const emptyValue = {};
-        Object.keys(this.value).forEach(key => {
-            emptyValue[key] = null
+        Object.keys(this.value).forEach((key) => {
+            emptyValue[key] = null;
         });
-        
+
         this.setValue(emptyValue);
     }
 
@@ -166,11 +167,13 @@ class Form {
     set(type, value) {
         // 设置单字段
         if (arguments.length === 3) {
-            return this.setItem(type, value, arguments[2]);
+            this.setItem(type, value, arguments[2]);
+            return;
         }
 
         if (type === 'status' && typeof value === 'string') {
-            return this.setGlobalStatus(value);
+            this.setGlobalStatus(value);
+            return;
         }
 
         this.isSetting = true;
@@ -181,16 +184,16 @@ class Form {
             this.hasEmitted = false;
             return;
         }
-        
+
         this[type] = {
             ...this[type],
-            ...value
+            ...value,
         };
-        
+
         if (type === 'value') {
             this.settingBatchKeys = Object.keys(value); // 批量变化的值
         }
-        this.children.forEach(child => {
+        this.children.forEach((child) => {
             child.set(type, this[type][child.name]);
         });
 
@@ -203,7 +206,7 @@ class Form {
     setGlobalStatus(targetStatus) {
         this.globalStatus = targetStatus;
         const status = {};
-        this.children.forEach(child => {
+        this.children.forEach((child) => {
             status[child.name] = targetStatus;
         });
 
@@ -230,7 +233,7 @@ class Form {
         let ret = this.filter(this.getAll(type));
         if (type === 'error') {
             let hasError = false;
-            Object.keys(ret).forEach(key => {
+            Object.keys(ret).forEach((key) => {
                 if (ret[key]) {
                     hasError = true;
                 }
@@ -246,8 +249,8 @@ class Form {
             return obj;
         }
 
-        let ret = {};
-        Object.keys(obj).forEach(key => {
+        const ret = {};
+        Object.keys(obj).forEach((key) => {
             if (key.indexOf('__anonymouse__') !== 0 && this.get('status', key) !== 'hidden') {
                 ret[key] = this.filter(obj[key]);
             }
@@ -259,24 +262,28 @@ class Form {
     addField(fieldProps) {
         // 处理非数组情况，考虑null,undefined
         if (!Array.isArray(fieldProps)) {
-            fieldProps = [ fieldProps ];
+            // eslint-disable-next-line
+            fieldProps = [fieldProps];
         }
 
-        const ret = fieldProps.map(option => {
-            let mrOption = Object.assign({}, option);
-            const { value, name, status, error, props, func_status } = option;
+        const ret = fieldProps.map((option) => {
+            const mrOption = Object.assign({}, option);
+            const {
+                value, name, status, error, props, func_status,
+            } = option;
 
             if (this.childrenMap[name]) {
                 return this.childrenMap[name];
             }
 
             // name特殊处理
-            if (typeof name === 'number') mrOption.name = '' + name;
+            if (typeof name === 'number') mrOption.name = `${name}`;
             if (!name) mrOption.name = genName();
 
             // JSX 属性 > core默认值 > 默认属性(globalStatus) > 空值
             mrOption.jsx_status = status || func_status;
             this.value[mrOption.name] = mrOption.value = value || this.value[name] || null;
+            // eslint-disable-next-line
             this.status[mrOption.name] = mrOption.status = status || this.status[name] || this.globalStatus;
             this.props[mrOption.name] = mrOption.props = props || {};
             this.error[mrOption.name] = mrOption.error = error || null;
@@ -302,9 +309,10 @@ class Form {
 
     updateField(props) {
         if (!Array.isArray(props)) {
-            props = [ props ];
+            // eslint-disable-next-line
+            props = [props];
         }
-        props.forEach(option => {
+        props.forEach((option) => {
             if (!option.name) {
                 throw Error('updateField must specify name');
             }
@@ -315,15 +323,14 @@ class Form {
     setValidateConfig(config) {
         if (isObject(config)) {
             this.validateConfig = config;
-            this.children.forEach(child => {
+            this.children.forEach((child) => {
                 if (child.name in config) {
                     child.setValidateConfig(config[child.name]);
                 }
             });
-        }        
+        }
     }
 }
-
 
 
 export default Form;

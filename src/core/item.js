@@ -17,7 +17,7 @@ class Item {
         });
     }
     validate() {
-        let validateConfig = this.validateConfig;
+        let { validateConfig } = this;
         if (typeof this.option.func_validateConfig === 'function') {
             validateConfig = this.option.func_validateConfig(validateConfig, this.form);
         }
@@ -28,10 +28,10 @@ class Item {
         this.validator = new AsyncValidator({
             [this.name]: validateConfig,
         });
-        return new Promise(resolve => {            
+        return new Promise((resolve) => {
             this.validator.validate({
                 [this.name]: this.get('value'),
-            }, errors => {
+            }, (errors) => {
                 if (errors) {
                     resolve(errors[0].message);
                 } else {
@@ -44,14 +44,18 @@ class Item {
         this.initWith({ ...this, ...option });
     }
     initWith(option) {
-        const { form, on, emit, removeListener } = option;
+        const {
+            form, on, emit, removeListener,
+        } = option;
         this.form = form;
         this.on = on;
         this.emit = emit;
         this.removeListener = removeListener;
 
-        const { interceptor, name, value, props, error, status, when = null, validateConfig } = option;
-        
+        const {
+            interceptor, name, value, props, error, status, when = null, validateConfig,
+        } = option;
+
         this.name = name;
         this.value = value;
         this.props = props;
@@ -61,7 +65,9 @@ class Item {
         this.validateConfig = validateConfig;
         this.interceptor = interceptor;
 
-        const { jsx_status, func_props = null, func_status = null, func_validateConfig = null } = option;
+        const {
+            jsx_status, func_props = null, func_status = null, func_validateConfig = null,
+        } = option;
         this.func_props = func_props;
         this.func_status = func_status;
 
@@ -74,7 +80,9 @@ class Item {
     // 自我调整
     async selfConsistent() {
         this.consistenting = true; // debounce
-        const { when, form, func_props, func_status, jsx_status } = this;
+        const {
+            when, form, func_props, func_status, jsx_status,
+        } = this;
         const value = form.getAll('value');
 
         // [status]静态变量可以直接await, 相当于new Promise().resolve(静态变量)
@@ -90,7 +98,7 @@ class Item {
             if (statusResult instanceof Promise) {
                 statusResultVal = await statusResult;
             }
-            
+
             if (statusResultVal && STATUS_ENUMS.has(statusResultVal)) {
                 statusResult = statusResultVal;
                 if (when === null) this.set('status', statusResult);
@@ -140,13 +148,10 @@ class Item {
 
         // interceptor一般为function, 在类型为value时处理
         if (type === 'value' && typeof this.interceptor === 'function') {
-                    
             const ftResult = this.interceptor(value);
             if (ftResult instanceof Promise) {
-                try {
-                    const ftValTmp = await ftResult;
-                    if (ftValTmp !== undefined) ftValue = ftValTmp;
-                } catch (e) {}
+                const ftValTmp = await ftResult;
+                if (ftValTmp !== undefined) ftValue = ftValTmp;
             } else if (ftResult !== undefined) {
                 ftValue = ftResult;
             }

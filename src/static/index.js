@@ -15,7 +15,7 @@ const BASIC_EVENT = {
     value: VALUE_CHANGE,
     error: ERROR_CHANGE,
     props: PROPS_CHANGE,
-    status: STATUS_CHANGE
+    status: STATUS_CHANGE,
 };
 
 // 状态枚举
@@ -39,5 +39,5 @@ export {
     EDIT,
     PREVIEW,
     DISABLED,
-    HIDDEN
+    HIDDEN,
 };

@@ -11,19 +11,17 @@ const DialogFormWrapper = (NextSource) => {
                 width,
                 footer: () => null,
                 className: `${className || ''} dialog-form-wrapper`,
-                needWrapper: false
-            }
+                needWrapper: false,
+            };
         },
-        dialogInstance: (dialogInstance) => {
-            return dialogInstance;
-        },
-        btnLoadingProps: 'loading'
+        dialogInstance: dialogInstance => dialogInstance,
+        btnLoadingProps: 'loading',
     };
 
     return new DialogFormFactory({
         Dialog,
         Button,
-        compatiMap
+        compatiMap,
     });
 };
 
