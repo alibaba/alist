@@ -69,16 +69,20 @@ describe('core/form basic function', () => {
     });
 
     it('setProps & getProps', async () => {
-        const props = { x: 1 };
+        const prevProps = { prefix: '$' };
+        const props = { x: prevProps };
         core.addField({ name: 'x' });
-        core.setProps(props);
+        core.setProps(props); // x:1
         expect(core.getProps()).toEqual(props);
-        expect(core.getItemProps('x')).toEqual(1);
-        core.setItemProps('x', { x: 2 });
+        expect(core.getItemProps('x')).toEqual(prevProps);
+
+        const suffixProps = { suffix: 'UNIT.' };
+        const mergeProps = { ...prevProps, ...suffixProps };
+        core.setItemProps('x', suffixProps);
         expect(core.getProps()).toEqual({
-            x: { x: 2 },
+            x: mergeProps,
         });
-        expect(core.getItemProps('x')).toEqual({ x: 2 });
+        expect(core.getItemProps('x')).toEqual(mergeProps);
     });
 
     it('on & emit', done => {
@@ -505,7 +509,6 @@ describe('core/form basic function', () => {
                 const username = form.getItemValue('username');
                 if (username === 'bojoy') {
                     return {
-                        ...props,
                         label: 'pass',
                         prefix: 'word',
                     };
