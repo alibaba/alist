@@ -9,13 +9,23 @@ class Header extends React.Component {
                 <title>NoForm - 可能是最好的表单解决方案</title>
                 <link rel="stylesheet" href="/_next/static/style.css" />
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-                <link rel="icon" href="https://gw.alicdn.com/tfs/TB19NLNirGYBuNjy0FoXXciBFXa-32-32.png" type="image/x-icon" />
-                
             </div>
             <header>
-                <Link to={"/docs?md=easy/easy"} className="nav-logo">
-                    <img src="https://gw.alicdn.com/tfs/TB1WeOJix9YBuNjy0FfXXXIsVXa-186-25.png" />
+                <Link to={"/"} className="nav-logo">
+                    <img src="https://img.alicdn.com/tfs/TB1BaF2ueuSBuNjy1XcXXcYjFXa-275-191.svg" />
                 </Link>
+
+                <div className="entry-list">
+                    <Link to={"/docs?md=easy/easy"} className="nav-entry">
+                        Document
+                    </Link>
+                    <Link to={"/docs?md=easy/easy"} className="nav-entry">
+                        Example
+                    </Link>
+                    <Link to={"/docs?md=easy/easy"} className="nav-entry">
+                        API
+                    </Link>
+                </div>
             </header>
         </div>
     }

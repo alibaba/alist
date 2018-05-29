@@ -1,25 +1,55 @@
 @import "./prism.less";
 
 .nav-logo {
+    display: inline-block;
+
     img {
-        
+        height: 48px;
     }
 }
 
 .nav {
     background: #fefefe;
-    height: 56px;
+    height: 72px;
     border-bottom: 1px solid rgba(230, 230, 230, 0.99);
     z-index: 2;
     width: 100%;
     position: fixed;
     top: 0;
-    z-index: 99999;
+    z-index: 99999;    
 
     header {
-        padding: 12px 0 13px;
-        max-width: 1136px;
+        position: relative;
+        padding: 12px 0 12px;
+        box-sizing: border-box;
+        width: 75%;
+        min-width: 1000px;
         margin: 0 auto;
-    }
+
+        .entry-list {
+            position: absolute;
+            right: 36px;
+            top: 0;
+            bottom: 0;
+            line-height: 72px;
+
+            a.nav-entry {
+                margin: 0 12px;
+                color: #9260B7;
+                font-size: 20px;
+            }
+        }
+    }    
+}
+
+
+ul, li, dl, dt, dd {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    background-color: transparent;
 }
 
