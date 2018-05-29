@@ -170,7 +170,7 @@ class Demo extends React.Component {
     this.core.setStatus({ username: 'preview' }); // 设置整体表单的状态
     this.core.setStatus('username', 'disabled'); // 设置单字段的状态
 ```
-> 状态的控制离不开底层组件的支持，请参考[接入自定义组件章节](/docs?md=components/cusom)了解如何实现主题控制。
+> 状态的控制离不开底层组件的支持，请参考[接入自定义组件章节](/docs?md=component/custom)了解如何实现主题控制。
 
 > 执行setStatus是其中一种控制视图的方法，参见[状态控制章节](/docs?md=basic/status)了解更多。
 

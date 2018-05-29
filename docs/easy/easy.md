@@ -102,5 +102,4 @@ class App extends React.Component {
 
 ### 后续
 
-* [手写Input太麻烦? 用现成的! - 结合antd使用](antd)
-* [老司机直接上手 - 实战案例](demo)
+* [手写组件太麻烦? 用现成的! - 结合antd使用](/docs?md=advanced/antd)

@@ -83,8 +83,8 @@ FormItem通过onChange 和 value来控制表单元素值的显示。
 
 > 如需在值发生变化时执行一些操作，请参考[核心控制章节](/docs?md=basic/core) 中的onChange部分和setValue部分了解更多。
 
-* [最简规范组件Input实现]()
-* [复杂规范组件TodoList实现]()
+* [最简规范组件Input实现](#)
+* [复杂规范组件TodoList实现](#)
 
 # 样式/layout
 
