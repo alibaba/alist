@@ -85,9 +85,11 @@ class CodeRenderer extends React.Component {
         if (language === 'onlydemo') {
             enableCode = false;
             enableDemo = true;
-        } if (language.indexOf('demo') !== -1) {
+        } if (typeof language === 'string' && language.indexOf('demo') !== -1) {
             lang = language.replace(/demo/g, '');
             enableDemo = true;
+        } else if (!language) {
+            enableCode = false;
         }
 
         let parsedDemo = null;

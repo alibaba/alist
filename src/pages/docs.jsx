@@ -2,13 +2,10 @@ import React from 'react';
 import Header from '../components/Header';
 import Layout from '../components/Layout';
 import CodeRenderer from '../components/CodeRenderer';
+import LinkRenderer from '../components/LinkRenderer';
 import Markdown from 'react-markdown';
 
-const jump = () => {
-    // Router.push(`/`)
-};
-
-class Main extends React.Component {
+class Docs extends React.Component {
 
     constructor(props, context) {
         super(props, context);
@@ -29,10 +26,12 @@ class Main extends React.Component {
 
     updateMdContent = async (props) => {
         const { location } = props;
-        const { search } = location;
+        const { search, pathname } = location;
         const [_, md] = search.split('=');
+
+        const mdPrefix = pathname.replace(/\//g, '');
     
-        const mdUrl = `docs/${md}.md`;
+        const mdUrl = `${mdPrefix}/${md}.md`;
         const result = await fetch(mdUrl);
         const mdContent = await result.text();
 
@@ -47,18 +46,19 @@ class Main extends React.Component {
 
     render() {
         let { mdContent } = this.state;
+        const { location } = this.props;
 
         return <div>
             <Header />
-            <div id="xo" />
 
-            <Layout>
+            <Layout location={location} >
                 <Markdown source={mdContent} renderers={{
-                    code: CodeRenderer
+                    code: CodeRenderer,
+                    link: LinkRenderer
                 }} />
             </Layout>
         </div>
     }
 }
 
-export default Main;
+export default Docs;

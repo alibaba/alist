@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import './index.less';
-import menuSummary from '../../summary';
+import docsSummary from '../../docs_summary';
+import apiSummary from '../../api_summary';
+import examplesSummary from '../../examples_summary';
 
 class SideBar extends React.Component {
     renderMenu(menus) {
@@ -25,9 +27,19 @@ class SideBar extends React.Component {
     }
 
     render() {
-        const { menus } = this.props;
+        const { location } = this.props;
+        const { pathname } = location;
+        const mdPrefix = pathname.replace(/\//g, '');
+
+        let summary = null;
+        switch (mdPrefix) {
+            case 'docs': summary = docsSummary; break;
+            case 'examples': summary = examplesSummary; break;
+            case 'api': summary = apiSummary; break;
+        }
+
         return <aside>
-            {this.renderMenu(menuSummary.chapters)}
+            {this.renderMenu(summary.chapters)}
         </aside>
     }
 }

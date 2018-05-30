@@ -19,10 +19,10 @@ class Header extends React.Component {
                     <Link to={"/docs?md=easy/easy"} className="nav-entry">
                         Document
                     </Link>
-                    <Link to={"/docs?md=easy/easy"} className="nav-entry">
-                        Example
+                    <Link to={"/examples?md=simple"} className="nav-entry">
+                        Examples
                     </Link>
-                    <Link to={"/docs?md=easy/easy"} className="nav-entry">
+                    <Link to={"/api?md=all"} className="nav-entry">
                         API
                     </Link>
                 </div>
