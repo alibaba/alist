@@ -1,6 +1,6 @@
 {
   "name": "noform",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "开发者友好、快捷高效的表单框架。",
   "scripts": {
     "start": "node builder/index.js dev",
@@ -13,7 +13,12 @@
   },
   "files": [
     "dist/",
-    "lib/"
+    "lib/",
+    "index.scss",
+    "wrapper.js",
+    "dialog.js",
+    "wrapper.scss",
+    "dialog.scss"
   ],
   "armor": {
     "entry": [
