@@ -7,9 +7,10 @@ const DialogFormWrapper = (NextSource) => {
     const compatiMap = {
         show: (options) => {
             const { width, className } = options;
+
             return {
+                ...options,
                 width,
-                footer: () => null,
                 className: `${className || ''} dialog-form-wrapper`,
                 needWrapper: false
             }
