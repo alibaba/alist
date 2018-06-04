@@ -14,11 +14,6 @@
 $ npm install --save noform
 ```
 
-### 快速使用
-
-[快速开始](https://github.com/alibaba/noform/wiki/quickstart)
-
 ### 文档
 
-[中文文档](https://github.com/alibaba/noform/wiki)
-[Docs](https://github.com/alibaba/noform/wiki)
+[中文文档](https://alibaba.github.io/noform/#/docs?md=easy/easy)
