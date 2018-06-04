@@ -35,22 +35,20 @@ export default function bind(source) {
         </tr>;
     }
 
-    function handleAdd({ props, children, doAdd }) {
-        let formCore = null;
+    function handleAdd({ props, children, doAdd, repeaterCore }) {
+        let core = repeaterCore.generateCore();
         Dialog.show({
             title: '添加',
-            content: <Form onMount={core => {
-                formCore = core;
-            }} layout={props.layout || { label: 8, control: 16 }} validateConfig={props.validateConfig || {}}>
+            content: <Form core={core} layout={props.layout || { label: 8, control: 16 }}>
                 {children}
             </Form>,
             onOk: async (_, hide) => {
-                const error = await formCore.validate();
+                const error = await core.validate();
                 if (error) {
                     return;
                 }
-                const nextValue = formCore.getValue();
-                await doAdd(nextValue);
+
+                await doAdd(core);
                 hide()
             }
         });
@@ -60,26 +58,15 @@ export default function bind(source) {
         doDelete(idx);
     }
 
-    function handleUpdate({ props, children, value, idx, doUpdate }) {
-        let formCore = null;
-        const pureValue = {};
-
-        function handleMount(index, core) {
-            formCore = core;
-            formCore.children.forEach(child => {
-                pureValue[child.name] = value[index][child.name];
-            });
-
-            formCore.setValue(pureValue);
-        }
-
+    function handleUpdate({ props, children, core, idx, doUpdate }) {
         Dialog.show({
             title: '更新',
-            content: <Form onMount={handleMount.bind(0, idx)} layout={props.layout || { label: 8, control: 16 }} validateConfig={props.validateConfig || {}}>
+            content: <Form core={core} layout={props.layout || { label: 8, control: 16 }}>
                 {children}
             </Form>,
-            onOk: () => {
-                doUpdate(formCore.getValue(), idx);
+            onOk: async (_, hide) => {
+                await doUpdate(core.getValue(), idx);
+                hide();
             }
         });
     }

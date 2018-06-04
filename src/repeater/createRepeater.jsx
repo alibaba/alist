@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import RepeaterCore from './repeaterCore';
+
+const noop = () => {};
 
 export default function createRepeater(bindSource, source) {
-    const { handleAdd, handleUpdate, handleDelete, Container, rowRender } = bindSource(source)
+    const { handleAddTemp = noop, handleSave = noop, handleCancel = noop,
+        handleAdd = noop, handleUpdate = noop, handleDelete = noop, handleUpdateTemp = noop,
+        Container, rowRender
+    } = bindSource(source);
+
     return class OtRepeater extends Component {
         static propTypes = {
             value: PropTypes.array,
@@ -12,6 +19,11 @@ export default function createRepeater(bindSource, source) {
         constructor(props, context) {
             super(props, context);
             this.value = props.value || [];
+            this.status = props.status;
+            this.validateConfig = props.validateConfig || {}
+            this.repeaterCore = new RepeaterCore(this.value, this.status, {
+                validateConfig: this.validateConfig
+            });
         }
 
         async componentWillReceiveProps(nextProps) {
@@ -25,6 +37,7 @@ export default function createRepeater(bindSource, source) {
 
             if (nextProps.value !== this.props.value) {
                 this.value = await filter(nextProps.value, this.key);
+                this.repeaterCore.updateValue(this.value);
                 this.forceUpdate();
             }
         }
@@ -44,9 +57,12 @@ export default function createRepeater(bindSource, source) {
             } else {
                 this.value = this.getValue();
             }
-            console.log(this.value)
+
+            this.repeaterCore.updateValue(this.value);
             this.forceUpdate();
         }
+
+        
 
         onChange = async (val) => {
             // val是onChange后的值
@@ -88,48 +104,82 @@ export default function createRepeater(bindSource, source) {
         getValue = () => {
             return this.props.value || [];
         }
-        doAdd = (nextValue) => {
-            nextValue.$idx = this.value.length;
-            this.onChange([...this.value, nextValue]);
+
+        sync = () => {
+            this.onChange(this.repeaterCore.getValues());
         }
+
+        doSave = (idx) => {
+            this.repeaterCore.saveTemp(idx);            
+            this.forceUpdate();
+        }
+
+        doCancel = (idx) => {
+            this.repeaterCore.cancelTemp(idx);
+            this.forceUpdate();
+        }
+
+        doAdd = (core) => {
+            this.repeaterCore.add(core);
+            this.sync();
+        }
+
+        doAddTemp = async () => {
+            await this.repeaterCore.addTemp();
+            this.sync();
+        }
+
+        doUpdateTemp = async (idx) => {
+            await this.repeaterCore.updateTemp(idx);
+            this.forceUpdate();
+        }
+        
         doUpdate = (val, idx) => {
-            this.onChange(this.value.map(((item, i) => {
-                if (i === idx) {
-                    val.$idx = item.$idx || idx;
-                    return val;
-                }
-                return item;
-            })));
+            this.repeaterCore.update(val, idx);
+            this.sync();
         }
         doDelete = (idx) => {
-            this.onChange(this.value.filter((_, i) => i !== idx));
+            this.repeaterCore.remove(idx);
+            this.sync();
         }
+
         render() {
-            const { value, doAdd, doUpdate, doDelete } = this;
+            const { repeaterCore, doAdd, doUpdate, doDelete, doSave, doCancel, doAddTemp, doUpdateTemp, handleSearch } = this;
             const { children } = this.props;
             const props = this.props;
 
-            this.getValue().forEach((val, idx) => {
-                val.$idx = idx;
-            });
+            const { formList } = repeaterCore;
 
             const itemsConfig = React.Children.map(this.props.children, child => ({
                 name: child.props.name,
                 label: child.props.label
             })).filter(item => item.name);
 
-            const _handleAdd = handleAdd.bind(0, { props, children, value, doAdd });
+            const _handleAdd = handleAdd.bind(0, { props, children, repeaterCore, doAdd });
+            const _handleAddTemp = handleAddTemp.bind(0, { props, children, repeaterCore, doAddTemp })
 
-            return <Container props={props} itemsConfig={itemsConfig} handleAdd={_handleAdd} handleSearch={this.handleSearch}>
+            return <Container props={props} itemsConfig={itemsConfig}
+                handleAdd={_handleAdd}
+                handleAddTemp={_handleAddTemp}
+                handleSearch={handleSearch}
+            >
                 {
-                    value.map((val, idx) => {
-                        const _handleUpdate = handleUpdate.bind(this, { props, children, value, idx, doUpdate });
-                        const _handleDelete = handleDelete.bind(this, { props, value, idx, doDelete });
+                    formList.map((core, idx) => {
+                        const _handleUpdateTemp = handleUpdateTemp.bind(this, { props, children, core, idx, doUpdateTemp })
+                        const _handleUpdate = handleUpdate.bind(this, { props, children, core, idx, doUpdate });
+                        const _handleDelete = handleDelete.bind(this, { props, core, idx, doDelete });
+                        const _handleSave = handleSave.bind(this, { props, core, idx, doSave });
+                        const _handleCancel = handleCancel.bind(this, { props, core, idx, doCancel });
 
                         return rowRender({
-                            props, itemsConfig, val, idx,
+                            props, itemsConfig, idx,
+                            val: core.getValues(),
+                            core,
                             handleUpdate: _handleUpdate,
-                            handleDelete: _handleDelete
+                            handleDelete: _handleDelete,
+                            handleCancel: _handleCancel,
+                            handleUpdateTemp: _handleUpdateTemp,
+                            handleSave: _handleSave
                         });
                     })
                 }
