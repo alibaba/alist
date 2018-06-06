@@ -22,6 +22,15 @@ class FormItem extends Component {
         ifCore: PropTypes.object,
     };
 
+    static childContextTypes = {
+        form: PropTypes.object,
+        ifCore: PropTypes.object,
+    };
+
+    getChildContext() { // 传递form   
+        return { form: this.form, ifCore: this.ifCore };
+    }
+
     constructor(props, context) {
         super(props, context);
         if (!context.form) {
@@ -29,6 +38,7 @@ class FormItem extends Component {
         }
 
         this.form = context.form;
+        this.ifCore = context.ifCore;
         if (props.name) {
             this.name = props.name;
         }
@@ -93,5 +103,7 @@ class FormItem extends Component {
             </div>);
     }
 }
+
+FormItem.displayName = 'FormItem';
 
 export default FormItem;

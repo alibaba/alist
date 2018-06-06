@@ -132,4 +132,6 @@ class Form extends Component {
     }
 }
 
+Form.displayName = 'NoForm';
+
 export default Form;

@@ -103,6 +103,52 @@ let children = [
     </Form>
 })(),
 (() => {
+    return <Form layout={{label: 5, control: 19}} full>
+        <h3>嵌套if</h3>
+        <div className="demo-form">
+            <FormItem label="username" name="username"><Input /></FormItem>
+            <FormItem label="age" name="age"><Input /></FormItem>                
+
+            <FormItem label="">
+                <div>
+                    <div>1. username为bobby时，触发第一层if</div>
+                    <div>2. username为bobby, age为23时，触发嵌套if</div>
+                </div>
+            </FormItem>
+
+            <If when={(values, { globalStatus }) => {
+                return values.username === 'bobby';
+            }}>
+                <FormItem label="" style={{ margin: '12px 0' }}>
+                    <div>
+                        hello bobby!
+                        <FormItem label="" name="deep">
+                            <Input />
+                        </FormItem>
+                    </div>
+                </FormItem>
+
+                <If when={(values, { globalStatus }) => {
+                    return values.age == 23;
+                }}>
+                    <FormItem label="" >
+                        <div>Congratulation! You've solved the last maze!</div>
+                    </FormItem>
+                </If>
+
+                <If when={(values, { globalStatus }) => {
+                    return values.deep == 'abcd';
+                }}>
+                    <FormItem label="" >
+                        <div>deep works!</div>
+                    </FormItem>
+                </If>
+            </If>
+            </div>
+        <br/><br/>
+    </Form>
+})(),
+(() => {
     const defaultValue = {
         user:{
             username: 'username',
