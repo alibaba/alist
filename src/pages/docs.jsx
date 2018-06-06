@@ -5,6 +5,22 @@ import CodeRenderer from '../components/CodeRenderer';
 import LinkRenderer from '../components/LinkRenderer';
 import Markdown from 'react-markdown';
 
+class ScrollToTopOnMount extends React.Component {
+    componentDidUpdate(prevProps) {
+        if (this.props.location !== prevProps.location) {
+          window.scrollTo(0, 0)
+        }
+    }
+
+    componentDidMount() {
+      window.scrollTo(0, 0)
+    }
+  
+    render() {
+      return null
+    }
+  }
+
 class Docs extends React.Component {
 
     constructor(props, context) {
@@ -50,7 +66,7 @@ class Docs extends React.Component {
 
         return <div>
             <Header />
-
+            <ScrollToTopOnMount location={location} />
             <Layout location={location} >
                 <Markdown source={mdContent} renderers={{
                     code: CodeRenderer,
