@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Form from '../../../src';
+import TableCom from './TableCom';
 
 export default function bind(source) {
     const { Button, Input } = source;
@@ -13,20 +14,23 @@ export default function bind(source) {
         handleDelete: PropTypes.func,
     };
     function rowRender(props) {
-        const { itemsConfig, core, val, idx, handleUpdateTemp, handleDelete, handleSave, handleCancel } = props;
-        const { status,
+        const {
+            itemsConfig, core, val, idx, handleUpdateTemp, handleDelete, handleSave, handleCancel,
+        } = props;
+        const {
+            status,
             hasDelete = true, hasUpdate = true,
             updateText = 'update', deleteText = 'delete',
             saveText = 'save', cancelText = 'cancel',
-            children
+            children,
         } = props.props;
 
         const focusMode = core.$focus;
         const editable = status === 'edit';
-        
+
         const updateBtn = !focusMode && hasUpdate ? <a href="javascript:;" role="repeater-update" onClick={handleUpdateTemp} type="primary">{updateText}</a> : null;
         const deleteBtn = !focusMode && hasDelete ? <a href="javascript:;" role="repeater-delete" onClick={handleDelete} type="primary">{deleteText}</a> : null;
-        
+
         const saveBtn = focusMode ? <a href="javascript:;" role="repeater-save" onClick={handleSave} type="primary">{saveText}</a> : null;
         const cancelBtn = focusMode ? <a href="javascript:;" role="repeater-cancel" onClick={handleCancel} type="primary">{cancelText}</a> : null;
 
@@ -34,24 +38,23 @@ export default function bind(source) {
         listItems = itemsConfig.map((conf, key) => {
             let innerItem = null;
             if (focusMode) {
-                innerItem = <div className="next-table-cell-wrapper">
+                innerItem = (<div className="next-table-cell-wrapper">
                     {children.find((childitem) => {
                         const { label, name } = childitem.props;
-                        return label === conf.label && name === conf.name
+                        return label === conf.label && name === conf.name;
                     })}
-                </div>
-            
+                </div>);
             } else {
-                innerItem = <div className="next-table-cell-wrapper">
+                innerItem = (<div className="next-table-cell-wrapper">
                     {val[conf.name]}
-                </div>
+                </div>);
             }
-            return <td key={key}>
+            return (<td key={key}>
                 {innerItem}
-            </td>            
-        })
+            </td>);
+        });
 
-        return <Form core={core}><tr key={idx}>
+        return (<Form core={core}><tr key={idx}>
             {listItems}
             <td>
                 {editable ? <div className="next-table-cell-wrapper">
@@ -62,14 +65,16 @@ export default function bind(source) {
                 </div> : null}
             </td>
         </tr>
-        </Form>;
+        </Form>);
     }
 
-    function handleAddTemp({ props, children, doAddTemp, repeaterCore }) {
+    function handleAddTemp({
+        props, children, doAddTemp, repeaterCore,
+    }) {
         doAddTemp();
     }
 
-    function handleUpdateTemp ({ idx, doUpdateTemp }) {
+    function handleUpdateTemp({ idx, doUpdateTemp }) {
         doUpdateTemp(idx);
     }
 
@@ -93,15 +98,15 @@ export default function bind(source) {
         handleSearch: PropTypes.func,
     };
     function Container(props) {
-        const { itemsConfig, handleAddTemp, handleSearch, children } = props;
+        const {
+            itemsConfig, handleAddTemp, handleSearch, children,
+        } = props;
         const { status, addText = 'add', filter } = props.props;
         const editable = status === 'edit';
 
-        const header = itemsConfig.map((conf, key) => {
-            return <th className="next-table-header-node" key={key}>
-                <div className="next-table-cell-wrapper"> {conf.label} </div>
-            </th>;
-        });
+        const header = itemsConfig.map((conf, key) => (<th className="next-table-header-node" key={key}>
+            <div className="next-table-cell-wrapper"> {conf.label} </div>
+        </th>));
 
         if (editable) {
             header.push(<th className="next-table-header-node" key="last">
@@ -109,32 +114,20 @@ export default function bind(source) {
             </th>);
         }
 
-        return <div>
+        return (<div>
             {editable ? <Button role="repeater-add" onClick={handleAddTemp}>{addText}</Button> : null}
             {filter && <Input role="repeater-search" onChange={handleSearch} />}
             <TableCom header={header}>{children}</TableCom>
-        </div>;
+        </div>);
     }
 
-    TableCom.propTypes = {
-        header: PropTypes.any,
-        children: PropTypes.any,
+    return {
+        Container,
+        rowRender,
+        handleAddTemp,
+        handleUpdateTemp,
+        handleSave,
+        handleDelete,
+        handleCancel,
     };
-    function TableCom({ header, children }) {
-        return <table>
-            <thead>
-                <tr>
-                    {header}
-                </tr>
-            </thead>
-            <tbody>
-                {children}
-            </tbody>
-        </table>;
-    }
-
-    return { Container, rowRender,
-        handleAddTemp, handleUpdateTemp,
-        handleSave, handleDelete, handleCancel
-    }
-};
+}

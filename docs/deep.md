@@ -148,7 +148,7 @@ let children = [
                                         <If when={(values, { globalStatus }) => {
                                             return values.nif == 100;
                                         }}>
-                                            <FormItem label="" >
+                                            <FormItem label="" name="nifDeep">
                                                 <div>nif 100!!!</div>
                                             </FormItem>
                                         </If>

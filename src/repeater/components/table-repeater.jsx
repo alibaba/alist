@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Form from '../../../src';
+import TableCom from './TableCom';
 
 export default function bind(source) {
     const { Button, Input, Dialog } = source;
@@ -100,23 +101,6 @@ export default function bind(source) {
             {filter && <Input role="repeater-search" onChange={handleSearch} />}
             <TableCom header={header}>{children}</TableCom>
         </div>;
-    }
-
-    TableCom.propTypes = {
-        header: PropTypes.any,
-        children: PropTypes.any,
-    };
-    function TableCom({ header, children }) {
-        return <table>
-            <thead>
-                <tr>
-                    {header}
-                </tr>
-            </thead>
-            <tbody>
-                {children}
-            </tbody>
-        </table>;
     }
 
     return {handleAdd, handleUpdate, handleDelete, Container, rowRender}

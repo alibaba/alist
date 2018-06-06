@@ -76,7 +76,7 @@ describe('component/form basic function', () => {
             <FormItem label="gender" name="gender">
                 <Input />
             </FormItem>
-                     </Form>);
+        </Form>);
     });
 
 
@@ -193,6 +193,56 @@ describe('component/form basic function', () => {
     });
 });
 
+describe('component/FormItem 嵌套', () => {
+    it('IF-item内为Item嵌套，form,form内有嵌套的if item嵌套', () => {
+        let formcore;
+        const form = mount(<Form onMount={core => formcore = core}>
+            <FormItem label="username" name="username"><Input /></FormItem>
+            <FormItem label="age" name="age"><Input /></FormItem>                
+
+            <FormItem label="">
+                <div>
+                    <div>1. username为bobby时，触发第一层if</div>
+                    <div>2. username为bobby, age为23时，触发嵌套if</div>
+                </div>
+            </FormItem>
+
+            <If when={(values, { globalStatus }) => {
+                return values.username === 'bobby';
+            }}>
+                <FormItem name="firstLayer" label="" style={{ margin: '12px 0' }}>
+                    <div>
+                        <div id="hellobobby">hello bobby!</div>
+                        <If when={(values, { globalStatus }) => {
+                            return values.age == 23;
+                        }}>
+                            <FormItem label="" name="finalMaze">
+                                <div>Congratulation! You've solved the last maze!</div>
+                            </FormItem>
+                        </If>
+                    </div>
+                </FormItem>                  
+            </If>
+        </Form>);
+        expect(form.find('Input[name="username"]').prop('value')).toEqual(null);
+        expect(form.find('Item[name="firstLayer"]').length).toEqual(0);
+
+        formcore.setValue({
+            username: 'bobby'
+        });
+        form.mount();
+        expect(form.find('Item[name="firstLayer"]').length).toEqual(1);
+        expect(form.find('Item[name="firstLayer"] div#hellobobby').prop('children')).toEqual('hello bobby!');
+        expect(form.find('Item[name="finalMaze"]').length).toEqual(0);
+        formcore.setValue({
+            age: 23
+        });
+        form.mount();
+        expect(form.find('Item[name="finalMaze"]').length).toEqual(1);
+        expect(form.find('Item[name="finalMaze"] div').prop('children')).toEqual('Congratulation! You\'ve solved the last maze!');
+    });
+});
+
 
 describe('component/if basic function', () => {
     let form,
@@ -208,7 +258,7 @@ describe('component/if basic function', () => {
         handler = sinon.spy();
         form = mount(<Form
             value={defaultValue}
-          onMount={core => formcore = core}
+            onMount={core => formcore = core}
             onChange={handler}
         >
             <FormItem label="username" name="username">
@@ -218,8 +268,8 @@ describe('component/if basic function', () => {
                 <Input />
             </FormItem>
             <FormItem
-              label="age"
-              name="age"
+                label="age"
+                name="age"
                 {...{
                     top: 'age top',
                     prefix: 'age prefix',
@@ -236,7 +286,7 @@ describe('component/if basic function', () => {
             >
                 <Input />
             </FormItem>
-                     </Form>);
+        </Form>);
     });
 
     it('should support name as number', () => {
@@ -271,7 +321,7 @@ describe('component/form value', () => {
         const form = mount(<Form onMount={core => formcore = core} value={defaultValue}>
             <Item name="username"><Input /></Item>
             <Item name="password"><Input /></Item>
-                           </Form>);
+        </Form>);
         expect(form.find('Item[name="username"] Input').prop('value')).toEqual(defaultValue.username);
         expect(form.find('Item[name="password"] Input').prop('value')).toEqual(defaultValue.password);
     });
@@ -289,7 +339,7 @@ describe('component/form value', () => {
         const form = mount(<Form onMount={core => formcore = core} value={defaultValue} onChange={onChange}>
             <Item name="username"><Input /></Item>
             <Item name="password"><Input /></Item>
-                           </Form>);
+        </Form>);
         expect(form.find('Item[name="username"] Input').prop('value')).toEqual(defaultValue.username);
         expect(form.find('Item[name="password"] Input').prop('value')).toEqual(defaultValue.password);
         expect(onChange.notCalled).toEqual(true);
@@ -328,7 +378,7 @@ describe('component/form value', () => {
                     </Item>
                 </Form>
             </Item>
-                           </Form>);
+        </Form>);
 
         expect(form.find('Item[name="user"] Item[name="username"] Input').prop('value')).toEqual(defaultValue.user.username);
         expect(form.find('Item[name="user"] Item[name="password"] Input').prop('value')).toEqual(defaultValue.user.password);
@@ -383,7 +433,7 @@ describe('component/form if', () => {
             <If when={value => value.username == 'bojoy'}>
                 <Item name="gender"><Input /></Item>
             </If>
-                           </Form>);
+        </Form>);
         expect(form.find('Item[name="gender"] Input').prop('value')).toEqual(defaultValue.gender);
         formcore.setValue(newValue);
         form.mount();
@@ -404,7 +454,7 @@ describe('component/form if', () => {
                     <div id="success">登录成功</div>
                 </If>
             </If>
-                           </Form>);
+        </Form>);
         expect(form.find('Item[name="gender"] Input').length).toEqual(0);
         expect(form.find('#success').length).toEqual(0);
         formcore.setValue({
@@ -484,7 +534,7 @@ describe('component/form if', () => {
                     </Form>
                 </Item>
             </If>
-                           </Form>);
+        </Form>);
         expect(form.find('Item[name="user"] Input[name="username"]').prop('value')).toEqual(defaultValue.user.username);
         formcore.setValue({
             age: 19,
@@ -533,7 +583,7 @@ describe('component/form if', () => {
                     </Form>
                 </Item>
             </If>
-                           </Form>);
+        </Form>);
         expect(form.find('Item[name="user"] Input[name="username"]').prop('value')).toEqual(defaultValue.user.username);
         formcore.setValue({
             age: 19,
@@ -570,6 +620,60 @@ describe('component/form if', () => {
         expect(form.find('Item[name="user"] Input[name="username"]').prop('value')).toEqual('bojoy');
         expect(form.find('Item[name="user"] Input[name="gender"]').prop('value')).toEqual('female');
         expect(form.find('Item[name="user"] #success').length).toEqual(1);
+    });
+
+    it('IF-item内为Item嵌套，form,form内有嵌套的if item嵌套', () => {
+        const defaultValue = {
+            username: 'bobby',
+        };
+        let formcore;
+        const form = mount(<Form onMount={core => formcore = core} value={defaultValue}>
+            <FormItem label="username" name="username"><Input /></FormItem>
+            <If when={values => values.username === 'bobby'}>
+                <FormItem label="" style={{ margin: '12px 0' }} name="wrapper">
+                    <div>
+                        hello bobby!
+                        <FormItem label="" name="deep">
+                            <Input />
+                        </FormItem>
+
+                        <If when={values => values.deep === 'abcd'}>
+                            <FormItem label="" name="deepForm">
+                                <Form layout={{ label: 5, control: 19 }} full>
+                                    <FormItem label="nif" name="nif"><Input /></FormItem>
+                                    <FormItem label="dif" name="dif">
+                                        <If when={values => values.nif === 100}>
+                                            <FormItem label="nifDeep" name="nifDeep">
+                                                <div>nif 100!!!</div>
+                                            </FormItem>
+                                        </If>
+                                    </FormItem>
+                                </Form>
+                            </FormItem>
+                        </If>
+                    </div>
+                </FormItem>
+            </If>
+        </Form>);
+        expect(form.find('Input[name="username"]').prop('value')).toEqual(defaultValue.username);
+        expect(form.find('Item[name="deepForm"]').length).toEqual(0);
+        formcore.setValue({
+            deep: 'abcd',
+            deepForm: {
+                nif: 'hello',
+            },
+        });
+        form.mount();
+        expect(form.find('Item[name="deepForm"]').length).toEqual(1);
+        expect(form.find('Item[name="deepForm"] Input[name="nif"]').prop('value')).toEqual('hello');
+        expect(form.find('Item[name="nifDeep"]').length).toEqual(0);
+        formcore.setValue({
+            deepForm: {
+                nif: 100,
+            },
+        });
+        form.mount();
+        expect(form.find('Item[name="deepForm"] Item[name="nifDeep"]').length).toEqual(1);
     });
 });
 
@@ -613,7 +717,7 @@ describe('component/form status', () => {
         const form = mount(<Form globalStatus="preview" onMount={core => formcore = core} value={defaultValue}>
             <Item name="username"><Input /></Item>
             <Item name="password"><Input /></Item>
-                           </Form>);
+        </Form>);
         expect(formcore.getStatus('username')).toEqual('preview');
         expect(formcore.getStatus('password')).toEqual('preview');
     });
@@ -629,7 +733,7 @@ describe('component/form status', () => {
             <If when={value => value.username == 'bojoy'}>
                 <Item name="password"><Input /></Item>
             </If>
-                           </Form>);
+        </Form>);
         expect(form.find('Item[name="username"] Input').prop('status')).toEqual('edit');
         expect(form.find('Item[name="password"] Input').length).toEqual(0);
 
@@ -659,7 +763,7 @@ describe('component/form status', () => {
                     </Item>
                 </Form>
             </Item>
-                           </Form>);
+        </Form>);
 
         expect(form.find('Item[name="username"] Input').prop('status')).toEqual('edit');
         expect(form.find('Item[name="password"] Input').prop('status')).toEqual('edit');
@@ -695,7 +799,7 @@ describe('component/form status', () => {
                 }}
             ><Input />
             </Item>
-                           </Form>);
+        </Form>);
 
         expect(form.find('Item[name="username"] Input').prop('status')).toEqual('edit');
         expect(form.find('Item[name="password"] Input').prop('status')).toEqual('edit');
@@ -727,7 +831,7 @@ describe('component/form render', () => {
                 return <div id={value.username} />;
             }}
             />
-                           </Form>);
+        </Form>);
         expect(render.callCount).toEqual(1);
         expect(render.calledWith(formcore.getValue(), formcore)).toEqual(true);
         formcore.setValue({
@@ -761,7 +865,7 @@ describe('validateConfig function', () => {
                 }}
             ><Input />
             </Item>
-                           </Form>);
+        </Form>);
 
         formcore.validate((err) => {
             expect(err).toEqual({ age: 'age is required' });
