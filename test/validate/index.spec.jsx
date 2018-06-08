@@ -12,7 +12,7 @@ describe('string', () => {
     it('number', () => {
         const schema = new AsyncValidator({
             name: rules.number('name'),
-            nameRequired: [rules.required('nameRequired'), rules.number('name')],
+            nameRequired: [rules.required('nameRequired'), rules.number('nameRequired')],
         });
         schema.validate({
             name: '',
