@@ -1,14 +1,15 @@
 import * as Antd from 'antd';
 import { mount } from 'enzyme';
 import React from 'react';
-import Form, { FormItem, Item } from '../../src';
+import Form, { FormItem, Item, FormCore } from '../../src';
 
 import repeaterWrapper from '../../src/repeater';
 import wrapper from '../../src/wrapper/antd';
 import dialogWrapper from '../../src/dialog/antd';
 
 // import simulateEvent from 'simulate-event';
-const { TableRepeater } = repeaterWrapper(dialogWrapper(Antd));
+
+const { TableRepeater, InlineRepeater } = repeaterWrapper({ ...Antd, Dialog: dialogWrapper(Antd) });
 
 const { Input } = wrapper(Antd);
 function filter(value, key) {
@@ -39,14 +40,16 @@ describe('Repeater', () => {
     });
     it('should add', () => {
         // console.log(form.find(TableRepeater).instance().doAdd);
-        form.find(TableRepeater).instance().doAdd({
-            drawerName: '开票人',
-            taxpayerNumber: '税号',
-            branchName: '子公司',
-            checkResultName: '核查结果',
-            denyReason: '拒绝原因',
-            creatorName: '创建人',
-        });
+        form.find(TableRepeater).instance().doAdd(new FormCore({
+            values: {
+                drawerName: '开票人',
+                taxpayerNumber: '税号',
+                branchName: '子公司',
+                checkResultName: '核查结果',
+                denyReason: '拒绝原因',
+                creatorName: '创建人',
+            },
+        }));
 
         expect(JSON.stringify(formCore.getValue())).toEqual(JSON.stringify({
             repeat: [{
@@ -55,21 +58,22 @@ describe('Repeater', () => {
                 branchName: '子公司',
                 checkResultName: '核查结果',
                 denyReason: '拒绝原因',
-                creatorName: '创建人',
-                $idx: 0,
+                creatorName: '创建人'
             }],
         }));
     });
     it('should update', () => {
         // console.log(form.find(TableRepeater).instance().doAdd);
-        form.find(TableRepeater).instance().doAdd({
-            drawerName: '开票人',
-            taxpayerNumber: '税号',
-            branchName: '子公司',
-            checkResultName: '核查结果',
-            denyReason: '拒绝原因',
-            creatorName: '创建人',
-        });
+        form.find(TableRepeater).instance().doAdd(new FormCore({
+            values: {
+                drawerName: '开票人',
+                taxpayerNumber: '税号',
+                branchName: '子公司',
+                checkResultName: '核查结果',
+                denyReason: '拒绝原因',
+                creatorName: '创建人',
+            }
+        }));
 
         expect(JSON.stringify(formCore.getValue())).toEqual(JSON.stringify({
             repeat: [{
@@ -78,8 +82,7 @@ describe('Repeater', () => {
                 branchName: '子公司',
                 checkResultName: '核查结果',
                 denyReason: '拒绝原因',
-                creatorName: '创建人',
-                $idx: 0,
+                creatorName: '创建人'
             }],
         }));
 
@@ -99,8 +102,7 @@ describe('Repeater', () => {
                 branchName: '子公司',
                 checkResultName: '核查结果',
                 denyReason: '拒绝原因',
-                creatorName: '创建人',
-                $idx: 0,
+                creatorName: '创建人'
             }],
         }));
     });
@@ -121,8 +123,7 @@ describe('Repeater', () => {
                 branchName: '子公司',
                 checkResultName: '核查结果',
                 denyReason: '拒绝原因',
-                creatorName: '创建人',
-                $idx: 0,
+                creatorName: '创建人'
             }],
         }));
 

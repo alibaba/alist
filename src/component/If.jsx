@@ -66,4 +66,6 @@ class If extends Component {
     }
 }
 
+If.displayName = 'If';
+
 export default If;

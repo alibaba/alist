@@ -31,8 +31,19 @@ class Item extends Component {
         const { form } = context;
         this.form = form;
         const {
-            name, value, error, defaultValue,
+            name, value, error, defaultValue, children
         } = jsxProps;
+
+        // 构建时提前知道子类，比didmount再来通知，把控性好很多
+        this.displayName = '';        
+        if (children) {
+            const jsxComponent = React.Children.only(children);
+            if (jsxComponent && jsxComponent.type && jsxComponent.type.displayName) {
+                this.displayName = jsxComponent.type.displayName;
+            }
+        }
+
+        this.predictChildForm = this.displayName === 'NoForm';
 
         const option = {
             error,
@@ -42,7 +53,7 @@ class Item extends Component {
 
         // 上有if item
         if (context.ifCore) {
-            option.when = context.ifCore.when;
+            option.when = context.ifCore.when;            
         } else if ('when' in jsxProps) {
             option.when = jsxProps.when;
         }
@@ -84,7 +95,8 @@ class Item extends Component {
     }
 
     getChildContext() {
-        return { item: this, form: null, ifCore: null };
+        // return { item: this, form: this.form, ifCore: null };
+        return { item: this, form: this.form, ifCore: this.predictChildForm ? null : this.ifCore };
     }
 
     componentDidMount() {
@@ -194,10 +206,19 @@ class Item extends Component {
             disabled = true;
         }
 
-        return React.cloneElement(component, {
+
+        const cloneProps = {
             disabled, name, value, error, status, onChange, onBlur, onFocus, ...others,
-        });
+        };
+
+        if (component && component.type && component.type.displayName === 'If') {
+            delete cloneProps.name;
+        }
+
+        return React.cloneElement(component, cloneProps);
     }
 }
+
+Item.displayName = 'Item';
 
 export default Item;
