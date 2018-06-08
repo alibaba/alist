@@ -21,6 +21,7 @@
       "index.scss",
       "wrapper.js",
       "dialog.js",
+      "validate.js",
       "wrapper.scss",
       "dialog.scss"
     ],

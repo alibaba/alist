@@ -1,6 +1,7 @@
 {
     "env": {
-        "mocha": true
+        "mocha": true,
+        "jest/globals": true
     },
     "extends": [
         "airbnb"
