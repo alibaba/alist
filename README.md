@@ -1,4 +1,4 @@
-<p align="center"><img width="36" height="36" src="https://gw.alicdn.com/tfs/TB1LyIurStYBeNjSspkXXbU8VXa-128-128.png"></p>
+<p align="center"><img width="200" src="https://img.alicdn.com/tfs/TB1BaF2ueuSBuNjy1XcXXcYjFXa-275-191.svg"></p>
 
 <p align="center">NoForm, 可能是最好的表单框架</p>
 
@@ -16,4 +16,4 @@ $ npm install --save noform
 
 ### 文档
 
-[中文文档](https://alibaba.github.io/noform/#/docs?md=easy/easy)
+[中文文档](https://alibaba.github.io/noform)
