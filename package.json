@@ -101,6 +101,7 @@
     "react-scripts": "^1.1.4",
     "react-test-renderer": "^15.x",
     "rimraf": "^2.6.2",
+    "simulate-event": "^1.4.0",
     "sinon": "^4.0.1",
     "style-loader": "^0.19.1",
     "uglifyjs-webpack-plugin": "^1.2.4",

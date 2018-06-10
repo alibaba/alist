@@ -6,11 +6,8 @@ import { FormCore } from '..';
 const noop = () => {};
 
 export default function createRepeater(bindSource, source) {
-    const {
-        handleAddTemp = noop, handleSave = noop, handleCancel = noop,
-        handleAdd = noop, handleUpdate = noop, handleDelete = noop, handleUpdateTemp = noop,
-        Container, rowRender,
-    } = bindSource(source);
+    const { Container, RowRender } = bindSource(source);
+    const { Input, Dialog = noop } = source;
 
     return class OtRepeater extends Component {
         static propTypes = {
@@ -20,9 +17,10 @@ export default function createRepeater(bindSource, source) {
         }
         constructor(props, context) {
             super(props, context);
-            this.value = props.value || [];
-            this.status = props.status;
-            this.validateConfig = props.validateConfig || {};
+            const { value, status, validateConfig } = props;
+            this.value = value || [];
+            this.status = status;
+            this.validateConfig = validateConfig || {};
             this.repeaterCore = new RepeaterCore(this.value, this.status, {
                 validateConfig: this.validateConfig,
             });
@@ -38,7 +36,8 @@ export default function createRepeater(bindSource, source) {
             }
 
             if (nextProps.value !== this.props.value) {
-                this.value = await filter(nextProps.value, this.key);
+                this.value = await this.handleFilter(nextProps.value, this.key);
+
                 this.repeaterCore.updateValue(this.value);
                 this.forceUpdate();
             }
@@ -86,6 +85,15 @@ export default function createRepeater(bindSource, source) {
 
         getValue = () => this.props.value || []
 
+        handleFilter = async (value, key) => {
+            const { filter } = this.props;
+            if (filter) {
+                const result = await filter(value, key);
+                return result;
+            }
+            return value;
+        }
+
         handleSearch = async (e) => {
             let key = e.target ? e.target.value : e;
             const { filter } = this.props;
@@ -95,9 +103,9 @@ export default function createRepeater(bindSource, source) {
                 this.key = key;
             }
 
-            // 使用过滤函数进行过滤
+            // 使用过滤函数进行过滤, 正在创建或更新临时项时，不进行搜索
             if (filter && key) {
-                this.value = await filter(this.getValue(), key);
+                this.value = await this.handleFilter(this.getValue(), key);
             } else {
                 this.value = this.getValue();
             }
@@ -106,36 +114,21 @@ export default function createRepeater(bindSource, source) {
             this.forceUpdate();
         }
 
-        handleSearch = async (e) => {
-            let key = e.target ? e.target.value : e;
-            const { filter } = this.props;
-            if (key === undefined) {
-                key = this.key || '';
-            } else {
-                this.key = key;
-            }
-
-            // 使用过滤函数进行过滤
-            if (filter && key) {
-                this.value = await filter(this.getValue(), key);
-            } else {
-                this.value = this.getValue();
-            }
-            console.log(this.value);
-            this.forceUpdate();
-        }
-
         sync = () => {
             this.onChange(this.repeaterCore.getValues());
         }
 
-        doSave = (idx) => {
-            this.repeaterCore.saveTemp(idx);
+        doSave = async (idx) => {
+            const hasError = await this.repeaterCore.saveInline(idx);
+            if (hasError) return;
+
+            this.sync();
             this.forceUpdate();
         }
 
         doCancel = (idx) => {
-            this.repeaterCore.cancelTemp(idx);
+            this.repeaterCore.cancelInline(idx);
+            this.sync();
             this.forceUpdate();
         }
 
@@ -151,13 +144,16 @@ export default function createRepeater(bindSource, source) {
             this.sync();
         }
 
-        doAddTemp = async () => {
-            await this.repeaterCore.addTemp();
-            this.sync();
+        doAddInline = async () => {
+            const canSync = await this.repeaterCore.addInline();
+            if (canSync) {
+                this.sync();
+            }
+            this.forceUpdate();
         }
 
-        doUpdateTemp = async (idx) => {
-            await this.repeaterCore.updateTemp(idx);
+        doUpdateInline = async (idx) => {
+            await this.repeaterCore.updateInline(idx);
             this.forceUpdate();
         }
 
@@ -165,17 +161,15 @@ export default function createRepeater(bindSource, source) {
             this.repeaterCore.update(val, idx);
             this.sync();
         }
+
         doDelete = (idx) => {
             this.repeaterCore.remove(idx);
             this.sync();
         }
 
         render() {
-            const {
-                repeaterCore, doAdd, doUpdate, doDelete, doSave, doCancel, doAddTemp, doUpdateTemp, handleSearch,
-            } = this;
-            const { children } = this.props;
-            const { props } = this;
+            const { repeaterCore, handleSearch } = this;
+            const { children, filter } = this.props;
 
             const { formList } = repeaterCore;
 
@@ -184,53 +178,31 @@ export default function createRepeater(bindSource, source) {
                 label: child.props.label,
             })).filter(item => item.name);
 
-            const _handleAdd = handleAdd.bind(0, {
-                props, children, repeaterCore, doAdd,
-            });
-            const _handleAddTemp = handleAddTemp.bind(0, {
-                props, children, repeaterCore, doAddTemp,
-            });
-
-            return (<Container
-                props={props}
-                itemsConfig={itemsConfig}
-                handleAdd={_handleAdd}
-                handleAddTemp={_handleAddTemp}
-                handleSearch={handleSearch}
-            >
-                {
-                    formList.map((core, idx) => {
-                        const _handleUpdateTemp = handleUpdateTemp.bind(this, {
-                            props, children, core, idx, doUpdateTemp,
-                        });
-                        const _handleUpdate = handleUpdate.bind(this, {
-                            props, children, core, idx, doUpdate,
-                        });
-                        const _handleDelete = handleDelete.bind(this, {
-                            props, core, idx, doDelete,
-                        });
-                        const _handleSave = handleSave.bind(this, {
-                            props, core, idx, doSave,
-                        });
-                        const _handleCancel = handleCancel.bind(this, {
-                            props, core, idx, doCancel,
-                        });
-
-                        return rowRender({
-                            props,
-                            itemsConfig,
-                            idx,
-                            val: core.getValues(),
-                            core,
-                            handleUpdate: _handleUpdate,
-                            handleDelete: _handleDelete,
-                            handleCancel: _handleCancel,
-                            handleUpdateTemp: _handleUpdateTemp,
-                            handleSave: _handleSave,
-                        });
-                    })
-                }
-            </Container>);
+            return (
+                <div>
+                    { filter && <Input className="repeater-search" onChange={handleSearch} /> }
+                    <Container
+                        jsxProps={this.props}
+                        itemsConfig={itemsConfig}
+                        repeaterCore={repeaterCore}
+                        doAdd={this.doAdd}
+                        doUpdate={this.doUpdate}
+                        doDelete={this.doDelete}
+                        doSave={this.doSave}
+                        doCancel={this.doCancel}
+                        doAddInline={this.doAddInline}
+                        doUpdateInline={this.doUpdateInline}
+                    >
+                        {
+                            formList.map((core, idx) => {
+                                const val = core.getValues();
+                                const itemProps = { idx, val, core };
+                                return <RowRender {...itemProps} />;
+                            })
+                        }
+                    </Container>
+                </div>
+            );
         }
     };
 }

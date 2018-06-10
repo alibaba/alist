@@ -11,6 +11,67 @@ describe('core/form basic function', () => {
         core = new FormCore();
     });
 
+    it('constructor values', () => {
+        const values = { x: 1 };
+        const valuesCore = new FormCore({ values });
+        expect(valuesCore.getValues()).toEqual(values);
+        expect(valuesCore.getValues()).toEqual(values);
+        expect(valuesCore.getItemValue('x')).toEqual(values.x);
+        expect(valuesCore.getValue('x')).toEqual(values.x);
+        valuesCore.setValue('x', 2);
+        expect(valuesCore.getValues()).toEqual({ x: 2 });
+        expect(valuesCore.getValue('x')).toEqual(2);
+    });
+
+    it('constructor status', () => {
+        const status = { x: 'preview' };
+        const statusCore = new FormCore({ status });
+        expect(statusCore.getStatus()).toEqual(status);
+        expect(statusCore.getStatus('x')).toEqual(status.x);
+        statusCore.setStatus('x', 'edit');
+        expect(statusCore.getStatus()).toEqual({ x: 'edit' });
+        expect(statusCore.getStatus('x')).toEqual('edit');
+    });
+
+    it('constructor globalStatus', () => {
+        const status = { x: 'preview' };
+        const globalStatus = 'preview';
+        const statusCore = new FormCore({ globalStatus });
+        statusCore.addField({ name: 'x' });
+        expect(statusCore.getStatus()).toEqual(status);
+        expect(statusCore.getStatus('x')).toEqual(status.x);
+        statusCore.setStatus('x', 'edit');
+        expect(statusCore.getStatus()).toEqual({ x: 'edit' });
+        expect(statusCore.getStatus('x')).toEqual('edit');
+    });
+
+    it('constructor onChange', () => {
+        const handler = sinon.spy();
+        const changeCore = new FormCore({ onChange: handler });
+        changeCore.addField({ name: 'x' });
+        const value = { x: 1 };
+        changeCore.setValue(value);
+
+        expect(handler.calledOnce).toEqual(true);
+        expect(handler.calledWith(['x'], value)).toEqual(true);
+    });
+
+    it('constructor interceptor', () => {
+        const handler = sinon.spy();
+        const interceptor = {
+            x: val => val + 1,
+        };
+        const changeCore = new FormCore({ onChange: handler, interceptor });
+        changeCore.addField({ name: 'x' });
+        const value = { x: 1 };
+        changeCore.setValue(value);
+
+        expect(handler.calledOnce).toEqual(true);
+        expect(handler.calledWith(['x'], {
+            x: 2,
+        })).toEqual(true);
+    });
+
     it('setValue & getValue', () => {
         core.addField({ name: 'x' });
 
@@ -23,7 +84,7 @@ describe('core/form basic function', () => {
         expect(core.getItemValue('x')).toEqual(2);
     });
     it('setValueSilent & getValue', () => {
-        core.addField({  name: 'x' });
+        core.addField({ name: 'x' });
 
         const value = { x: 1 };
         core.setValueSilent(value);
@@ -34,9 +95,9 @@ describe('core/form basic function', () => {
         expect(core.getItemValue('x')).toEqual(2);
     });
 
-    it('onChange', done => {
+    it('onChange', (done) => {
         core.addField({ name: 'x' });
-        core.on(CHANGE, value => {
+        core.on(CHANGE, (value) => {
             expect(core.getValue()).toEqual({ x: 1 });
             expect(value).toEqual({ x: 1 });
             done();
@@ -44,9 +105,9 @@ describe('core/form basic function', () => {
         core.setItemValue('x', 1);
     });
 
-    it('setValueSilent without onChange', done => {
+    it('setValueSilent without onChange', (done) => {
         const value = { x: 1 };
-        core.on(CHANGE, value => {
+        core.on(CHANGE, (value) => {
             expect(true).toEqual(false);
             done();
         });
@@ -85,20 +146,20 @@ describe('core/form basic function', () => {
         expect(core.getItemProps('x')).toEqual(mergeProps);
     });
 
-    it('on & emit', done => {
+    it('on & emit', (done) => {
         const eventData = { x: 1 };
         const eventType = 'custom';
-        core.on(eventType, ed => {
+        core.on(eventType, (ed) => {
             expect(ed).toEqual(eventData);
             done();
         });
         core.emit(eventType, eventData);
     });
 
-    it('on & removeListener', done => {
+    it('on & removeListener', (done) => {
         const eventData = { x: 1 };
         const eventType = 'custom';
-        const handler = ed => {
+        const handler = (ed) => {
             expect(true).toEqual(false);
             done();
         };
@@ -114,8 +175,8 @@ describe('core/form basic function', () => {
         const count = Math.floor(Math.random() * 100);
         const mid = Math.floor(count / 2);
         for (let i = 0; i < mid; i++) {
-            const name = 'name' + i;
-            const value = 'value' + i;
+            const name = `name${i}`;
+            const value = `value${i}`;
             if (i % 2 === 0) {
                 core.addField([{
                     name,
@@ -130,8 +191,8 @@ describe('core/form basic function', () => {
         }
         const fields = [];
         for (let i = mid; i < count; i++) {
-            const name = 'name' + i;
-            const value = 'value' + i;
+            const name = `name${i}`;
+            const value = `value${i}`;
             fields.push({
                 name,
                 value,
@@ -140,8 +201,8 @@ describe('core/form basic function', () => {
         core.addField(fields);
         const values = await core.getValue();
         for (let i = 0; i < count; i++) {
-            const name = 'name' + i;
-            const value = 'value' + i;
+            const name = `name${i}`;
+            const value = `value${i}`;
             expect(values[name]).toEqual(value);
         }
     });
@@ -175,7 +236,7 @@ describe('core/form basic function', () => {
             { name: 'whenTrue', value: 'whenTrue', when: true },
             { name: 'whenFuncTrue', value: 'whenFuncTrue', when: () => true },
             { name: 'whenFuncFalse', value: 'whenFuncFalse', when: () => false },
-            { name: 'whenDepCondition', value: 'whenDepCondition', when: (value, core) => !!value.condition }
+            { name: 'whenDepCondition', value: 'whenDepCondition', when: (value, core) => !!value.condition },
         ]);
 
         let values;
@@ -209,7 +270,7 @@ describe('core/form basic function', () => {
             { name: 'whenTrue', value: 'whenTrue', when: true },
             { name: 'whenFuncTrue', value: 'whenFuncTrue', when: () => true },
             { name: 'whenFuncFalse', value: 'whenFuncFalse', when: () => false },
-            { name: 'whenDepCondition', value: 'whenDepCondition', when: (value) => !!value.condition }
+            { name: 'whenDepCondition', value: 'whenDepCondition', when: value => !!value.condition },
         ]);
 
         let values;
@@ -225,9 +286,9 @@ describe('core/form basic function', () => {
         core.updateField({ name: 'whenTrue', value: 'whenTrue', when: false });
         core.updateField({ name: 'whenFalse', value: 'whenFalse', when: true });
         core.updateField([
-            { name: 'whenFuncTrue', value: 'whenFuncTrue', when: () => false }, 
+            { name: 'whenFuncTrue', value: 'whenFuncTrue', when: () => false },
             { name: 'whenFuncFalse', value: 'whenFuncFalse', when: () => true },
-            { name: 'whenDepCondition', value: 'whenDepCondition', when: (value) => !value.condition }
+            { name: 'whenDepCondition', value: 'whenDepCondition', when: value => !value.condition },
         ]);
 
         values = core.getValue();
@@ -240,7 +301,7 @@ describe('core/form basic function', () => {
 
 
         core.setValue({
-            condition: false
+            condition: false,
         });
 
         values = core.getValue();
@@ -279,19 +340,19 @@ describe('core/form basic function', () => {
             name: 'firstErr',
             value: 'firstErr',
             validateConfig(rule, value, callback, source, options) {
-                callback([ 'firstErr' ]);
+                callback(['firstErr']);
             },
         }, {
             name: 'hasError',
             value: 'hasError',
             validateConfig(rule, value, callback, source, options) {
-                callback([ 'hasError' ]);
+                callback(['hasError']);
             },
         }, {
             name: 'thirdError',
             value: 'thirdError',
             validateConfig(rule, value, callback, source, options) {
-                callback([ 'thirdError' ]);
+                callback(['thirdError']);
             },
         }, {
             name: 'success',
@@ -323,14 +384,14 @@ describe('core/form basic function', () => {
             name: 'hasError',
             value: 'hasError',
             validateConfig(rule, value, callback, source, options) {
-                let errors = [ 'hasError' ];
+                const errors = ['hasError'];
                 callback(errors);
             },
         }, {
             name: 'success',
             value: 'success',
             validateConfig(rule, value, callback, source, options) {
-                let errors = [];
+                const errors = [];
                 callback(errors);
             },
         }]);
@@ -343,26 +404,26 @@ describe('core/form basic function', () => {
         expect(core.getItemError('success')).toEqual(null);
     });
 
-    it('add validate field (callback)', done => {
+    it('add validate field (callback)', (done) => {
         core.addField([{
             name: 'hasError',
             value: 'hasError',
             validateConfig(rule, value, callback, source, options) {
-                let errors = [ 'hasError' ];
+                const errors = ['hasError'];
                 callback(errors);
             },
         }, {
             name: 'success',
             value: 'success',
             validateConfig(rule, value, callback, source, options) {
-                let errors = [];
+                const errors = [];
                 callback(errors);
             },
         }]);
         expect(core.getItemError('hasError')).toEqual(null);
         expect(core.getItemError('success')).toEqual(null);
         // 调用validate之后才生成error信息
-        core.validate(errors => {
+        core.validate((errors) => {
             expect(errors).toEqual({ hasError: 'hasError' });
             expect(core.getItemError('hasError')).toEqual('hasError');
             expect(core.getItemError('success')).toEqual(null);
@@ -370,12 +431,12 @@ describe('core/form basic function', () => {
         });
     });
 
-    it('add async validate field', done => {
+    it('add async validate field', (done) => {
         core.addField([{
             name: 'hasError',
             value: 'hasError',
             validateConfig(rule, value, callback, source, options) {
-                let errors = [ 'hasError' ];
+                const errors = ['hasError'];
                 setTimeout(() => {
                     callback(errors);
                 }, 20);
@@ -384,43 +445,43 @@ describe('core/form basic function', () => {
             name: 'success',
             value: 'success',
             validateConfig(rule, value, callback, source, options) {
-                let errors = [];
+                const errors = [];
                 callback(errors);
             },
         }]);
-        core.validate(errors => {
+        core.validate((errors) => {
             expect(errors).toEqual({ hasError: 'hasError' });
             done();
         });
     });
 
-    it('update validate field', done => {
+    it('update validate field', (done) => {
         core.addField([{
             name: 'hasError',
             value: 'hasError',
             validateConfig(rule, value, callback, source, options) {
-                let errors = [ 'hasError' ];
+                const errors = ['hasError'];
                 callback(errors);
             },
         }, {
             name: 'success',
             value: 'success',
             validateConfig(rule, value, callback, source, options) {
-                let errors = [];
+                const errors = [];
                 callback(errors);
             },
         }]);
         core.setValidateConfig({
             hasError(rule, value, callback, source, options) {
-                let errors = [];
+                const errors = [];
                 callback(errors);
             },
             success(rule, value, callback, source, options) {
-                let errors = [ 'successHasError' ];
+                const errors = ['successHasError'];
                 callback(errors);
             },
         });
-        core.validate(errors => {
+        core.validate((errors) => {
             expect(errors).toEqual({ success: 'successHasError' });
             done();
         });
@@ -449,7 +510,7 @@ describe('core/form basic function', () => {
         const value = 'values';
         core.addField([
             { name: 'name', value: 'bojoy' },
-            { name: 'gender', value: 'male' }
+            { name: 'gender', value: 'male' },
         ]);
 
         expect(core.getGlobalStatus()).toEqual('edit');
@@ -465,7 +526,7 @@ describe('core/form basic function', () => {
         const condition = false;
         core.addField([
             { name: 'condition', value: condition },
-            { name: 'whenFalse', value: 'whenFalse', when: value => !!value.condition }
+            { name: 'whenFalse', value: 'whenFalse', when: value => !!value.condition },
         ]);
 
         expect(core.getGlobalStatus()).toEqual('edit');
@@ -483,9 +544,9 @@ describe('core/form basic function', () => {
         const condition = false;
         core.addField([
             { name: 'condition', value: condition },
-            { name: 'whenFalse', value: 'whenFalse', when: value => !!value.condition }
+            { name: 'whenFalse', value: 'whenFalse', when: value => !!value.condition },
         ]);
-        
+
         expect(core.getGlobalStatus()).toEqual('edit');
         expect(core.getItemStatus('condition')).toEqual('edit');
         // whenFalse hide
@@ -513,8 +574,7 @@ describe('core/form basic function', () => {
                         prefix: 'word',
                     };
                 }
-                    return {};
-
+                return {};
             },
         }]);
         expect(core.getItemProps('password')).toEqual({});
@@ -531,17 +591,20 @@ describe('core/form basic function', () => {
 });
 
 describe('core/form nested', () => {
-    let form, fullname;
+    let form,
+        fullname;
     beforeEach(() => {
         fullname = new FormCore('fullname');
         form = new FormCore('form');
         fullname.addField([
             { name: 'firstname' },
-            { name: 'lastname' }
+            { name: 'lastname' },
         ]);
 
         form.addField({ name: 'fullname', error: '', status: 'edit' });
-        form.addField({ name: 'age', value: 16, error: '', status: 'edit' });
+        form.addField({
+            name: 'age', value: 16, error: '', status: 'edit',
+        });
         form.addField({
             name: 'gender',
             when: value => value.age > 18,
@@ -553,7 +616,7 @@ describe('core/form nested', () => {
             },
         });
 
-        fullname.on(CHANGE, value => {
+        fullname.on(CHANGE, (value) => {
             form.setItemValue('fullname', value);
         });
 
@@ -573,7 +636,7 @@ describe('core/form nested', () => {
             fullname: null,
         });
     });
-    
+
     it('form set value', () => {
         form.setValue({
             age: 19,
@@ -595,7 +658,7 @@ describe('core/form nested', () => {
         expect(fullname.getValue()).toEqual({
             firstname: 'bojoy',
             lastname: 'zhou',
-        });        
+        });
     });
     it('fullname set value', () => {
         fullname.setValue({
@@ -647,7 +710,7 @@ describe('core/form emit event', () => {
         const handler = sinon.spy();
         core.addField([
             { name: 'name' },
-            { name: 'gender' }
+            { name: 'gender' },
         ]);
         core.on(BASIC_EVENT.value, handler);
         core.setValue({
@@ -660,7 +723,7 @@ describe('core/form emit event', () => {
         const handler = sinon.spy();
         core.addField([
             { name: 'name' },
-            { name: 'gender' }
+            { name: 'gender' },
         ]);
 
         core.on(CHANGE, handler);
@@ -680,7 +743,7 @@ describe('core/form emit event', () => {
         const handler = sinon.spy();
         core.addField([
             { name: 'name' },
-            { name: 'gender' }
+            { name: 'gender' },
         ]);
         core.on(CHANGE, handler);
         core.setValueSilent({
@@ -699,7 +762,7 @@ describe('core/form emit event', () => {
         core.addField([{
             name: 'name',
             validateConfig(rule, value, callback, source, options) {
-                let errors = [ 'hasError' ];
+                const errors = ['hasError'];
                 callback(errors);
             },
         }, {
@@ -713,18 +776,17 @@ describe('core/form emit event', () => {
         await core.validate();
         expect(handler.calledOnce).toEqual(true);
         expect(handler.calledWith('name', 'hasError')).toEqual(true);
-
     });
 
     it('should emit set-props', () => {
         const handler = sinon.spy();
         core.addField([
             { name: 'name' },
-            { name: 'gender' }
+            { name: 'gender' },
         ]);
         core.on(BASIC_EVENT.props, handler);
         core.setProps({
-            name: { helper: 'real name' }
+            name: { helper: 'real name' },
         });
         expect(handler.called).toEqual(true);
         expect(handler.calledWith('name', {
@@ -738,7 +800,7 @@ describe('core/form emit event', () => {
         const handlerGender = sinon.spy();
         core.addField([
             { name: 'name' },
-            { name: 'gender' }
+            { name: 'gender' },
         ]);
         core.on(BASIC_EVENT.status, handler);
         core.setGlobalStatus('preview');
@@ -751,7 +813,7 @@ describe('core/form emit event', () => {
         const handler = sinon.spy();
         core.addField([
             { name: 'name' },
-            { name: 'gender' }
+            { name: 'gender' },
         ]);
         core.on(BASIC_EVENT.status, handler);
         core.setStatus({ name: 'preview' });
@@ -762,7 +824,7 @@ describe('core/form emit event', () => {
         const handler = sinon.spy();
         core.addField([
             { name: 'name' },
-            { name: 'gender' }
+            { name: 'gender' },
         ]);
         core.on(BASIC_EVENT.status, handler);
         core.setItemStatus('name', 'preview');

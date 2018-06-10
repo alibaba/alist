@@ -28,20 +28,19 @@ function filter(value, key){
     return value.filter(item => item.drawerName.startsWith(key))
 }
 
-ReactDOM.render(<Form onChange={console.log}>
-    {/* <Item name="repeat">
-        <TableRepeater filter={filter} dialog={Dialog}>
-            <FormItem label="开票人" name="drawerName"><Input /></FormItem>
-            <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
-            <FormItem label="子公司" name="branchName"><Input /></FormItem>
-            <FormItem label="核查结果" name="checkResultName"><Input /></FormItem>
-            <FormItem label="拒绝原因" name="denyReason"><Input /></FormItem>
-            <FormItem label="创建人" name="creatorName"><Input /></FormItem>
-        </TableRepeater>        
-    </Item> */}
+let formCore = null;
+function formmount(core) {
+    formCore = core;
+    window.formCore = core;
+}
 
+const validateConfig = {
+    drawerName: { type: 'string', required: true }
+};
+
+ReactDOM.render(<Form onMount={formmount} onChange={console.log}>
     <Item name="repeat">
-        <TableRepeater filter={filter} dialog={Dialog}>
+        <TableRepeater filter={filter} dialog={Dialog} validateConfig={validateConfig}>
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
             <FormItem label="子公司" name="branchName"><Input /></FormItem>
@@ -52,7 +51,7 @@ ReactDOM.render(<Form onChange={console.log}>
     </Item>
 
     <Item name="inlineRepeat">
-        <InlineRepeater filter={filter}>
+        <InlineRepeater filter={filter} validateConfig={validateConfig}>
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
             <FormItem label="子公司" name="branchName"><Input /></FormItem>

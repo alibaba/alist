@@ -1,3 +1,6 @@
+@import "./repeater/index.scss";
+
+
 @mixin gen($n){
     $i: 0;
     @for $i from 1 through 24 {
