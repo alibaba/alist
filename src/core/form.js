@@ -104,14 +104,24 @@ class Form {
         return cb(retErr);
     }
 
-    // 检验
-    async validate(cb = x => x) {
+    // 表单校验,返回错误对象
+    validate(cb = x => x) {
         const validators = [];
+        let hasPromise = false;
         this.children.forEach((child) => {
-            validators.push(child.validate());
+            const result = child.validate();
+            if (result instanceof Promise) {
+                hasPromise = true;
+            }
+            validators.push(result);
         });
+        if (hasPromise) {
+            return Promise.all(validators).then(this.handleErrors).then(cb);
+        }
+        return cb(this.handleErrors(validators));
+    }
 
-        const errs = await Promise.all(validators);
+    handleErrors = (errs) => {
         const errors = {};
         const retErr = {};
         let hasError = false;
@@ -130,11 +140,10 @@ class Form {
 
         this.setError(errors);
         if (!hasError) {
-            return cb(null);
+            return null;
         }
-        return cb(retErr);
+        return retErr;
     }
-
     // 静默设值
     setValueSilent(...args) {
         this.silent = true;
