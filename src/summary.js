@@ -109,7 +109,7 @@ export default {
       "articles": [
         {
           "path": "/docs?md=advanced/antd",
-          "title": "接入ant.design",
+          "title": "接入 Ant Design",
           "level": "4.1",
           "articles": [],
           "exists": true,
@@ -128,7 +128,7 @@ export default {
       "articles": [
         {
           "path": "/docs?md=dialog/antd",
-          "title": "接入ant.design",
+          "title": "接入 Ant Design",
           "level": "5.1",
           "articles": [],
           "exists": true,
