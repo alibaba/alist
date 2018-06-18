@@ -41,8 +41,7 @@
   },
   "main": "lib/index.js",
   "dependencies": {
-    "async-validator": "^1.8.2",
-    "babel-polyfill": "^6.26.0",
+    "async-validator": "^1.8.2",    
     "deep-equal": "^1.0.1",
     "events": "2.x",
     "moment": "^2.18.1",
@@ -53,6 +52,7 @@
     "react-dom": "15.x"
   },
   "devDependencies": {
+    "babel-polyfill": "^6.26.0",
     "antd": "^3.5.2",
     "autoprefixer": "^7.2.5",
     "babel-core": "^6.26.3",
