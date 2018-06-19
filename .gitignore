@@ -30,3 +30,6 @@ build
 /lib/
 
 innerConfig
+
+/examples/node_modules
+/examples/build
