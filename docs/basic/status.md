@@ -117,6 +117,6 @@ this.core.getStatus('username'); // 获取单个组件的状态
 
 目前我们已经对社区流行的组件库进行了统一的适配，开发者只需要引入这些适配层就可以直接使用了。
 
-* [ant.design适配层](/docs?md=advanced/antd)
+* [Ant Design 适配层](/docs?md=advanced/antd)
 
 对于需要自定义适配层的开发者，请参见[接入自定义组件章节](/docs?md=component/custom)了解更多。
