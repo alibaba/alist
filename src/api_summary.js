@@ -16,7 +16,7 @@ export default {
       "articles": [
         {
           "path": "/api?md=all",
-          "title": "ALL",
+          "title": "core",
           "level": "1.1",
           "articles": [],
           "exists": true,
