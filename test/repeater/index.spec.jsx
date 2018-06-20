@@ -196,13 +196,13 @@ describe('Repeater', () => {
 
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify(valuesArr));
         expect(form.find('Input.repeater-search').length).toEqual(1);
-        expect(form.find('.repeater-row').length).toEqual(4);
+        expect(form.find('tr.table-repeater-row').length).toEqual(4);
         ReactTestUtils.Simulate.change(form.find('Input.repeater-search').getDOMNode(), {
             target: { value: 'hello world' },
         });
         await sleep(500);
         form.mount();
-        expect(form.find('.repeater-row').length).toEqual(0);
+        expect(form.find('tr.table-repeater-row').length).toEqual(0);
 
         ReactTestUtils.Simulate.change(form.find('Input.repeater-search').getDOMNode(), {
             target: { value: '客户' },
@@ -210,14 +210,14 @@ describe('Repeater', () => {
         await sleep(500);
         form.mount();
 
-        expect(form.find('.repeater-row').length).toEqual(1);
-        expect(form.find('.repeater-row .next-table-cell-wrapper').at(0).prop('children')).toEqual('客户');
+        expect(form.find('tr.table-repeater-row').length).toEqual(1);
+        expect(form.find('tr.table-repeater-row .next-table-cell-wrapper').at(0).prop('children')).toEqual('客户');
 
         ReactTestUtils.Simulate.change(form.find('Input.repeater-search').getDOMNode(), {
             target: { value: '' },
         });
         await sleep(500);
         form.mount();
-        expect(form.find('.repeater-row').length).toEqual(4);
+        expect(form.find('tr.table-repeater-row').length).toEqual(4);
     });
 });

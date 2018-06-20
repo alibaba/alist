@@ -13,7 +13,7 @@ export default function bind(source) {
             {...props}
             render={(context) => {
                 const { itemsConfig } = context;
-                const { jsxProps, children } = context.props;
+                const { searchEle, className, jsxProps, children } = context.props;
                 const { status, addText = 'add' } = jsxProps;
 
                 const editable = status === 'edit';
@@ -28,7 +28,8 @@ export default function bind(source) {
                     </th>);
                 }
 
-                return (<div>
+                return (<div className={className}>
+                    {searchEle}
                     {editable ? <ActionButton type="addInline" addText={addText} /> : null}
                     <TableCom header={header}>{children}</TableCom>
                 </div>);
@@ -40,7 +41,9 @@ export default function bind(source) {
         return (<RowRenderJSX
             {...props}
             render={(context) => {
-                const { val, idx, core } = context.props;
+                const {
+                    val, idx, core, className,
+                } = context.props;
                 const { itemsConfig, jsxProps } = context;
 
                 const {
@@ -83,7 +86,7 @@ export default function bind(source) {
                     </td>);
                 });
 
-                return (<Form core={core} className="repeater-row" key={idx}>
+                return (<Form core={core} className={className} key={idx}>
                     {listItems}
                     <td>
                         {editable ? <div className="next-table-cell-wrapper">

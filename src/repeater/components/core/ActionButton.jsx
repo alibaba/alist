@@ -97,14 +97,14 @@ function createActionButton(source) {
             let ele = null;
 
             switch (type) {
-            case 'add': ele = <button className="repeater-add" onClick={this.handleAdd}>{addText}</button>; break;
-            case 'addInline': ele = <button className="repeater-add" onClick={this.handleAddInline}>{addText}</button>; break;
-            case 'update': ele = <button className="repeater-update" onClick={this.handleUpdate}>{updateText}</button>; break;
-            case 'updateInline': ele = <button className="repeater-update" onClick={this.handleUpdateInline}>{updateText}</button>; break;
-            case 'save': ele = <button className="repeater-save" onClick={this.handleSave}>{saveText}</button>; break;
-            case 'cancel': ele = <button className="repeater-cancel" onClick={this.handleCancel}>{cancelText}</button>; break;
+            case 'add': ele = <button className="repeater-action-btn repeater-add" onClick={this.handleAdd}>{addText}</button>; break;
+            case 'addInline': ele = <button className="repeater-action-btn repeater-add" onClick={this.handleAddInline}>{addText}</button>; break;
+            case 'update': ele = <button className="repeater-action-btn repeater-update" onClick={this.handleUpdate}>{updateText}</button>; break;
+            case 'updateInline': ele = <button className="repeater-action-btn repeater-update" onClick={this.handleUpdateInline}>{updateText}</button>; break;
+            case 'save': ele = <button className="repeater-action-btn repeater-save" onClick={this.handleSave}>{saveText}</button>; break;
+            case 'cancel': ele = <button className="repeater-action-btn repeater-cancel" onClick={this.handleCancel}>{cancelText}</button>; break;
             case 'remove':
-            case 'delete': ele = <button className="repeater-delete" onClick={this.handleDelete}>{deleteText}</button>; break;
+            case 'delete': ele = <button className="repeater-action-btn repeater-delete" onClick={this.handleDelete}>{deleteText}</button>; break;
             default: ele = null; break;
             }
 

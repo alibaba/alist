@@ -79,6 +79,36 @@ describe('component/form basic function', () => {
         </Form>);
     });
 
+    it('Form should support style', () => {
+        const styleForm = mount(<Form style={{ marginBottom: 12 }}>
+            <FormItem label="username" name="username">
+                <Input />
+            </FormItem>
+        </Form>);
+        styleForm.mount();
+        expect(styleForm.find('.no-form').prop('style')).toEqual({ marginBottom: 12 });
+    });
+
+    it('FormItem should support style', () => {
+        const styleForm = mount(<Form>
+            <FormItem label="username" name="username" style={{ marginBottom: 16 }}>
+                <Input />
+            </FormItem>
+        </Form>);
+        styleForm.mount();
+        expect(styleForm.find('FormItem[name="username"]').prop('style')).toEqual({ marginBottom: 16 });
+    });
+
+    it('FormItem should support full props', () => {
+        expect(form.find('FormItem[name="username"] .no-form-full').length).toEqual(0);
+        formcore.setProps({
+            username: {
+                full: true,
+            },
+        });
+        form.mount();
+        expect(form.find('FormItem[name="username"] .no-form-full').length).toEqual(1);
+    });
 
     it('should support label', () => {
         expect(form.find('FormItem[name="username"] .no-form-item-label').render().text()).toEqual('username');

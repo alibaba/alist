@@ -6,10 +6,6 @@ const isFunction = func => typeof func === 'function';
 const isObject = obj => Object.prototype.toString.call(obj) === '[object Object]';
 const noop = () => { };
 class Item extends Component {
-    static defaultProps = {
-        onBlur: noop,
-        onFocus: noop,
-    }
     static propTypes = {
         onBlur: PropTypes.func,
         onFocus: PropTypes.func,
@@ -25,21 +21,27 @@ class Item extends Component {
         form: PropTypes.object,
         ifCore: PropTypes.object,
     };
+    static defaultProps = {
+        onBlur: noop,
+        onFocus: noop,
+    }
 
     constructor(jsxProps, context) {
         super(jsxProps, context);
         const { form } = context;
         this.form = form;
         const {
-            name, value, error, defaultValue, children
+            name, value, error, defaultValue, children,
         } = jsxProps;
 
         // 构建时提前知道子类，比didmount再来通知，把控性好很多
-        this.displayName = '';        
+        this.displayName = '';
         if (children) {
-            const jsxComponent = React.Children.only(children);
-            if (jsxComponent && jsxComponent.type && jsxComponent.type.displayName) {
-                this.displayName = jsxComponent.type.displayName;
+            if (React.isValidElement(children)) {
+                const jsxComponent = React.Children.only(children);
+                if (jsxComponent && jsxComponent.type && jsxComponent.type.displayName) {
+                    this.displayName = jsxComponent.type.displayName;
+                }
             }
         }
 
@@ -53,7 +55,7 @@ class Item extends Component {
 
         // 上有if item
         if (context.ifCore) {
-            option.when = context.ifCore.when;            
+            option.when = context.ifCore.when;
         } else if ('when' in jsxProps) {
             option.when = jsxProps.when;
         }
@@ -179,6 +181,11 @@ class Item extends Component {
         if (this.didMount && this.core.get('status') === 'hidden') {
             return null;
         }
+
+        if (typeof this.props.children === 'string') {
+            throw new Error('string is not allowed as Item/FormItem\'s children.');
+        }
+
         const { name } = this.core;
         const value = this.form.getItemValue(name);
         const props = this.form.getItemProps(name);
@@ -199,13 +206,13 @@ class Item extends Component {
             when,
             ...others
         } = props || {};
+
         const component = React.Children.only(this.props.children);
         let disabled = false;
 
         if (status === 'disabled') {
             disabled = true;
         }
-
 
         const cloneProps = {
             disabled, name, value, error, status, onChange, onBlur, onFocus, ...others,

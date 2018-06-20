@@ -127,8 +127,8 @@ class Form extends Component {
 
     render() {
         // 默认布局为垂直布局
-        const { children, className = '', direction = 'vertical' } = this.props;
-        return <div className={`no-form no-form-${direction} ${className}`}>{children}</div>;
+        const { full, style = {}, children, className = '', direction = 'vertical' } = this.props;
+        return <div style={style} className={`no-form no-form-${direction} ${className} no-form-${full ? 'full' : 'auto' }`}>{children}</div>;
     }
 }
 

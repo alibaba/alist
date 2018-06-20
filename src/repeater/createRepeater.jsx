@@ -169,7 +169,7 @@ export default function createRepeater(bindSource, source) {
 
         render() {
             const { repeaterCore, handleSearch } = this;
-            const { children, filter } = this.props;
+            const { style = {}, className, children, filter } = this.props;
 
             const { formList } = repeaterCore;
 
@@ -178,10 +178,14 @@ export default function createRepeater(bindSource, source) {
                 label: child.props.label,
             })).filter(item => item.name);
 
+            const searchEle = filter ? <Input className="repeater-search" onChange={handleSearch} /> : null;
+
             return (
                 <div>
-                    { filter && <Input className="repeater-search" onChange={handleSearch} /> }
                     <Container
+                        searchEle={searchEle}
+                        className={`table-repeater-wrapper ${className || ''}`}
+                        style={style}
                         jsxProps={this.props}
                         itemsConfig={itemsConfig}
                         repeaterCore={repeaterCore}
@@ -197,7 +201,7 @@ export default function createRepeater(bindSource, source) {
                             formList.map((core, idx) => {
                                 const val = core.getValues();
                                 const itemProps = { idx, val, core };
-                                return <RowRender {...itemProps} />;
+                                return <RowRender className="table-repeater-row" {...itemProps} />;
                             })
                         }
                     </Container>

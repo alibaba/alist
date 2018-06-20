@@ -41,7 +41,7 @@ let children = [
         password: 'password'
     }
     let formcore
-    return <Form onMount={core => formcore = core} value={defaultValue} layout={{label: 5, control: 19}} full>
+    return <Form style={{ marginBottom: 12 }} onMount={core => formcore = core} value={defaultValue} layout={{label: 5, control: 19}} full>
         <h3>基础form</h3>
         <div className="demo-form">
             <FormItem label="username" name="username"><Input /></FormItem>

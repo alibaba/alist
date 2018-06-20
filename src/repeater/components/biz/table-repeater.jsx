@@ -11,7 +11,7 @@ export default function bind(source) {
         return (<RowRenderJSX
             {...props}
             render={(context) => {
-                const { val, idx } = context.props;
+                const { val, idx, className } = context.props;
                 const { itemsConfig, jsxProps } = context;
 
                 const {
@@ -25,7 +25,7 @@ export default function bind(source) {
                 const updateBtn = hasUpdate ? <ActionButton type="update" updateText={updateText} /> : null;
                 const deleteBtn = hasDelete ? <ActionButton type="delete" deleteText={deleteText} /> : null;
 
-                return (<tr key={idx} className="repeater-row">
+                return (<tr key={idx} className={className}>
                     {itemsConfig.map((conf, key) => (<td key={key}>
                         <div className="next-table-cell-wrapper">{val[conf.name]}</div>
                     </td>))}
@@ -45,7 +45,7 @@ export default function bind(source) {
             {...props}
             render={(context) => {
                 const { itemsConfig } = context;
-                const { jsxProps, children } = context.props;
+                const { searchEle, className, jsxProps, children } = context.props;
                 const { status, addText = 'add' } = jsxProps;
 
                 const editable = status === 'edit';
@@ -60,7 +60,8 @@ export default function bind(source) {
                     </th>);
                 }
 
-                return (<div className="table-repeater-wrapper">
+                return (<div className={className}>
+                    {searchEle}
                     {editable ? <ActionButton type="add" addText={addText} /> : null}
                     <TableCom header={header}>{children}</TableCom>
                 </div>);

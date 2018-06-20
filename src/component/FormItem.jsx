@@ -64,7 +64,7 @@ class FormItem extends Component {
 
     render() {
         const { children, ...itemProps } = this.props;
-        const { name, style } = itemProps;
+        const { name, style = {} } = itemProps;
         let { className = '' } = itemProps;
         const props = this.form.getItemProps(name) || {}; // 动态props
         const status = this.form.getItemStatus(name); // 动态status
@@ -72,7 +72,7 @@ class FormItem extends Component {
 
         // 保留item关键字属性
         const {
-            label, top, suffix, prefix, help, required,
+            label, top, suffix, prefix, help, required, full: coreFull
         } = { ...this.props, ...props };
         const errInfo = error && typeof error === 'object' ? error.__error : error;
 
@@ -85,7 +85,8 @@ class FormItem extends Component {
         }
 
         // 处理布局
-        const { layout = {}, full = {} } = { ...this.form.jsx.props, ...itemProps };
+        const { layout = {}, full: jsxFull } = { ...this.form.jsx.props, ...itemProps };
+        const full = jsxFull || coreFull;
 
         return (
             <div name={`form-item-${name}`} className={`${formItemPrefix}-item ${className}`} style={style}>
