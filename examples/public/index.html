@@ -26,11 +26,12 @@
       You need to enable JavaScript to run this app.
     </noscript>
     <script>
-      if (window.top === window.parent) { // top page
-        console.log('top');
-      } else {
-        console.log('other')
-      }
+        if (self != top) { // iframe中
+            document.querySelector('.app-wrapper').style = 'grid-template-columns: repeat(1,1fr);';
+            const totalHeight = document.body.scrollHeight;
+            top.document.querySelector('.docs-iframe-example').style.height = (totalHeight + 100) + 'px';
+            top.document.querySelector('.docs-iframe-example').style.width = '100%';
+        }
     </script>
     <div id="root"></div>
     <!--
