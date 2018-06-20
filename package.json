@@ -21,7 +21,8 @@
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
-    "menu": "node scripts/menu.js"
+    "menu": "node scripts/menu.js",
+    "clean": "rm -rf dist && rm -rf examples/build && rm -rf examples/node_modules"
   },
   "devDependencies": {
     "fs-extra": "^6.0.1",
