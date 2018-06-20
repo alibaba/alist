@@ -22,6 +22,4 @@ yarn-error.log*
 
 build
 examples/node_modules
-examples/simple.md
-examples/summary.md
 !examples/build

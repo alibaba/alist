@@ -90,6 +90,8 @@ class CodeRenderer extends React.Component {
             enableDemo = true;
         } else if (!language) {
             enableCode = false;
+        } else if (language === 'iframe') {
+            return <div className="demo-code-wrapper" dangerouslySetInnerHTML={{ __html: value }}></div>
         }
 
         let parsedDemo = null;
