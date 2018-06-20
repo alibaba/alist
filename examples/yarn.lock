@@ -5000,12 +5000,11 @@ node-pre-gyp@^0.10.0:
     semver "^5.3.0"
     tar "^4"
 
-noform@^0.0.11:
-  version "0.0.11"
-  resolved "https://registry.npmjs.org/noform/-/noform-0.0.11.tgz#3e42f695a1ce9ef7f94c6bee88c8e277cf3b439a"
+noform@^0.0.12:
+  version "0.0.12"
+  resolved "https://registry.npmjs.org/noform/-/noform-0.0.12.tgz#40670a621f6b80311518271cd67df294dffa9d73"
   dependencies:
     async-validator "^1.8.2"
-    babel-polyfill "^6.26.0"
     deep-equal "^1.0.1"
     events "2.x"
     moment "^2.18.1"
