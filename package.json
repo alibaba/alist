@@ -9,7 +9,8 @@
     "cov": "node builder/index.js test --coverage",
     "build": "node builder/index.js build",
     "umd": "node builder/index.js umd",
-    "profile": "node builder/index.js profile"
+    "profile": "node builder/index.js profile",
+    "deploy": "node builder/index.js build && node builder/index.js umd"
   },
   "files": [
     "src/",
