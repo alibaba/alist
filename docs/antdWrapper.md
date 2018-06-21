@@ -37,7 +37,11 @@ class PageDemo extends React.Component {
   	}
   	setStatus = (status) => {
 	    this.core.setGlobalStatus(status);
-	}
+  }
+  
+  getValues = () => {
+    console.log(this.core.getValues());
+  }
   	render() {
           const fileList = [{
             uid: 1,
