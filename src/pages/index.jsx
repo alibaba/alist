@@ -18,7 +18,7 @@ class Main extends React.Component {
                         <div className="landing-desc inline-align">
                             <div className="landing-title">NoForm</div>
                             <div className="landing-desc-content">
-                                NoFrom 将表单操作到抽象到核心，从此数据(data)的管理和视图(view)分离开来，权责分明。
+                                NoForm 将表单操作到抽象到核心，从此数据(data)的管理和视图(view)分离开来，权责分明。
                                 <p/>
                                 通过内置的状态管理方案，能够快速切换同一表单的不同状态，新建和详情不再需要维护多份代码。
                                 <p/>
