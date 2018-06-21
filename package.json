@@ -16,8 +16,7 @@
     "svgo": "^1.0.5"
   },
   "homepage": "https://alibaba.github.io/noform",
-  "scripts": {
-    "predeploy": "npm run build",
+  "scripts": {    
     "deploy": "gh-pages -d build",
     "start": "npm run menu && react-app-rewired start",
     "build": "react-app-rewired build",
