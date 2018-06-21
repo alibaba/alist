@@ -18,6 +18,8 @@ $ npm install --save noform
 
 [Simple Example with Ant Design](https://alibaba.github.io/noform/examples/build)
 
+You can visit [here](https://github.com/alibaba/noform/tree/master/examples) for more information.
+
 ### API
 
 [Core Api](https://alibaba.github.io/noform/#/api?md=all)
