@@ -7,7 +7,6 @@ class Header extends React.Component {
         return <div className="nav">
             <div>
                 <title>NoForm - 可能是最好的表单解决方案</title>
-                <link rel="stylesheet" href="/_next/static/style.css" />
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
             </div>
             <header>
