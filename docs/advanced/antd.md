@@ -1,9 +1,9 @@
-# 接入ant.design
+# 接入 Ant Design
 
-由于ant.design拥有众多较高质量的组件，因此 NoForm有面向ant.design的插件机制。
-这个插件使的NoForm无缝使用ant.design的表单组件，提升开发效率。
+由于 Ant Design 拥有众多较高质量的组件，因此 NoForm有面向 Ant Design 的插件机制。
+这个插件使的NoForm无缝使用 Ant Design 的表单组件，提升开发效率。
 
-插件将ant.design涉及表单的组件的数据返回和状态都进行了适配, 结合NoForm达到开箱即用的效果，下面是示例效果。
+插件将 Ant Design 涉及表单的组件的数据返回和状态都进行了适配, 结合NoForm达到开箱即用的效果，下面是示例效果。
 
 ```onlydemo
 
