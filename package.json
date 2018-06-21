@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "codemirror": "^5.37.0",
+    "postcss-svgo": "^2.1.6",
     "prismjs": "^1.14.0",
     "react": "^16.3.2",
     "react-app-rewired": "^1.5.2",
@@ -11,7 +12,8 @@
     "react-dom": "^16.3.2",
     "react-markdown": "^3.3.2",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "1.1.4"
+    "react-scripts": "1.1.4",
+    "svgo": "^1.0.5"
   },
   "homepage": "https://alibaba.github.io/noform",
   "scripts": {
