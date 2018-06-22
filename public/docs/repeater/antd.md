@@ -89,6 +89,7 @@ const { TableRepeater, InlineRepeater } = repeater({ Dialog, Button, Input }); /
         return value.filter(item => item.drawerName.startsWith(key));
     }
 
+    // 校验规则
     const validateConfig = {
         username: { type: 'string', required: true },
     };

@@ -16,4 +16,4 @@
 * [DialogForm]()
    * [接入 Ant Design](docs/dialog/antd.md)
 * [Repeater]()
-   * [接入 Ant Design](docs/repeater/antd.md)
+   * [接入 Ant Design(BETA)](docs/repeater/antd.md)

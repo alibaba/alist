@@ -156,7 +156,7 @@ export default {
       "articles": [
         {
           "path": "/docs?md=repeater/antd",
-          "title": "接入 Ant Design",
+          "title": "接入 Ant Design(BETA)",
           "level": "6.1",
           "articles": [],
           "exists": true,
