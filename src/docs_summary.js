@@ -22,6 +22,15 @@ export default {
           "exists": true,
           "external": false,
           "introduction": false
+        },
+        {
+          "path": "/docs?md=easy/best-practise-antd",
+          "title": "接入Ant Design最佳实践",
+          "level": "1.2",
+          "articles": [],
+          "exists": true,
+          "external": false,
+          "introduction": false
         }
       ],
       "exists": false,

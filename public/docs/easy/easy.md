@@ -102,4 +102,4 @@ class App extends React.Component {
 
 ### 后续
 
-* [手写组件太麻烦? 用现成的! - 结合antd使用](/docs?md=advanced/antd)
+* [Ant Design最佳实践](/docs?md=easy/best-practise-antd)

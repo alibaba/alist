@@ -45,6 +45,7 @@ const { TableRepeater, InlineRepeater } = repeater({ Dialog, Button, Input }); /
     class App extends React.Component {
 
         render() { // 注入核心        
+            const inlineStyle = { style: { width: '100px', minWidth: '100px' } };
             return <Form core={this.core} layout={{ label: 8, control: 16 }}>
                 <FormItem label="repeater" name="repeater">
                     <TableRepeater filter={filter} validateConfig={validateConfig}>
