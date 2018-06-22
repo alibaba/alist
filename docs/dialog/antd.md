@@ -1,6 +1,23 @@
 # 接入 Ant Design
 
-由于弹窗表单的使用频率非常高，并且常常和UI代码是分离的，因此NoForm也将其设置为OO的形式去使用，具体效果如下：
+由于弹窗表单的使用频率非常高，并且常常和UI代码是分离的，因此NoForm也将其设置为OO的形式去使用，更符合常规使用习惯。
+
+### import （按需加载， 推荐）
+
+使用按需加载的方式，请查看[接入Ant Design 按需加载](/docs?md=advanced/antd-demand)小节。
+
+```jsx
+import DialogForm from 'noform/lib/dialog/antd'; // DialogForm
+```
+
+### import （非按需加载）
+
+```jsx
+import * as Antd from 'antd';
+import dialogWrapper from 'noform/lib/wrapper/antd';
+const Dialog = dialogWrapper(Antd); // Dialog获取
+```
+
 
 ```onlydemo
 

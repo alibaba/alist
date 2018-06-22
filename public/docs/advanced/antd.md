@@ -1,9 +1,34 @@
-# 接入 Ant Design
+# 接入 Ant Design(非按需加载)
 
 由于 Ant Design 拥有众多较高质量的组件，因此 NoForm有面向 Ant Design 的插件机制。
 这个插件使的NoForm无缝使用 Ant Design 的表单组件，提升开发效率。
 
-插件将 Ant Design 涉及表单的组件的数据返回和状态都进行了适配, 结合NoForm达到开箱即用的效果，下面是示例效果。
+插件将 Ant Design 涉及表单的组件的数据返回和状态都进行了适配, 结合NoForm达到开箱即用的效果，
+
+### import
+
+这种wrapper的形式一定程度会造成`代码冗余`，如果使用了Ant Design的按需加载的话，建议查看[按需加载](/docs?md=advanced/antd-demand)小节。
+
+```jsx
+import { default: Form, FormItem, FormCore } from 'noform';
+import * as Antd from 'antd';
+import { antd: antdWrapper } from 'noform/lib/wrapper/antd';
+import dialogWrapper from 'noform/lib/wrapper/antd';
+import repeater from 'noform/lib/repeater/antd';
+
+// wrapper包裹一层
+const { Input, Select, Checkbox, Radio, Switch, Slider, DatePicker, TimePicker,
+    Rate, Cascader, TreeSelect, Upload, Button, Modal, Icon, InputNumber } = antdWrapper(Antd);
+
+const Dialog = dialogWrapper(Antd); // Dialog获取
+const { TableRepeater, InlineRepeater } = repeater({ Dialog, Button, Input }); // repeater获取
+
+```
+
+
+### 效果
+
+下面是示例效果：
 
 ```onlydemo
 
@@ -81,7 +106,7 @@ const { default: Form, FormItem, FormCore } = noform;
 
     import { default: Form, FormItem, FormCore } from 'noform';
     import * as antd from 'antd';
-    import { antd: antdWrapper } from 'noform/dist/wrapper/antd';
+    import { antd: antdWrapper } from 'noform/lib/wrapper/antd';
     const { Input, Select, Checkbox, Radio, Switch, Slider, DatePicker, TimePicker,
   Rate, Cascader, TreeSelect, Upload, Button, Modal, Icon, InputNumber } = antdWrapper(antd);
 

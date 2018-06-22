@@ -115,6 +115,15 @@ export default {
           "exists": true,
           "external": false,
           "introduction": false
+        },
+        {
+          "path": "/docs?md=advanced/antd-demand",
+          "title": "接入 Ant Design(按需加载)",
+          "level": "4.2",
+          "articles": [],
+          "exists": true,
+          "external": false,
+          "introduction": false
         }
       ],
       "exists": false,
@@ -130,6 +139,25 @@ export default {
           "path": "/docs?md=dialog/antd",
           "title": "接入 Ant Design",
           "level": "5.1",
+          "articles": [],
+          "exists": true,
+          "external": false,
+          "introduction": false
+        }
+      ],
+      "exists": false,
+      "external": false,
+      "introduction": false
+    },
+    {
+      "path": "",
+      "title": "Repeater",
+      "level": "6",
+      "articles": [
+        {
+          "path": "/docs?md=repeater/antd",
+          "title": "接入 Ant Design",
+          "level": "6.1",
           "articles": [],
           "exists": true,
           "external": false,

@@ -12,5 +12,8 @@
    * [接入自定义组件](docs/component/custom.md)
 * [接入组件库]()
    * [接入 Ant Design](docs/advanced/antd.md)
+   * [接入 Ant Design(按需加载)](docs/advanced/antd-demand.md)
 * [DialogForm]()
    * [接入 Ant Design](docs/dialog/antd.md)
+* [Repeater]()
+   * [接入 Ant Design(BETA)](docs/repeater/antd.md)
