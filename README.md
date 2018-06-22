@@ -14,6 +14,10 @@
 $ npm install --save noform
 ```
 
+### Best Practise integrate with Ant Design
+
+[Best Practise](https://alibaba.github.io/noform/#/docs?md=easy/best-practise-antd)
+
 ### Example
 
 [Simple Example with Ant Design](https://alibaba.github.io/noform/examples/build)
@@ -22,7 +26,7 @@ You can visit [here](https://github.com/alibaba/noform/tree/master/examples) for
 
 ### API
 
-[Core Api](https://alibaba.github.io/noform/#/api?md=all)
+[Core API](https://alibaba.github.io/noform/#/api?md=all)
 
 ### Usage
 
