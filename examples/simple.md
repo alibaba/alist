@@ -5,6 +5,3 @@
 
 更好的体验请访问： [Simple Demo](https://alibaba.github.io/noform/examples/build/)
 
-```iframe
-<iframe class="docs-iframe-example" frameBorder="0" src="/noform/examples/build/index.html"></iframe>
-```
