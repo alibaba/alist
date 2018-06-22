@@ -12,7 +12,10 @@ const entry = {
     // dialog
     'dialog/next' : resolveApp('src/dialog/next.js'),
     'dialog/antd' : resolveApp('src/dialog/antd.js'),
-    'dialog/zent' : resolveApp('src/dialog/zent.js')
+    'dialog/zent' : resolveApp('src/dialog/zent.js'),
+    // repeater
+    'repeater/index' : resolveApp('src/repeater/index.js'),
+    'repeater/antd' : resolveApp('src/repeater/antd.js')
 }
 
 const basicConfig = {
@@ -62,7 +65,16 @@ const entryOuts = [
             ...basicConfig,
             path: path.join(dist, 'dialog'),
             filename: 'antd.js',
-            library: ['noformDialog', 'antd'],
+            library: ['noformDialog'],
+        }
+    },
+    {
+        entry: resolveApp('src/repeater/antd.js'),
+        output: {
+            ...basicConfig,
+            path: path.join(dist, 'repeater'),
+            filename: 'antd.js',
+            library: ['noformRepeater', 'antd'],
         }
     },
     {

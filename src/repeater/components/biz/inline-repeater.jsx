@@ -1,5 +1,5 @@
 import React from 'react';
-import Form from '../../../../src';
+import Form from '../../../component/Form';
 import TableCom from '../core/TableCom';
 import ContainerJSX from '../core/Container';
 import RowRenderJSX from '../core/RowRender';

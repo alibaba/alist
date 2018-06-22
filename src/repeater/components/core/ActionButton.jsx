@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Form from '../../../../src';
+import Form from '../../../component/Form';
 
 function createActionButton(source) {
     const { Dialog } = source;

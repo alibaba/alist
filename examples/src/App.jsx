@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
+import { Checkbox } from 'antd';
 import Core from './examples/Core';
 import Status from './examples/Status';
 import Condition from './examples/Condition';
 import Validation from './examples/Validation';
 import Antd from './examples/Antd';
 import Dialog from './examples/Dialog';
+import Repeater from './examples/Repeater';
 import './App.less';
-import { Checkbox } from 'antd';
+
+
 const CheckboxGroup = Checkbox.Group;
 
 class App extends Component {
@@ -14,20 +17,19 @@ class App extends Component {
         super(props, context);
 
         this.examplesMap = {
-            'Core': Core,
-            'Status': Status,
-            'Condition': Condition,
-            'Validation': Validation,
-            'Antd': Antd,
-            'Dialog': Dialog
+            Core,
+            Status,
+            Condition,
+            Validation,
+            Antd,
+            Dialog,
+            Repeater,
         };
 
-        this.examplesOptions = Object.keys(this.examplesMap).map((exampleKey) => {
-            return { label: exampleKey, value: this.examplesMap[exampleKey] }
-        });
+        this.examplesOptions = Object.keys(this.examplesMap).map(exampleKey => ({ label: exampleKey, value: this.examplesMap[exampleKey] }));
 
         this.state = {
-            examples: Object.keys(this.examplesMap)
+            examples: Object.keys(this.examplesMap),
         };
     }
 
@@ -48,23 +50,21 @@ class App extends Component {
     }
 
     renderSelector = () => {
-        const selector = <span className="example-selector">
-            <CheckboxGroup value={this.state.examples} onChange={this.handleExampleChange}>{this.examplesOptions.map(({ label }) => {
-                return <Checkbox value={label}>{label}</Checkbox>;
-            })}</CheckboxGroup>
-        </span>
+        const selector = (<span className="example-selector">
+            <CheckboxGroup value={this.state.examples} onChange={this.handleExampleChange}>{this.examplesOptions.map(({ label }) => <Checkbox value={label}>{label}</Checkbox>)}</CheckboxGroup>
+        </span>);
 
-        return <div className="example-selector-wrapper">
+        return (<div className="example-selector-wrapper">
             <span>Examples: </span>
             {selector}
-        </div>
+        </div>);
     }
 
     render() {
         return (
             <div>
                 {this.renderSelector()}
-                <div className="app-wrapper" >                    
+                <div className="app-wrapper" >
                     {this.renderExamples()}
                 </div>
             </div>
