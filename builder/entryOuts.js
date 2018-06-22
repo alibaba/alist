@@ -1,25 +1,12 @@
 const path = require('path');
+
 const root = process.cwd();
-const paths = require('./lib/paths')
+const paths = require('./lib/paths');
+
 const resolveApp = paths.resolveApp;
 const dist = path.join(root, 'dist');
-
-const entry = {
-    'index' : resolveApp('src/index.js'),
-    // wrapper
-    'wrapper/next' : resolveApp('src/wrapper/next.js'),
-    'wrapper/antd' : resolveApp('src/wrapper/antd.js') ,
-    // dialog
-    'dialog/next' : resolveApp('src/dialog/next.js'),
-    'dialog/antd' : resolveApp('src/dialog/antd.js'),
-    'dialog/zent' : resolveApp('src/dialog/zent.js'),
-    // repeater
-    'repeater/index' : resolveApp('src/repeater/index.js'),
-    'repeater/antd' : resolveApp('src/repeater/antd.js')
-}
-
 const basicConfig = {
-    libraryTarget: "umd"
+    libraryTarget: 'umd',
 };
 
 const entryOuts = [
@@ -30,7 +17,7 @@ const entryOuts = [
             path: dist,
             filename: 'index.js',
             library: 'noform',
-        }
+        },
     },
     {
         entry: resolveApp('src/wrapper/next.js'),
@@ -39,7 +26,7 @@ const entryOuts = [
             path: path.join(dist, 'wrapper'),
             filename: 'next.js',
             library: ['noformWrapper', 'next'],
-        }
+        },
     },
     {
         entry: resolveApp('src/wrapper/antd.js'),
@@ -48,7 +35,7 @@ const entryOuts = [
             path: path.join(dist, 'wrapper'),
             filename: 'antd.js',
             library: ['noformWrapper', 'antd'],
-        }
+        },
     },
     {
         entry: resolveApp('src/dialog/next.js'),
@@ -57,7 +44,7 @@ const entryOuts = [
             path: path.join(dist, 'dialog'),
             filename: 'next.js',
             library: ['noformDialog', 'next'],
-        }
+        },
     },
     {
         entry: resolveApp('src/dialog/antd.js'),
@@ -66,7 +53,7 @@ const entryOuts = [
             path: path.join(dist, 'dialog'),
             filename: 'antd.js',
             library: ['noformDialog'],
-        }
+        },
     },
     {
         entry: resolveApp('src/repeater/antd.js'),
@@ -75,7 +62,7 @@ const entryOuts = [
             path: path.join(dist, 'repeater'),
             filename: 'antd.js',
             library: ['noformRepeater', 'antd'],
-        }
+        },
     },
     {
         entry: resolveApp('src/dialog/zent.js'),
@@ -84,8 +71,8 @@ const entryOuts = [
             path: path.join(dist, 'dialog'),
             filename: 'zent.js',
             library: ['noformDialog', 'zent'],
-        }
-    }
+        },
+    },
 ];
 
 module.exports = entryOuts;

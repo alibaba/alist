@@ -18,6 +18,8 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "babel-plugin-import": "^1.8.0"
+    "babel-plugin-import": "^1.8.0",
+    "babel-plugin-wrapper": "^1.0.4",
+    "noform": "^0.0.14"
   }
 }
