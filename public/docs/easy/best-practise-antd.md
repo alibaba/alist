@@ -18,10 +18,10 @@ npm start
 
 当然你也可以使用yarn，这里不赘述了。看到 `Welcome to React` 就表示已经创建成功了，接下来我们接入antd组件和NoForm。
 
-### 引入antd
+### 引入antd和NoForm
 
 ```shell
-$ npm install --save antd
+$ npm install --save antd noform
 ```
 
 ### 配置优化
@@ -45,8 +45,10 @@ $ npm install --save react-app-rewire-less
 
 为了使NoForm更好结合Ant Design, 这里也安装NoForm的按需加载插件babel-plugin-wrapper。
 
+并且加入babel-polyfill支持 async 和 await。
+
 ```shell
-$ npm install --save-dev babel-plugin-import babel-plugin-wrapper
+$ npm install --save-dev babel-plugin-import babel-plugin-wrapper babel-polyfill
 ```
 
 ### 编写配置
@@ -54,17 +56,30 @@ $ npm install --save-dev babel-plugin-import babel-plugin-wrapper
 在项目根目录下生成 `config-overrides.js` 文件，并且输入以下内容。
 
 ```js
-  const { injectBabelPlugin } = require('react-app-rewired');
-  const rewireLess = require('react-app-rewire-less');
+const { injectBabelPlugin } = require('react-app-rewired');
+const rewireLess = require('react-app-rewire-less');
 
-  module.exports = function override(config, env) {
-    config = injectBabelPlugin(['import', { libraryName: 'antd', style: true }], config);
-    config = injectBabelPlugin(['wrapper', {}], config);
-    config = rewireLess.withLoaderOptions({
-      modifyVars: { "@primary-color": "#1DA57A" },
-    })(config, env);
-    return config;
-  };
+module.exports = function override(config, env) {
+  config = injectBabelPlugin(['import', { libraryName: 'antd', style: true }], config);
+  config = injectBabelPlugin(['wrapper', {}], config);
+  config = rewireLess.withLoaderOptions({
+    modifyVars: { "@primary-color": "#1DA57A" },
+  })(config, env);
+  return config;
+};
+```
+
+### 脚本更新
+
+```js
+// package.json更新
+"scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test --env=jsdom",
+    "eject": "react-scripts eject"
+},
+
 ```
 
 ### Coding!
@@ -83,19 +98,20 @@ $ npm install --save-dev babel-plugin-import babel-plugin-wrapper
 2. 编写主要代码
 
 ```jsx
-  // src/App.js
-  import React, { Component } from 'react';
-  import Form, { FormItem, FormCore, If } from 'noform';
-  import { Input, Select } from 'noform/lib/wrapper/antd';
-  import { Button } from 'antd';
-  import './App.less';
+// src/App.js
+import 'babel-polyfill';
+import React, { Component } from 'react';
+import Form, { FormItem, FormCore, If } from 'noform';
+import { Input, Select } from 'noform/lib/wrapper/antd';
+import { Button } from 'antd';
+import './App.less';
 
-  const dataSource = [
+const dataSource = [
     { label: 'optA', value: 'optA'},
     { label: 'optB', value: 'optB'}
-  ];
+];
 
-  class App extends Component {
+class App extends Component {
     constructor(props, context) {
         super(props, context);
         window.core = this.core = new FormCore();
@@ -106,27 +122,38 @@ $ npm install --save-dev babel-plugin-import babel-plugin-wrapper
     }
 
     render() {
-      return (
-        <Form core={this.core} layout={{ label: 8, control: 16 }}>
-            <FormItem label="input" name="input"><Input /></FormItem>
-            <FormItem label="select" name="select"><Select options={dataSource} /></FormItem>
-            <FormItem label="Global status">
-                <div >
-                    <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'edit')}>Edit</Button>
-                    <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'preview')}>Preview</Button>
-                    <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'disabled')}>Disabled</Button>
-                </div>
-            </FormItem>
-        </Form>
-      );
+        return (
+            <Form core={this.core} layout={{ label: 8, control: 16 }}>
+                <FormItem label="input" name="input"><Input /></FormItem>
+                <FormItem label="select" name="select"><Select options={dataSource} /></FormItem>
+                <If when={(values, { globalStatus }) => {
+                    return !!values.select;
+                }}>
+                <FormItem label="bingo!"><span>🎉</span></FormItem>
+                </If>
+                <FormItem label="Global status">
+                    <div >
+                        <Button style={{ marginRight: 12 }} onClick={this.core.reset.bind(this.core)}>Clear</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'edit')}>Edit</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'preview')}>Preview</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'disabled')}>Disabled</Button>
+                    </div>
+                </FormItem>
+            </Form>
+        );
     }
-  }
+}
 
-  export default App;
+export default App;
+```
+
+3. 重新启动
+
+```jsx
+$ npm start
 ```
 
 ### Wow
-
 
 当你能够顺利切换状态的时候，恭喜你！已经完成了最佳实践的教程，现在可以继续查看其它文档。
 
