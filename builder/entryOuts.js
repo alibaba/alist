@@ -52,7 +52,7 @@ const entryOuts = [
             ...basicConfig,
             path: path.join(dist, 'dialog'),
             filename: 'antd.js',
-            library: ['noformDialog'],
+            library: ['noformDialog', 'antd'],
         },
     },
     {
