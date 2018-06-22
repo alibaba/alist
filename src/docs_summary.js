@@ -133,6 +133,15 @@ export default {
           "exists": true,
           "external": false,
           "introduction": false
+        },
+        {
+          "path": "/docs?md=advanced/antd-pro-demand",
+          "title": "接入 Ant Design Pro",
+          "level": "4.3",
+          "articles": [],
+          "exists": true,
+          "external": false,
+          "introduction": false
         }
       ],
       "exists": false,

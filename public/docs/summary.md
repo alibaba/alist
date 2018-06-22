@@ -14,6 +14,7 @@
 * [接入组件库]()
    * [接入 Ant Design](docs/advanced/antd.md)
    * [接入 Ant Design(按需加载)](docs/advanced/antd-demand.md)
+   * [接入 Ant Design Pro](docs/advanced/antd-pro-demand.md)
 * [DialogForm]()
    * [接入 Ant Design](docs/dialog/antd.md)
 * [Repeater]()
