@@ -23,4 +23,5 @@ yarn-error.log*
 build
 examples/node_modules
 !examples/build
-yarn.lock
+yarn.*
+.yarnclean
