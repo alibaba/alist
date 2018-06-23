@@ -1,0 +1,20 @@
+.table-repeater-row {
+  display: table-row; }
+
+.table-repeater-wrapper {
+  margin-bottom: 12px; }
+  .table-repeater-wrapper .next-table-header-node {
+    width: 200px; }
+  .table-repeater-wrapper tr, .table-repeater-wrapper td {
+    box-sizing: border-box;
+    padding: 0; }
+  .table-repeater-wrapper .repeater-search {
+    width: 200px;
+    margin-bottom: 8px; }
+
+.repeater-action-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #1890ff;
+  outline: none; }
