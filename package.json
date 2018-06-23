@@ -17,8 +17,10 @@
   },
   "homepage": "https://alibaba.github.io/noform/",
   "scripts": {    
-    "examclean": "rm -rf examples/node_modules",
-    "predeploy": "npm run menu && npm run build && npm run examclean",
+    "copyexample": "rm -rf public/examples && cp -r build/examples public/",
+    "copydist": "cp -r dist public/dist",
+    "exampleclean": "rm -rf examples/node_modules",
+    "predeploy": "npm run copydist && npm run menu && npm run build && npm run exampleclean && npm run copyexample",
     "deploy": "gh-pages -d build",
     "gh": "gh-pages -d build",
     "start": "npm run menu && react-app-rewired start",
