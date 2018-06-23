@@ -34,3 +34,4 @@ innerConfig
 /examples/node_modules
 /examples/build
 yarn.lock
+.yarnclean
