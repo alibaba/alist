@@ -1,0 +1,131 @@
+.no-form-item-content-elem > .ant-switch{
+    min-width: 44px;
+}
+
+.no-form-item-content-elem > .ant-btn{
+    min-width: auto;
+}
+
+.dialog-form-wrapper .ant-confirm-btns {
+    display: none;       
+}
+
+.dialog-form-wrapper .ant-custom-btns {
+    margin-top: 24px;
+    float: right;
+
+}
+
+.multi-value-item-wrapper {
+    .multi-value-item {
+        margin-right: 8px;
+    }
+}
+
+.ant-checkbox-group {
+    display: inline-block;
+    width: 400px;
+    line-height: 28px;
+    white-space: nowrap;
+}
+
+.ant-radio-group {
+    display: inline-block;
+    width: 400px;
+    line-height: 28px;
+    white-space: nowrap;
+}
+
+.multi-value-item {
+    white-space: nowrap;
+}
+
+.ant-range {
+    white-space: nowrap;
+    width: 300px;
+}
+
+.ant-upload {
+    min-width: 224px;
+}
+
+.ant-preview-upload {
+    .ant-upload-select {
+        display: none;
+    }
+
+    display: inline-block;
+
+    .anticon.anticon-cross {
+        display: none;
+    }
+}
+
+.ant-rating,
+.ant-checkbox-wrapper,
+.ant-radio-wrapper {
+    line-height: 28px;
+}
+
+.ant-preview-slider.ant-slider-disabled {
+    .ant-slider-handle {
+        cursor: auto;    
+    }
+    cursor: auto;
+}
+
+.ant-preview-select.ant-select-auto-complete,
+.ant-preview-datepicker,
+.ant-preview-select.ant-select,
+.ant-preview-select.ant-cascader-picker {
+    display: inline-flex;
+    border: none;
+    background: transparent;
+    cursor: text;
+    padding: 0;
+
+    .ant-select-search__field,
+    .ant-calendar-picker-input,
+    .ant-time-picker-input,
+    .ant-cascader-input,
+    .ant-select-selection {
+        background: transparent;
+        border: none;
+        cursor: text;
+
+        .ant-select-selection__rendered {
+            margin: 0;
+        }
+    }
+    
+    .ant-select-search__field,
+    .ant-select-search__field__mirror,
+    .ant-calendar-picker-input,
+    .ant-time-picker-input,
+    .ant-cascader-picker-label,
+    .ant-select-selection-selected-value {
+        color: rgba(0,0,0, 0.6);
+        padding: 0;
+    }
+
+    .ant-calendar-picker-icon,
+    .ant-time-picker-icon,
+    .ant-cascader-picker-arrow,
+    .ant-select-arrow { display: none; }
+}
+
+.ant-preview-datepicker { // 预览态    
+    .ant-input.disabled {
+        background: transparent;
+        border: none;
+
+        input:disabled {
+            background: transparent;
+            border: none;
+            color: #000;
+            cursor: text;
+        }
+    }
+
+    .ant-icon { display: none; }
+}
