@@ -53,6 +53,15 @@ let children = [
     </Form>
 })(),
 (() => {
+    return <Form direction="horizontal">
+        <h3>水平Form</h3>
+        <div className="demo-form">
+            <FormItem label="username" name="username"><Input /></FormItem>
+            <FormItem label="password" name="password"><Input /></FormItem>
+        </div>
+    </Form>
+})(),
+(() => {
     const defaultValue = {
         username: 'username',
         password: 'password'
