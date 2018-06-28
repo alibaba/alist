@@ -28,6 +28,7 @@
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
     "menu": "node scripts/menu.js",
+    "sync": "./sync.sh",
     "clean": "rm -rf dist && rm -rf examples/build && rm -rf examples/node_modules"
   },
   "devDependencies": {
