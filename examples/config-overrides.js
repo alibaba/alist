@@ -7,6 +7,7 @@ module.exports = function override(config, env) {
     config = injectBabelPlugin(['wrapper', {}], config);
     config = rewireLess.withLoaderOptions({
         modifyVars: { '@primary-color': '#1DA57A' },
+        javascriptEnabled: true,
     })(config, env);
 
     return config;
