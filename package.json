@@ -1,6 +1,6 @@
 {
   "name": "noform",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "开发者友好、快捷高效的表单框架。",
   "scripts": {
     "start": "node builder/index.js dev",
@@ -10,7 +10,8 @@
     "build": "node builder/index.js build",
     "umd": "node builder/index.js umd",
     "profile": "node builder/index.js profile",
-    "deploy": "node builder/index.js build && node builder/index.js umd"
+    "deploy": "node builder/index.js build && node builder/index.js umd",
+    "sh": "./builder/build.sh"
   },
   "files": [
     "src/",
@@ -20,7 +21,8 @@
     "wrapper.js",
     "dialog.js",
     "wrapper.scss",
-    "dialog.scss"
+    "dialog.scss",
+    "examples/"
   ],
   "armor": {
     "entry": [
