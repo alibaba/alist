@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from '../components/Header';
 import { Link } from "react-router-dom";
+import { FormattedMessage } from 'react-intl';
 import './site.less';
 
 class Main extends React.Component {
@@ -28,7 +29,7 @@ class Main extends React.Component {
                             <div className="landing-btn-wrapper">
                                 <Link to={"/docs?md=easy/easy"}>
                                 <div className="landing-btn">
-                                    Get Started
+                                    <FormattedMessage id="home.start.btn" />
                                 </div>
                                 </Link>
                             </div>
@@ -44,7 +45,7 @@ class Main extends React.Component {
                                 <img src="https://img.alicdn.com/tfs/TB1wKSKumBYBeNjy0FeXXbnmFXa-430-229.svg" alt="noform's status management"/>
                             </div>
                             <div className="onboard-desc inline-align">
-                                <div className="onboard-title">状态管理</div>
+                                <div className="onboard-title"><FormattedMessage id="home.status.title" /></div>
                                 <div className="onboard-desc-content">
                                     基于状态管理方案，能够自由操作表单各个部分的状态显示。
                                     <p />
@@ -55,7 +56,7 @@ class Main extends React.Component {
 
                         <div className="noform-site-onboard-item">                            
                             <div className="onboard-desc inline-align">
-                                <div className="onboard-title">核心控制</div>
+                                <div className="onboard-title"><FormattedMessage id="home.core.title" /></div>
                                 <div className="onboard-desc-content">
                                     核心是表单操作的抽象，涵盖 值values, 状态status, 校验validation, 联动relation 等方面。
                                     <p />
@@ -72,7 +73,7 @@ class Main extends React.Component {
                                 <img src="https://img.alicdn.com/tfs/TB1DGF2ueuSBuNjy1XcXXcYjFXa-407-308.svg" alt="noform's component standard"/>
                             </div>
                             <div className="onboard-desc inline-align">
-                                <div className="onboard-title">组件标准</div>
+                                <div className="onboard-title"><FormattedMessage id="home.component.title" /></div>
                                 <div className="onboard-desc-content">
                                     编写大量组件是痛苦的，我们应该减少重复开发，通过定制接入组件标准，我们可以拥抱社区优秀的组件。
                                     <p />

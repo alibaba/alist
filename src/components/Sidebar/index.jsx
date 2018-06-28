@@ -3,19 +3,25 @@ import { Link } from "react-router-dom";
 import './index.less';
 import docsSummary from '../../docs_summary';
 import apiSummary from '../../api_summary';
-import examplesSummary from '../../examples_summary';
+import demoSummary from '../../demo_summary';
+import LangContext from '../ContextProvider';
+
 
 class SideBar extends React.Component {
-    renderMenu(menus) {
+    renderMenu(menus, lang) {
+        const isEn = lang === 'en';
         const menuItems = menus.map((mitem) => {
-            const { title, articles, introduction } = mitem;
+            const { title, enTitle, articles, introduction } = mitem;
             if (!introduction) {
                 const links = articles.map((arItem) => {
-                    const { title: linkTitle, path } = arItem;
-                    return <li><Link to={path}>{linkTitle}</Link></li>
+                    const { title: linkTitle, enTitle: linkEnTitle, path } = arItem;
+                    const linkItemTitle = isEn ? linkEnTitle : linkTitle;
+                    return <li><Link to={path}>{linkItemTitle}</Link></li>
                 });
+
+                const itemTitle = isEn ? enTitle : title;
                 return <div>
-                    <dt>{title}</dt>
+                    <dt>{itemTitle}</dt>
                     <dd><ul>{links}</ul></dd>
                 </div>
             } else {
@@ -34,13 +40,17 @@ class SideBar extends React.Component {
         let summary = null;
         switch (mdPrefix) {
             case 'docs': summary = docsSummary; break;
-            case 'examples': summary = examplesSummary; break;
+            case 'demo': summary = demoSummary; break;
             case 'api': summary = apiSummary; break;
         }
 
-        return <aside>
-            {this.renderMenu(summary.chapters)}
-        </aside>
+        return <LangContext.Consumer>
+            {(lang) => {
+                return <aside>
+                    {this.renderMenu(summary.chapters, lang)}
+                </aside>
+            }}
+        </LangContext.Consumer>        
     }
 }
 

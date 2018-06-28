@@ -7,7 +7,8 @@ export default {
       "articles": [],
       "exists": true,
       "external": false,
-      "introduction": true
+      "introduction": true,
+      "enTitle": "Introduction"
     },
     {
       "path": "",
@@ -15,18 +16,20 @@ export default {
       "level": "1",
       "articles": [
         {
-          "path": "/examples?md=simple",
+          "path": "examples/simple",
           "title": "simple",
           "level": "1.1",
           "articles": [],
           "exists": true,
           "external": false,
-          "introduction": false
+          "introduction": false,
+          "enTitle": "simple"
         }
       ],
       "exists": false,
       "external": false,
-      "introduction": false
+      "introduction": false,
+      "enTitle": "Examples"
     }
   ]
 }

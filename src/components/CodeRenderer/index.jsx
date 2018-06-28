@@ -4,9 +4,12 @@ import PrismJsx from 'prismjs/components/prism-jsx.min';
 import PrismBash from 'prismjs/components/prism-bash.min';
 import FetchHandler from '../Request';
 import Iframe from './Iframe';
+import LinkRenderer from '../LinkRenderer';
+import Markdown from 'react-markdown';
 import './index.less';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/material.css';
+import LangContext from '../ContextProvider';
 
 const { Request } = FetchHandler;
 
@@ -92,6 +95,17 @@ class CodeRenderer extends React.Component {
             enableCode = false;
         } else if (language === 'iframe') {
             return <div className="demo-code-wrapper" dangerouslySetInnerHTML={{ __html: value }}></div>
+        } else if (language === 'i18n') {            
+            return <LangContext.Consumer>
+                {(lang) => {
+                    const isEn = lang === 'en';
+                    const [cnVal, enVal] = value.split('@sep');
+                    const i18nVal = isEn ? enVal : cnVal;
+                    return <Markdown source={i18nVal} renderers={{
+                        link: LinkRenderer
+                    }} />
+                }}
+            </LangContext.Consumer>
         }
 
         let parsedDemo = null;

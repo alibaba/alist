@@ -7,7 +7,8 @@ export default {
       "articles": [],
       "exists": true,
       "external": false,
-      "introduction": true
+      "introduction": true,
+      "enTitle": "Introduction"
     },
     {
       "path": "",
@@ -21,12 +22,14 @@ export default {
           "articles": [],
           "exists": true,
           "external": false,
-          "introduction": false
+          "introduction": false,
+          "enTitle": "core"
         }
       ],
       "exists": false,
       "external": false,
-      "introduction": false
+      "introduction": false,
+      "enTitle": "API"
     }
   ]
 }

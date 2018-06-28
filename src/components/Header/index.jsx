@@ -1,8 +1,15 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import { Select } from 'antd';
 import './index.less';
 
+const Option = Select.Option;
+
 class Header extends React.Component {
+    changeLang = (lang) => {
+        window.emitter.emit('lang', lang);
+    }
+    
     render() {
         return <div className="nav">
             <div>
@@ -18,12 +25,18 @@ class Header extends React.Component {
                     <Link to={"/docs?md=easy/easy"} className="nav-entry">
                         Document
                     </Link>
-                    <Link to={"/examples?md=simple"} className="nav-entry">
+                    <Link to={"/demo?md=simple"} className="nav-entry">
                         Examples
                     </Link>
                     <Link to={"/api?md=all"} className="nav-entry">
                         API
                     </Link>
+                    <a className="nav-entry">
+                        <Select defaultValue="en" onChange={this.changeLang} style={{ width: 100 }}>
+                            <Option value="en">english</Option>
+                            <Option value="zh">中文</Option>
+                        </Select>
+                    </a>
                 </div>
             </header>
         </div>

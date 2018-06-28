@@ -19,12 +19,19 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>noform - 可能是最好的表单框架</title>
+    <title>NoForm - Maybe the best form library ever.</title>
   </head>
   <body>
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
+    <script>
+      // 我们这里采用的做法是直接判断 window.Intl 是否存在，从而确定是否要引入 polyfill 文件
+      // 下面的 cdn 地址大家可以修改成本地资源文件，或者参考官方文档其他引入方式
+      if (!window.Intl) {
+        document.writeln('<script src="https://as.alipayobjects.com/g/component/intl/1.0.1/Intl.js">' + '<' + '/script>');
+      }
+    </script>
     <div id="root"></div>
     <!--
       This HTML file is a template.

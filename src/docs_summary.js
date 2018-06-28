@@ -7,7 +7,8 @@ export default {
       "articles": [],
       "exists": true,
       "external": false,
-      "introduction": true
+      "introduction": true,
+      "enTitle": "Introduction"
     },
     {
       "path": "",
@@ -21,7 +22,8 @@ export default {
           "articles": [],
           "exists": true,
           "external": false,
-          "introduction": false
+          "introduction": false,
+          "enTitle": "Quick Start"
         },
         {
           "path": "/docs?md=easy/best-practise-antd",
@@ -30,12 +32,14 @@ export default {
           "articles": [],
           "exists": true,
           "external": false,
-          "introduction": false
+          "introduction": false,
+          "enTitle": "Ant Design Best Practise"
         }
       ],
       "exists": false,
       "external": false,
-      "introduction": false
+      "introduction": false,
+      "enTitle": "Quick Start"
     },
     {
       "path": "",
@@ -49,7 +53,8 @@ export default {
           "articles": [],
           "exists": true,
           "external": false,
-          "introduction": false
+          "introduction": false,
+          "enTitle": "Core"
         },
         {
           "path": "/docs?md=basic/status",
@@ -58,7 +63,8 @@ export default {
           "articles": [],
           "exists": true,
           "external": false,
-          "introduction": false
+          "introduction": false,
+          "enTitle": "Status Management"
         },
         {
           "path": "/docs?md=basic/relation",
@@ -67,7 +73,8 @@ export default {
           "articles": [],
           "exists": true,
           "external": false,
-          "introduction": false
+          "introduction": false,
+          "enTitle": "Condition"
         },
         {
           "path": "/docs?md=basic/validation",
@@ -76,12 +83,14 @@ export default {
           "articles": [],
           "exists": true,
           "external": false,
-          "introduction": false
+          "introduction": false,
+          "enTitle": "Validate"
         }
       ],
       "exists": false,
       "external": false,
-      "introduction": false
+      "introduction": false,
+      "enTitle": "Usage"
     },
     {
       "path": "",
@@ -95,7 +104,8 @@ export default {
           "articles": [],
           "exists": true,
           "external": false,
-          "introduction": false
+          "introduction": false,
+          "enTitle": "FormItem and Item"
         },
         {
           "path": "/docs?md=component/custom",
@@ -104,12 +114,14 @@ export default {
           "articles": [],
           "exists": true,
           "external": false,
-          "introduction": false
+          "introduction": false,
+          "enTitle": "Custom Component"
         }
       ],
       "exists": false,
       "external": false,
-      "introduction": false
+      "introduction": false,
+      "enTitle": "Component Standard"
     },
     {
       "path": "",
@@ -123,7 +135,8 @@ export default {
           "articles": [],
           "exists": true,
           "external": false,
-          "introduction": false
+          "introduction": false,
+          "enTitle": "Ant Design"
         },
         {
           "path": "/docs?md=advanced/antd-demand",
@@ -132,7 +145,8 @@ export default {
           "articles": [],
           "exists": true,
           "external": false,
-          "introduction": false
+          "introduction": false,
+          "enTitle": "Ant Design(Demand)"
         },
         {
           "path": "/docs?md=advanced/antd-pro-demand",
@@ -141,12 +155,14 @@ export default {
           "articles": [],
           "exists": true,
           "external": false,
-          "introduction": false
+          "introduction": false,
+          "enTitle": "Ant Design Pro"
         }
       ],
       "exists": false,
       "external": false,
-      "introduction": false
+      "introduction": false,
+      "enTitle": "3rd Party Lib"
     },
     {
       "path": "",
@@ -160,12 +176,14 @@ export default {
           "articles": [],
           "exists": true,
           "external": false,
-          "introduction": false
+          "introduction": false,
+          "enTitle": "Integrate With Ant Design"
         }
       ],
       "exists": false,
       "external": false,
-      "introduction": false
+      "introduction": false,
+      "enTitle": "DialogForm"
     },
     {
       "path": "",
@@ -179,12 +197,14 @@ export default {
           "articles": [],
           "exists": true,
           "external": false,
-          "introduction": false
+          "introduction": false,
+          "enTitle": "Integrate With Ant Design"
         }
       ],
       "exists": false,
       "external": false,
-      "introduction": false
+      "introduction": false,
+      "enTitle": "Repeater"
     }
   ]
 }

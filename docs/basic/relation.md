@@ -1,9 +1,20 @@
+```i18n
+
 # 联动
 
 联动是表单领域不可回避的问题，复杂的联动常常让开发者抓耳挠腮，
 NoForm通过If组件，提供最基础、使用的联动能力，助力开发者应对联动问题。
 
-# 示例
+@sep
+
+# Condition
+
+NoForm use `If` Component to decide which component should show.
+What's more, `Item/FormItem` Component's `render` method is very powerful and you can conrtol the output.
+
+```
+
+# DEMO
 
 ```onlydemo
 
@@ -12,7 +23,7 @@ NoForm通过If组件，提供最基础、使用的联动能力，助力开发者
     const { Input, Button } = antdWrapper(antd);
 
     class App extends React.Component {
-        componentWillMount = () => { // 初始化表单核心
+        componentWillMount = () => { // initialized core instance
           this.core = new FormCore();
         }
 
@@ -31,40 +42,47 @@ NoForm通过If组件，提供最基础、使用的联动能力，助力开发者
             this.core.reset();
         }
 
-        render() { // 注入核心        
-            return <Form core={this.core} layout={{ label: 6, control: 18 }}>
-                <FormItem label="username" name="username"><Input /></FormItem>
-                <FormItem label="age" name="age"><Input /></FormItem>                
+        render() { // pass core instance to form        
+            return <Form core={this.core} layout={{ label: 8, control: 16 }}>
+                <div className="example-title">Condition Examples</div>
+                <Alert style={{ marginBottom: 12 }} message={<div>
+                    <div>1. username = bobby, you get <span>🤖</span></div>
+                    <div>2. username = bobby and age = 23, yout get <span>👇🏼</span></div>
+                    <div>2. username = bobby and age = 23, password = noform yout get <span>🌈</span></div>
+                </div>} type="info" showIcon />
 
-                <FormItem label="">
-                    <div>
-                        <div>1. username为bobby时，触发第一层if</div>
-                        <div>2. username为bobby, age为23时，触发嵌套if</div>
-                    </div>
-                </FormItem>
+                <FormItem label="username" name="username"><Input /></FormItem>
+                <FormItem label="age" name="age"><Input /></FormItem>                                
 
                 <If when={(values, { globalStatus }) => {
                     return values.username === 'bobby';
                 }}>
                     <FormItem label="" style={{ margin: '12px 0' }}>
                         <div>
-                            hello bobby!
+                        <span>🤖</span>
                             <If when={(values, { globalStatus }) => {
                                 return values.age == 23;
                             }}>
-                                <FormItem label="" >
-                                    <div>Congratulation! You've solved the last maze!</div>
-                                </FormItem>
+                                <div>
+                                    <span>👇🏼</span>
+                                    <FormItem label="password" name="password"><Input /></FormItem>
+                                    <If when={(values, { globalStatus }) => {
+                                        return values.password === 'noform';
+                                    }}>
+                                        <span>🌈</span>
+                                    </If>
+                                </div>
                             </If>
                         </div>
                     </FormItem>                  
                 </If>
 
-                <FormItem label="全局status">
+                <FormItem label="trigger">
                     <div >
-                        <Button style={{ marginRight: 12 }} onClick={this.triggerIf}>触发If</Button>
-                        <Button style={{ marginRight: 12 }} onClick={this.depIf}>触发嵌套if</Button>
-                        <Button style={{ marginRight: 12 }} onClick={this.clear}>清空</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.triggerIf}>1st</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.depIf}>2nd</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.finalIf}>3rd</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.clear}>clear</Button>
                     </div>
                 </FormItem>
             </Form>
@@ -74,34 +92,59 @@ NoForm通过If组件，提供最基础、使用的联动能力，助力开发者
     ReactDOM.render(<App />, document.getElementById('demo'));
 ```
 
-### If 显示隐藏联动
+```i18n
+
+### If 控制显示隐藏
+
+@sep
+
+### hide/show By <If>
+
+```
 
 ```jsx
-    <Form core={this.core} layout={{ label: 6, control: 18 }}>
-        <FormItem label="username" name="username"><Input /></FormItem>
-        <FormItem label="age" name="age"><Input /></FormItem>                
+    <Form core={this.core} layout={{ label: 8, control: 16 }}>
+        <div className="example-title">Condition Examples</div>
+        <Alert style={{ marginBottom: 12 }} message={<div>
+            <div>1. username = bobby, you get <span>🤖</span></div>
+            <div>2. username = bobby and age = 23, yout get <span>👇🏼</span></div>
+            <div>2. username = bobby and age = 23, password = noform yout get <span>🌈</span></div>
+        </div>} type="info" showIcon />
 
-        <FormItem label="">
-            <div>
-                <div>1. username为bobby时，触发第一层if</div>
-                <div>2. username为bobby, age为23时，触发嵌套if</div>
-            </div>
-        </FormItem>
+        <FormItem label="username" name="username"><Input /></FormItem>
+        <FormItem label="age" name="age"><Input /></FormItem>                                
 
         <If when={(values, { globalStatus }) => {
             return values.username === 'bobby';
         }}>
             <FormItem label="" style={{ margin: '12px 0' }}>
                 <div>
-                    hello bobby!
+                <span>🤖</span>
                     <If when={(values, { globalStatus }) => {
                         return values.age == 23;
                     }}>
-                        <FormItem label="" >Congratulation! You've solved the last maze!</FormItem>
+                        <div>
+                            <span>👇🏼</span>
+                            <FormItem label="password" name="password"><Input /></FormItem>
+                            <If when={(values, { globalStatus }) => {
+                                return values.password === 'noform';
+                            }}>
+                                <span>🌈</span>
+                            </If>
+                        </div>
                     </If>
                 </div>
-            </FormItem>                    
+            </FormItem>                  
         </If>
+
+        <FormItem label="trigger">
+            <div >
+                <Button style={{ marginRight: 12 }} onClick={this.triggerIf}>1st</Button>
+                <Button style={{ marginRight: 12 }} onClick={this.depIf}>2nd</Button>
+                <Button style={{ marginRight: 12 }} onClick={this.finalIf}>3rd</Button>
+                <Button style={{ marginRight: 12 }} onClick={this.clear}>clear</Button>
+            </div>
+        </FormItem>
     </Form>
 ```
 
@@ -130,7 +173,7 @@ NoForm通过If组件，提供最基础、使用的联动能力，助力开发者
     ];
 
     class App extends React.Component {
-        componentWillMount = () => { // 初始化表单核心
+        componentWillMount = () => { // initialized core instance
           this.core = new FormCore();
         }
 
@@ -150,27 +193,27 @@ NoForm通过If组件，提供最基础、使用的联动能力，助力开发者
             this.core.reset();
         }
 
-        render() { // 注入核心        
+        render() { // pass core instance        
             return <Form core={this.core} layout={{ label: 6, control: 18 }}>
-                <FormItem label="单价" name="price"><Input /></FormItem>
-                <FormItem label="数量" name="quantity"><Input /></FormItem>
-                <FormItem label="单位" name="unit"><Select options={dataSource}/></FormItem>
+                <FormItem label="Price" name="price"><Input /></FormItem>
+                <FormItem label="Quantity" name="quantity"><Input /></FormItem>
+                <FormItem label="Unit" name="unit"><Select options={dataSource}/></FormItem>
 
                 <FormItem render={(values, { globalStatus }) => {
                     const { price, quantity } = values;
                     const amount = parseInt(price ||  0) * parseInt(quantity ||  0);
-                    return <div style={{ lineHeight: '28px' }}>总价: {amount}</div>
+                    return <div style={{ lineHeight: '28px' }}>Sum: {amount}</div>
                 }} props={(props, formCore) => {
                     const unit = formCore.getValue('unit');
                     return {
                         suffix: unit || ''
                     };
-                }} label="combo拼装" />
+                }} label="Combo" />
 
-                <FormItem label="全局status">
+                <FormItem label="Global Status">
                     <div >
-                        <Button style={{ marginRight: 12 }} onClick={this.depIf}>赋值</Button>
-                        <Button style={{ marginRight: 12 }} onClick={this.clear}>清空</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.depIf}>Trigger Condition</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.clear}>Clear</Button>
                     </div>
                 </FormItem>
             </Form>
@@ -180,22 +223,30 @@ NoForm通过If组件，提供最基础、使用的联动能力，助力开发者
     ReactDOM.render(<App />, document.getElementById('demo'));
 ```
 
+```i18n
+
 ### 核心代码
+
+@sep
+
+### Code
+
+```
 
 ```jsx
 
-<FormItem label="单价" name="price"><Input /></FormItem>
-<FormItem label="数量" name="quantity"><Input /></FormItem>
-<FormItem label="单位" name="unit"><Select options={dataSource}/></FormItem>
+<FormItem label="Price" name="price"><Input /></FormItem>
+<FormItem label="Quantitty" name="quantity"><Input /></FormItem>
+<FormItem label="Unit" name="unit"><Select options={dataSource}/></FormItem>
 
-<FormItem render={(values, { globalStatus }) => { /** 上述任意组件改变时都会触发render **/
+<FormItem render={(values, { globalStatus }) => { /** Each field's change will trigger render **/
     const { price, quantity } = values;
     const amount = parseInt(price ||  0) * parseInt(quantity ||  0);
-    return <div style={{ lineHeight: '28px' }}>总价: {amount}</div>
+    return <div style={{ lineHeight: '28px' }}>Sum: {amount}</div>
 }} props={(props, formCore) => {
     const unit = formCore.getValue('unit');
     return {
         suffix: unit || ''
     };
-}} label="combo拼装" />
+}} label="Combo" />
 ```
