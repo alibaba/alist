@@ -148,6 +148,8 @@ What's more, `Item/FormItem` Component's `render` method is very powerful and yo
     </Form>
 ```
 
+```i18n
+
 如上所示，If通过when函数来判断是否显示，when的入参为：
 
 * values 表单的值集合
@@ -160,6 +162,17 @@ What's more, `Item/FormItem` Component's `render` method is very powerful and yo
 ### Item 逻辑联动
 
 通过FormItem/Item的render属性，可以自定义控制渲染的内容，如下所示：
+
+@sep
+
+As you can see, If use when to decide component show or not, and the arguments of when is:
+
+* values
+* core 
+
+`when` will be triggered when values changed, and the tyepe of its return value is Boolean, true means show, false means hide.
+
+```
 
 ```onlydemo
 
