@@ -4,11 +4,11 @@ import './index.less';
 
 class Layout extends React.Component {
     render() {
-        const { location } = this.props;
+        const { children, ...others } = this.props;
         return <div className="layout">
             <div className="main-content">
-                <article className="content-body">{this.props.children}</article>
-                <Sidebar location={location} />
+                <article className="content-body">{children}</article>
+                <Sidebar {...others} />
             </div>
         </div>
     }

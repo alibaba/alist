@@ -19,7 +19,7 @@ class ScrollToTopOnMount extends React.Component {
     render() {
       return null
     }
-  }
+}
 
 class Docs extends React.Component {
 
@@ -41,13 +41,13 @@ class Docs extends React.Component {
     }
 
     updateMdContent = async (props) => {
-        const { location } = props;
-        const { search, pathname } = location;
+        const { location, match } = props;
+        const { params } = match;
+        const { type: mdType } = params;
+        const { search } = location;
         const [_, md] = search.split('=');
-
-        const mdPrefix = pathname.replace(/\//g, '');
     
-        const mdUrl = `${mdPrefix}/${md}.md`;
+        const mdUrl = `${mdType}/${md}.md`;
         const result = await fetch(mdUrl);
         const mdContent = await result.text();
 
@@ -62,13 +62,15 @@ class Docs extends React.Component {
 
     render() {
         let { mdContent } = this.state;
-        const { location } = this.props;
+        const { location, match, history } = this.props;
+        const { params } = match;
+        const { lang } = params;
 
         return <div>
-            <Header />
+            <Header lang={lang} history={history} />
             <ScrollToTopOnMount location={location} />
-            <Layout location={location} >
-                <Markdown source={mdContent} renderers={{
+            <Layout location={location} match={match}>
+                <Markdown source={mdContent} lang={lang} renderers={{
                     code: CodeRenderer,
                     link: LinkRenderer
                 }} />

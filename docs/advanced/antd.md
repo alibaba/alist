@@ -16,11 +16,11 @@ import { antd: antdWrapper } from 'noform/lib/wrapper/antd';
 import dialogWrapper from 'noform/lib/wrapper/antd';
 import repeater from 'noform/lib/repeater/antd';
 
-// wrapper包裹一层
+// Get standard component from wrapper
 const { Input, Select, Checkbox, Radio, Switch, Slider, DatePicker, TimePicker,
     Rate, Cascader, TreeSelect, Upload, Button, Modal, Icon, InputNumber } = antdWrapper(Antd);
 
-const Dialog = dialogWrapper(Antd); // Dialog获取
+const Dialog = dialogWrapper(Antd); // Get dialog
 const { TableRepeater, InlineRepeater } = repeater({ Dialog, Button, Input }); // repeater获取
 
 ```

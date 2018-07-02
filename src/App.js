@@ -1,20 +1,30 @@
 import React, { Component } from 'react';
-import { HashRouter as Router, Route, Link } from "react-router-dom";
+import { HashRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import Home from './pages/index';
 import Doc from './pages/docs';
 import './App.css';
 
+const SwitchDocRoutes = (props) => {
+  const { match } = props;
+  const { params = {} } = match;
+  const { lang } = params;
+  return <Doc {...props} locale={lang} />
+}
 
 class App extends Component {
+  constructor(props, context) {
+    super(props, context);
+  }
+
   render() {
+    const { lang } = this.props;
     return (
       <Router>
-        <div>
-          <Route exact path="/" component={Home} />
-          <Route path="/docs" component={Doc} />
-          <Route path="/demo" component={Doc} />
-          <Route path="/api" component={Doc} />
-        </div>
+          <div>
+            <Redirect from="/" to={`/${lang}/`} />
+            <Route exact path={`/:lang/`} component={Home} />
+            <Route path={`/:lang/:type`} render={SwitchDocRoutes} />
+          </div>
       </Router>
     );
   }

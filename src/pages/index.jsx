@@ -11,8 +11,12 @@ class Main extends React.Component {
     }
 
     render() {
+        const { match, history } = this.props;
+        const { params } = match;
+        const { lang } = params;
+
         return <div>
-            <Header />      
+            <Header lang={lang} history={history} />      
             <div className="noform-site-body">
                 <div className="noform-site-content">
                     <div className="noform-site-landing">

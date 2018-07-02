@@ -4,19 +4,17 @@ import './index.less';
 import docsSummary from '../../docs_summary';
 import apiSummary from '../../api_summary';
 import demoSummary from '../../demo_summary';
-import LangContext from '../ContextProvider';
-
 
 class SideBar extends React.Component {
     renderMenu(menus, lang) {
-        const isEn = lang === 'en';
+        const isEn = lang === 'en-US';
         const menuItems = menus.map((mitem) => {
             const { title, enTitle, articles, introduction } = mitem;
             if (!introduction) {
                 const links = articles.map((arItem) => {
                     const { title: linkTitle, enTitle: linkEnTitle, path } = arItem;
                     const linkItemTitle = isEn ? linkEnTitle : linkTitle;
-                    return <li><Link to={path}>{linkItemTitle}</Link></li>
+                    return <li><Link to={`/${lang}${path}`}>{linkItemTitle}</Link></li>
                 });
 
                 const itemTitle = isEn ? enTitle : title;
@@ -33,24 +31,20 @@ class SideBar extends React.Component {
     }
 
     render() {
-        const { location } = this.props;
-        const { pathname } = location;
-        const mdPrefix = pathname.replace(/\//g, '');
+        const { match } = this.props;
+        const { params } = match;
+        const { type, lang } = params;
 
         let summary = null;
-        switch (mdPrefix) {
+        switch (type) {
             case 'docs': summary = docsSummary; break;
             case 'demo': summary = demoSummary; break;
             case 'api': summary = apiSummary; break;
         }
-
-        return <LangContext.Consumer>
-            {(lang) => {
-                return <aside>
-                    {this.renderMenu(summary.chapters, lang)}
-                </aside>
-            }}
-        </LangContext.Consumer>        
+   
+        return <aside>
+            {this.renderMenu(summary.chapters, lang)}
+        </aside>
     }
 }
 

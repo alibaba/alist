@@ -6,13 +6,13 @@ import enMessages from './en.json';
 import zhMessages from './zh.json';
 
 export default {
-    en: {
+    'en-US': {
         messages: enMessages,
         locale: 'en-US',
         antd: antdEn,
         data: appLocaleDataEn
     },
-    zh: {
+    'zh-CN': {
         messages: zhMessages,
         locale: 'zh-CN',
         antd: antdZh,

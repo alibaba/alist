@@ -17,13 +17,13 @@ export default {
       "articles": [
         {
           "path": "/api?md=all",
-          "title": "core",
+          "title": "Core",
           "level": "1.1",
           "articles": [],
           "exists": true,
           "external": false,
           "introduction": false,
-          "enTitle": "core"
+          "enTitle": "Core"
         }
       ],
       "exists": false,
