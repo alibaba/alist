@@ -12,6 +12,7 @@ class I18nWrapper extends React.Component {
     constructor(props, context) {
         super(props, context);
         window.emitter = this.emitter = new EventEmitter2({ maxListeners: 100 });
+        this.storeKey = 'noform-lang';
         const defaultLang = this.getInitialLang();
         const currentLocale = LocaleConfig[defaultLang];
         this.state = {
@@ -20,12 +21,10 @@ class I18nWrapper extends React.Component {
         };
 
         this.enum = ['en-US', 'zh-CN'];
-        this.storeKey = 'noform-lang';
         addLocaleData(currentLocale);
     }
 
     getInitialLang = () => {
-        
         const lastLang = localStorage.getItem(this.storeKey);
         const initLang = lastLang || 'en-US';
         if (!lastLang) localStorage.setItem(this.storeKey, initLang);
