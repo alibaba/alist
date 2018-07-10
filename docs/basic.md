@@ -220,6 +220,29 @@ let children = [
     </Form>
 })(),
 (() => {
+    let formcore
+    return <Form onMount={core => formcore = core} layout={{label: 5, control: 19}} full>
+        <h3>formitem render btn props</h3>
+        <div className="demo-form">
+            <FormItem label="user" name="user">
+                <Form layout={{label: 5, control: 19}} full>
+                    <FormItem label="username" name="username">
+                        <Input />
+                    </FormItem>
+                    <FormItem label="" render={(values, { globalStatus }) => {
+                        const btnProps = {};
+                        if (globalStatus === 'preview') btnProps.disabled = true;
+                        return <button {...btnProps}>submit</button>
+                    }} />
+                </Form>
+            </FormItem>
+            </div>
+        <br/><br/>
+        <button onClick={() => formcore.setStatus('preview')}> set status preview </button>
+        <button onClick={() => formcore.setStatus('edit')}> set status edit </button>
+    </Form>
+})(),
+(() => {
     const defaultValue = {
         username: 'username',
         age: '18',
