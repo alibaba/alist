@@ -206,6 +206,7 @@ class Item extends Component {
             when,
             ...others
         } = props || {};
+        const { inset } = this.props;
 
         const component = React.Children.only(this.props.children);
         let disabled = false;
@@ -215,7 +216,7 @@ class Item extends Component {
         }
 
         const cloneProps = {
-            disabled, name, value, error, status, onChange, onBlur, onFocus, ...others,
+            inset, disabled, name, value, error, status, onChange, onBlur, onFocus, ...others,
         };
 
         if (component && component.type && component.type.displayName === 'If') {

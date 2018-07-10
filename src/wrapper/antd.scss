@@ -1,5 +1,11 @@
 .no-form-item-content-elem > .ant-switch{
     min-width: 44px;
+    width: auto;
+}
+
+.no-form-hoz .no-form-item .no-form-item-content .no-form-item-content-elem > .ant-switch {
+    min-width: 44px;
+    width: auto;
 }
 
 .no-form-item-content-elem > .ant-btn{
@@ -14,6 +20,39 @@
     margin-top: 24px;
     float: right;
 
+}
+
+.inset-component {
+    border: none;
+    // .ant-input:focus,
+    // .ant-input:hover,
+    .ant-input,
+    .ant-input:focus,
+    .ant-cascader-input,    
+    .ant-time-picker-input,
+    .ant-mention-editor,
+    .ant-select-selection,
+    .ant-select-search__field,
+    .ant-select-focused .ant-select-selection,
+    .ant-select-selection:focus,
+    .public-DraftEditor-content:focus,
+    .ant-select-selection:active {
+        border: none;
+        outline: none;
+        box-shadow: none;
+    }
+}
+
+.inset-component.ant-input,
+.inset-component.ant-input:focus {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.inset-component.ant-radio-group,
+.inset-component.ant-checkbox-group {
+    width: auto;
 }
 
 .multi-value-item-wrapper {

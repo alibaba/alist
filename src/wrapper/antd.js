@@ -79,6 +79,13 @@ const defaultFileUploadProps = {
     onSuccess() { },
 };
 
+const insetify = (props) => {
+    const insetProps = {};
+    const { className, inset } = props || {};
+    if (inset) insetProps.className = `${(className || '')} inset-component`;
+    return insetProps;
+};
+
 class WrapperClass {
     constructor(AntdSource) {
         this.Antd = AntdSource;
@@ -89,7 +96,7 @@ class WrapperClass {
         const valueProps = getValueProps(props);
 
         if (status === 'preview') return renderValue(formatValue(value)); // 处理预览态
-        return <this.Antd.Input {...props} {...valueProps} />;
+        return <this.Antd.Input {...props} {...valueProps} {...insetify(props)} />;
     }
 
     Textarea = (props) => {
@@ -97,7 +104,7 @@ class WrapperClass {
         const valueProps = getValueProps(props);
 
         if (status === 'preview') return renderValue(formatValue(value)); // 处理预览态
-        return <this.Antd.Input.TextArea {...props} {...valueProps} />;
+        return <this.Antd.Input.TextArea {...props} {...valueProps} {...insetify(props)} />;
     }
 
     Select = (props) => {
@@ -114,21 +121,21 @@ class WrapperClass {
         const valueProps = getValueProps(props);
 
         if (props.status === 'preview') return <this.Antd.Select placeholder="" {...props} disabled className={`${className || ''} ${prefix}-preview-select`} value={formatValue(value)} />;
-        return <this.Antd.Select {...others} {...opts} {...valueProps} />;
+        return <this.Antd.Select {...others} {...opts} {...valueProps} {...insetify(props)} />;
     }
 
     CheckboxGroup = (props) => {
         const valueProps = getValueProps(props);
 
         if (props.status === 'preview') return renderOption(props);
-        return <this.Antd.Checkbox.Group {...props} {...valueProps} />;
+        return <this.Antd.Checkbox.Group {...props} {...valueProps} {...insetify(props)} />;
     }
 
     RadioGroup = (props) => {
         const valueProps = getValueProps(props);
 
         if (props.status === 'preview') return renderOption(props);
-        return <this.Antd.Radio.Group {...props} {...valueProps} />;
+        return <this.Antd.Radio.Group {...props} {...valueProps} {...insetify(props)} />;
     }
 
     Checkbox = (props) => {
@@ -229,7 +236,7 @@ class WrapperClass {
             onChange && onChange(momentVal, { escape: true });
         };
 
-        return <this.Antd.DatePicker {...props} {...valueProps} onChange={onChange} />;
+        return <this.Antd.DatePicker {...props} {...valueProps} onChange={onChange} {...insetify(props)} />;
     }
 
     TimePicker = (props) => {
@@ -248,7 +255,7 @@ class WrapperClass {
             onChange && onChange(momentVal, { escape: true });
         };
 
-        return <this.Antd.TimePicker {...props} {...valueProps} onChange={onChange} />;
+        return <this.Antd.TimePicker {...props} {...valueProps} onChange={onChange} {...insetify(props)} />;
     }
 
     InputNumber = (props) => {
@@ -257,7 +264,7 @@ class WrapperClass {
 
         if (props.status === 'preview') return renderValue(value); // 处理预览态
 
-        return <this.Antd.InputNumber {...props} {...valueProps} />;
+        return <this.Antd.InputNumber {...props} {...valueProps} {...insetify(props)} />;
     }
 
     Rate = (props) => {
@@ -277,7 +284,7 @@ class WrapperClass {
         if (props.status === 'preview') {
             return <this.Antd.Cascader placeholder="" {...props} className={`${className || ''} ${prefix}-preview-select`} disabled value={formatValue(value)} />;
         }
-        return <this.Antd.Cascader {...props} {...valueProps} />;
+        return <this.Antd.Cascader {...props} {...valueProps} {...insetify(props)} />;
     }
 
     TreeSelect = (props) => {
@@ -286,7 +293,7 @@ class WrapperClass {
         if (props.status === 'preview') {
             return <this.Antd.TreeSelect placeholder="" {...props} className={`${className || ''} ${prefix}-preview-select`} disabled value={formatValue(value)} />;
         }
-        return <this.Antd.TreeSelect {...props} {...valueProps} />;
+        return <this.Antd.TreeSelect {...props} {...valueProps} {...insetify(props)} />;
     }
 
     Upload = (props) => {
@@ -319,8 +326,8 @@ class WrapperClass {
             });
         }
 
-        if (props.status === 'preview') return <this.Antd.AutoComplete placeholder="" {...props} disabled className={`${className || ''} ${prefix}-preview-select`} value={formatValue(value)} />;
-        return <this.Antd.AutoComplete {...others} {...opts} {...valueProps} />;
+        if (props.status === 'preview') return <this.Antd.AutoComplete placeholder="" {...props} disabled className={`${className || ''} ${prefix}-preview-select`} value={formatValue(value)} {...insetify(props)} />;
+        return <this.Antd.AutoComplete {...others} {...opts} {...valueProps} {...insetify(props)} />;
     }
 
     Mention = (props) => {
@@ -342,7 +349,7 @@ class WrapperClass {
         };
 
         if (props.status === 'preview') return <this.Antd.Mention placeholder="" {...opts} {...props} disabled className={`${className || ''} ${prefix}-preview-select`} value={formatValue(value)} />;
-        return <this.Antd.Mention {...others} {...opts} {...valueProps} onChange={onChange} />;
+        return <this.Antd.Mention {...others} {...opts} {...valueProps} onChange={onChange} {...insetify(props)} />;
     }
 
     format = () => {
