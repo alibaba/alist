@@ -67,6 +67,14 @@ function renderOption(props = {}) { // 处理
     return null;
 }
 
+const insetify = (props) => {
+    const insetProps = {};
+    const { className, inset } = props || {};
+    if (inset) insetProps.className = `${(className || '')} inset-component`;
+    return insetProps;
+};
+
+
 const fetchFileUrl = '';
 const defaultFileUploadProps = {
     prefix: 'next-',
@@ -103,7 +111,7 @@ function Input(props) {
     const value = props.value || '';
     // TODO: 需要确认Textarea
     if (props.status === 'preview') return renderValue(value); // 处理预览态
-    return <Next.Input {...props} value={value} />;
+    return <Next.Input {...props} value={value} {...insetify(props)} />;
 }
 
 function Select(props) {
@@ -112,21 +120,21 @@ function Select(props) {
 
     // if(props.status === 'preview') return renderOption(props);
     if (props.status === 'preview') return <Next.Select {...props} disabled className={`${className || ''} next-preview-select`} value={value} />;
-    return <Next.Select {...props} value={value} />;
+    return <Next.Select {...props} value={value} {...insetify(props)} />;
 }
 
 function CheckboxGroup(props) {
     const value = formatArray(props.value); // 格式化值
 
     if (props.status === 'preview') return renderOption(props);
-    return <Next.Checkbox.Group {...props} value={value} />;
+    return <Next.Checkbox.Group {...props} value={value} {...insetify(props)} />;
 }
 
 function RadioGroup(props) {
     const value = formatValue(props.value); // 格式化值
 
     if (props.status === 'preview') return renderOption(props);
-    return <Next.Radio.Group {...props} value={value} />;
+    return <Next.Radio.Group {...props} value={value} {...insetify(props)} />;
 }
 
 function Checkbox(props) {
@@ -140,7 +148,7 @@ function Checkbox(props) {
         return null;
     }
 
-    return <Next.Checkbox {...props} checked={checked} />;
+    return <Next.Checkbox {...props} checked={checked} {...insetify(props)} />;
 }
 
 function Radio(props) {
@@ -154,7 +162,7 @@ function Radio(props) {
         return null;
     }
 
-    return <Next.Radio {...props} checked={checked} />;
+    return <Next.Radio {...props} checked={checked} {...insetify(props)} />;
 }
 
 function Switch(props) {
@@ -168,7 +176,7 @@ function Switch(props) {
         return renderValue(`${checked}`);
     }
 
-    return <Next.Switch {...props} checked={checked} />;
+    return <Next.Switch {...props} checked={checked} {...insetify(props)} />;
 }
 
 function Range(props) {
@@ -178,7 +186,7 @@ function Range(props) {
         return <Next.Range {...props} disabled value={value} />;
     }
 
-    return <Next.Range {...props} value={value} />;
+    return <Next.Range {...props} value={value} {...insetify(props)} />;
 }
 
 function DatePicker(props) {
@@ -200,7 +208,7 @@ function DatePicker(props) {
         props.onChange && props.onChange(formatDate);
     };
 
-    return <Next.DatePicker {...props} value={value} onChange={onChange} />;
+    return <Next.DatePicker {...props} value={value} onChange={onChange} {...insetify(props)} />;
 }
 
 function TimePicker(props) {
@@ -218,7 +226,7 @@ function TimePicker(props) {
         props.onChange && props.onChange(formatDate);
     };
 
-    return <Next.TimePicker {...props} value={value} onChange={onChange} />;
+    return <Next.TimePicker {...props} value={value} onChange={onChange} {...insetify(props)} />;
 }
 
 function NumberPicker(props) {
@@ -226,7 +234,7 @@ function NumberPicker(props) {
 
     if (props.status === 'preview') return renderValue(value); // 处理预览态
 
-    return <Next.NumberPicker {...props} value={value} />;
+    return <Next.NumberPicker {...props} value={value} {...insetify(props)} />;
 }
 
 function Rating(props) {
@@ -236,7 +244,7 @@ function Rating(props) {
         return <Next.Rating {...props} disabled value={value} />;
     }
 
-    return <Next.Rating {...props} value={value} />;
+    return <Next.Rating {...props} value={value} {...insetify(props)} />;
 }
 
 function Search(props) {
@@ -244,7 +252,7 @@ function Search(props) {
 
     if (props.status === 'preview') return renderValue(value); // 处理预览态
 
-    return <Next.Search {...props} value={value} />;
+    return <Next.Search {...props} value={value} {...insetify(props)} />;
 }
 
 function CascaderSelect(props) {
@@ -253,7 +261,7 @@ function CascaderSelect(props) {
     if (props.status === 'preview') {
         return <Next.CascaderSelect {...props} className={`${className || ''} next-preview-select`} disabled value={value} />;
     }
-    return <Next.CascaderSelect {...props} value={value} />;
+    return <Next.CascaderSelect {...props} value={value} {...insetify(props)} />;
 }
 
 function TreeSelect(props) {
@@ -262,7 +270,7 @@ function TreeSelect(props) {
     if (props.status === 'preview') {
         return <Next.TreeSelect {...props} className={`${className || ''} next-preview-select`} disabled value={value} />;
     }
-    return <Next.TreeSelect {...props} value={value} />;
+    return <Next.TreeSelect {...props} value={value} {...insetify(props)} />;
 }
 
 function Upload(props) {
@@ -279,7 +287,7 @@ function Upload(props) {
         props.onChange && props.onChange(fileList);
     };
 
-    return <Next.Upload {...defaultFileUploadProps} {...others} onChange={onChange} fileList={value} />;
+    return <Next.Upload {...defaultFileUploadProps} {...others} onChange={onChange} fileList={value} {...insetify(props)} />;
 }
 
 function ImageUpload(props) {
@@ -296,11 +304,11 @@ function ImageUpload(props) {
         props.onChange && props.onChange(fileList);
     };
 
-    return <Next.Upload.ImageUpload {...others} onChange={onChange} fileList={value} />;
+    return <Next.Upload.ImageUpload {...others} onChange={onChange} fileList={value} {...insetify(props)} />;
 }
 
 function AutoComplete(props) {
-    return <Next.Select.AutoComplete {...props} />;
+    return <Next.Select.AutoComplete {...props} {...insetify(props)} />;
 }
 
 function wrapper(NextSource) {

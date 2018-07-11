@@ -25,6 +25,35 @@
 
 }
 
+.inset-component.next-select,
+.inset-component.next-input,
+.inset-component.next-input:focus {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.inset-component.next-radio-group,
+.inset-component.next-checkbox-group,
+.inset-component.next-number-picker-input {
+    width: auto;
+}
+
+.no-form-hoz .no-form-item .no-form-item-content .no-form-item-content-elem > .next-switch {
+    min-width: 44px;
+    width: auto;
+}
+
+.no-form-item-content-elem > .next-switch{
+    min-width: 44px;
+    width: auto;
+    line-height: 28px;
+}
+
+.no-form-item-content-elem > label {
+    line-height: 28px;
+}
+
 .next-upload {
     min-width: 224px;
 }
