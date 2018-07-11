@@ -19,40 +19,38 @@
 .dialog-form-wrapper .ant-custom-btns {
     margin-top: 24px;
     float: right;
-
 }
 
-.inset-component {
-    border: none;
-    // .ant-input:focus,
-    // .ant-input:hover,
+.ant-slider {
+    padding: 0;
+}
+
+.no-form-item-inset {
     .ant-input,
     .ant-input:focus,
     .ant-cascader-input,    
     .ant-time-picker-input,
-    .ant-mention-editor,
     .ant-select-selection,
+    .ant-input-number,
+    .ant-mention-wrapper.ant-mention-active:not(.disabled) .ant-mention-editor,
     .ant-select-search__field,
     .ant-select-focused .ant-select-selection,
     .ant-select-selection:focus,
-    .public-DraftEditor-content:focus,
+    .public-DraftEditor-content:focus,    
+    .ant-mention-editor,
+    .ant-mention-editor-wrapper,
+    .DraftEditor-root,
+    .DraftEditor-editorContainer,
     .ant-select-selection:active {
         border: none;
         outline: none;
         box-shadow: none;
     }
-}
 
-.inset-component.ant-input,
-.inset-component.ant-input:focus {
-    border: none;
-    outline: none;
-    box-shadow: none;
-}
-
-.inset-component.ant-radio-group,
-.inset-component.ant-checkbox-group {
-    width: auto;
+    .ant-radio-group,
+    .ant-checkbox-group {
+        width: auto;
+    }
 }
 
 .multi-value-item-wrapper {

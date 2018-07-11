@@ -21,22 +21,21 @@
     width: 300px;
 }
 
-.next-number-picker {
 
-}
+.no-form-item-inset {
+    .next-select,
+    .next-input,
+    .next-input:focus {
+        border: none;
+        outline: none;
+        box-shadow: none;
+    }
 
-.inset-component.next-select,
-.inset-component.next-input,
-.inset-component.next-input:focus {
-    border: none;
-    outline: none;
-    box-shadow: none;
-}
-
-.inset-component.next-radio-group,
-.inset-component.next-checkbox-group,
-.inset-component.next-number-picker-input {
-    width: auto;
+    .next-radio-group,
+    .next-checkbox-group,
+    .next-number-picker-input {
+        width: auto;
+    }
 }
 
 .no-form-hoz .no-form-item .no-form-item-content .no-form-item-content-elem > .next-switch {
