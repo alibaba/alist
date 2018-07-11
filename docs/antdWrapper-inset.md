@@ -66,6 +66,7 @@ class PageDemo extends React.Component {
 	      <Form direction="hoz" inset core={this.core} layout={{ label: 8, control: 16 }}>
 	          <FormItem label="input" name="input"><Input /></FormItem>
               <FormItem label="AutoComplete" name="AutoComplete"><AutoComplete options={dataSource} /></FormItem>
+              <FormItem label="超长中文换行" name="AutoComplete2"><AutoComplete options={dataSource} /></FormItem>
               <FormItem label="Mention" name="Mention"><Mention suggestions={['aaaaa', 'bbbbb', 'cccc']} /></FormItem>
               <FormItem label="Textarea" name="Textarea"><Textarea /></FormItem>
 	          <FormItem label="select" name="select" full><Select options={dataSource} /></FormItem>
