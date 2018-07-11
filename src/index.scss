@@ -110,10 +110,16 @@
         min-width: 250px;
     }
 
+    .no-form-item + .no-form-item {
+        margin: 0;
+    }
+
     .no-form-item {
         display: inline-block;
+        vertical-align: top;
         width: auto;
         margin-right: 16px;
+        margin-bottom: 12px;
 
         .no-form-item-content{
             .no-form-item-content-elem > * {
