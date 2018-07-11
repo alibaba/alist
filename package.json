@@ -1,6 +1,6 @@
 {
   "name": "noform",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "description": "开发者友好、快捷高效的表单框架。",
   "scripts": {
     "start": "node builder/index.js dev",
@@ -20,6 +20,7 @@
     "index.scss",
     "wrapper.js",
     "dialog.js",
+    "validate.js",
     "wrapper.scss",
     "dialog.scss",
     "examples/"
