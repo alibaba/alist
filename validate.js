@@ -1,1 +1,1 @@
-module.exports = require('./lib/validate');
+module.exports = require('./lib/validate/index');
