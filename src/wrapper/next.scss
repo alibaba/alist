@@ -44,10 +44,12 @@
     width: auto;
 }
 
+.no-form-item-content-elem > .next-range,
 .no-form-item-content-elem > .next-switch{
     min-width: 44px;
     width: auto;
     line-height: 28px;
+    height: 28px;
 }
 
 .no-form-item-content-elem > label {
@@ -96,4 +98,10 @@
     }
 
     .next-icon { display: none; }
+}
+
+.next-preview-select {
+    .next-select-placeholder {
+        display: none;
+    }
 }
