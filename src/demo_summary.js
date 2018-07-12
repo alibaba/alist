@@ -16,7 +16,7 @@ export default {
       "level": "1",
       "articles": [
         {
-          "path": "examples/simple",
+          "path": "/demo?md=simple",
           "title": "simple",
           "level": "1.1",
           "articles": [],

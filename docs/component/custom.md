@@ -1,3 +1,5 @@
+```i18n
+
 # 自定义表单组件
 
 # 最简实例Input
@@ -6,6 +8,19 @@
 
 1. 数据变更时通过onChange抛出
 2. 外部数据变更时通过componentWillReceiveProps更新内部数据
+
+@sep
+
+# Custom Component
+
+# Input
+
+There are two places that need to pay attension to:
+
+1. when component's value change, it should notice outside by `onChange`.
+2. when component receive new value, it should implement `componentWillReceiveProps` and update value.
+
+```
 
 ```jsx
 
@@ -37,7 +52,14 @@ class Input extends React.Component {
 
 ```
 
+```i18n
+
 # 适配组件状态
+@sep
+
+# Adapt Component's Status
+
+```
 
 
 ```jsx
@@ -46,9 +68,9 @@ const Input = (props) => {
     const returnEle = '';
     const { status } = props;
     switch (status) {
-        case 'edit': returnEle = '编辑态'; break;
-        case 'preview': returnEle = '预览态'; break;
-        case 'disabled': returnEle = '禁用态'; break;
+        case 'edit': returnEle = 'Edit'; break;
+        case 'preview': returnEle = 'Preview'; break;
+        case 'disabled': returnEle = 'Disabled'; break;
     }
 
     return <div>{returnEle}</div>

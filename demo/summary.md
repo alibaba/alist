@@ -1,4 +1,4 @@
 # Summary
 
 * [Examples]()
-   * [simple](examples/simple.md)
+   * [simple](demo/simple.md)

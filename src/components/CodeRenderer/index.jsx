@@ -78,9 +78,15 @@ class CodeRenderer extends React.Component {
         }, 300);
     }
 
+    queryIsEn = () => {
+        return window.location.href.indexOf('en-US') !== -1;
+    }
+
     render() {
         const { language, inline = false, value } = this.props;
+        const isEn = this.queryIsEn();
 
+        let mdValue = value;
         let enableDemo = false;
         let enableCode = true;
 
@@ -95,23 +101,27 @@ class CodeRenderer extends React.Component {
             enableCode = false;
         } else if (language === 'iframe') {
             return <div className="demo-code-wrapper" dangerouslySetInnerHTML={{ __html: value }}></div>
-        } else if (language === 'i18n') {            
-            const isEn = lang === 'en-US';
+        } else if (language.startsWith('i18n')) {
             const [cnVal, enVal] = value.split('@sep');
             const i18nVal = isEn ? enVal : cnVal;
-            return <Markdown source={i18nVal} renderers={{
-                link: LinkRenderer
-            }} />
+
+            mdValue = i18nVal;
+            lang = language.split('/')[1];
+            if (!lang) {
+                return <Markdown source={i18nVal} renderers={{
+                    link: LinkRenderer
+                }} />
+            }            
         }
 
         let parsedDemo = null;
         if (enableDemo) {
-            parsedDemo = <div className="demo-parsed-content">{this.getCodeIframe(value)}</div>
+            parsedDemo = <div className="demo-parsed-content">{this.getCodeIframe(mdValue)}</div>
         }
 
         let prettyCode = null;
         if (enableCode) {
-            const html = Prism.highlight(value, Prism.languages[langMap[lang] || lang]);
+            const html = Prism.highlight(mdValue, Prism.languages[langMap[lang] || lang]);
             const cls = 'language-' + lang;
             prettyCode = <div className="demo-raw-content">
                 <pre className={cls}>

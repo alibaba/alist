@@ -1,3 +1,5 @@
+```i18n
+
 # 接入 Ant Design(非按需加载)
 
 由于 Ant Design 拥有众多较高质量的组件，因此 NoForm有面向 Ant Design 的插件机制。
@@ -5,9 +7,27 @@
 
 插件将 Ant Design 涉及表单的组件的数据返回和状态都进行了适配, 结合NoForm达到开箱即用的效果，
 
+@sep
+
+# Ant Design(not demand)
+
+Since Ant Design have so many high quality components.There is no need for NoForm to waste time to repeat these components.
+
+NoForm already have adaptor for Ant Design, developer can easily to format all these component.
+```
+
 ### import
 
+
+```i18n
 这种wrapper的形式一定程度会造成`代码冗余`，如果使用了Ant Design的按需加载的话，建议查看[按需加载](/docs?md=advanced/antd-demand)小节。
+
+@sep
+
+Since wrapper needed to import all components which will cause redundancy.
+If you want to use `babel-plugin-import` to solve the redundancy, please check this [NoForm and Ant Design - onDemand import](/docs?md=advanced/antd-demand)。
+
+```
 
 ```jsx
 import { default: Form, FormItem, FormCore } from 'noform';
@@ -21,14 +41,18 @@ const { Input, Select, Checkbox, Radio, Switch, Slider, DatePicker, TimePicker,
     Rate, Cascader, TreeSelect, Upload, Button, Modal, Icon, InputNumber } = antdWrapper(Antd);
 
 const Dialog = dialogWrapper(Antd); // Get dialog
-const { TableRepeater, InlineRepeater } = repeater({ Dialog, Button, Input }); // repeater获取
+const { TableRepeater, InlineRepeater } = repeater({ Dialog, Button, Input }); // Get Repeater
 
 ```
 
-
+```i18n
 ### 效果
 
 下面是示例效果：
+@sep
+### Example
+
+```
 
 ```onlydemo
 
@@ -52,7 +76,7 @@ const { default: Form, FormItem, FormCore } = noform;
     ];
     
     class App extends React.Component {
-        componentWillMount = () => { // 初始化表单核心
+        componentWillMount = () => { // initialized formCore instance
           this.core = new FormCore();
         }
     
@@ -60,14 +84,14 @@ const { default: Form, FormItem, FormCore } = noform;
           this.core.setGlobalStatus(status);
         }
 
-        render() { // 注入核心        
+        render() { // inject core        
             return <Form core={this.core} layout={{ label: 6, control: 18 }}>
                 <FormItem label="input" name="input"><Input /></FormItem>
                 <FormItem label="AutoComplete" name="AutoComplete"><AutoComplete options={dataSource} /></FormItem>                
                 <FormItem label="Textarea" name="Textarea"><Textarea /></FormItem>
                 <FormItem label="select" name="select"><Select options={dataSource} /></FormItem>
-                <FormItem label="Checkbox" name="Checkbox"><Checkbox >选中</Checkbox></FormItem>
-                <FormItem label="Radio" name="Radio"><Radio >选中</Radio></FormItem>
+                <FormItem label="Checkbox" name="Checkbox"><Checkbox >Selected</Checkbox></FormItem>
+                <FormItem label="Radio" name="Radio"><Radio >Selected</Radio></FormItem>
                 <FormItem label="Switch" name="Switch"><Switch /></FormItem>
                 <FormItem label="CheckboxGroup" name="CheckboxGroup"><CheckboxGroup options={dataSource} /></FormItem>
                 <FormItem label="RadioGroup" name="RadioGroup"><RadioGroup options={dataSource} /></FormItem>
@@ -84,11 +108,11 @@ const { default: Form, FormItem, FormCore } = noform;
                       </Upload>
                 </FormItem>
 
-                <FormItem label="切换状态">
+                <FormItem label="Change Status">
                     <div >
-                        <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'edit')}>编辑态</Button>
-                        <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'preview')}>预览态</Button>
-                        <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'disabled')}>禁用态</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'edit')}>Edit</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'preview')}>Preview</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'disabled')}>Disbaled</Button>
                     </div>
                 </FormItem>
             </Form>
@@ -98,9 +122,17 @@ const { default: Form, FormItem, FormCore } = noform;
     ReactDOM.render(<App />, document.getElementById('demo'));
 ```
 
+```i18n
+
 ### 核心代码
 
 要结合antd使用，主要代码如下图所示：
+
+@sep
+
+### Code
+
+```
 
 ```jsx
 
@@ -116,7 +148,7 @@ const { default: Form, FormItem, FormCore } = noform;
     ];
     
     class App extends React.Component {
-        componentWillMount = () => { // 初始化表单核心
+        componentWillMount = () => { // initialized FormCore
           this.core = new FormCore();
         }
     
@@ -124,18 +156,18 @@ const { default: Form, FormItem, FormCore } = noform;
           this.core.setGlobalStatus(status);
         }
 
-        render() { // 注入核心        
+        render() { // inject FormCore instance
             return <Form core={this.core} layout={{ label: 6, control: 18 }}>
                 <FormItem label="input" name="input"><Input /></FormItem>
                 <FormItem label="select" name="select"><Select options={dataSource} /></FormItem>
                 
-                { /* ... 省略众多antd组件 */}
+                { /* ... antd components... */}
 
-                <FormItem label="切换状态">
+                <FormItem label="Change Status">
                     <div >
-                        <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'edit')}>编辑态</Button>
-                        <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'preview')}>预览态</Button>
-                        <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'disabled')}>禁用态</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'edit')}>Edit</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'preview')}>Preview</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'disabled')}>Disabled</Button>
                     </div>
                 </FormItem>
             </Form>

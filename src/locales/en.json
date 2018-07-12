@@ -1,8 +1,18 @@
 {
-  "home.status.title": "Status Managerment",
+  "home.status.title": "Status Management",
   "home.start.btn": "Get Started",
   "home.core.title": "Form Logic abstract",
   "home.component.title": "Component Standard",
   "doc.menu.quickStart.init": "Quick Start",
-  "doc.menu.quickStart.best": "Ant Design Best Practise"
+  "doc.menu.quickStart.best": "Ant Design Best Practise",
+  "home.status.desc1": "NoForm put all form's related manuplation in an logical unit to seperate data and view.",
+  "home.status.desc2": "You can also easliy make \"draft and detail\" by the same code but different status through status management.",
+  "home.status.desc3": "It's quite easy to combined with 3rd party library which can save time for rewriting those components.",
+  "home.status.sm1": "Free to modify status of every signle part of form through the status management.",
+  "home.status.sm2": "It's easily make \"draft and detail\" by changing global status, which help reusing code.",
+  "home.core.desc1": "\"FormCore\" is logical unit of abstract of data manuplation, includes values, status, valdation, conidtion",
+  "home.core.desc2": "Using FormCore can avoid repeat work of handling form's logic and improve effiency.",
+  "home.component.desc1": "NoForm make component standard which is 3rd party library friendly and we can save time of repeatly writing component which is painful.",
+  "home.component.desc2": "We prefer \"Dumb Component\" standard which is simple and direct.",
+  "home.end.title": "Who is Using"
 }
