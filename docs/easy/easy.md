@@ -1,18 +1,26 @@
-# 快速开始
+# Quick Start
 
-### 安装
+### Install
 
 ```bash
 $ npm install --save noform
 ```
 
+```i18n
+
 ### 初体验
+
+@sep
+
+First Sight
+
+```
 
 ```onlydemo
 const { default: Form, FormItem, FormCore } = noform;
 const { Button } = antd;
 
-const Input = ({ value = '', status }) => { // 模拟input
+const Input = ({ value = '', status }) => { // Mock Dumb Component Input
     if (status === 'edit') {
         return <input value={value} />
     } else {
@@ -23,7 +31,7 @@ const Input = ({ value = '', status }) => { // 模拟input
 const age = 'age';
 
 class App extends React.Component {
-    componentWillMount = () => { // 初始化表单核心
+    componentWillMount = () => { // initialized FormCore
       this.core = new FormCore();
     }
     
@@ -37,7 +45,7 @@ class App extends React.Component {
       this.core.setStatus(age, agestatus === 'edit' ? 'preview' : 'edit' );
     }
 
-    render() { // 注入核心        
+    render() { // inject formCore
         return <Form core={this.core}>
           <FormItem name="age" label="age"><Input /></FormItem>
           <FormItem label="">
@@ -47,7 +55,7 @@ class App extends React.Component {
             </div>
           </FormItem>
 
-          <p>点击plus1 查看age改变，点击toggle status会切换编辑和预览状态</p>
+          <p>Click plus1 to modify age, Click toggle to change status</p>
         </Form>
     }
 }
@@ -55,12 +63,17 @@ class App extends React.Component {
 ReactDOM.render(<App />, document.getElementById('demo'));
 ```
 
+```i18n
 ### 代码实现
+@sep
+### Implement
+```
+
 
 ```jsx
-import Form, { FormItem, FormCore } from 'noform'; // 引入
+import Form, { FormItem, FormCore } from 'noform';
 
-const Input = ({ value = '', status }) => { // 模拟input
+const Input = ({ value = '', status }) => { // Mock Dumb Component Input
     if (status === 'edit') {
         return <input value={value} />
     } else {
@@ -69,7 +82,7 @@ const Input = ({ value = '', status }) => { // 模拟input
 };
 
 class App extends React.Component {
-    componentWillMount () => { // 初始化表单核心
+    componentWillMount () => { // initialized FormCore
         window.core = this.core = new FormCore();
     }
 
@@ -83,7 +96,7 @@ class App extends React.Component {
       this.core.setStatus(age, agestatus === 'edit' ? 'preview' : 'edit' );
     }
 
-    render() { // 注入核心        
+    render() { // inject formCore
         return <Form core={this.core}>
             <FormItem name="username" label="username"><Input /></FormItem>
             <FormItem label="">
@@ -97,9 +110,20 @@ class App extends React.Component {
 }
 ```
 
+```i18n
 把core挂载到window的原因是在开发时，可以非常方便地在控制台执行修改或查看表单当前的所有数据。
+@sep
+The reason why assign core as glocbal variable is we can easily modify it in browser console.
+```
 
-
+```i18n
 ### 后续
 
 * [Ant Design最佳实践](/docs?md=easy/best-practise-antd)
+@sep
+
+### Follow up
+
+* [Ant Design Best Practise](/docs?md=easy/best-practise-antd)
+
+```

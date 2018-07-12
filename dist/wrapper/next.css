@@ -17,6 +17,35 @@
   white-space: nowrap;
   width: 300px; }
 
+.no-form-item-inset .next-select,
+.no-form-item-inset .next-input,
+.no-form-item-inset .next-input:focus {
+  border: none;
+  outline: none;
+  box-shadow: none; }
+
+.no-form-item-inset .next-radio-group,
+.no-form-item-inset .next-checkbox-group,
+.no-form-item-inset .next-number-picker-input {
+  width: auto; }
+
+.no-form-hoz .no-form-item .no-form-item-content .no-form-item-content-elem > .next-switch {
+  min-width: 44px;
+  width: auto; }
+
+.no-form-item-content-elem > .next-range,
+.no-form-item-content-elem > .next-switch {
+  min-width: 44px;
+  width: auto;
+  line-height: 28px;
+  height: 28px; }
+
+.no-form-item-content-elem > .next-upload .next-upload-list-item {
+  width: 100%; }
+
+.no-form-item-content-elem > label {
+  line-height: 28px; }
+
 .next-upload {
   min-width: 224px; }
 
@@ -48,4 +77,7 @@
     cursor: text; }
 
 .next-preview-datepicker .next-icon {
+  display: none; }
+
+.next-preview-select .next-select-placeholder {
   display: none; }

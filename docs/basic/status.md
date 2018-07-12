@@ -1,3 +1,5 @@
+```i18n
+
 # 状态控制
 
 状态是NoForm中非常重要的一环，通过状态的控制，能够在传统的
@@ -7,6 +9,20 @@
 
 # 示例
 
+@sep
+
+
+# Status Management
+
+Status is play an very important part in NoForm.
+We can easily make different scene such as `draft`, `edit`, `detail` by using the same code but different status.
+
+Besides, Status Management also help you solve complex demand.
+
+# Example
+
+```
+
 ```onlydemo
 
 const { default: Form, FormItem, FormCore } = noform;
@@ -14,7 +30,7 @@ const { default: Form, FormItem, FormCore } = noform;
     const { Input, Button } = antdWrapper(antd);
 
     class App extends React.Component {
-        componentWillMount = () => { // 初始化表单核心
+        componentWillMount = () => { // initialized core instance
           this.core = new FormCore();
         }
     
@@ -27,38 +43,38 @@ const { default: Form, FormItem, FormCore } = noform;
           console.log('====>', name, status);
         }
 
-        render() { // 注入核心        
+        render() { // inject core instance        
             return <Form core={this.core} layout={{ label: 6, control: 18 }}>
                 <FormItem label="username" name="username" value="username"><Input /></FormItem>
                 <FormItem label="age" name="age" value="age"><Input /></FormItem>
                 <FormItem label="gender" name="gender" value="gender"><Input /></FormItem>
 
-                <FormItem label="全局status">
+                <FormItem label="Global Status">
                     <div >
-                        <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'edit')}>编辑态</Button>
-                        <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'preview')}>预览态</Button>
-                        <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'disabled')}>禁用态</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'edit')}>Edit</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'preview')}>Preview</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'disabled')}>Disabled</Button>
                     </div>
                 </FormItem>
                 <FormItem label="username - status">
                     <div >
-                        <Button style={{ marginRight: 12 }} onClick={this.setItemStatus.bind(this, 'username', 'edit')}>编辑态</Button>
-                        <Button style={{ marginRight: 12 }} onClick={this.setItemStatus.bind(this, 'username', 'preview')}>预览态</Button>
-                        <Button style={{ marginRight: 12 }} onClick={this.setItemStatus.bind(this, 'username', 'disabled')}>禁用态</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.setItemStatus.bind(this, 'username', 'edit')}>Edit</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.setItemStatus.bind(this, 'username', 'preview')}>Preview</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.setItemStatus.bind(this, 'username', 'disabled')}>Disabled</Button>
                     </div>
                 </FormItem>
                 <FormItem label="age - status">
                     <div >
-                        <Button style={{ marginRight: 12 }} onClick={this.setItemStatus.bind(this, 'age', 'edit')}>编辑态</Button>
-                        <Button style={{ marginRight: 12 }} onClick={this.setItemStatus.bind(this, 'age', 'preview')}>预览态</Button>
-                        <Button style={{ marginRight: 12 }} onClick={this.setItemStatus.bind(this, 'age', 'disabled')}>禁用态</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.setItemStatus.bind(this, 'age', 'edit')}>Edit</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.setItemStatus.bind(this, 'age', 'preview')}>Preview</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.setItemStatus.bind(this, 'age', 'disabled')}>Disabled</Button>
                     </div>
                 </FormItem>
                 <FormItem label="gender - status">
                     <div >
-                        <Button style={{ marginRight: 12 }} onClick={this.setItemStatus.bind(this, 'gender', 'edit')}>编辑态</Button>
-                        <Button style={{ marginRight: 12 }} onClick={this.setItemStatus.bind(this, 'gender', 'preview')}>预览态</Button>
-                        <Button style={{ marginRight: 12 }} onClick={this.setItemStatus.bind(this, 'gender', 'disabled')}>禁用态</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.setItemStatus.bind(this, 'gender', 'edit')}>Edit</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.setItemStatus.bind(this, 'gender', 'preview')}>Preview</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.setItemStatus.bind(this, 'gender', 'disabled')}>Disabled</Button>
                     </div>
                 </FormItem>
             </Form>
@@ -68,6 +84,7 @@ const { default: Form, FormItem, FormCore } = noform;
     ReactDOM.render(<App />, document.getElementById('demo'));
 ```
 
+```i18n
 
 # 状态枚举
 
@@ -75,41 +92,68 @@ NoForm 认为表单状态分为以下三种类型：`edit(编辑态)`, `preview(
 
 # 全局维度
 
-```jsx
+@sep
 
-this.core.setGlobalStatus('edit'); // 全局设置状态
-this.core.getGlobalStatus(); // 获取全局状态
+# Status Enum
+
+`edit`, `preview`, `disabled`
+
+# Global Status
 
 ```
 
+
+
+```jsx
+
+this.core.setGlobalStatus('edit'); // set up global status
+this.core.getGlobalStatus(); // get global status
+
+```
+
+```i18n
 # 组件维度（视图控制）
+@sep
+# Change Status(JSX Way)
+
+```
 
 ```jsx
 <Form>
-    <FormItem name="username" status={(values, core) => { // 通过方法返回状态控制
-        // 根据values或从core获取到的信息返回一个符合状态枚举的值
-        // 不合法的值会被忽略
+    // status(function): (value, core) => ['edit'|'preview'|'disabled'] 
+    <FormItem name="username" status={(values, core) => {
         return 'preview'; // edit/preview|disabled
     }}>
         <Input />
     </FormItem>
     
-    <FormItem name="age" status="preview"><Input /></FormItem> // 直接写状态控制
+    // staus(string['edit'|'preview'|'disabled'] )
+    <FormItem name="age" status="preview"><Input /></FormItem>
 </Form>
 
 ```
 
+```i18n
+
 视图控制状态在`动态生成组件` 或 `处理复杂状态` 时比较常用。
 
 ### 组件维度（核心控制)
+@sep
+用。
+It is helpful using FormCore instance to modify status.
 
-```jsx
-
-this.core.setStatus('username', 'edit'); // 设置单个组件的状态
-this.core.getStatus('username'); // 获取单个组件的状态
+# Change Status(FormCore Way)
 
 ```
 
+```jsx
+
+this.core.setStatus('username', 'edit'); // modify single item's status
+this.core.getStatus('username'); // get single item's status
+
+```
+
+```i18n
 # 组件适配
 
 为了能够更好实现状态控制，开发者需要对引入的组件进行 `"适配"`。
@@ -120,3 +164,17 @@ this.core.getStatus('username'); // 获取单个组件的状态
 * [Ant Design 适配层](/docs?md=advanced/antd)
 
 对于需要自定义适配层的开发者，请参见[接入自定义组件章节](/docs?md=component/custom)了解更多。
+
+@sep
+
+# Component Adaptation
+
+For better control status of 3rd party library's components, Developer need to adapt these components since most of these components only have `edit` status.
+
+Now we have already got an adaptor for Ant Design.
+
+* [Ant Design Adaptor](/docs?md=advanced/antd)
+
+For those developer who need custom config adaptor, please check [Custom Adaptor](/docs?md=component/custom) for more information.
+
+```

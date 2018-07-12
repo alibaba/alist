@@ -1,4 +1,4 @@
 # Summary
 
 * [API]()
-   * [core](api/all.md)
+   * [Core](api/all.md)

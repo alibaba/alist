@@ -1,5 +1,10 @@
 .no-form-item-content-elem > .ant-switch {
-  min-width: 44px; }
+  min-width: 44px;
+  width: auto; }
+
+.no-form-hoz .no-form-item .no-form-item-content .no-form-item-content-elem > .ant-switch {
+  min-width: 44px;
+  width: auto; }
 
 .no-form-item-content-elem > .ant-btn {
   min-width: auto; }
@@ -10,6 +15,33 @@
 .dialog-form-wrapper .ant-custom-btns {
   margin-top: 24px;
   float: right; }
+
+.ant-slider {
+  padding: 0; }
+
+.no-form-item-inset .ant-input,
+.no-form-item-inset .ant-input:focus,
+.no-form-item-inset .ant-cascader-input,
+.no-form-item-inset .ant-time-picker-input,
+.no-form-item-inset .ant-select-selection,
+.no-form-item-inset .ant-input-number,
+.no-form-item-inset .ant-mention-wrapper.ant-mention-active:not(.disabled) .ant-mention-editor,
+.no-form-item-inset .ant-select-search__field,
+.no-form-item-inset .ant-select-focused .ant-select-selection,
+.no-form-item-inset .ant-select-selection:focus,
+.no-form-item-inset .public-DraftEditor-content:focus,
+.no-form-item-inset .ant-mention-editor,
+.no-form-item-inset .ant-mention-editor-wrapper,
+.no-form-item-inset .DraftEditor-root,
+.no-form-item-inset .DraftEditor-editorContainer,
+.no-form-item-inset .ant-select-selection:active {
+  border: none;
+  outline: none;
+  box-shadow: none; }
+
+.no-form-item-inset .ant-radio-group,
+.no-form-item-inset .ant-checkbox-group {
+  width: auto; }
 
 .multi-value-item-wrapper .multi-value-item {
   margin-right: 8px; }
