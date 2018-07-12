@@ -31,7 +31,7 @@ class Main extends React.Component {
                             </div>
 
                             <div className="landing-btn-wrapper">
-                                <Link to={"/docs?md=easy/easy"}>
+                                <Link to={`/${lang}/docs?md=easy/easy`}>
                                 <div className="landing-btn">
                                     <FormattedMessage id="home.start.btn" />
                                 </div>
