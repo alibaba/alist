@@ -7,20 +7,6 @@ import { STATUS_ENUMS, CHANGE, FOCUS, BLUR } from '../static';
 const noop = () => {};
 
 class Form extends Component {
-    static defaultProps = {
-        onChange: noop,
-        onFocus: noop,
-        onBlur: noop,
-        onMount: noop,
-        map: v => v,
-        core: null,
-        validateConfig: null,
-        value: null,
-        error: null,
-        status: STATUS_ENUMS.EDIT,
-        globalStatus: STATUS_ENUMS.EDIT,
-        props: null,
-    };
     static propTypes = {
         onChange: PropTypes.func,
         onFocus: PropTypes.func,
@@ -35,14 +21,27 @@ class Form extends Component {
         globalStatus: PropTypes.string,
         props: PropTypes.object,
     }
-
     static contextTypes = {
         item: PropTypes.object,
     };
-
     static childContextTypes = {
         form: PropTypes.object,
     };
+    static defaultProps = {
+        onChange: noop,
+        onFocus: noop,
+        onBlur: noop,
+        onMount: noop,
+        map: v => v,
+        core: null,
+        validateConfig: null,
+        value: null,
+        error: null,
+        status: STATUS_ENUMS.EDIT,
+        globalStatus: STATUS_ENUMS.EDIT,
+        props: null,
+    };
+
 
     constructor(props, context) {
         super(props, context);
@@ -127,8 +126,10 @@ class Form extends Component {
 
     render() {
         // 默认布局为垂直布局
-        const { full, style = {}, children, className = '', direction = 'vertical' } = this.props;
-        return <div style={style} className={`no-form no-form-${direction} ${className} no-form-${full ? 'full' : 'auto' }`}>{children}</div>;
+        const {
+            full, style = {}, children, className = '', direction = 'vertical',
+        } = this.props;
+        return <div style={style} className={`no-form no-form-${direction} ${className} no-form-${full ? 'full' : 'auto'}`}>{children}</div>;
     }
 }
 
