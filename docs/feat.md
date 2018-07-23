@@ -83,7 +83,10 @@ let children = [
         </div>
         <br/><br/>
         <button onClick={() => console.log(formcore.getValue())}> console value </button>
-        <button onClick={() => formcore.setValue('outside', '123')}> outside trigger </button>
+        <button onClick={() => {
+            formcore.setValue('outside', '123');
+            formcore.setValue('otheraaa', '44441231');
+        }}> outside trigger </button>
         <button onClick={() => formcore.setValues({ 'outsideObj': '123' })}> outside trigger(obj) </button>
     </Form>
 })(),
