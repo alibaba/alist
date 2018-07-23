@@ -38,7 +38,7 @@ class PageDemo extends React.Component {
   	setStatus = (status) => {
 	    this.core.setGlobalStatus(status);
   }
-  
+
   getValues = () => {
     console.log(this.core.getValues());
   }
@@ -63,7 +63,7 @@ class PageDemo extends React.Component {
           }];
 
 	    return (
-	      <Form direction="hoz" inset core={this.core} >
+	      <Form direction="hoz" inset core={this.core}>
 	          <FormItem label="input" name="input"><Input /></FormItem>
               <FormItem label="AutoComplete" name="AutoComplete"><AutoComplete options={dataSource} /></FormItem>
               <FormItem label="超长中文换行" name="AutoComplete2"><AutoComplete options={dataSource} /></FormItem>

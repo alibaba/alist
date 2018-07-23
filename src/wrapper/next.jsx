@@ -87,6 +87,12 @@ function Input(props) {
     if (props.status === 'preview') return renderValue(value); // 处理预览态
     return <Next.Input {...props} value={value} {...insetify(props)} />;
 }
+function TextArea(props) {
+    const value = props.value || '';
+    // TODO: 需要确认Textarea
+    if (props.status === 'preview') return renderValue(value); // 处理预览态
+    return <Next.Input.TextArea {...props} value={value} {...insetify(props)} />;
+}
 
 function Select(props) {
     const { className = '' } = props;
@@ -293,7 +299,7 @@ function wrapper(NextSource) {
     if (Next.TreeSelect) TreeSelect.Node = Next.TreeSelect.Node;
     Upload.ImageUpload = ImageUpload;
     Select.AutoComplete = AutoComplete;
-
+    Input.TextArea = TextArea;
     return {
         ...NextSource,
         Input,

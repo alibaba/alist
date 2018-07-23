@@ -24,7 +24,6 @@ class FormItem extends Component {
 
     static defaultProps = {
         name: '',
-        // value: null,
         children: null,
     }
 
@@ -93,9 +92,7 @@ class FormItem extends Component {
         };
 
         const full = jsxFull || coreFull || inset;
-        const componentProps = {
-            inset,
-        };
+        const componentProps = { };
 
         const errCls = hasError ? `${formItemPrefix}-item-has-error` : '';
         const insetCls = inset ? `${formItemPrefix}-item-inset` : '';
