@@ -27,7 +27,7 @@ class FormItem extends Component {
         ifCore: PropTypes.object,
     };
 
-    getChildContext() { // 传递form   
+    getChildContext() { // 传递form
         return { form: this.form, ifCore: this.ifCore };
     }
 
@@ -89,9 +89,7 @@ class FormItem extends Component {
         // 处理布局
         const { inset = false, layout = {}, full: jsxFull } = { ...this.form.jsx.props, ...itemProps };
         const full = jsxFull || coreFull || inset;
-        const componentProps = {
-            inset,
-        };
+        const componentProps = { };
 
         const errCls = hasError ? `${formItemPrefix}-item-has-error` : '';
         const insetCls = inset ? `${formItemPrefix}-item-inset` : '';
