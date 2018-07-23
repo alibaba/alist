@@ -153,7 +153,7 @@ class Item extends Component {
         this.didMount = false;
     }
     onChange = (e, opts = {}) => {
-        const { escape = false } = opts; // 直接用原生对象不进行判断
+        const { escape = false } = opts; // 直接用原生对象不进行判断        
 
         let val = e;
         if (!escape) {
@@ -175,7 +175,13 @@ class Item extends Component {
             }
         }
 
+        this.form.currentCore = this.core;
+        this.form.currentEventType = 'manual';
         this.core.set('value', val);
+        Promise.resolve().then(() => {
+            this.form.currentCore = null;
+            this.form.currentEventType = 'api';
+        });
     }
     onBlur = () => {
         this.core.emit(BLUR, this.core.name);

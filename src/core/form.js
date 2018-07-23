@@ -19,6 +19,7 @@ class Form {
         this.children = [];
         this.childrenMap = {};
         this.ext = null;
+        this.currentEventType = 'api';
 
         // TODO: 依赖status作为属性的例子需要改掉
         this.globalStatus = globalStatus || 'edit';
