@@ -7,6 +7,7 @@ const isObject = obj => Object.prototype.toString.call(obj) === '[object Object]
 const genName = () => `__anonymouse__${Math.random().toString(36)}`;
 const noop = () => {};
 const isInvalidVal = val => (typeof val === 'number' ? false : !val);
+const isSingleItemSet = arg => (arg.length >= 3 && typeof arg[1] === 'string');
 
 class Form {
     constructor(option = {}) {
@@ -17,6 +18,7 @@ class Form {
         this.onChange = onChange || noop;
         this.children = [];
         this.childrenMap = {};
+        this.ext = null;
 
         // TODO: 依赖status作为属性的例子需要改掉
         this.globalStatus = globalStatus || 'edit';
@@ -153,8 +155,9 @@ class Form {
     }
 
     // 设置单子段
-    setItem(type, name, value) {
+    setItem(type, name, value, ext) {
         this.isSetting = true;
+        this.ext = ext;
         let formatValue = value;
 
         // 处理props的情况，merge合并
@@ -196,7 +199,7 @@ class Form {
     // 设置多字段
     set(type, value) {
         // 设置单字段
-        if (arguments.length === 3) {
+        if (isSingleItemSet(arguments)) {
             this.setItem(type, value, arguments[2]);
             return;
         }
@@ -207,6 +210,7 @@ class Form {
         }
 
         this.isSetting = true;
+        this.ext = arguments[2]; // 额外参数
 
         // 异常情况
         if (typeof value !== 'object') {
@@ -259,6 +263,7 @@ class Form {
         this.isSetting = false;
         this.hasEmitted = false;
         this.settingBatchKeys = null;
+        this.ext = null;
     }
 
     // 全局状态

@@ -66,7 +66,7 @@ let children = [
 })(),
 (() => {
     let formcore
-    return <Form style={{ marginBottom: 12 }} onMount={core => window.core = formcore = core} layout={{label: 5, control: 19}} full>
+    return <Form style={{ marginBottom: 12 }} onMount={core => formcore = core} layout={{label: 5, control: 19}} full>
         <h3>外部触发IF</h3>
         <div className="demo-form">
             <FormItem label="username" name="username"><Input /></FormItem>
@@ -92,7 +92,7 @@ let children = [
 })(),
 (() => {
     let formcore
-    return <Form onMount={core => window.core = formcore = core} style={{ marginBottom: 12 }} layout={{label: 5, control: 19}} full>
+    return <Form onMount={core => formcore = core} style={{ marginBottom: 12 }} layout={{label: 5, control: 19}} full>
         <h3>If布局</h3>
         <div className="demo-form">
             <FormItem label="username" name="username" defaultValue="bobby"><Input /></FormItem>
@@ -109,7 +109,7 @@ let children = [
 })(),
 (() => {
     let formcore
-    return <Form onMount={core => window.core = formcore = core} direction="hoz" style={{ marginBottom: 12 }} full>
+    return <Form onMount={core => formcore = core} direction="hoz" style={{ marginBottom: 12 }} full>
         <h3>If布局(水平)</h3>
         <div className="demo-form">
             <FormItem label="username" name="username" defaultValue="bobby"><Input /></FormItem>
@@ -121,6 +121,33 @@ let children = [
                 <FormItem label="ooolll" name="ooolll"><Input /></FormItem>
             </If>
             <button onClick={() => formcore.setGlobalStatus('preview')}>preview</button>
+        </div>
+    </Form>
+})(),
+(() => {
+    const extCore = new FormCore({
+        onChange: (fields, values, context) => {
+            console.log(context, fields, values);
+            console.log(context.ext);
+        }
+    });
+
+    const extTarget = {
+        username: 'bobby'
+    };
+    return <Form core={extCore} style={{ marginBottom: 12 }} full>
+        <h3>setValue with Extra</h3>
+        <div className="demo-form">
+            <FormItem label="username" name="username" ><Input /></FormItem>
+            <FormItem label="age" name="age"><Input /></FormItem>
+            <If when={({ username }) => {
+                return username === 'bobby';
+            }}>
+                <FormItem label="hulalal" name="hulalal"><Input /></FormItem>
+                <FormItem label="ooolll" name="ooolll"><Input /></FormItem>
+            </If>
+            <button onClick={() => extCore.setValues(extTarget)}>setValues</button>
+            <button onClick={() => extCore.setValues(extTarget, { detail: true })}>setValuesWith</button>
         </div>
     </Form>
 })()
