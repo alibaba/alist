@@ -18,7 +18,6 @@ class Form {
         this.onChange = onChange || noop;
         this.children = [];
         this.childrenMap = {};
-        this.ext = null;
         this.currentEventType = 'api';
 
         // TODO: 依赖status作为属性的例子需要改掉
@@ -156,9 +155,8 @@ class Form {
     }
 
     // 设置单子段
-    setItem(type, name, value, ext) {
+    setItem(type, name, value) {
         this.isSetting = true;
-        this.ext = ext;
         let formatValue = value;
 
         // 处理props的情况，merge合并
@@ -188,9 +186,10 @@ class Form {
     }
 
     // 重置value
-    reset() {
+    reset(keys) {
         const emptyValue = {};
-        Object.keys(this.value).forEach((key) => {
+        const resetKeys = keys || Object.keys(this.value);
+        resetKeys.forEach((key) => {
             emptyValue[key] = null;
         });
 
@@ -211,7 +210,6 @@ class Form {
         }
 
         this.isSetting = true;
-        this.ext = arguments[2]; // 额外参数
 
         // 异常情况
         if (typeof value !== 'object') {
@@ -264,7 +262,6 @@ class Form {
         this.isSetting = false;
         this.hasEmitted = false;
         this.settingBatchKeys = null;
-        this.ext = null;
     }
 
     // 全局状态
