@@ -591,8 +591,8 @@ describe('core/form basic function', () => {
 });
 
 describe('core/form nested', () => {
-    let form,
-        fullname;
+    let form;
+    let fullname;
     beforeEach(() => {
         fullname = new FormCore('fullname');
         form = new FormCore('form');
@@ -660,7 +660,7 @@ describe('core/form nested', () => {
             lastname: 'zhou',
         });
     });
-    it('fullname set value', () => {
+    it('fullname set value（default)', () => {
         fullname.setValue({
             firstname: 'bojoyccc',
         });
@@ -673,7 +673,7 @@ describe('core/form nested', () => {
             },
         });
     });
-    it('fullname set firstname', async () => {
+    it('fullname set firstname', () => {
         fullname.setItemValue('firstname', 'bojoycnnn');
         expect(form.getValue()).toEqual({
             age: 16,
@@ -683,7 +683,7 @@ describe('core/form nested', () => {
             },
         });
     });
-    it('fullname set value', async () => {
+    it('fullname set value(full)', () => {
         fullname.setValue({
             firstname: 'bojoyccc',
             lastname: 'zhouzzz',

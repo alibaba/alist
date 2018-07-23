@@ -246,12 +246,14 @@ class Form {
         });
 
         if (type === 'value') { // 处理不在childNames里的值
-            this.settingBatchKeys.forEach((setKey) => {
-                if (childNames.indexOf(setKey) === -1) {
-                    this.emit(BASIC_EVENT[type], setKey, this[type][setKey]);
-                    this.emit(ANY_CHANGE, type, setKey, this[type][setKey]);
-                }
-            });
+            if (Array.isArray(this.settingBatchKeys)) {
+                this.settingBatchKeys.forEach((setKey) => {
+                    if (childNames.indexOf(setKey) === -1) {
+                        this.emit(BASIC_EVENT[type], setKey, this[type][setKey]);
+                        this.emit(ANY_CHANGE, type, setKey, this[type][setKey]);
+                    }
+                });
+            }
         }
 
         this.isSetting = false;
