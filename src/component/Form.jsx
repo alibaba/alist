@@ -7,26 +7,17 @@ import { STATUS_ENUMS, CHANGE, FOCUS, BLUR } from '../static';
 const noop = () => {};
 
 class Form extends Component {
-    static defaultProps = {
-        onChange: noop,
-        onFocus: noop,
-        onBlur: noop,
-        onMount: noop,
-        map: v => v,
-        core: null,
-        validateConfig: null,
-        value: null,
-        error: null,
-        status: STATUS_ENUMS.EDIT,
-        globalStatus: STATUS_ENUMS.EDIT,
-        props: null,
-    };
     static propTypes = {
         onChange: PropTypes.func,
         onFocus: PropTypes.func,
         onBlur: PropTypes.func,
         onMount: PropTypes.func,
         map: PropTypes.func,
+        full: PropTypes.bool,
+        style: PropTypes.object,
+        children: PropTypes.any,
+        className: PropTypes.any,
+        direction: PropTypes.string,
         core: PropTypes.instanceOf(FormCore),
         validateConfig: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
         value: PropTypes.object,
@@ -44,6 +35,21 @@ class Form extends Component {
         form: PropTypes.object,
     };
 
+    static defaultProps = {
+        onChange: noop,
+        onFocus: noop,
+        onBlur: noop,
+        onMount: noop,
+        map: v => v,
+        core: null,
+        validateConfig: null,
+        value: null,
+        error: null,
+        status: STATUS_ENUMS.EDIT,
+        globalStatus: STATUS_ENUMS.EDIT,
+        props: null,
+    };
+
     constructor(props, context) {
         super(props, context);
         const { item } = context;
@@ -53,8 +59,9 @@ class Form extends Component {
             this.core = props.core;
         } else {
             // 无core则自定义生成不需要处理onChange, 使用jsx上的
-            const { onChange, ...others } = props;
-            this.core = new FormCore(others);
+            const mrProps = { ...props };
+            delete mrProps.onChange;
+            this.core = new FormCore(mrProps);
         }
 
         // 绑定事件和视图
@@ -127,8 +134,10 @@ class Form extends Component {
 
     render() {
         // 默认布局为垂直布局
-        const { full, style = {}, children, className = '', direction = 'vertical' } = this.props;
-        return <div style={style} className={`no-form no-form-${direction} ${className} no-form-${full ? 'full' : 'auto' }`}>{children}</div>;
+        const {
+            full, style = {}, children, className = '', direction = 'vertical',
+        } = this.props;
+        return <div style={style} className={`no-form no-form-${direction} ${className} no-form-${full ? 'full' : 'auto'}`}>{children}</div>;
     }
 }
 

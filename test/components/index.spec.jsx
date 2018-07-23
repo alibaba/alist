@@ -1,10 +1,12 @@
 import React from 'react';
+import * as Antd from 'antd';
 import sinon from 'sinon';
-import { mount, shallow } from 'enzyme';
-
-import Form, { FormItem, Item, If, Repeater } from '../../src';
+import { mount } from 'enzyme';
+import wrapper from '../../src/wrapper/antd';
+import Form, { FormItem, Item, If } from '../../src';
 
 // status: edit, preview, hidden
+const { Select } = wrapper(Antd);
 
 function Input(props) {
     let {
@@ -50,6 +52,11 @@ describe('component/form basic function', () => {
         gender: { type: 'enum', required: true, enum: ['male', 'female'] },
     };
 
+    const options = [
+        { label: 1, value: 1 },
+        { label: 0, value: 0 },
+    ];
+
     beforeEach(() => {
         handler = sinon.spy();
         form = mount(<Form
@@ -75,6 +82,9 @@ describe('component/form basic function', () => {
             </FormItem>
             <FormItem label="gender" name="gender">
                 <Input />
+            </FormItem>
+            <FormItem label="opts" name="opts" defaultValue={0}>
+                <Select options={options} />
             </FormItem>
         </Form>);
     });
@@ -126,6 +136,11 @@ describe('component/form basic function', () => {
         expect(form.find('input[name="username"]').render().val()).toEqual(defaultValue.username);
         expect(form.find('input[name="age"]').render().val()).toEqual(defaultValue.age);
         expect(form.find('input[name="gender"]').render().val()).toEqual(defaultValue.gender);
+    });
+
+    it('should work with default value 0', () => {
+        expect(form.find('.ant-select-selection-selected-value').render().text()).toEqual('0');
+        expect(formcore.getValue('opts')).toEqual(0);
     });
 
     it('should work when setValue', () => {
@@ -189,7 +204,9 @@ describe('component/form basic function', () => {
         });
 
         expect(handler.calledOnce).toEqual(true);
-        expect(handler.calledWith({ username: 'phoebe', age: '18', gender: 'male' })).toEqual(true);
+        expect(handler.calledWith({
+            username: 'phoebe', age: '18', gender: 'male', opts: 0,
+        })).toEqual(true);
     });
 
     it('should trigger on onChange when control elem changed', () => {
@@ -201,7 +218,9 @@ describe('component/form basic function', () => {
 
         form.find('input[name="username"]').simulate('change', event);
         expect(handler.calledOnce).toEqual(true);
-        expect(handler.calledWith({ username: 'phoebe', age: '18', gender: 'male' })).toEqual(true);
+        expect(handler.calledWith({
+            username: 'phoebe', age: '18', gender: 'male', opts: 0,
+        })).toEqual(true);
     });
     it('should not trigger onChange', () => {
         formcore.setValueSilent({
@@ -228,7 +247,7 @@ describe('component/FormItem 嵌套', () => {
         let formcore;
         const form = mount(<Form onMount={core => formcore = core}>
             <FormItem label="username" name="username"><Input /></FormItem>
-            <FormItem label="age" name="age"><Input /></FormItem>                
+            <FormItem label="age" name="age"><Input /></FormItem>
 
             <FormItem label="">
                 <div>
@@ -237,35 +256,31 @@ describe('component/FormItem 嵌套', () => {
                 </div>
             </FormItem>
 
-            <If when={(values, { globalStatus }) => {
-                return values.username === 'bobby';
-            }}>
+            <If when={(values, { globalStatus }) => values.username === 'bobby'}>
                 <FormItem name="firstLayer" label="" style={{ margin: '12px 0' }}>
                     <div>
                         <div id="hellobobby">hello bobby!</div>
-                        <If when={(values, { globalStatus }) => {
-                            return values.age == 23;
-                        }}>
+                        <If when={(values, { globalStatus }) => values.age == 23}>
                             <FormItem label="" name="finalMaze">
                                 <div>Congratulation! You've solved the last maze!</div>
                             </FormItem>
                         </If>
                     </div>
-                </FormItem>                  
+                </FormItem>
             </If>
         </Form>);
         expect(form.find('Input[name="username"]').prop('value')).toEqual(null);
         expect(form.find('Item[name="firstLayer"]').length).toEqual(0);
 
         formcore.setValue({
-            username: 'bobby'
+            username: 'bobby',
         });
         form.mount();
         expect(form.find('Item[name="firstLayer"]').length).toEqual(1);
         expect(form.find('Item[name="firstLayer"] div#hellobobby').prop('children')).toEqual('hello bobby!');
         expect(form.find('Item[name="finalMaze"]').length).toEqual(0);
         formcore.setValue({
-            age: 23
+            age: 23,
         });
         form.mount();
         expect(form.find('Item[name="finalMaze"]').length).toEqual(1);

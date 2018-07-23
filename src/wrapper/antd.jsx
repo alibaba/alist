@@ -1,39 +1,8 @@
 import React from 'react';
+import { formatValue, formatArray, formatBoolValue, getValueProps } from './util';
 
 const IS_REACT_GREATER_FITHTEEN = parseInt(React.version, 10) > 15;
 const prefix = 'ant';
-const noop = v => v;
-
-function formatValue(value) {
-    if (value === null || value === undefined) return '';
-    return value; // 0 或 []直接返回
-}
-
-function formatArray(value) {
-    if (value === null || value === undefined) return [];
-    return value;
-}
-
-function formatBoolValue(value) {
-    if (value === null || value === undefined) return false;
-    if (value === true || value === 'true') {
-        return true;
-    } else if (value === false || value === 'false') {
-        return false;
-    }
-    return false;
-}
-
-function getValueProps(props, opts = {}) {
-    const valueProps = {};
-    const { keyname = 'value', defaultValue = '', format = noop } = opts;
-    if ('value' in props) {
-        valueProps[keyname] = format(props.value || defaultValue);
-    }
-
-    return valueProps;
-}
-
 
 function renderValue(value) {
     if (value === null || value === undefined) return null; // 空值直接返回
@@ -114,7 +83,7 @@ class WrapperClass {
         if (options && Array.isArray(options) && !children) {
             opts.children = options.map((item) => {
                 const { label, value: itemVal } = item;
-                return <this.Antd.Select.Option value={itemVal}>{label}</this.Antd.Select.Option>;
+                return <this.Antd.Select.Option key={`${itemVal}_${label}`} value={itemVal}>{label}</this.Antd.Select.Option>;
             });
         }
 
@@ -149,7 +118,7 @@ class WrapperClass {
             if (props.children) { // 存在label
                 return checked ? renderValue(props.children) : null;
             } // 不存在
-            console.warn('label必须写在Checkbox内，如需编写外部label, 请使用suffix、prefix等熟悉'); // 给出警告
+            window && window.console && window.console.warn('label必须写在Checkbox内，如需编写外部label, 请使用suffix、prefix等熟悉'); // 给出警告
             return null;
         }
 
@@ -173,7 +142,7 @@ class WrapperClass {
             if (props.children) { // 存在label
                 return checked ? renderValue(props.children) : null;
             } // 不存在
-            console.warn('label必须写在Radio内，如需编写外部label, 请使用suffix、prefix等熟悉'); // 给出警告
+            window && window.console && window.console.warn('label必须写在Radio内，如需编写外部label, 请使用suffix、prefix等熟悉'); // 给出警告
             return null;
         }
 

@@ -1,35 +1,9 @@
 import React from 'react';
+import { formatValue, formatArray, formatBoolValue, log } from './util';
 
-const IS_REACT_GREATER_FITHTEEN = parseInt(React.version) > 15;
+const IS_REACT_GREATER_FITHTEEN = parseInt(React.version, 10) > 15;
 let Next;
 
-function formatValue(value) {
-    if (value === null || value === undefined) return '';
-    return value; // 0 或 []直接返回
-}
-
-function formatArray(value) {
-    if (value === null || value === undefined) return [];
-    return value;
-}
-
-function formatDate(value) {
-    if (value === null || value === undefined) return '';
-    if (Next && Next.moment) {
-        return Next.moment(value).format('YYYY-MM-DD');
-    }
-    return value;
-}
-
-function formatBoolValue(value) {
-    if (value === null || value === undefined) return false;
-    if (value === true || value === 'true') {
-        return true;
-    } else if (value === false || value === 'false') {
-        return false;
-    }
-    return false;
-}
 
 function renderValue(value) {
     if (value === null || value === undefined) return null; // 空值直接返回
@@ -118,7 +92,6 @@ function Select(props) {
     const { className = '' } = props;
     const value = formatValue(props.value); // 格式化值
 
-    // if(props.status === 'preview') return renderOption(props);
     if (props.status === 'preview') return <Next.Select {...props} disabled className={`${className || ''} next-preview-select`} value={value} />;
     return <Next.Select {...props} value={value} {...insetify(props)} />;
 }

@@ -1,9 +1,9 @@
-import { shallow, configure} from 'enzyme';
+import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-15';
-import 'raf/polyfill'
+import 'raf/polyfill';
 
 configure({ adapter: new Adapter() });
 
-global.requestAnimationFrame = function(callback) {
-  setTimeout(callback, 0);
+global.requestAnimationFrame = (callback) => {
+    setTimeout(callback, 0);
 };

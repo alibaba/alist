@@ -8,15 +8,9 @@ class If extends Component {
         children: PropTypes.any,
         style: PropTypes.object,
         className: PropTypes.string,
+        name: PropTypes.any,
         Com: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     }
-    static defaultProps = {
-        when: true,
-        children: null,
-        style: {},
-        className: '',
-        Com: 'span',
-    };
     static contextTypes = {
         form: PropTypes.object,
         ifCore: PropTypes.object,
@@ -24,6 +18,13 @@ class If extends Component {
     static childContextTypes = {
         ifCore: PropTypes.object,
         form: PropTypes.object,
+    };
+    static defaultProps = {
+        when: true,
+        children: null,
+        style: {},
+        className: '',
+        Com: 'span',
     };
     constructor(props, context) {
         super(props, context);
@@ -62,7 +63,10 @@ class If extends Component {
         if (React.isValidElement(children)) {
             return React.Children.only(children);
         }
-        return <Com {...{ style, className }}>{children}</Com>;
+
+        const ftcls = `${className || ''} no-form-item`;
+
+        return <Com {...{ style, className: ftcls }}>{children}</Com>;
     }
 }
 

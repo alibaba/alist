@@ -6,11 +6,6 @@ import { ANY_CHANGE, EDIT, HIDDEN } from '../static';
 const formItemPrefix = 'no-form';
 
 class FormItem extends Component {
-    static defaultProps = {
-        name: '',
-        value: null,
-        children: null,
-    }
     static propTypes = {
         name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         value: PropTypes.object,
@@ -27,8 +22,10 @@ class FormItem extends Component {
         ifCore: PropTypes.object,
     };
 
-    getChildContext() { // 传递form   
-        return { form: this.form, ifCore: this.ifCore };
+    static defaultProps = {
+        name: '',
+        // value: null,
+        children: null,
     }
 
     constructor(props, context) {
@@ -42,6 +39,10 @@ class FormItem extends Component {
         if (props.name) {
             this.name = props.name;
         }
+    }
+
+    getChildContext() { // 传递form
+        return { form: this.form, ifCore: this.ifCore };
     }
 
     componentDidMount() {
@@ -87,7 +88,10 @@ class FormItem extends Component {
         }
 
         // 处理布局
-        const { inset = false, layout = {}, full: jsxFull } = { ...this.form.jsx.props, ...itemProps };
+        const { inset = false, layout = {}, full: jsxFull } = {
+            ...this.form.jsx.props, ...itemProps,
+        };
+
         const full = jsxFull || coreFull || inset;
         const componentProps = {
             inset,

@@ -5,12 +5,36 @@ import { ANY_CHANGE, BLUR, FOCUS } from '../static';
 const isFunction = func => typeof func === 'function';
 const isObject = obj => Object.prototype.toString.call(obj) === '[object Object]';
 const noop = () => { };
+
+const getValue = (jsxProps) => {
+    const hasVal = ('value' in jsxProps);
+    const hasDefaultVal = ('defaultValue' in jsxProps);
+    if ((hasVal && hasDefaultVal) || hasVal) {
+        return jsxProps.value;
+    } else if (hasDefaultVal) {
+        return jsxProps.defaultValue;
+    }
+
+    return null;
+};
+
 class Item extends Component {
     static propTypes = {
         onBlur: PropTypes.func,
         onFocus: PropTypes.func,
         children: PropTypes.any,
         render: PropTypes.func,
+        className: PropTypes.string,
+        label: PropTypes.any,
+        top: PropTypes.any,
+        prefix: PropTypes.any,
+        suffix: PropTypes.any,
+        help: PropTypes.any,
+        validateConfig: PropTypes.any,
+        full: PropTypes.bool,
+        layout: PropTypes.object,
+        when: PropTypes.any,
+        inset: PropTypes.bool,
     }
     static contextTypes = {
         form: PropTypes.object,
@@ -31,8 +55,10 @@ class Item extends Component {
         const { form } = context;
         this.form = form;
         const {
-            name, value, error, defaultValue, children,
+            name, error, children,
         } = jsxProps;
+
+        const ftVal = getValue(jsxProps);
 
         // 构建时提前知道子类，比didmount再来通知，把控性好很多
         this.displayName = '';
@@ -49,7 +75,7 @@ class Item extends Component {
 
         const option = {
             error,
-            value: value || defaultValue,
+            value: ftVal,
             name,
         };
 

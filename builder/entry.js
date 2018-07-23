@@ -1,15 +1,16 @@
-const paths = require('./lib/paths')
-const resolveApp = paths.resolveApp;
+const paths = require('./lib/paths');
+
+const { resolveApp } = paths;
 
 const entry = {
-    'index' : resolveApp('src/index.js'),
+    index: resolveApp('src/index.js'),
     // wrapper
-    'wrapper/next' : resolveApp('src/wrapper/next.js'),
-    'wrapper/antd' : resolveApp('src/wrapper/antd.js') ,
+    'wrapper/next': resolveApp('src/wrapper/next.jsx'),
+    'wrapper/antd': resolveApp('src/wrapper/antd.jsx'),
     // dialog
-    'dialog/next' : resolveApp('src/dialog/next.js'),
-    'dialog/antd' : resolveApp('src/dialog/antd.js'),
-    'dialog/zent' : resolveApp('src/dialog/zent.js')
+    'dialog/next': resolveApp('src/dialog/next.jsx'),
+    'dialog/antd': resolveApp('src/dialog/antd.jsx'),
+    'dialog/zent': resolveApp('src/dialog/zent.jsx'),
 };
 
 module.exports = entry;

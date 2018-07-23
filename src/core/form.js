@@ -1,11 +1,12 @@
 import EventEmitter from 'events';
-import { VALUE_CHANGE, CHANGE } from '../static';
+import { VALUE_CHANGE, CHANGE, ANY_CHANGE, BASIC_EVENT } from '../static';
 import ItemCore from './item';
 
 // 工具方法
 const isObject = obj => Object.prototype.toString.call(obj) === '[object Object]';
 const genName = () => `__anonymouse__${Math.random().toString(36)}`;
 const noop = () => {};
+const isInvalidVal = val => (typeof val === 'number' ? false : !val);
 
 class Form {
     constructor(option = {}) {
@@ -170,6 +171,14 @@ class Form {
         const targetItem = this.children.find(child => child.name === name);
         if (targetItem) targetItem.set(type, formatValue);
 
+        if (type === 'value') { // 处理不在childNames里的值
+            const childNames = this.children.map(child => child.name);
+            if (childNames.indexOf(name) === -1) {
+                this.emit(BASIC_EVENT[type], name, formatValue);
+                this.emit(ANY_CHANGE, type, name, formatValue);
+            }
+        }
+
         this.isSetting = false;
         this.hasEmitted = false;
     }
@@ -206,7 +215,6 @@ class Form {
             return;
         }
 
-
         // 处理props的情况，merge合并
         let formatValue = value;
         if (type === 'props') {
@@ -230,9 +238,21 @@ class Form {
         if (type === 'value') {
             this.settingBatchKeys = Object.keys(value); // 批量变化的值
         }
+
+        const childNames = [];
         this.children.forEach((child) => {
             child.set(type, this[type][child.name]);
+            childNames.push(child.name);
         });
+
+        if (type === 'value') { // 处理不在childNames里的值
+            this.settingBatchKeys.forEach((setKey) => {
+                if (childNames.indexOf(setKey) === -1) {
+                    this.emit(BASIC_EVENT[type], setKey, this[type][setKey]);
+                    this.emit(ANY_CHANGE, type, setKey, this[type][setKey]);
+                }
+            });
+        }
 
         this.isSetting = false;
         this.hasEmitted = false;
@@ -319,7 +339,8 @@ class Form {
 
             // JSX 属性 > core默认值 > 默认属性(globalStatus) > 空值
             mrOption.jsx_status = status || func_status;
-            this.value[mrOption.name] = mrOption.value = value || this.value[name] || null;
+            mrOption.value = isInvalidVal(value) ? (this.value[name] || null) : value;
+            this.value[mrOption.name] = mrOption.value;
             // eslint-disable-next-line
             this.status[mrOption.name] = mrOption.status = status || this.status[name] || this.globalStatus;
             this.props[mrOption.name] = mrOption.props = props || {};

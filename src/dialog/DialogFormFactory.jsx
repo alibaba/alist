@@ -61,14 +61,19 @@ class DialogForm {
         }
 
         const formInstanceProps = formInstance.props;
-        const { onMount, children } = formInstanceProps;
+        const { onMount, children, core: propCore } = formInstanceProps;
 
         const hijackCore = (core) => {
-            this.dialogCore = core;
+            if (!propCore) {
+                this.dialogCore = core;
+            }
+
             if (onMount) {
                 onMount(core);
             }
         };
+
+        this.dialogCore = propCore;
 
         const footer = this.renderFooter(Button);
         const mixFooterContent = [].concat(children, footer);

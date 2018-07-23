@@ -3,7 +3,7 @@ const path = require('path');
 const root = process.cwd();
 const paths = require('./lib/paths');
 
-const resolveApp = paths.resolveApp;
+const { resolveApp } = paths;
 const dist = path.join(root, 'dist');
 const basicConfig = {
     libraryTarget: 'umd',
@@ -20,7 +20,7 @@ const entryOuts = [
         },
     },
     {
-        entry: resolveApp('src/wrapper/next.js'),
+        entry: resolveApp('src/wrapper/next.jsx'),
         output: {
             ...basicConfig,
             path: path.join(dist, 'wrapper'),
@@ -29,7 +29,7 @@ const entryOuts = [
         },
     },
     {
-        entry: resolveApp('src/wrapper/antd.js'),
+        entry: resolveApp('src/wrapper/antd.jsx'),
         output: {
             ...basicConfig,
             path: path.join(dist, 'wrapper'),
@@ -38,7 +38,7 @@ const entryOuts = [
         },
     },
     {
-        entry: resolveApp('src/dialog/next.js'),
+        entry: resolveApp('src/dialog/next.jsx'),
         output: {
             ...basicConfig,
             path: path.join(dist, 'dialog'),
@@ -47,7 +47,7 @@ const entryOuts = [
         },
     },
     {
-        entry: resolveApp('src/dialog/antd.js'),
+        entry: resolveApp('src/dialog/antd.jsx'),
         output: {
             ...basicConfig,
             path: path.join(dist, 'dialog'),
@@ -56,7 +56,7 @@ const entryOuts = [
         },
     },
     {
-        entry: resolveApp('src/repeater/antd.js'),
+        entry: resolveApp('src/repeater/antd.jsx'),
         output: {
             ...basicConfig,
             path: path.join(dist, 'repeater'),
@@ -65,7 +65,7 @@ const entryOuts = [
         },
     },
     {
-        entry: resolveApp('src/dialog/zent.js'),
+        entry: resolveApp('src/dialog/zent.jsx'),
         output: {
             ...basicConfig,
             path: path.join(dist, 'dialog'),

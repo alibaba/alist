@@ -13,6 +13,7 @@ const DialogFormWrapper = (NextSource) => {
                 width,
                 className: `${className || ''} dialog-form-wrapper`,
                 needWrapper: false,
+                footer: () => null,
             };
         },
         dialogInstance: dialogInstance => dialogInstance,

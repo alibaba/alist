@@ -1,16 +1,13 @@
 import * as Antd from 'antd';
 import { mount } from 'enzyme';
 import React from 'react';
-import Form, { FormItem, Item, FormCore } from '../../src';
 import ReactTestUtils from 'react-dom/test-utils';
+import Form, { FormItem, Item } from '../../src';
 import repeaterWrapper from '../../src/repeater';
 import wrapper from '../../src/wrapper/antd';
 import dialogWrapper from '../../src/dialog/antd';
-import { SSL_OP_EPHEMERAL_RSA } from 'constants';
 
-// import simulateEvent from 'simulate-event';
-
-const { TableRepeater, InlineRepeater } = repeaterWrapper({ ...Antd, Dialog: dialogWrapper(Antd) });
+const { TableRepeater } = repeaterWrapper({ ...Antd, Dialog: dialogWrapper(Antd) });
 
 const { Input } = wrapper(Antd);
 function filter(value, key) {
