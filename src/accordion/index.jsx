@@ -1,109 +1,122 @@
 import React, { Component } from 'react';
 import * as T from 'prop-types';
-import Form, { FormItem } from '../';
-import { Button } from '../../node_modules/antd';
+import Form from '../';
 
-class AccordionCore {
-    children = [];
-    elements = [];
-    wrapStep(form) {
-        const element = React.cloneElement(form, {
-            onMount: core => this.children.push(core),
-        });
-        this.elements.push(element);
-        return element;
-    }
-    setStatus(...args) {
-        this.children.forEach((child) => {
-            child.setStatus(...args);
-        });
-    }
-    getVaule(name) {
-        let val = null;
-        const { children } = this;
-        if (!name) {
-            val = children.reduce((value, child) => Object.assign(value, child.getValue()), {});
-        }
-        val = children.reduce((value, child) => child.getValue(name) === null || value, null);
-        return val;
-    }
-    setValue(...args) {
-        this.children.forEach((child) => {
-            child.setValue(...args);
-        });
-    }
-}
 class Accordion extends Component {
-    static propTypes = {
-        core: T.shape(AccordionCore),
-    }
+    static Button = 'button'
     state = {
         current: 0,
-        maxStep: 0,
+    }
+    core = [];
+    onMount = (idx, core) => {
+        this.core[idx] = core;
     }
     onPrev = () => {
-        const current = Math.max(0, this.state.current - 1);
+        const current = Math.max(1, this.state.current - 1);
         this.setState({
             current,
         });
     }
-    onNext = () => {
+    onNext = async (idx) => {
+        if (await this.beforeLeave()) {
+            return;
+        }
         this.setState({
-            current: this.state.current + 1,
-            maxStep: this.state.current + 1,
+            current: idx + 1,
         });
     }
-    wrapElement = (element, idx) => {
-        const props = { globalStatus: 'preview' };
-        const { layout } = this.props;
-        if (layout) {
-            props.layout = layout;
+    onEdit = async (idx) => {
+        if (await this.beforeLeave()) {
+            return;
         }
-        if (this.state.current === idx) {
-            props.globalStatus = 'edit';
-        }
-        return (<StepItem label={element.props.label} key={idx} onEdit={this.onEdit} onNext={this.onNext}>
-            {React.cloneElement(element, props)}
-        </StepItem>);
+        this.setState({
+            current: idx,
+        });
     }
+    beforeLeave = async () => {
+        const { current } = this.state;
+        const core = this.core[current];
+        const errors = await core.validate();
+        return !!errors;
+    }
+    onChange = (idx, value) => {
+        this.core.filter((c, i) => i !== idx).forEach(c => c.setValue(value));
+        this.props.onChange(this.getValue());
+    }
+    getValue = () => this.core.reduce((value, c) => {
+        const status = c.getStatus();
+        const tempValue = c.getValue();
+        const val = {};
+        Object.keys(status).filter(name => status[name] !== 'hidden').forEach((name) => {
+            val[name] = tempValue[name];
+        });
+        return { ...value, ...val };
+    }, {})
     render() {
-        const { children } = this.props;
-        const { current, maxStep } = this.state;
-        return (<Step current={current} max={maxStep}>
-            {children.map(this.wrapElement)}
-        </Step>);
+        const {
+            children,
+            nextButton = <Accordion.Button>下一步</Accordion.Button>,
+            editButton = <Accordion.Button>编辑</Accordion.Button>,
+        } = this.props;
+        const value = this.props.value || {};
+        const { current } = this.state;
+        const elements = React.Children.map(children, (child, idx) => {
+            if (child.type !== Form) {
+                throw Error('Accordion chilren must be Form instance');
+            }
+            const active = idx === current;
+            const item = idx + 1;
+            const onEdit = this.onEdit.bind(this, idx);
+            const onNext = this.onNext.bind(this, idx);
+            let layout = { label: 6, control: 18 };
+            try {
+                layout = this.props.layout || child.props.layout || { label: 6, control: 18 };
+            } catch (e) {
+                //
+            }
+            const NextButton = React.cloneElement(nextButton, {
+                onClick: onNext,
+            });
+            const EditButton = React.cloneElement(editButton, {
+                onClick: onEdit,
+            });
+
+            const showElement = active || child.props.value || this.core[idx] && this.core[idx].getValue();
+
+            const element = React.cloneElement(child, {
+                value,
+                onChange: this.onChange.bind(this, idx),
+                globalStatus: current === idx ? 'edit' : 'preview',
+                layout,
+                onMount: core => this.onMount(idx, core),
+            });
+            return (<div className={`accordion-step-item ${active && ' is-active'}`}>
+                <div className="accordion-step-num">
+                    {item}
+                </div>
+                <div className="accordion-step-content">
+                    <div>
+                        <div className="accordion-step-label">{child.props.label}</div>
+                        <div className="accordion-step-edit">
+                            {element && EditButton}
+                        </div>
+                    </div>
+                    <div className="accordion-step-children" style={{ display: showElement ? 'block' : 'none' }}>
+                        {element}
+                        {active &&
+                            <div className="no-form-item no-form-accordion-next">
+                                <div className={`no-form-item-label col-${layout.label}`} />
+                                <div className={`no-form-item-control col-${layout.control}`}>
+                                    {NextButton}
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>);
+        });
+        return <div>{elements}</div>;
     }
 }
-function StepItem({
-    label, children, item, active, onEdit, onNext, max,
-}) {
-    return (<div className={`accordion-step-item ${active && ' is-active'}`}>
-        <div className="accordion-step-num">
-            {item}
-        </div>
-        <div className="accordion-step-content">
-            <div>
-                <div className="accordion-step-label">{label}</div>
-                {item < max && <a onClick={onEdit} className="accordion-edit">编辑</a>}
-            </div>
-            <div className="accordion-step-children">
-                { item <= max && children}
-                {active && <a href="#" onClick={onNext}>下一步</a>}
-            </div>
-        </div>
-    </div>);
-}
-function Step({ children, current = 0, max }) {
-    return (<div>{
-        React.Children.map(children, (child, idx) => React.cloneElement(child, {
-            item: idx + 1,
-            max,
-            active: idx === current,
-        }))
-    }</div>);
-}
-// export default AccordionCore;
-export {
-    Accordion as default,
-    AccordionCore,
-};
+
+export { Accordion as default };

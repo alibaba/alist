@@ -1,9 +1,21 @@
 .accordion{
-    &-edit{
-        float: right;
-    }
     &-step{
-        &-item{
+        &-edit {
+            float: right;
+            height: 30px;
+            margin-right: 16px;
+            &:after{
+                content: ' ';
+                display: inline-block;
+                width: 1px;
+                height: 100%;
+                vertical-align: bottom;
+            }
+        }
+        &-item {
+            &:last-child .accordion-step-content:before {
+                display: none;
+            }
             &:after{
                 display: table;
                 content: ' ';
@@ -28,13 +40,13 @@
         &-label{
             display: inline-block;
             font-size: 16px;
+            font-weight: bold;
             line-height: 30px;
             margin-left: 16px;
         }
         &-children{
-            margin-top: 12px;
-            margin-left: 16px;
-            padding: 20px 0;
+            margin: 12px 16px 12px;
+            padding: 20px 0 32px;
             background-color: #FFF;
         }
         &-num, &-content {
@@ -51,8 +63,8 @@
             &:before{
                 content: '';
                 position: absolute;
-                top: 37px;
-                bottom: -12px;
+                top: 30px;
+                bottom: -20px;
                 left: 25px;
                 width: 2px;
                 background-color: #dae2ed;
@@ -62,4 +74,7 @@
             }
         }
     }
+}
+.no-form-accordion-next{
+    margin-top: 20px;
 }

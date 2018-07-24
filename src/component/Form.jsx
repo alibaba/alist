@@ -114,6 +114,9 @@ class Form extends Component {
         if (!deepEqual(nextProps.status, this.props.status)) {
             this.core.setStatus(nextProps.status);
         }
+        if (!deepEqual(nextProps.globalStatus, this.props.globalStatus)) {
+            this.core.setGlobalStatus(nextProps.globalStatus);
+        }
         if (!deepEqual(nextProps.error, this.props.error)) {
             this.core.setError(nextProps.error);
         }
