@@ -26,11 +26,11 @@ export default function bind(source) {
                 const deleteBtn = hasDelete ? <ActionButton type="delete" deleteText={deleteText} /> : null;
 
                 return (<tr key={idx} className={className}>
-                    {itemsConfig.map((conf, key) => (<td key={key}>
-                        <div className="next-table-cell-wrapper">{val[conf.name]}</div>
+                    {itemsConfig.map(conf => (<td key={`${conf.label}${conf.name}`}>
+                        <div className="repeater-table-cell-wrapper">{val[conf.name]}</div>
                     </td>))}
                     <td>
-                        {editable ? <div className="next-table-cell-wrapper table-repeater-oper-cell">
+                        {editable ? <div className="repeater-table-cell-wrapper table-repeater-oper-cell">
                             {updateBtn}
                             {deleteBtn}
                         </div> : null}
@@ -45,18 +45,20 @@ export default function bind(source) {
             {...props}
             render={(context) => {
                 const { itemsConfig } = context;
-                const { searchEle, className, jsxProps, children } = context.props;
+                const {
+                    searchEle, className, jsxProps, children,
+                } = context.props;
                 const { status, addText = 'add' } = jsxProps;
 
                 const editable = status === 'edit';
 
-                const header = itemsConfig.map((conf, key) => (<th className="next-table-header-node" key={key}>
-                    <div className="next-table-cell-wrapper"> {conf.label} </div>
+                const header = itemsConfig.map(conf => (<th className="repeater-table-header-node" key={`${conf.label}${conf.name}`}>
+                    <div className="repeater-table-cell-wrapper"> {conf.label} </div>
                 </th>));
 
                 if (editable) {
-                    header.push(<th className="next-table-header-node" key="last">
-                        <div className="next-table-cell-wrapper"> 操作 </div>
+                    header.push(<th className="repeater-table-header-node" key="last">
+                        <div className="repeater-table-cell-wrapper"> 操作 </div>
                     </th>);
                 }
 

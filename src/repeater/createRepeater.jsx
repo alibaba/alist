@@ -7,10 +7,15 @@ const noop = () => {};
 
 export default function createRepeater(bindSource, source) {
     const { Container, RowRender } = bindSource(source);
-    const { Input, Dialog = noop } = source;
+    const { Input = noop } = source;
 
     return class OtRepeater extends Component {
         static propTypes = {
+            status: PropTypes.string,
+            validateConfig: PropTypes.object,
+            className: PropTypes.string,
+            style: PropTypes.object,
+            filter: PropTypes.func,
             value: PropTypes.array,
             onChange: PropTypes.func.isRequired,
             children: PropTypes.any,
@@ -57,7 +62,8 @@ export default function createRepeater(bindSource, source) {
             let j = 0;
             this.getValue().forEach((item) => {
                 // $idx是值在this.props.value中的下标
-                if (i < thisVal.length && item.$idx < thisVal[i].$idx || i >= this.value.length) { // 没有修改的项
+                if ((i < thisVal.length && item.$idx < thisVal[i].$idx) ||
+                    i >= this.value.length) { // 没有修改的项
                     value.push(item);
                 } else if (i < thisVal.length && item.$idx === thisVal[i].$idx) { // 有修改或删除的项
                     if (j < val.length && item.$idx === val[j].$idx) { // 项被更新
@@ -118,16 +124,21 @@ export default function createRepeater(bindSource, source) {
             this.onChange(this.repeaterCore.getValues());
         }
 
-        doSave = async (idx) => {
-            const hasError = await this.repeaterCore.saveInline(idx);
+        syncAndUpdate = () => {
+            this.sync();
+            this.forceUpdate();
+        };
+
+        doSave = async (id) => {
+            const hasError = await this.repeaterCore.saveInline(id);
             if (hasError) return;
 
             this.sync();
             this.forceUpdate();
         }
 
-        doCancel = (idx) => {
-            this.repeaterCore.cancelInline(idx);
+        doCancel = (id) => {
+            this.repeaterCore.cancelInline(id);
             this.sync();
             this.forceUpdate();
         }
@@ -144,6 +155,17 @@ export default function createRepeater(bindSource, source) {
             this.sync();
         }
 
+        doMultipleInline = async () => {
+            const canSync = await this.repeaterCore.addMultipleInline((values, fireKeys, ctx) => {
+                ctx.validateItem(fireKeys);
+                this.syncAndUpdate();
+            });
+            if (canSync) {
+                this.sync();
+            }
+            this.forceUpdate();
+        }
+
         doAddInline = async () => {
             const canSync = await this.repeaterCore.addInline();
             if (canSync) {
@@ -152,24 +174,26 @@ export default function createRepeater(bindSource, source) {
             this.forceUpdate();
         }
 
-        doUpdateInline = async (idx) => {
-            await this.repeaterCore.updateInline(idx);
+        doUpdateInline = async (id) => {
+            await this.repeaterCore.updateInline(id);
             this.forceUpdate();
         }
 
-        doUpdate = (val, idx) => {
-            this.repeaterCore.update(val, idx);
+        doUpdate = (val, id) => {
+            this.repeaterCore.update(val, id);
             this.sync();
         }
 
-        doDelete = (idx) => {
-            this.repeaterCore.remove(idx);
+        doDelete = (id) => {
+            this.repeaterCore.remove(id);
             this.sync();
         }
 
         render() {
             const { repeaterCore, handleSearch } = this;
-            const { style = {}, className, children, filter } = this.props;
+            const {
+                style = {}, className, children, filter,
+            } = this.props;
 
             const { formList } = repeaterCore;
 
@@ -195,13 +219,14 @@ export default function createRepeater(bindSource, source) {
                         doSave={this.doSave}
                         doCancel={this.doCancel}
                         doAddInline={this.doAddInline}
+                        doMultipleInline={this.doMultipleInline}
                         doUpdateInline={this.doUpdateInline}
                     >
                         {
-                            formList.map((core, idx) => {
+                            formList.map((core) => {
                                 const val = core.getValues();
-                                const itemProps = { idx, val, core };
-                                return <RowRender className="table-repeater-row" {...itemProps} />;
+                                const itemProps = { id: core.id, val, core };
+                                return <RowRender key={core.id} className="table-repeater-row" {...itemProps} />;
                             })
                         }
                     </Container>

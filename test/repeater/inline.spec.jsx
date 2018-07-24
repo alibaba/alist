@@ -61,10 +61,11 @@ describe('Inline Repeater', () => {
         form.find(InlineRepeater).instance().doAdd(testValues);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
 
+        const { id } = form.find(InlineRepeater).instance().repeaterCore.formList[0];
         form.find(InlineRepeater).instance().doUpdate({
             ...testValues,
             drawerName: 'xxxxx',
-        }, 0);
+        }, id);
 
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([{
             ...testValues,
@@ -75,7 +76,8 @@ describe('Inline Repeater', () => {
         form.find(InlineRepeater).instance().doAdd(testValues);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
 
-        form.find(InlineRepeater).instance().doDelete(0);
+        const { id } = form.find(InlineRepeater).instance().repeaterCore.formList[0];
+        form.find(InlineRepeater).instance().doDelete(id);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([]));
     });
 
@@ -413,7 +415,7 @@ describe('Inline Repeater', () => {
         form.mount();
 
         expect(form.find('Form.table-repeater-row').length).toEqual(1);
-        expect(form.find('Form.table-repeater-row .next-table-cell-wrapper').at(0).prop('children')).toEqual('客户');
+        expect(form.find('Form.table-repeater-row .repeater-table-cell-wrapper').at(0).prop('children')).toEqual('客户');
 
         ReactTestUtils.Simulate.change(form.find('Input.repeater-search').getDOMNode(), {
             target: { value: '' },

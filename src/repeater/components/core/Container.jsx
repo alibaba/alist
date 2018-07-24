@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class Container extends Component {
@@ -11,6 +11,7 @@ class Container extends Component {
         doDelete: PropTypes.func,
         doSave: PropTypes.func,
         doCancel: PropTypes.func,
+        doMultipleInline: PropTypes.func,
         doAddInline: PropTypes.func,
         doUpdateInline: PropTypes.func,
     };
@@ -24,6 +25,7 @@ class Container extends Component {
         this.doUpdate = props.doUpdate;
         this.doDelete = props.doDelete;
         this.doSave = props.doSave;
+        this.doMultipleInline = props.doMultipleInline;
         this.doCancel = props.doCancel;
         this.doAddInline = props.doAddInline;
         this.doUpdateInline = props.doUpdateInline;
@@ -40,6 +42,7 @@ class Container extends Component {
             doDelete: this.doDelete,
             doSave: this.doSave,
             doCancel: this.doCancel,
+            doMultipleInline: this.doMultipleInline,
             doAddInline: this.doAddInline,
             doUpdateInline: this.doUpdateInline,
         };
@@ -61,6 +64,7 @@ Container.propTypes = {
     doCancel: PropTypes.func,
     doAddInline: PropTypes.func,
     doUpdateInline: PropTypes.func,
+    doMultipleInline: PropTypes.func,
     render: PropTypes.func,
     jsxProps: PropTypes.object,
 };

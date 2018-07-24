@@ -2,7 +2,7 @@
 const ANY_CHANGE = 'ANY_CHANGE';
 
 // 组件属性
-const CHANGE = 'CHANGE';
+const CHANGE = 'change';
 const FOCUS = 'FOCUS';
 const BLUR = 'BLUR';
 

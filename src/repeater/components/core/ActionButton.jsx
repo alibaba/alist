@@ -7,7 +7,7 @@ function createActionButton(source) {
 
     return class ActionButton extends Component {
         static contextTypes = {
-            getIdx: PropTypes.func,
+            getId: PropTypes.func,
             getCore: PropTypes.func,
             jsxProps: PropTypes.object,
             doAdd: PropTypes.func,
@@ -16,6 +16,7 @@ function createActionButton(source) {
             doSave: PropTypes.func,
             doCancel: PropTypes.func,
             doAddInline: PropTypes.func,
+            doMultipleInline: PropTypes.func,
             doUpdateInline: PropTypes.func,
             repeaterCore: PropTypes.object,
         };
@@ -31,9 +32,14 @@ function createActionButton(source) {
             this.doSave = context.doSave;
             this.doCancel = context.doCancel;
             this.doAddInline = context.doAddInline;
+            this.doMultipleInline = context.doMultipleInline;
             this.doUpdateInline = context.doUpdateInline;
             this.getCore = context.getCore;
-            this.getIdx = context.getIdx;
+            this.getId = context.getId;
+        }
+
+        handleAddMultipleInline = async () => {
+            await this.doMultipleInline();
         }
 
         handleAddInline = async () => {
@@ -41,19 +47,19 @@ function createActionButton(source) {
         }
 
         handleUpdateInline = () => {
-            this.doUpdateInline(this.getIdx());
+            this.doUpdateInline(this.getId());
         }
 
         handleDelete = () => {
-            this.doDelete(this.getIdx());
+            this.doDelete(this.getId());
         }
 
         handleSave = () => {
-            this.doSave(this.getIdx());
+            this.doSave(this.getId());
         }
 
         handleCancel = () => {
-            this.doCancel(this.getIdx());
+            this.doCancel(this.getId());
         }
 
         handleAdd = () => {
@@ -84,7 +90,7 @@ function createActionButton(source) {
                     {children}
                 </Form>,
                 onOk: async (_, hide) => {
-                    await this.doUpdate(this.getCore().getValue(), this.getIdx());
+                    await this.doUpdate(this.getCore().getValue(), this.getId());
                     hide();
                 },
             });
@@ -99,6 +105,7 @@ function createActionButton(source) {
             switch (type) {
             case 'add': ele = <button className="repeater-action-btn repeater-add" onClick={this.handleAdd}>{addText}</button>; break;
             case 'addInline': ele = <button className="repeater-action-btn repeater-add" onClick={this.handleAddInline}>{addText}</button>; break;
+            case 'addMultipleInline': ele = <button className="repeater-action-btn repeater-add" onClick={this.handleAddMultipleInline}>{addText}</button>; break;
             case 'update': ele = <button className="repeater-action-btn repeater-update" onClick={this.handleUpdate}>{updateText}</button>; break;
             case 'updateInline': ele = <button className="repeater-action-btn repeater-update" onClick={this.handleUpdateInline}>{updateText}</button>; break;
             case 'save': ele = <button className="repeater-action-btn repeater-save" onClick={this.handleSave}>{saveText}</button>; break;

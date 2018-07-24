@@ -2,11 +2,16 @@
     display: table-row;
 }
 
-.table-repeater-wrapper  {
+.table-repeater-wrapper {
     margin-bottom: 12px;
 
-    .next-table-header-node {
-        width: 200px;
+    .repeater-table-header-node {
+        min-width: 100px;
+    }
+
+    table {
+        border-collapse: separate;
+        border-spacing: 4px;
     }
 
     tr, td {

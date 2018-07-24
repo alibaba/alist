@@ -10,7 +10,7 @@ class RepeaterCore {
             this.formList = valueArr.map((values) => {
                 const formValues = values || {};
                 const formProps = props || {};
-                return new FromCore({
+                return new FormCore({
                     ...formProps,
                     values: formValues,
                     globalStatus: this.status,
@@ -71,6 +71,19 @@ class RepeaterCore {
         return canSync;
     }
 
+    // 增加多项临时编辑项
+    addMultipleInline = async (cb) => {
+        const hasError = await this.hasValidateError();
+        if (hasError) return false;
+
+        const tmp = this.generateCore();
+        tmp.on('change', cb);
+        tmp.$focus = true;
+        tmp.$multiple = true;
+        this.formList.push(tmp);
+        return true;
+    }
+
     hasValidateError = async () => {
         let validateArr = await Promise.all(this.formList.map(core => core.validate()));
         validateArr = validateArr.filter((errors) => {
@@ -90,12 +103,12 @@ class RepeaterCore {
     }
 
     // 激活已有项为临时编辑项
-    updateInline = async (index) => {
+    updateInline = async (id) => {
         const hasError = await this.hasValidateError();
         if (hasError) return;
 
-        this.formList = this.formList.map((core, idx) => {
-            if (idx === index) {
+        this.formList = this.formList.map((core) => {
+            if (core.id === id) {
                 core.$focus = true;
                 core.$backup = core.getValues();
                 return core;
@@ -108,12 +121,12 @@ class RepeaterCore {
     }
 
     // 保存临时编辑项
-    saveInline = async (index) => {
+    saveInline = async (id) => {
         const hasError = await this.hasValidateError();
         if (hasError) return hasError;
 
-        this.formList = this.formList.map((core, idx) => {
-            if (idx === index) {
+        this.formList = this.formList.map((core) => {
+            if (core.id === id) {
                 delete core.$focus;
                 delete core.$backup;
             }
@@ -126,10 +139,10 @@ class RepeaterCore {
     }
 
     // 撤销临时编辑项
-    cancelInline = (index) => {
+    cancelInline = (id) => {
         const list = [];
-        this.formList.forEach((core, idx) => {
-            if (index === idx) {
+        this.formList.forEach((core) => {
+            if (core.id === id) {
                 delete core.$focus;
                 if (core.$backup) { // 已有项
                     core.setValueSilent(core.$backup);
@@ -162,14 +175,14 @@ class RepeaterCore {
     }
 
     // 删
-    remove = (index) => {
-        this.formList = this.formList.filter((_, idx) => idx !== index);
+    remove = (id) => {
+        this.formList = this.formList.filter(core => core.id !== id);
     }
 
     // 改
-    update = (values, index) => {
-        this.formList = this.formList.map((core, idx) => {
-            if (idx === index) {
+    update = (values, id) => {
+        this.formList = this.formList.map((core) => {
+            if (id === core.id) {
                 core.setValueSilent(values);
                 return core;
             }
@@ -192,7 +205,9 @@ class RepeaterCore {
         const values = [];
         this.formList.forEach((core) => {
             const currentVal = core.getValues();
-            if (core.$focus) {
+            if (core.$multiple) {
+                values.push(currentVal);
+            } else if (core.$focus) {
                 if (core.$backup) {
                     values.push(core.$backup);
                 }

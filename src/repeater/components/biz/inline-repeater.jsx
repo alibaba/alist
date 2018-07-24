@@ -13,25 +13,38 @@ export default function bind(source) {
             {...props}
             render={(context) => {
                 const { itemsConfig } = context;
-                const { searchEle, className, jsxProps, children } = context.props;
-                const { status, addText = 'add' } = jsxProps;
+                const {
+                    searchEle, className, jsxProps, children,
+                } = context.props;
+                const {
+                    status,
+                    addText = 'add', hasAdd = true, addPosition = 'top',
+                    multiple = false,
+                } = jsxProps;
 
                 const editable = status === 'edit';
 
-                const header = itemsConfig.map((conf, key) => (<th className="next-table-header-node" key={key}>
-                    <div className="next-table-cell-wrapper"> {conf.label} </div>
+                const header = itemsConfig.map(conf => (<th className="repeater-table-header-node" key={`${conf.label}${conf.name}`}>
+                    <div className="repeater-table-cell-wrapper"> {conf.label} </div>
                 </th>));
 
                 if (editable) {
-                    header.push(<th className="next-table-header-node" key="last">
-                        <div className="next-table-cell-wrapper"> 操作 </div>
+                    header.push(<th className="repeater-table-header-node" key="last">
+                        <div className="repeater-table-cell-wrapper"> 操作 </div>
                     </th>);
+                }
+
+                const addType = multiple ? 'addMultipleInline' : 'addInline';
+                let addBtnEle = null;
+                if (hasAdd && editable) {
+                    addBtnEle = <ActionButton type={addType} addText={addText} />;
                 }
 
                 return (<div className={className}>
                     {searchEle}
-                    {editable ? <ActionButton type="addInline" addText={addText} /> : null}
+                    {addPosition === 'top' ? addBtnEle : null}
                     <TableCom header={header}>{children}</TableCom>
+                    {addPosition === 'bottom' ? addBtnEle : null}
                 </div>);
             }}
         />);
@@ -48,6 +61,7 @@ export default function bind(source) {
 
                 const {
                     status,
+                    multiple = false,
                     hasDelete = true, hasUpdate = true,
                     updateText = 'update', deleteText = 'delete',
                     saveText = 'save', cancelText = 'cancel',
@@ -57,11 +71,11 @@ export default function bind(source) {
                 const focusMode = core.$focus;
                 const editable = status === 'edit';
 
-                const updateBtn = !focusMode && hasUpdate ? <ActionButton type="updateInline" updateText={updateText} /> : null;
-                const deleteBtn = !focusMode && hasDelete ? <ActionButton type="delete" deleteText={deleteText} /> : null;
+                const updateBtn = !multiple && !focusMode && hasUpdate ? <ActionButton type="updateInline" updateText={updateText} /> : null;
+                const deleteBtn = (!focusMode || multiple) && hasDelete ? <ActionButton type="delete" deleteText={deleteText} /> : null;
 
-                const saveBtn = focusMode ? <ActionButton type="save" saveText={saveText} /> : null;
-                const cancelBtn = focusMode ? <ActionButton type="cancel" cancelText={cancelText} /> : null;
+                const saveBtn = !multiple && focusMode ? <ActionButton type="save" saveText={saveText} /> : null;
+                const cancelBtn = !multiple && focusMode ? <ActionButton type="cancel" cancelText={cancelText} /> : null;
 
                 let listItems = null;
                 const childMap = {};
@@ -70,32 +84,36 @@ export default function bind(source) {
                     childMap[`${label}${name}`] = React.cloneElement(childitem, { label: undefined });
                 });
 
-                listItems = itemsConfig.map((conf, key) => {
+                // 遍历渲染数据
+                listItems = itemsConfig.map((conf) => {
                     let innerItem = null;
                     if (focusMode) {
-                        innerItem = (<div className="next-table-cell-wrapper inline-repeater-focus">
+                        innerItem = (<div className="repeater-table-cell-wrapper inline-repeater-focus">
                             {childMap[`${conf.label}${conf.name}`]}
                         </div>);
                     } else {
-                        innerItem = (<div className="next-table-cell-wrapper">
+                        innerItem = (<div className="repeater-table-cell-wrapper">
                             {val[conf.name]}
                         </div>);
                     }
-                    return (<td key={key}>
+
+                    return (<td key={`${conf.label}${conf.name}`}>
                         {innerItem}
                     </td>);
                 });
 
+                const operEle = (<td>
+                    {editable ? <div className="repeater-table-cell-wrapper">
+                        {saveBtn}
+                        {cancelBtn}
+                        {updateBtn}
+                        {deleteBtn}
+                    </div> : null}
+                </td>);
+
                 return (<Form core={core} className={className} key={idx}>
                     {listItems}
-                    <td>
-                        {editable ? <div className="next-table-cell-wrapper">
-                            {saveBtn}
-                            {cancelBtn}
-                            {updateBtn}
-                            {deleteBtn}
-                        </div> : null}
-                    </td>
+                    {operEle}
                 </Form>);
             }}
         />);

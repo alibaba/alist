@@ -12,7 +12,7 @@ const isSingleItemSet = arg => (arg.length >= 3 && typeof arg[1] === 'string');
 class Form {
     constructor(option = {}) {
         const {
-            validateConfig, onChange, value, values, status, globalStatus, interceptor,
+            validateConfig, onChange, value, values, status, globalStatus, interceptor, uniqueId,
         } = option || {};
 
         this.onChange = onChange || noop;
@@ -20,7 +20,6 @@ class Form {
         this.childrenMap = {};
         this.currentEventType = 'api';
 
-        // TODO: 依赖status作为属性的例子需要改掉
         this.globalStatus = globalStatus || 'edit';
 
         // 基础属性
@@ -31,6 +30,8 @@ class Form {
 
         this.interceptor = interceptor || {}; // 拦截器
         this.validateConfig = validateConfig;
+
+        this.id = uniqueId || `__noform__${Math.random().toString(36)}`;
 
         this.emitter = new EventEmitter();
         this.emitter.setMaxListeners(1000); // TODO: 最大值
@@ -57,7 +58,7 @@ class Form {
     handleChange = (name) => {
         if (!this.silent && !this.hasEmitted) { // 变化的keys必须为数组
             this.onChange(this.settingBatchKeys || [name], this.value, this);
-            this.emit(CHANGE, this.value, this.settingBatchKeys || [name]);
+            this.emit(CHANGE, this.value, this.settingBatchKeys || [name], this);
         }
 
         if (this.silent) this.hasEmitted = false;

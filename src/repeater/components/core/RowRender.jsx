@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 const propInterface = {
@@ -22,7 +22,7 @@ class RowRender extends Component {
 
     static childContextTypes = {
         ...propInterface,
-        getIdx: PropTypes.func,
+        getId: PropTypes.func,
         getCore: PropTypes.func,
     };
 
@@ -50,7 +50,7 @@ class RowRender extends Component {
             jsxProps: this.jsxProps,
             itemsConfig: this.itemsConfig,
             getCore: this.getCore,
-            getIdx: this.getIdx,
+            getId: this.getId,
             doAdd: this.doAdd,
             doUpdate: this.doUpdate,
             doDelete: this.doDelete,
@@ -62,7 +62,7 @@ class RowRender extends Component {
     }
 
     getCore = () => this.props.core
-    getIdx = () => this.props.idx
+    getId = () => this.props.id
 
     render() {
         const { render } = this.props;
@@ -75,7 +75,7 @@ RowRender.propTypes = {
     core: PropTypes.object,
     props: PropTypes.object,
     jsxProps: PropTypes.object,
-    idx: PropTypes.number,
+    id: PropTypes.string,
     render: PropTypes.func,
 };
 

@@ -246,7 +246,6 @@ import ReactDOM from 'react-dom'
 ${js.join('\n')}
 
 // HMR code
-console.log('xxx');
 if (module.hot) {
   module.hot.accept();
 }

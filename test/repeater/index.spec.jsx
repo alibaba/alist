@@ -101,14 +101,14 @@ describe('Repeater', () => {
         expect(validateCore.getValue('repeat').length).toEqual(1);
     });
     it('should update', () => {
-        // console.log(form.find(TableRepeater).instance().doAdd);
         form.find(TableRepeater).instance().doAdd(testValues);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
 
+        const { id } = form.find(TableRepeater).instance().repeaterCore.formList[0];
         form.find(TableRepeater).instance().doUpdate({
             ...testValues,
             drawerName: 'xxxxx',
-        }, 0);
+        }, id);
 
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([{
             ...testValues,
@@ -119,7 +119,9 @@ describe('Repeater', () => {
         form.find(TableRepeater).instance().doAdd(testValues);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
 
-        form.find(TableRepeater).instance().doDelete(0);
+        const { id } = form.find(TableRepeater).instance().repeaterCore.formList[0];
+
+        form.find(TableRepeater).instance().doDelete(id);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([]));
     });
     it('should add by click add button', async () => {
@@ -208,7 +210,7 @@ describe('Repeater', () => {
         form.mount();
 
         expect(form.find('tr.table-repeater-row').length).toEqual(1);
-        expect(form.find('tr.table-repeater-row .next-table-cell-wrapper').at(0).prop('children')).toEqual('客户');
+        expect(form.find('tr.table-repeater-row .repeater-table-cell-wrapper').at(0).prop('children')).toEqual('客户');
 
         ReactTestUtils.Simulate.change(form.find('Input.repeater-search').getDOMNode(), {
             target: { value: '' },
