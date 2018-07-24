@@ -1,6 +1,6 @@
 {
   "name": "noform",
-  "version": "0.0.35",
+  "version": "0.0.37",
   "description": "开发者友好、快捷高效的表单框架。",
   "scripts": {
     "start": "node builder/index.js dev",
@@ -19,8 +19,8 @@
     "lib/",
     "index.scss",
     "wrapper.js",
-    "accourdian.js",
-    "accourdian.scss",
+    "accourdion.js",
+    "accourdion.scss",
     "dialog.js",
     "validate.js",
     "wrapper.scss",
