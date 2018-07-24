@@ -26,14 +26,27 @@ class Form extends Component {
         globalStatus: PropTypes.string,
         props: PropTypes.object,
     }
-
     static contextTypes = {
         item: PropTypes.object,
     };
-
     static childContextTypes = {
         form: PropTypes.object,
     };
+    static defaultProps = {
+        onChange: noop,
+        onFocus: noop,
+        onBlur: noop,
+        onMount: noop,
+        map: v => v,
+        core: null,
+        validateConfig: null,
+        value: null,
+        error: null,
+        status: STATUS_ENUMS.EDIT,
+        globalStatus: STATUS_ENUMS.EDIT,
+        props: null,
+    };
+
 
     static defaultProps = {
         onChange: noop,
@@ -121,6 +134,9 @@ class Form extends Component {
         }
         if (!deepEqual(nextProps.status, this.props.status)) {
             this.core.setStatus(nextProps.status);
+        }
+        if (!deepEqual(nextProps.globalStatus, this.props.globalStatus)) {
+            this.core.setGlobalStatus(nextProps.globalStatus);
         }
         if (!deepEqual(nextProps.error, this.props.error)) {
             this.core.setError(nextProps.error);
