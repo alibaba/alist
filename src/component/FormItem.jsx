@@ -82,12 +82,12 @@ class FormItem extends Component {
             return null;
         }
 
-        if (required && status === EDIT) {
+        if (required && (status === EDIT || `${name}` === '')) {
             className += ' required';
         }
 
         // 处理布局
-        const { inset = false, layout = {}, full: jsxFull } = {
+        const { inset = false, colon, layout = {}, full: jsxFull } = {
             ...this.form.jsx.props, ...itemProps,
         };
 
@@ -97,9 +97,10 @@ class FormItem extends Component {
         const errCls = hasError ? `${formItemPrefix}-item-has-error` : '';
         const insetCls = inset ? `${formItemPrefix}-item-inset` : '';
         const layoutCls = (layout.label && layout.control) ? `${formItemPrefix}-item-has-layout` : '';
+        const colonCls = colon ? '' : `${formItemPrefix}-item-no-colon`;
 
         return (
-            <div name={`form-item-${name}`} className={`${formItemPrefix}-item ${className} ${layoutCls}`} style={style}>
+            <div name={`form-item-${name}`} className={`${formItemPrefix}-item ${className} ${layoutCls} ${colonCls}`} style={style}>
                 <div className={`${insetCls} ${errCls}`}>
                     <span className={`${formItemPrefix}-item-label ${layout.label ? `col-${layout.label}` : ''}`} >{label}</span>
                     <span className={`${formItemPrefix}-item-control ${layout.control ? `col-${layout.control}` : ''}`} >
