@@ -153,7 +153,7 @@ class Item extends Component {
         this.didMount = false;
     }
     onChange = (e, opts = {}) => {
-        const { escape = false } = opts; // 直接用原生对象不进行判断        
+        const { escape = false } = opts; // 直接用原生对象不进行判断
 
         let val = e;
         if (!escape) {
@@ -238,7 +238,7 @@ class Item extends Component {
             when,
             ...others
         } = props || {};
-        const { inset } = this.props;
+        const { inset, style } = this.props;
 
         const component = React.Children.only(this.props.children);
         let disabled = false;
@@ -248,7 +248,17 @@ class Item extends Component {
         }
 
         const cloneProps = {
-            inset, disabled, name, value, error, status, onChange, onBlur, onFocus, ...others,
+            style,
+            inset,
+            disabled,
+            name,
+            value,
+            error,
+            status,
+            onChange,
+            onBlur,
+            onFocus,
+            ...others,
         };
 
         if (component && component.type && component.type.displayName === 'If') {

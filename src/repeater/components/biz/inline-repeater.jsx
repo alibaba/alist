@@ -83,7 +83,7 @@ export default function bind(source) {
 
                 let listItems = null;
                 const childMap = {};
-                children.forEach((childitem) => {
+                [].concat(children).forEach((childitem) => {
                     const { label, name } = childitem.props;
                     childMap[`${label}${name}`] = React.cloneElement(childitem, { label: undefined });
                 });
