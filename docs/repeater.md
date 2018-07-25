@@ -69,7 +69,7 @@ ReactDOM.render(<Form onMount={formmount} onChange={console.log}>
             {/* <FormItem label="开票人" name="drawerName"><Input /></FormItem> */}
             <FormItem label="multi" multiple>
                 <div>
-                    <Item style={{ marginBottom: '16px'}} name="aaa"><Input /></Item>
+                    <Item name="aaa"><Input addonBefore="xxoo" style={{ width: '100px', marginBottom: '4px'}}  /></Item>
                     <Item name="bbb"><Input /></Item>
                 </div>
             </FormItem>
