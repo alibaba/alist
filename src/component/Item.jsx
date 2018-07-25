@@ -248,7 +248,6 @@ class Item extends Component {
         }
 
         const cloneProps = {
-            style,
             inset,
             disabled,
             name,
@@ -260,6 +259,10 @@ class Item extends Component {
             onFocus,
             ...others,
         };
+
+        if (style) {
+            cloneProps.style = Object.assign({}, cloneProps.style || {}, style);
+        }
 
         if (component && component.type && component.type.displayName === 'If') {
             delete cloneProps.name;
