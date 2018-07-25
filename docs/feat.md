@@ -27,7 +27,7 @@ const popup = () => {
     const core = new FormCore();
     Dialog.show({
         title: '弹窗表单',
-        content: <Form core={core}>
+        content: <Form core={core} >
             <FormItem label="username" name="username"><Input /></FormItem>
             <FormItem label="age" name="age"><Input /></FormItem>
         </Form>
@@ -55,10 +55,11 @@ let children = [
     }
 
     let formcore
-    return <Form style={{ marginBottom: 12 }} onMount={core => formcore = core} layout={{label: 5, control: 19}} full>
+    return <Form colon={false} style={{ marginBottom: 12 }} onMount={core => formcore = core} layout={{label: 5, control: 19}} full>
         <h3>FormItem值为0</h3>
         <div className="demo-form">
-            <FormItem label="zeroSelect" name="zero" defaultValue={0}><Select options={options} /></FormItem>
+            <FormItem required label="zeroSelect" name="zero" defaultValue={0}><Select options={options} /></FormItem>
+            <FormItem required label="noname" ><Select options={options} /></FormItem>
         </div>
         <br/><br/>
         <button onClick={() => console.log(formcore.getValue())}> console value </button>

@@ -51,6 +51,7 @@
                 margin: 0;
             }
         }
+        
         &-control{
             display: inline-block;
             vertical-align: top;
@@ -108,6 +109,17 @@
 
         }
     }
+}
+
+.no-form-item-no-colon {
+    .no-form-item-label {
+        &:after{
+            content: '';
+        }
+        &:empty:after{
+            content: '';
+        }
+    }    
 }
 
 .no-form-item-inset {
