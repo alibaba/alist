@@ -67,6 +67,12 @@ ReactDOM.render(<Form onMount={formmount} onChange={console.log}>
     <Item name="inlineRepeatMultiple">
         <InlineRepeater multiple filter={filter} validateConfig={validateConfig} addPosition="bottom">
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
+            <FormItem label="multi" multiple>
+                <div>
+                    <Item name="aaa"><Input /></Item>
+                    <Item name="bbb"><Input /></Item>
+                </div>
+            </FormItem>
             <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
             <FormItem label="子公司" name="branchName"><Input /></FormItem>
             <FormItem label="核查结果" name="checkResultName"><Input /></FormItem>

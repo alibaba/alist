@@ -200,7 +200,8 @@ export default function createRepeater(bindSource, source) {
             const itemsConfig = React.Children.map(children, child => ({
                 name: child.props.name,
                 label: child.props.label,
-            })).filter(item => item.name);
+                multiple: child.props.multiple,
+            })).filter(item => (item.name || item.multiple));
 
             const searchEle = filter ? <Input className="repeater-search" onChange={handleSearch} /> : null;
 

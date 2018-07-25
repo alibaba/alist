@@ -14,7 +14,7 @@ export default function bind(source) {
             render={(context) => {
                 const { itemsConfig } = context;
                 const {
-                    searchEle, className, jsxProps, children,
+                    searchEle, className, jsxProps, children, itemAlign = 'left',
                 } = context.props;
                 const {
                     status,
@@ -24,13 +24,15 @@ export default function bind(source) {
 
                 const editable = status === 'edit';
 
+                const cellCls = `repeater-table-cell-wrapper repeater-table-cell-wrapper-${itemAlign}`;
+
                 const header = itemsConfig.map(conf => (<th className="repeater-table-header-node" key={`${conf.label}${conf.name}`}>
-                    <div className="repeater-table-cell-wrapper"> {conf.label} </div>
+                    <div className={cellCls}> {conf.label} </div>
                 </th>));
 
                 if (editable) {
                     header.push(<th className="repeater-table-header-node" key="last">
-                        <div className="repeater-table-cell-wrapper"> 操作 </div>
+                        <div className={cellCls}> 操作 </div>
                     </th>);
                 }
 
@@ -62,11 +64,13 @@ export default function bind(source) {
                 const {
                     status,
                     multiple = false,
-                    hasDelete = true, hasUpdate = true,
+                    hasDelete = true, hasUpdate = true, itemAlign = 'left',
                     updateText = 'update', deleteText = 'delete',
                     saveText = 'save', cancelText = 'cancel',
                     children,
                 } = jsxProps;
+
+                const cellCls = `repeater-table-cell-wrapper repeater-table-cell-wrapper-${itemAlign}`;
 
                 const focusMode = core.$focus;
                 const editable = status === 'edit';
@@ -92,7 +96,7 @@ export default function bind(source) {
                             {childMap[`${conf.label}${conf.name}`]}
                         </div>);
                     } else {
-                        innerItem = (<div className="repeater-table-cell-wrapper">
+                        innerItem = (<div className={cellCls}>
                             {val[conf.name]}
                         </div>);
                     }
@@ -103,7 +107,7 @@ export default function bind(source) {
                 });
 
                 const operEle = (<td>
-                    {editable ? <div className="repeater-table-cell-wrapper">
+                    {editable ? <div className={cellCls}>
                         {saveBtn}
                         {cancelBtn}
                         {updateBtn}

@@ -16,7 +16,7 @@ export default function bind(source) {
 
                 const {
                     status,
-                    hasDelete = true, hasUpdate = true,
+                    hasDelete = true, hasUpdate = true, itemAlign = 'left',
                     updateText = 'update', deleteText = 'delete',
                 } = jsxProps;
 
@@ -27,7 +27,7 @@ export default function bind(source) {
 
                 return (<tr key={idx} className={className}>
                     {itemsConfig.map(conf => (<td key={`${conf.label}${conf.name}`}>
-                        <div className="repeater-table-cell-wrapper">{val[conf.name]}</div>
+                        <div className={`repeater-table-cell-wrapper repeater-table-cell-wrapper-${itemAlign}`}>{val[conf.name]}</div>
                     </td>))}
                     <td>
                         {editable ? <div className="repeater-table-cell-wrapper table-repeater-oper-cell">
@@ -46,19 +46,21 @@ export default function bind(source) {
             render={(context) => {
                 const { itemsConfig } = context;
                 const {
-                    searchEle, className, jsxProps, children,
+                    searchEle, className, jsxProps, children, itemAlign = 'left',
                 } = context.props;
                 const { status, addText = 'add' } = jsxProps;
 
                 const editable = status === 'edit';
 
+                const cellCls = `repeater-table-cell-wrapper repeater-table-cell-wrapper-${itemAlign}`;
+
                 const header = itemsConfig.map(conf => (<th className="repeater-table-header-node" key={`${conf.label}${conf.name}`}>
-                    <div className="repeater-table-cell-wrapper"> {conf.label} </div>
+                    <div className={cellCls}> {conf.label} </div>
                 </th>));
 
                 if (editable) {
                     header.push(<th className="repeater-table-header-node" key="last">
-                        <div className="repeater-table-cell-wrapper"> 操作 </div>
+                        <div className={cellCls}> 操作 </div>
                     </th>);
                 }
 
