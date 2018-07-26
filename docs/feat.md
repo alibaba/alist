@@ -54,6 +54,38 @@ let children = [
         return <div>{str}</div>
     }
 
+    const validateConfig = {
+        username: {type: "string", required: true}
+    }
+
+    let formcore
+    return <Form validateConfig={validateConfig} colon={false} style={{ marginBottom: 12 }} onMount={core => formcore = core} layout={{label: 5, control: 19}} full>
+        <h3>Validate errors</h3>
+        <div className="demo-form">
+            <FormItem required label="usernmae" name="username"><Input /></FormItem>
+            <FormItem required label="errorJudge" render={(values, ctx) => {
+                const { error } = ctx;
+                console.log('error', error, ctx);
+                return null;
+            }}/>
+        </div>
+        <br/><br/>
+        <button onClick={() => console.log(formcore.getValue())}> console value </button>
+        <button onClick={() => console.log(formcore.validate())}> Judge </button>
+</Form>
+})(),
+(() => {
+    const options = [
+        { label: 'zero', value: 0 },
+        { label: 'one', value: 1 },
+        // { label: 'zero(str)', value: '0' }
+    ];
+
+    const Plain = ({ value }) => {
+        const str = `${value}`;
+        return <div>{str}</div>
+    }
+
     let formcore
     return <Form colon={false} style={{ marginBottom: 12 }} onMount={core => formcore = core} layout={{label: 5, control: 19}} full>
         <h3>FormItem值为0</h3>

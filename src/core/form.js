@@ -80,7 +80,9 @@ class Form {
             }
         });
 
+        this.validatng = true;
         const errs = await Promise.all(validators);
+        this.validatng = false;
         const errors = {};
         const retErr = {};
         let hasError = false;
@@ -112,6 +114,7 @@ class Form {
     validate(cb = x => x) {
         const validators = [];
         let hasPromise = false;
+        this.validatng = true;
         this.children.forEach((child) => {
             const result = child.validate();
             if (result instanceof Promise) {
@@ -122,6 +125,7 @@ class Form {
         if (hasPromise) {
             return Promise.all(validators).then(this.handleErrors).then(cb);
         }
+        this.validatng = false;
         return cb(this.handleErrors(validators));
     }
 
@@ -129,6 +133,7 @@ class Form {
         const errors = {};
         const retErr = {};
         let hasError = false;
+        this.validatng = false;
 
         this.children.forEach((child, idx) => {
             if (errs[idx] && child.status !== 'hidden') {
