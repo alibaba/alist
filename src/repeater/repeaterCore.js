@@ -1,21 +1,18 @@
 import FormCore from '../core/form';
 
 class RepeaterCore {
-    constructor(valueArr, status, props) {
+    constructor(props) {
+        const { value, status, formConfig } = props;
         this.formList = [];
-
         this.status = status || 'preview';
-        this.formProps = props || {};
-        if (Array.isArray(valueArr)) {
-            this.formList = valueArr.map((values) => {
-                const formValues = values || {};
-                const formProps = props || {};
-                return new FormCore({
-                    ...formProps,
-                    values: formValues,
-                    globalStatus: this.status,
-                });
-            });
+        this.formProps = formConfig || {};
+
+        if (Array.isArray(value)) {
+            this.formList = value.map(itemValues => new FormCore({
+                ...this.formProps,
+                values: itemValues || {},
+                globalStatus: this.status,
+            }));
         }
     }
 

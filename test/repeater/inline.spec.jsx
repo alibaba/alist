@@ -193,15 +193,21 @@ describe('Inline Repeater', () => {
 
     it('should save(validate fail) when last node is editing when click save', async () => {
         const validateConfig = {
-            drawerName: { type: 'string', required: true },
+            drawerName: { type: 'string', required: true }
         };
+
+        const formConfig = {
+            validateConfig,
+            autoValidate: true,
+        };
+
         let validateCore = null;
         function validateMount(core) {
             validateCore = core;
         }
         const validateForm = mount(<Form onMount={validateMount}>
             <Item name="repeat">
-                <InlineRepeater filter={filter} validateConfig={validateConfig}>
+                <InlineRepeater filter={filter} formConfig={formConfig}>
                     <FormItem label="开票人" name="drawerName"><Input /></FormItem>
                     <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
                     <FormItem label="子公司" name="branchName"><Input /></FormItem>
@@ -243,15 +249,21 @@ describe('Inline Repeater', () => {
 
     it('should auto save(validate fail) when last node is editing when click save', async () => {
         const validateConfig = {
-            drawerName: { type: 'string', required: true },
+            drawerName: { type: 'string', required: true }
         };
+
+        const formConfig = {
+            validateConfig,
+            autoValidate: true,
+        };
+
         let validateCore = null;
         function validateMount(core) {
             validateCore = core;
         }
         const validateForm = mount(<Form onMount={validateMount}>
             <Item name="repeat">
-                <InlineRepeater filter={filter} validateConfig={validateConfig}>
+                <InlineRepeater filter={filter} formConfig={formConfig}>
                     <FormItem label="开票人" name="drawerName"><Input /></FormItem>
                     <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
                     <FormItem label="子公司" name="branchName"><Input /></FormItem>

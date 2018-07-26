@@ -13,12 +13,14 @@ class Form {
     constructor(option = {}) {
         const {
             validateConfig, onChange, value, values, status, globalStatus, interceptor, uniqueId,
+            autoValidate,
         } = option || {};
 
         this.onChange = onChange || noop;
         this.children = [];
         this.childrenMap = {};
         this.currentEventType = 'api';
+        this.autoValidate = autoValidate || false;
 
         this.globalStatus = globalStatus || 'edit';
 
@@ -57,8 +59,13 @@ class Form {
     // 上报change事件到JSX
     handleChange = (name) => {
         if (!this.silent && !this.hasEmitted) { // 变化的keys必须为数组
-            this.onChange(this.settingBatchKeys || [name], this.value, this);
-            this.emit(CHANGE, this.value, this.settingBatchKeys || [name], this);
+            const relatedKeys = this.settingBatchKeys || [name];
+            if (this.autoValidate) { // 按需校验
+                this.validateItem(relatedKeys);
+            }
+
+            this.onChange(relatedKeys, this.value, this);
+            this.emit(CHANGE, this.value, relatedKeys, this);
         }
 
         if (this.silent) this.hasEmitted = false;

@@ -59,15 +59,21 @@ describe('Repeater', () => {
     });
     it('should add with validation', async () => {
         const validateConfig = {
-            drawerName: { type: 'string', required: true },
+            drawerName: { type: 'string', required: true }
         };
+
+        const formConfig = {
+            validateConfig,
+            autoValidate: true,
+        };
+
         let validateCore = null;
         function validateMount(core) {
             validateCore = core;
         }
         const validateForm = mount(<Form onMount={validateMount}>
             <Item name="repeat">
-                <TableRepeater filter={filter} validateConfig={validateConfig}>
+                <TableRepeater filter={filter} formConfig={formConfig}>
                     <FormItem label="开票人" name="drawerName"><Input /></FormItem>
                     <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
                     <FormItem label="子公司" name="branchName"><Input /></FormItem>

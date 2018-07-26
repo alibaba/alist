@@ -38,20 +38,25 @@ const validateConfig = {
     drawerName: { type: 'string', required: true }
 };
 
+const formConfig = {
+    validateConfig,
+    autoValidate: true
+};
+
 ReactDOM.render(<Form onMount={formmount} onChange={console.log}>
-    {/* <Item name="repeat">
-        <TableRepeater filter={filter} dialog={Dialog} validateConfig={validateConfig}>
+    <Item name="repeat">
+        <TableRepeater filter={filter} dialog={Dialog} formConfig={formConfig}>
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
             <FormItem label="子公司" name="branchName"><Input /></FormItem>
             <FormItem label="核查结果" name="checkResultName"><Input /></FormItem>
             <FormItem label="拒绝原因" name="denyReason"><Input /></FormItem>
             <FormItem label="创建人" name="creatorName"><Input /></FormItem>
-        </TableRepeater>        
+        </TableRepeater>
     </Item>
 
     <Item name="inlineRepeat">
-        <InlineRepeater filter={filter} validateConfig={validateConfig} addPosition="bottom">
+        <InlineRepeater filter={filter} formConfig={formConfig} addPosition="bottom">
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
             <FormItem label="子公司" name="branchName"><Input /></FormItem>
@@ -59,25 +64,25 @@ ReactDOM.render(<Form onMount={formmount} onChange={console.log}>
             <FormItem label="拒绝原因" name="denyReason"><Input /></FormItem>
             <FormItem label="创建人" name="creatorName"><Input /></FormItem>
         </InlineRepeater>
-    </Item> */}
+    </Item>
 
     <br/>
     <hr/>
 
     <Item name="inlineRepeatMultiple">
-        <InlineRepeater multiple filter={filter} validateConfig={validateConfig} addPosition="bottom">
-            {/* <FormItem label="开票人" name="drawerName"><Input /></FormItem> */}
+        <InlineRepeater multiple filter={filter} formConfig={formConfig} addPosition="bottom">
+            <FormItem label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem label="multi" multiple>
                 <div>
                     <Item name="aaa"><Input addonBefore="xxoo" style={{ width: '100px', marginBottom: '4px'}}  /></Item>
                     <Item name="bbb"><Input /></Item>
                 </div>
             </FormItem>
-            {/* <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
+            <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
             <FormItem label="子公司" name="branchName"><Input /></FormItem>
             <FormItem label="核查结果" name="checkResultName"><Input /></FormItem>
             <FormItem label="拒绝原因" name="denyReason"><Input /></FormItem>
-            <FormItem label="创建人" name="creatorName"><Input /></FormItem> */}
+            <FormItem label="创建人" name="creatorName"><Input /></FormItem>
         </InlineRepeater>
     </Item>
 </Form>, mountNode);

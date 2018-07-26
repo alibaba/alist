@@ -12,7 +12,7 @@ export default function createRepeater(bindSource, source) {
     return class OtRepeater extends Component {
         static propTypes = {
             status: PropTypes.string,
-            validateConfig: PropTypes.object,
+            formConfig: PropTypes.object,
             className: PropTypes.string,
             style: PropTypes.object,
             filter: PropTypes.func,
@@ -22,12 +22,14 @@ export default function createRepeater(bindSource, source) {
         }
         constructor(props, context) {
             super(props, context);
-            const { value, status, validateConfig } = props;
+            const { value, status, formConfig } = props;
             this.value = value || [];
             this.status = status;
-            this.validateConfig = validateConfig || {};
-            this.repeaterCore = new RepeaterCore(this.value, this.status, {
-                validateConfig: this.validateConfig,
+            this.formConfig = formConfig || {};
+            this.repeaterCore = new RepeaterCore({
+                value: this.value,
+                status: this.status,
+                formConfig: this.formConfig,
             });
         }
 
