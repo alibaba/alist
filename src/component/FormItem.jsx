@@ -65,7 +65,7 @@ class FormItem extends Component {
     render() {
         const { children, ...itemProps } = this.props;
         const { name, style = {} } = itemProps;
-        let { className = '' } = itemProps;
+        const { className = '' } = itemProps;
         const props = this.form.getItemProps(name) || {}; // 动态props
         const status = this.form.getItemStatus(name); // 动态status
         const error = this.form.getItemError(name); // 动态error
@@ -82,12 +82,15 @@ class FormItem extends Component {
             return null;
         }
 
+        let requiredCls = '';
         if (required && (status === EDIT || `${name}` === '')) {
-            className += ' required';
+            requiredCls = ' required';
         }
 
         // 处理布局
-        const { inset = false, colon, layout = {}, full: jsxFull } = {
+        const {
+            inset = false, colon, layout = {}, full: jsxFull,
+        } = {
             ...this.form.jsx.props, ...itemProps,
         };
 
@@ -102,7 +105,7 @@ class FormItem extends Component {
         return (
             <div name={`form-item-${name}`} className={`${formItemPrefix}-item ${className} ${layoutCls} ${colonCls}`} style={style}>
                 <div className={`${insetCls} ${errCls}`}>
-                    <span className={`${formItemPrefix}-item-label ${layout.label ? `col-${layout.label}` : ''}`} >{label}</span>
+                    <span className={`${formItemPrefix}-item-label ${requiredCls} ${layout.label ? `col-${layout.label}` : ''}`} >{label}</span>
                     <span className={`${formItemPrefix}-item-control ${layout.control ? `col-${layout.control}` : ''}`} >
                         { top ? <span className={`${formItemPrefix}-item-top`}>{top}</span> : null }
                         <span className={`${formItemPrefix}-item-content ${full ? `${formItemPrefix}-full` : ''}`}>

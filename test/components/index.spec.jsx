@@ -899,8 +899,8 @@ describe('validateConfig function', () => {
             <Item name="password"><Input /></Item>
             <Item
                 name="age"
-                validateConfig={(config, ff) => {
-                    if (ff.getValue('username') === 'bojoyzhou') {
+                validateConfig={(values) => {
+                    if (values.username === 'bojoyzhou') {
                         return null;
                     }
                     return {

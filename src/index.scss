@@ -36,12 +36,7 @@
         &-label{
             line-height: 28px;
             text-align: right;
-            @include gen(24);
-            .required &:before{
-                content: '*';
-                color: red;
-                margin: 0 5px 0 2px;
-            }
+            @include gen(24);            
             &:after{
                 content: ':';
                 margin: 0 12px 0 2px;
@@ -50,6 +45,12 @@
                 content: '';
                 margin: 0;
             }
+        }
+
+        &-label.required:before{
+            content: '*';
+            color: red;
+            margin: 0 5px 0 2px;
         }
         
         &-control{

@@ -57,12 +57,12 @@ ReactDOM.render(<Form onMount={formmount} onChange={console.log}>
 
     <Item name="inlineRepeat">
         <InlineRepeater filter={filter} formConfig={formConfig} addPosition="bottom">
-            <FormItem label="开票人" name="drawerName"><Input /></FormItem>
-            <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
-            <FormItem label="子公司" name="branchName"><Input /></FormItem>
-            <FormItem label="核查结果" name="checkResultName"><Input /></FormItem>
-            <FormItem label="拒绝原因" name="denyReason"><Input /></FormItem>
-            <FormItem label="创建人" name="creatorName"><Input /></FormItem>
+            <FormItem required label="开票人" name="drawerName"><Input /></FormItem>
+            <FormItem required label="税号" name="taxpayerNumber"><Input /></FormItem>
+            <FormItem required label="子公司" name="branchName"><Input /></FormItem>
+            <FormItem required label="核查结果" name="checkResultName"><Input /></FormItem>
+            <FormItem required label="拒绝原因" name="denyReason"><Input /></FormItem>
+            <FormItem required label="创建人" name="creatorName"><Input /></FormItem>
         </InlineRepeater>
     </Item>
 
@@ -72,17 +72,17 @@ ReactDOM.render(<Form onMount={formmount} onChange={console.log}>
     <Item name="inlineRepeatMultiple">
         <InlineRepeater multiple filter={filter} formConfig={formConfig} addPosition="bottom">
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
-            <FormItem label="multi" multiple>
+            <FormItem label="multi" multiple required>
                 <div>
-                    <Item name="aaa"><Input addonBefore="xxoo" style={{ width: '100px', marginBottom: '4px'}}  /></Item>
-                    <Item name="bbb"><Input /></Item>
+                    <FormItem name="aaa"><Input addonBefore="xxoo" style={{ width: '100px' }}  /></FormItem>
+                    <FormItem name="bbb"><Input /></FormItem>
                 </div>
             </FormItem>
-            <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
+            {/* <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
             <FormItem label="子公司" name="branchName"><Input /></FormItem>
             <FormItem label="核查结果" name="checkResultName"><Input /></FormItem>
             <FormItem label="拒绝原因" name="denyReason"><Input /></FormItem>
-            <FormItem label="创建人" name="creatorName"><Input /></FormItem>
+            <FormItem label="创建人" name="creatorName"><Input /></FormItem> */}
         </InlineRepeater>
     </Item>
 </Form>, mountNode);
