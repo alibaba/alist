@@ -155,18 +155,18 @@ const CustomEle = ({ onChange }) => {
 }
 
 ReactDOM.render(<Form onMount={formmount} onChange={console.log}>
-    <Item name="tableRepeat" >
+    {/* <Item name="tableRepeat" >
         <TableRepeater formConfig={formConfig}>
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
-            {/* <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
+            <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
             <FormItem label="子公司" name="branchName"><Input /></FormItem>
             <FormItem label="核查结果" name="checkResultName"><Input /></FormItem>
             <FormItem label="拒绝原因" name="denyReason"><Input /></FormItem>
-            <FormItem label="创建人" name="creatorName"><Input /></FormItem> */}
+            <FormItem label="创建人" name="creatorName"><Input /></FormItem>
         </TableRepeater>
-    </Item>
+    </Item> */}
 
-    <Item name="inlineRepeat">
+    {/* <Item name="inlineRepeat">
         <InlineRepeater filter={filter} formConfig={formConfig} addPosition="bottom">
             <FormItem required label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem required label="税号" name="taxpayerNumber"><Input /></FormItem>
@@ -175,19 +175,19 @@ ReactDOM.render(<Form onMount={formmount} onChange={console.log}>
             <FormItem required label="拒绝原因" name="denyReason"><Input /></FormItem>
             <FormItem required label="创建人" name="creatorName"><Input /></FormItem>
         </InlineRepeater>
-    </Item>
+    </Item> */}
 
     <br/>
     <hr/>
 
-    {/* <FormItem name="deep">
-        <SelectRepeater selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig}>
+    <FormItem name="deep">
+        <SelectRepeater selectMode="multiple" asyncHandler={asyncHandler} formConfig={formConfig}>
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
         </SelectRepeater>        
     </FormItem>
 
-    <FormItem name="fuzz">
+    {/* <FormItem name="fuzz">
         <CustomEle />
     </FormItem> */}
 

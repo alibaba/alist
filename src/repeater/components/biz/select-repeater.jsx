@@ -66,6 +66,7 @@ export default function SelectRepeaterHOC(Source, Com) {
         renderTrigger = (_, { values }) => {
             const { selectMode } = this.props;
             const val = this.core.getValue('value') || [];
+
             const icChecked = !!val.find(lastItem => values.id === lastItem.id);
             const { TriggerCom } = this;
 
@@ -73,10 +74,12 @@ export default function SelectRepeaterHOC(Source, Com) {
                 value={icChecked}
                 onChange={(checked) => {
                     let lastVal = this.core.getValue('value') || [];
-                    if (checked) {
+                    if (selectMode === 'single') {
+                        if (checked) {
+                            lastVal = [values];
+                        }
+                    } else if (checked) {
                         lastVal.push(values);
-                    } else if (selectMode === 'single') {
-                        lastVal = [values];
                     } else {
                         lastVal = lastVal.filter(fv => fv.id !== values.id);
                     }
