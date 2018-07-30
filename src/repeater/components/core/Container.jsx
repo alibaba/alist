@@ -9,6 +9,8 @@ class Container extends Component {
         doAdd: PropTypes.func,
         doUpdate: PropTypes.func,
         doDelete: PropTypes.func,
+        doAddDialog: PropTypes.func,
+        doUpdateDialog: PropTypes.func,
         doSave: PropTypes.func,
         doCancel: PropTypes.func,
         doMultipleInline: PropTypes.func,
@@ -26,6 +28,8 @@ class Container extends Component {
         this.doDelete = props.doDelete;
         this.doSave = props.doSave;
         this.doMultipleInline = props.doMultipleInline;
+        this.doAddDialog = props.doAddDialog;
+        this.doUpdateDialog = props.doUpdateDialog;
         this.doCancel = props.doCancel;
         this.doAddInline = props.doAddInline;
         this.doUpdateInline = props.doUpdateInline;
@@ -41,6 +45,8 @@ class Container extends Component {
             doUpdate: this.doUpdate,
             doDelete: this.doDelete,
             doSave: this.doSave,
+            doAddDialog: this.doAddDialog,
+            doUpdateDialog: this.doUpdateDialog,
             doCancel: this.doCancel,
             doMultipleInline: this.doMultipleInline,
             doAddInline: this.doAddInline,
@@ -61,6 +67,8 @@ Container.propTypes = {
     doUpdate: PropTypes.func,
     doDelete: PropTypes.func,
     doSave: PropTypes.func,
+    doAddDialog: PropTypes.func,
+    doUpdateDialog: PropTypes.func,
     doCancel: PropTypes.func,
     doAddInline: PropTypes.func,
     doUpdateInline: PropTypes.func,

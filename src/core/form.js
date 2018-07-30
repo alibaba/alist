@@ -345,6 +345,7 @@ class Form {
             const mrOption = Object.assign({}, option);
             const {
                 value, name, status, error, props, func_status,
+                interceptor: localInterceptor,
             } = option;
 
             if (this.childrenMap[name]) {
@@ -369,7 +370,7 @@ class Form {
                 on: this.on.bind(this),
                 emit: this.emit.bind(this),
                 removeListener: this.removeListener.bind(this),
-                interceptor: this.interceptor[mrOption.name],
+                interceptor: localInterceptor || this.interceptor[mrOption.name],
                 form: this,
             });
 

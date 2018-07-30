@@ -13,6 +13,7 @@ export default function bind(source) {
             render={(context) => {
                 const { val, idx, className } = context.props;
                 const { itemsConfig, jsxProps } = context;
+                const { core } = props;
 
                 const {
                     status,
@@ -26,9 +27,18 @@ export default function bind(source) {
                 const deleteBtn = hasDelete ? <ActionButton type="delete" deleteText={deleteText} /> : null;
 
                 return (<tr key={idx} className={className}>
-                    {itemsConfig.map(conf => (<td key={`${conf.label}${conf.name}`}>
-                        <div className={`repeater-table-cell-wrapper repeater-table-cell-wrapper-${itemAlign}`}>{val[conf.name]}</div>
-                    </td>))}
+                    {itemsConfig.map((conf) => {
+                        let cell = val[conf.name];
+                        if (conf.renderCell) {
+                            cell = conf.renderCell(val[conf.name], { values: val, id: idx, core });
+                        }
+
+                        return (<td key={`${conf.label}${conf.name}`}>
+                            <div className={`repeater-table-cell-wrapper repeater-table-cell-wrapper-${itemAlign}`}>
+                                {cell}
+                            </div>
+                        </td>);
+                    })}
                     <td>
                         {editable ? <div className="repeater-table-cell-wrapper table-repeater-oper-cell">
                             {updateBtn}
@@ -48,7 +58,10 @@ export default function bind(source) {
                 const {
                     searchEle, className, jsxProps, children, itemAlign = 'left',
                 } = context.props;
-                const { status, addText = 'add' } = jsxProps;
+                const {
+                    status, hasHeader = true, view,
+                    addText = 'add', hasAdd = true, addPosition = 'top',
+                } = jsxProps;
 
                 const editable = status === 'edit';
 
@@ -64,10 +77,17 @@ export default function bind(source) {
                     </th>);
                 }
 
+                let addBtnEle = null;
+                if (hasAdd && editable) {
+                    addBtnEle = <ActionButton type="add" addText={addText} />;
+                }
+
                 return (<div className={className}>
                     {searchEle}
-                    {editable ? <ActionButton type="add" addText={addText} /> : null}
-                    <TableCom header={header}>{children}</TableCom>
+                    {addPosition === 'top' ? addBtnEle : null}
+                    {view ? null : <TableCom hasHeader={hasHeader} header={header}>{children}</TableCom>}
+                    {view ? children : null}
+                    {addPosition === 'bottom' ? addBtnEle : null}
                 </div>);
             }}
         />);

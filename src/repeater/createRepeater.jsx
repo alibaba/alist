@@ -1,36 +1,51 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import RepeaterCore from './repeaterCore';
-import { FormCore } from '..';
+import Form, { FormCore } from '..';
 
 const noop = () => {};
 
 export default function createRepeater(bindSource, source) {
     const { Container, RowRender } = bindSource(source);
-    const { Input = noop } = source;
+    const { Input = noop, Dialog } = source;
 
     return class OtRepeater extends Component {
         static propTypes = {
+            view: PropTypes.any,
+            core: PropTypes.any,
             status: PropTypes.string,
+            asyncHandler: PropTypes.object,
             formConfig: PropTypes.object,
             className: PropTypes.string,
             style: PropTypes.object,
             filter: PropTypes.func,
+            onMount: PropTypes.func,
             value: PropTypes.array,
             onChange: PropTypes.func.isRequired,
             children: PropTypes.any,
         }
         constructor(props, context) {
             super(props, context);
-            const { value, status, formConfig } = props;
+            const {
+                value, status, formConfig, asyncHandler, core,
+            } = props;
             this.value = value || [];
             this.status = status;
             this.formConfig = formConfig || {};
-            this.repeaterCore = new RepeaterCore({
+            this.asyncHandler = asyncHandler || {};
+            this.repeaterCore = core || new RepeaterCore({
                 value: this.value,
                 status: this.status,
                 formConfig: this.formConfig,
+                asyncHandler: this.asyncHandler,
             });
+        }
+
+        componentDidMount() {
+            const { onMount } = this.props;
+            if (onMount) {
+                onMount(this.repeaterCore);
+            }
         }
 
         async componentWillReceiveProps(nextProps) {
@@ -39,6 +54,8 @@ export default function createRepeater(bindSource, source) {
             // 没有过滤函数或者没有关键字
             if (!filter || !this.key) {
                 this.value = nextProps.value || [];
+                this.repeaterCore.updateValue(this.value);
+                this.forceUpdate();
                 return;
             }
 
@@ -50,7 +67,8 @@ export default function createRepeater(bindSource, source) {
             }
         }
 
-        onChange = async (val) => {
+
+        onChange = async (val, opts) => {
             // val是onChange后的值
             // thisVal是onChange前的值，跟实际值合并之后存入value
             // 主要是考虑存在filter的情况, thisVal是过滤之后的值
@@ -82,13 +100,7 @@ export default function createRepeater(bindSource, source) {
                 i += 1;
             }
 
-            const { asyncHandler } = this.props;
-            if (asyncHandler) { // 异步或方法处理格式化
-                const handledValue = await asyncHandler(value);
-                this.props.onChange(handledValue);
-            } else {
-                this.props.onChange(value);
-            }
+            this.props.onChange(value, opts);
         }
 
         getValue = () => this.props.value || []
@@ -122,8 +134,8 @@ export default function createRepeater(bindSource, source) {
             this.forceUpdate();
         }
 
-        sync = () => {
-            this.onChange(this.repeaterCore.getValues());
+        sync = (opts) => {
+            this.onChange(this.repeaterCore.getValues(), opts);
         }
 
         syncAndUpdate = () => {
@@ -132,29 +144,36 @@ export default function createRepeater(bindSource, source) {
         };
 
         doSave = async (id) => {
-            const hasError = await this.repeaterCore.saveInline(id);
-            if (hasError) return;
+            const success = await this.repeaterCore.saveInline(id);
+            if (success) {
+                const index = this.repeaterCore.formList.findIndex(core => core.id === id);
+                this.sync({ type: 'save', index });
+                this.forceUpdate();
+            }
+        }
 
-            this.sync();
+        doCancel = async (id) => {
+            const index = this.repeaterCore.formList.findIndex(core => core.id === id);
+            await this.repeaterCore.cancelInline(id);
+            this.sync({ type: 'cancel', index });
             this.forceUpdate();
         }
 
-        doCancel = (id) => {
-            this.repeaterCore.cancelInline(id);
-            this.sync();
-            this.forceUpdate();
-        }
-
-        doAdd = (core) => {
+        doAdd = async (core) => {
+            let success = true;
             if (core instanceof FormCore) {
-                this.repeaterCore.add(core);
+                success = await this.repeaterCore.add(core);
             } else {
-                this.repeaterCore.add(new FormCore({
+                success = await this.repeaterCore.add(new FormCore({
                     values: core,
                 }));
             }
 
-            this.sync();
+            if (success) {
+                this.sync({ type: 'add', index: this.repeaterCore.formList.length - 1 });
+            }
+
+            return success;
         }
 
         doMultipleInline = async () => {
@@ -163,7 +182,7 @@ export default function createRepeater(bindSource, source) {
                 this.syncAndUpdate();
             });
             if (canSync) {
-                this.sync();
+                this.sync({ type: 'addMultiple', index: this.repeaterCore.formList.length - 1 });
             }
             this.forceUpdate();
         }
@@ -171,30 +190,88 @@ export default function createRepeater(bindSource, source) {
         doAddInline = async () => {
             const canSync = await this.repeaterCore.addInline();
             if (canSync) {
-                this.sync();
+                this.sync({ type: 'addInline', index: this.repeaterCore.formList.length - 1 });
             }
             this.forceUpdate();
         }
 
-        doUpdateInline = async (id) => {
-            await this.repeaterCore.updateInline(id);
+        doUpdateInline = async (core, id) => {
+            await this.repeaterCore.updateInline(core, id);
             this.forceUpdate();
         }
 
-        doUpdate = (val, id) => {
-            this.repeaterCore.update(val, id);
-            this.sync();
+        doUpdate = async (core, id) => {
+            const success = await this.repeaterCore.update(core, id);
+            if (success) {
+                const index = this.repeaterCore.formList.findIndex(rp => rp.id === id);
+                this.sync({ type: 'update', index });
+            }
+
+            return success;
         }
 
-        doDelete = (id) => {
-            this.repeaterCore.remove(id);
-            this.sync();
+        doDelete = async (core, id) => {
+            Dialog.show({
+                title: '删除',
+                content: <div>是否删除该项</div>,
+                onOk: async (_, hide) => {
+                    const success = await this.repeaterCore.remove(core, id);
+                    if (success) {
+                        const index = this.repeaterCore.formList.findIndex(rp => rp.id === id);
+                        hide();
+
+                        this.sync({ type: 'delete', index });
+                    }
+                },
+            });
+        }
+
+        doAddDialog = async (core) => {
+            const { children, layout } = this.props;
+            Dialog.show({
+                title: '添加',
+                content: <Form core={core} layout={layout || { label: 8, control: 16 }}>
+                    {children}
+                </Form>,
+                onOk: async (_, hide) => {
+                    const error = await core.validate();
+                    if (error) {
+                        return;
+                    }
+
+                    const success = await this.doAdd(core);
+                    if (success) {
+                        hide();
+                    }
+                },
+            });
+        }
+
+        doUpdateDialog = async (core, id) => {
+            const { children, layout } = this.props;
+            Dialog.show({
+                title: '更新',
+                content: <Form core={core} layout={layout || { label: 8, control: 16 }}>
+                    {children}
+                </Form>,
+                onOk: async (_, hide) => {
+                    const error = await core.validate();
+                    if (error) {
+                        return;
+                    }
+
+                    const success = await this.doUpdate(core, id);
+                    if (success) {
+                        hide();
+                    }
+                },
+            });
         }
 
         render() {
             const { repeaterCore, handleSearch } = this;
             const {
-                style = {}, className, children, filter,
+                style = {}, className, children, filter, view,
             } = this.props;
 
             const { formList } = repeaterCore;
@@ -203,10 +280,23 @@ export default function createRepeater(bindSource, source) {
                 name: child.props.name,
                 label: child.props.label,
                 multiple: child.props.multiple,
+                renderCell: child.props.renderCell,
             })).filter(item => (item.name || item.multiple));
 
             const searchEle = filter ? <Input className="repeater-search" onChange={handleSearch} /> : null;
 
+            const rowList = formList.map((core) => {
+                const val = core.getValues();
+                console.log('===>rowList:', val);
+                const { id } = core;
+                const itemProps = { id, val, core };
+                return <RowRender key={id} className="table-repeater-row" {...itemProps} />;
+            });
+
+            let customView = view; // 自定义视图
+            if (typeof view === 'function') {
+                customView = view(formList, this);
+            }
             return (
                 <div>
                     <Container
@@ -217,6 +307,8 @@ export default function createRepeater(bindSource, source) {
                         itemsConfig={itemsConfig}
                         repeaterCore={repeaterCore}
                         doAdd={this.doAdd}
+                        doAddDialog={this.doAddDialog}
+                        doUpdateDialog={this.doUpdateDialog}
                         doUpdate={this.doUpdate}
                         doDelete={this.doDelete}
                         doSave={this.doSave}
@@ -225,13 +317,7 @@ export default function createRepeater(bindSource, source) {
                         doMultipleInline={this.doMultipleInline}
                         doUpdateInline={this.doUpdateInline}
                     >
-                        {
-                            formList.map((core) => {
-                                const val = core.getValues();
-                                const itemProps = { id: core.id, val, core };
-                                return <RowRender key={core.id} className="table-repeater-row" {...itemProps} />;
-                            })
-                        }
+                        {view ? customView : rowList}
                     </Container>
                 </div>
             );

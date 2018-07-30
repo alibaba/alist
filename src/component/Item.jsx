@@ -116,6 +116,10 @@ class Item extends Component {
             }
         }
 
+        if ('interceptor' in jsxProps) {
+            option.interceptor = jsxProps.interceptor;
+        }
+
         // 注册item, 绑定视图
         this.ifCore = context.ifCore;
         this.core = form.addField(option);
@@ -176,10 +180,12 @@ class Item extends Component {
         }
 
         this.form.currentCore = this.core;
+        this.form.currentEventOpts = opts;
         this.form.currentEventType = 'manual';
         this.core.set('value', val);
         Promise.resolve().then(() => {
             this.form.currentCore = null;
+            this.form.currentEventOpts = null;
             this.form.currentEventType = 'api';
         });
     }

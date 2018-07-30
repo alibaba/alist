@@ -20,6 +20,8 @@ export default function bind(source) {
                     status,
                     addText = 'add', hasAdd = true, addPosition = 'top',
                     multiple = false,
+                    hasHeader = true,
+                    view,
                 } = jsxProps;
 
                 const editable = status === 'edit';
@@ -45,7 +47,8 @@ export default function bind(source) {
                 return (<div className={className}>
                     {searchEle}
                     {addPosition === 'top' ? addBtnEle : null}
-                    <TableCom header={header}>{children}</TableCom>
+                    {view ? null : <TableCom hasHeader={hasHeader} header={header}>{children}</TableCom>}
+                    {view ? children : null}
                     {addPosition === 'bottom' ? addBtnEle : null}
                 </div>);
             }}
@@ -66,7 +69,7 @@ export default function bind(source) {
                     multiple = false,
                     hasDelete = true, hasUpdate = true, itemAlign = 'left',
                     updateText = 'update', deleteText = 'delete',
-                    saveText = 'save', cancelText = 'cancel',
+                    saveText = 'save', cancelText = 'cancel',                    
                     children,
                 } = jsxProps;
 
