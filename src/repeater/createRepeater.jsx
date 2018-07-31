@@ -18,6 +18,7 @@ export default function createRepeater(bindSource, source) {
             formConfig: PropTypes.object,
             className: PropTypes.string,
             style: PropTypes.object,
+            multiple: PropTypes.bool,
             filter: PropTypes.func,
             onMount: PropTypes.func,
             value: PropTypes.array,
@@ -54,7 +55,7 @@ export default function createRepeater(bindSource, source) {
             // 没有过滤函数或者没有关键字
             if (!filter || !this.key) {
                 this.value = nextProps.value || [];
-                this.repeaterCore.updateValue(this.value);
+                this.repeaterCore.updateValue(this.value, this.handleCoreUpdate);
                 this.forceUpdate();
                 return;
             }
@@ -62,11 +63,10 @@ export default function createRepeater(bindSource, source) {
             if (nextProps.value !== this.props.value) {
                 this.value = await this.handleFilter(nextProps.value, this.key);
 
-                this.repeaterCore.updateValue(this.value);
+                this.repeaterCore.updateValue(this.value, this.handleCoreUpdate);
                 this.forceUpdate();
             }
         }
-
 
         onChange = async (val, opts) => {
             // val是onChange后的值
@@ -104,6 +104,16 @@ export default function createRepeater(bindSource, source) {
         }
 
         getValue = () => this.props.value || []
+
+
+        handleCoreUpdate = (core) => {
+            const { multiple } = this.props;
+            if (multiple) {
+                core.$focus = true;
+                core.$multiple = true;
+            }
+            return core;
+        }
 
         handleFilter = async (value, key) => {
             const { filter } = this.props;
@@ -177,10 +187,8 @@ export default function createRepeater(bindSource, source) {
         }
 
         doMultipleInline = async () => {
-            const canSync = await this.repeaterCore.addMultipleInline((values, fireKeys, ctx) => {
-                ctx.validateItem(fireKeys);
-                this.syncAndUpdate();
-            });
+            const canSync = await this.repeaterCore.addMultipleInline(this.syncAndUpdate);
+
             if (canSync) {
                 this.sync({ type: 'addMultiple', index: this.repeaterCore.formList.length - 1 });
             }
@@ -287,7 +295,6 @@ export default function createRepeater(bindSource, source) {
 
             const rowList = formList.map((core) => {
                 const val = core.getValues();
-                console.log('===>rowList:', val);
                 const { id } = core;
                 const itemProps = { id, val, core };
                 return <RowRender key={id} className="table-repeater-row" {...itemProps} />;

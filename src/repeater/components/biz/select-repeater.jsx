@@ -18,13 +18,15 @@ export default function SelectRepeaterHOC(Source, Com) {
         constructor(props, context) {
             super(props, context);
             const {
-                selectMode, dataSource, value,
+                selectMode, value,
                 selectFormConfig,
             } = props;
+
+            const { dataSource, value: innerVal } = value || {};
             this.core = new FormCore({
                 values: {
                     dataSource: dataSource || [],
-                    value: value || [],
+                    value: innerVal || [],
                 },
                 ...selectFormConfig,
             });

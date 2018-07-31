@@ -107,7 +107,7 @@ class RepeaterCore {
     addInline = async () => {
         let canSync = false;
         const hasError = await this.hasValidateError();
-        if (hasError) return canSync;
+        if (hasError) return false;
 
         canSync = this.autoSaveInline();
         const tmp = this.generateCore();
@@ -296,11 +296,16 @@ class RepeaterCore {
     }
 
     // 更新value
-    updateValue = async (valueArr) => {
+    updateValue = async (valueArr, cb) => {
         if (Array.isArray(valueArr)) {
             this.formList = valueArr.map((values) => {
                 const formValues = values || {};
-                return this.generateCore(formValues);
+                let core = this.generateCore(formValues);
+                if (cb) {
+                    core = cb(core);
+                }
+
+                return core;
             });
         }
     }
