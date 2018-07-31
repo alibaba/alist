@@ -15,6 +15,7 @@ export default function createRepeater(bindSource, source) {
             core: PropTypes.any,
             status: PropTypes.string,
             asyncHandler: PropTypes.object,
+            dialogConfig: PropTypes.object,
             formConfig: PropTypes.object,
             className: PropTypes.string,
             style: PropTypes.object,
@@ -105,14 +106,34 @@ export default function createRepeater(bindSource, source) {
 
         getValue = () => this.props.value || []
 
+        getDialogConfig = (core, props) => {
+            const { dialogConfig } = this.props;
+            const { custom } = dialogConfig || {};
+            const { type } = props;
 
-        handleCoreUpdate = (core) => {
-            const { multiple } = this.props;
-            if (multiple) {
-                core.$focus = true;
-                core.$multiple = true;
+            let rewriteProps = {};
+            if (custom) {
+                rewriteProps = custom(core, type);
             }
-            return core;
+
+            return {
+                ...props,
+                content: this.getForm(core),
+                ...rewriteProps,
+            };
+        }
+
+
+        getForm = (core) => {
+            const formProps = {};
+            const { dialogConfig, children } = this.props;
+            const { layout, full } = dialogConfig || {};
+            formProps.layout = layout || { label: 8, control: 16 };
+            formProps.full = !!full;
+
+            return (<Form core={core} {...formProps}>
+                {children}
+            </Form>);
         }
 
         handleFilter = async (value, key) => {
@@ -234,13 +255,10 @@ export default function createRepeater(bindSource, source) {
             });
         }
 
+
         doAddDialog = async (core) => {
-            const { children, layout } = this.props;
-            Dialog.show({
+            const dialogConfig = this.getDialogConfig(core, {
                 title: '添加',
-                content: <Form core={core} layout={layout || { label: 8, control: 16 }}>
-                    {children}
-                </Form>,
                 onOk: async (_, hide) => {
                     const error = await core.validate();
                     if (error) {
@@ -252,16 +270,15 @@ export default function createRepeater(bindSource, source) {
                         hide();
                     }
                 },
+                type: 'add',
             });
+            Dialog.show(dialogConfig);
         }
 
         doUpdateDialog = async (core, id) => {
-            const { children, layout } = this.props;
-            Dialog.show({
+            const dialogConfig = this.getDialogConfig(core, {
                 title: '更新',
-                content: <Form core={core} layout={layout || { label: 8, control: 16 }}>
-                    {children}
-                </Form>,
+                type: 'update',
                 onOk: async (_, hide) => {
                     const error = await core.validate();
                     if (error) {
@@ -274,6 +291,7 @@ export default function createRepeater(bindSource, source) {
                     }
                 },
             });
+            Dialog.show(dialogConfig);
         }
 
         render() {

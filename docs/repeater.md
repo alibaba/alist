@@ -59,6 +59,23 @@ const deepCore = new FormCore();
 const fuzzCore = new FormCore();
 window.deepCore = deepCore;
 
+const dialogConfig = {
+    full: true,
+    layout: { label: 10, control: 14 },
+    custom: (core, type) => {
+        let title = '';
+        if (type === 'add') {
+            title = '增加xxx';
+        } else if (type === 'update') {
+            title = '修改xxx';
+        }
+
+        return {
+            title
+        }
+    }
+};
+
 const asyncAdd = (values) => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -163,7 +180,7 @@ const customView = (_, ctx) => {
 const CustomEle = ({ onChange }) => {
     return <Form core={fuzzCore} onChange={onChange}>
         <Item name="address">
-            <SelectRepeater selectFormConfig={deepFormConfig} selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig} view={customView} hasAdd={false}>
+            <SelectRepeater dialogConfig={dialogConfig} selectFormConfig={deepFormConfig} selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig} view={customView} hasAdd={false}>
                 <FormItem label="开票人" name="drawerName"><Input /></FormItem>
                 <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
             </SelectRepeater>
