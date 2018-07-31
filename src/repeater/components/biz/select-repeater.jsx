@@ -42,8 +42,9 @@ export default function SelectRepeaterHOC(Source, Com) {
         componentWillReceiveProps = (nextProps) => {
             const { dataSource, value } = nextProps.value || {};
             // 下述代码在interceptor中完成
-            const formatValue = [];
+            const formatValue = [].concat(value);
             let formatDataSource = [];
+
             if (Array.isArray(dataSource)) {
                 formatDataSource = dataSource;
                 const idMap = {};
@@ -53,9 +54,9 @@ export default function SelectRepeaterHOC(Source, Com) {
                     }
                 });
 
-                value.forEach((valItem) => {
+                formatValue.forEach((valItem, index) => {
                     if (valItem.id in idMap) {
-                        formatValue.push(idMap[valItem.id]);
+                        formatValue.splice(index, 1, idMap[valItem.id]);
                     }
                 });
             }

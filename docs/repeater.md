@@ -56,25 +56,29 @@ const deepFormConfig = {
 };
 
 const deepCore = new FormCore();
+const fuzzCore = new FormCore();
 window.deepCore = deepCore;
 
 const asyncAdd = (values) => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            if (Number(values.taxpayerNumber) > 10) {
-                resolve({
-                    success: true,
-                    values: {
-                        ...values,
-                        id: 'add' + Math.random().toString(36).slice(2)
-                    }
-                });
-            } else {
-                reject({
-                    success: false,
-                    values: null
-                });
-            }                
+            const newValues = {
+                ...values,
+                id: 'add' + Math.random().toString(36).slice(2)
+            };
+
+            const { address } = fuzzCore.getValues();
+            fuzzCore.setValues({
+                address: {
+                    ...address,
+                    value: [newValues]
+                }
+            });
+
+            resolve({
+                success: true,
+                values: newValues
+            });
         }, 1500);
     });
 };
@@ -104,49 +108,47 @@ const asyncHandler = {
     }
 };
 
-const fuzzCore = new FormCore();
+const renderList = () => {
+    const fuzzValues = fuzzCore.getValues();
+    const { address } = fuzzValues || {};
+    const { dataSource, value } = address || {};
+
+    const tmp = new FormCore({
+        values: {
+            list: address
+        },
+        onChange: (fireKeys, values) => {
+            const { list } = values;
+            fuzzCore.setValues({
+                address: list
+            });
+        }
+    });
+    Dialog.show({
+        title: 'hello',
+        content: <Form core={tmp}>
+            <Item name="list">
+                <SelectRepeater selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig} hasAdd={false}>
+                    <FormItem label="开票人" name="drawerName"><Input /></FormItem>
+                    <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
+                </SelectRepeater>
+            </Item>                
+        </Form>,
+        onOk: (values, hide) => {
+            hide();
+        }
+    });
+}
 
 const customView = (_, ctx) => {
     const fuzzValues = fuzzCore.getValues();
     const { address } = fuzzValues || {};
-    const { dataSource } = address || {};
-
-    const renderList = () => {
-        const fuzzValues = fuzzCore.getValues();
-        const { address } = fuzzValues || {};
-        const { dataSource, value } = address || {};
-
-        const tmp = new FormCore({
-            values: {
-                list: address
-            },
-            onChange: (fireKeys, values) => {
-                const { list } = values;
-                fuzzCore.setValues({
-                    address: list
-                });
-            }
-        });
-        Dialog.show({
-            title: 'hello',
-            content: <Form core={tmp}>
-                <Item name="list">
-                    <SelectRepeater selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig} hasAdd={false}>
-                        <FormItem label="开票人" name="drawerName"><Input /></FormItem>
-                        <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
-                    </SelectRepeater>
-                </Item>                
-            </Form>,
-            onOk: (values, hide) => {
-                hide();
-            }
-        });
-    }
+    const { dataSource, value } = address || {};
 
     let selectElement = null;
-    // if (value && value.length > 0) {
+    if (value && value.length > 0) {
         selectElement = <a href="#" onClick={renderList}>重新选择</a>
-    // }
+    }
 
     let addElement = null;
     if (!(dataSource && dataSource.length === 5)) {
@@ -202,12 +204,12 @@ ReactDOM.render(<Form onMount={formmount} onChange={console.log}>
         </SelectRepeater>        
     </FormItem> */}
 
-    {/* <FormItem name="fuzz">
+    <FormItem name="fuzz">
         <CustomEle />
-    </FormItem> */}
+    </FormItem>
 
     
-    <Item name="inlineRepeatMultiple">
+    {/* <Item name="inlineRepeatMultiple">
         <InlineRepeater multiple filter={filter} formConfig={formConfig} addPosition="bottom">
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem label="multi" multiple required>
@@ -222,7 +224,7 @@ ReactDOM.render(<Form onMount={formmount} onChange={console.log}>
             <FormItem label="拒绝原因" name="denyReason"><Input /></FormItem>
             <FormItem label="创建人" name="creatorName"><Input /></FormItem>
         </InlineRepeater>
-    </Item>
+    </Item> */}
 </Form>, mountNode);
 ````
 
