@@ -1,5 +1,5 @@
 import EventEmitter from 'events';
-import { VALUE_CHANGE, CHANGE, ANY_CHANGE, BASIC_EVENT } from '../static';
+import { VALUE_CHANGE, CHANGE, ANY_CHANGE, BASIC_EVENT, INITIALIZED } from '../static';
 import ItemCore from './item';
 
 // 工具方法
@@ -13,6 +13,7 @@ class Form {
     constructor(option = {}) {
         const {
             validateConfig, onChange, value, values, status, globalStatus, interceptor, uniqueId,
+            initialized,
             autoValidate,
         } = option || {};
 
@@ -48,12 +49,15 @@ class Form {
             this[`getItem${name}`] = this.get.bind(this, name.toLowerCase());
         });
 
+        this.initialized = initialized || noop;
+
         // 别名
         this.setValues = this.setValue;
         this.getValues = this.getValue;
 
         // 处理item的setValue事件
         this.on(VALUE_CHANGE, this.handleChange);
+        this.on(INITIALIZED, this.initialized);
     }
 
     // 上报change事件到JSX

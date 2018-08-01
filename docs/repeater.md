@@ -106,12 +106,10 @@ const asyncHandler = {
     update: (values) => {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
+                debugger;
                 resolve({
                     success: true,
-                    values: {
-                        ...values,
-                        id: 'update' + Math.random().toString(36).slice(2)
-                    }
+                    values
                 });
             }, 1500);
         });

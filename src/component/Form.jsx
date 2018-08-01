@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import deepEqual from 'deep-equal';
 import FormCore from '../core/form';
-import { STATUS_ENUMS, CHANGE, FOCUS, BLUR } from '../static';
+import { STATUS_ENUMS, CHANGE, FOCUS, BLUR, INITIALIZED } from '../static';
 
 const noop = () => {};
 
@@ -83,6 +83,7 @@ class Form extends Component {
             validateConfig, map, value, core,
         } = this.props;
         this.props.onMount(this.core); // 返回core
+        this.core.emit(INITIALIZED, this.core);
 
         // 校验规则
         if ('validateConfig' in this.props && validateConfig) {

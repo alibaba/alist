@@ -109,7 +109,7 @@ export default function createRepeater(bindSource, source) {
         getDialogConfig = (core, props) => {
             const { dialogConfig } = this.props;
             const { custom } = dialogConfig || {};
-            const { type } = props;
+            const { type, content } = props;
 
             let rewriteProps = {};
             if (custom) {
@@ -118,7 +118,7 @@ export default function createRepeater(bindSource, source) {
 
             return {
                 ...props,
-                content: this.getForm(core),
+                content: content || this.getForm(core),
                 ...rewriteProps,
             };
         }
@@ -134,6 +134,17 @@ export default function createRepeater(bindSource, source) {
             return (<Form core={core} {...formProps}>
                 {children}
             </Form>);
+        }
+
+
+        handleCoreUpdate = (core) => {
+            const { multiple } = this.props;
+            if (multiple) {
+                core.$focus = true;
+                core.$multiple = true;
+            }
+
+            return core;
         }
 
         handleFilter = async (value, key) => {
@@ -240,7 +251,7 @@ export default function createRepeater(bindSource, source) {
         }
 
         doDelete = async (core, id) => {
-            Dialog.show({
+            const dialogConfig = this.getDialogConfig(core, {
                 title: '删除',
                 content: <div>是否删除该项</div>,
                 onOk: async (_, hide) => {
@@ -252,7 +263,9 @@ export default function createRepeater(bindSource, source) {
                         this.sync({ type: 'delete', index });
                     }
                 },
+                type: 'remove',
             });
+            Dialog.show(dialogConfig);
         }
 
 
@@ -272,6 +285,7 @@ export default function createRepeater(bindSource, source) {
                 },
                 type: 'add',
             });
+
             Dialog.show(dialogConfig);
         }
 

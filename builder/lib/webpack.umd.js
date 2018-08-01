@@ -35,9 +35,6 @@ const basicConfig = {
     },
 };
 
-const config = entryOuts.map(entryOutItem => ({
-    ...entryOutItem,
-    ...basicConfig,
-}));
+const config = entryOuts.map(entryOutItem => Object.assign({}, entryOutItem, basicConfig));
 
 module.exports = config;
