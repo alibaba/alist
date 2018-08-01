@@ -1,11 +1,12 @@
 import * as Antd from 'antd';
 import { mount } from 'enzyme';
 import React from 'react';
-import Form, { FormItem, Item, FormCore } from '../../src';
 import ReactTestUtils from 'react-dom/test-utils';
+import Form, { FormItem, Item } from '../../src';
 import repeaterWrapper from '../../src/repeater';
 import wrapper from '../../src/wrapper/antd';
 import dialogWrapper from '../../src/dialog/antd';
+
 const { InlineRepeater } = repeaterWrapper({ ...Antd, Dialog: dialogWrapper(Antd) });
 
 const { Input } = wrapper(Antd);
@@ -51,33 +52,39 @@ describe('Inline Repeater', () => {
     it('should render', () => {
         formCore.setValue('repeat', [{}]);
     });
-    it('should add', () => {
+    it('should add', async () => {
         // console.log(form.find(InlineRepeater).instance().doAdd);
-        form.find(InlineRepeater).instance().doAdd(testValues);
+        await form.find(InlineRepeater).instance().doAdd(testValues);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
     });
-    it('should update', () => {
+    it('should update', async () => {
         // console.log(form.find(InlineRepeater).instance().doAdd);
-        form.find(InlineRepeater).instance().doAdd(testValues);
+        await form.find(InlineRepeater).instance().doAdd(testValues);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
 
-        const { id } = form.find(InlineRepeater).instance().repeaterCore.formList[0];
-        form.find(InlineRepeater).instance().doUpdate({
+        const core = form.find(InlineRepeater).instance().repeaterCore.formList[0];
+        core.setValueSilent({
             ...testValues,
             drawerName: 'xxxxx',
-        }, id);
+        });
+        await form.find(InlineRepeater).instance().doUpdate(core, core.id);
 
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([{
             ...testValues,
             drawerName: 'xxxxx',
         }]));
     });
-    it('should delete', () => {
-        form.find(InlineRepeater).instance().doAdd(testValues);
+    it('should delete', async () => {
+        await form.find(InlineRepeater).instance().doAdd(testValues);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
 
-        const { id } = form.find(InlineRepeater).instance().repeaterCore.formList[0];
-        form.find(InlineRepeater).instance().doDelete(id);
+        const core = form.find(InlineRepeater).instance().repeaterCore.formList[0];
+        const { id } = core;
+        await form.find(InlineRepeater).instance().doDelete(core, id);
+        expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn').length).toEqual(1);
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn')[0]);
+
+        await sleep(500);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([]));
     });
 
@@ -101,8 +108,8 @@ describe('Inline Repeater', () => {
         expect(formCore.getValue('repeat')).toEqual(null);
         expect(form.find('button.repeater-save').length).toEqual(0);
         expect(form.find('button.repeater-cancel').length).toEqual(0);
-        form.find(InlineRepeater).instance().doAdd(testValues);
-        form.find(InlineRepeater).instance().doAdd(testValues);
+        await form.find(InlineRepeater).instance().doAdd(testValues);
+        await form.find(InlineRepeater).instance().doAdd(testValues);
         form.mount();
         expect(form.find('button.repeater-save').length).toEqual(0);
         expect(form.find('button.repeater-cancel').length).toEqual(0);
@@ -132,8 +139,8 @@ describe('Inline Repeater', () => {
         expect(formCore.getValue('repeat')).toEqual(null);
         expect(form.find('button.repeater-save').length).toEqual(0);
         expect(form.find('button.repeater-cancel').length).toEqual(0);
-        form.find(InlineRepeater).instance().doAdd(testValues);
-        form.find(InlineRepeater).instance().doAdd(testValues);
+        await form.find(InlineRepeater).instance().doAdd(testValues);
+        await form.find(InlineRepeater).instance().doAdd(testValues);
         form.mount();
         expect(form.find('button.repeater-save').length).toEqual(0);
         expect(form.find('button.repeater-cancel').length).toEqual(0);
@@ -195,13 +202,19 @@ describe('Inline Repeater', () => {
         const validateConfig = {
             drawerName: { type: 'string', required: true },
         };
+
+        const formConfig = {
+            validateConfig,
+            autoValidate: true,
+        };
+
         let validateCore = null;
         function validateMount(core) {
             validateCore = core;
         }
         const validateForm = mount(<Form onMount={validateMount}>
             <Item name="repeat">
-                <InlineRepeater filter={filter} validateConfig={validateConfig}>
+                <InlineRepeater filter={filter} formConfig={formConfig}>
                     <FormItem label="开票人" name="drawerName"><Input /></FormItem>
                     <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
                     <FormItem label="子公司" name="branchName"><Input /></FormItem>
@@ -245,13 +258,19 @@ describe('Inline Repeater', () => {
         const validateConfig = {
             drawerName: { type: 'string', required: true },
         };
+
+        const formConfig = {
+            validateConfig,
+            autoValidate: true,
+        };
+
         let validateCore = null;
         function validateMount(core) {
             validateCore = core;
         }
         const validateForm = mount(<Form onMount={validateMount}>
             <Item name="repeat">
-                <InlineRepeater filter={filter} validateConfig={validateConfig}>
+                <InlineRepeater filter={filter} formConfig={formConfig}>
                     <FormItem label="开票人" name="drawerName"><Input /></FormItem>
                     <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
                     <FormItem label="子公司" name="branchName"><Input /></FormItem>
@@ -340,10 +359,10 @@ describe('Inline Repeater', () => {
     });
 
     it('should update by click update', async () => {
-        form.find(InlineRepeater).instance().doAdd(testValues);
+        await form.find(InlineRepeater).instance().doAdd(testValues);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
         expect(formCore.getValue('repeat').length).toEqual(1);
-        expect(form.find('button.repeater-save').length).toEqual(0);        
+        expect(form.find('button.repeater-save').length).toEqual(0);
         await sleep(500);
         form.mount();
         form.find('button.repeater-update').simulate('click');
@@ -367,7 +386,7 @@ describe('Inline Repeater', () => {
     });
 
     it('should delete by click delete', async () => {
-        form.find(InlineRepeater).instance().doAdd({
+        await form.find(InlineRepeater).instance().doAdd({
             drawerName: '开票人',
             taxpayerNumber: '税号',
             branchName: '子公司',
@@ -378,6 +397,12 @@ describe('Inline Repeater', () => {
         form.mount();
         await sleep(500);
         form.find('.repeater-delete').simulate('click');
+        await sleep(500);
+        form.mount();
+        expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn').length).toEqual(1);
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn')[0]);
+
+        await sleep(500);
 
         expect(JSON.stringify(formCore.getValue())).toEqual(JSON.stringify({
             repeat: [],
@@ -392,10 +417,10 @@ describe('Inline Repeater', () => {
             { drawerName: '销售' },
         ];
 
-        form.find(InlineRepeater).instance().doAdd(valuesArr[0]);
-        form.find(InlineRepeater).instance().doAdd(valuesArr[1]);
-        form.find(InlineRepeater).instance().doAdd(valuesArr[2]);
-        form.find(InlineRepeater).instance().doAdd(valuesArr[3]);
+        await form.find(InlineRepeater).instance().doAdd(valuesArr[0]);
+        await form.find(InlineRepeater).instance().doAdd(valuesArr[1]);
+        await form.find(InlineRepeater).instance().doAdd(valuesArr[2]);
+        await form.find(InlineRepeater).instance().doAdd(valuesArr[3]);
         form.mount();
 
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify(valuesArr));
@@ -421,7 +446,7 @@ describe('Inline Repeater', () => {
             target: { value: '' },
         });
         await sleep(500);
-        form.mount();        
+        form.mount();
         expect(form.find('Form.table-repeater-row').length).toEqual(4);
     });
 });

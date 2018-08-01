@@ -9,6 +9,18 @@
         min-width: 100px;
     }
 
+    .repeater-table-cell-wrapper-left {
+        text-align: left;
+    }
+
+    .repeater-table-cell-wrapper-center {
+        text-align: center;
+    }
+
+    .repeater-table-cell-wrapper-right {
+        text-align: right;
+    }
+
     table {
         border-collapse: separate;
         border-spacing: 4px;

@@ -1,4 +1,8 @@
 {
+    "globals": {
+        "document": true,
+        "window": true
+    },
     "env": {
         "mocha": true,
         "jest/globals": true

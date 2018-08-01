@@ -14,23 +14,27 @@ export default function bind(source) {
             render={(context) => {
                 const { itemsConfig } = context;
                 const {
-                    searchEle, className, jsxProps, children,
+                    searchEle, className, jsxProps, children, itemAlign = 'left',
                 } = context.props;
                 const {
                     status,
                     addText = 'add', hasAdd = true, addPosition = 'top',
                     multiple = false,
+                    hasHeader = true,
+                    view,
                 } = jsxProps;
 
                 const editable = status === 'edit';
 
+                const cellCls = `repeater-table-cell-wrapper repeater-table-cell-wrapper-${itemAlign}`;
+
                 const header = itemsConfig.map(conf => (<th className="repeater-table-header-node" key={`${conf.label}${conf.name}`}>
-                    <div className="repeater-table-cell-wrapper"> {conf.label} </div>
+                    <div className={cellCls}> {conf.label} </div>
                 </th>));
 
                 if (editable) {
                     header.push(<th className="repeater-table-header-node" key="last">
-                        <div className="repeater-table-cell-wrapper"> 操作 </div>
+                        <div className={cellCls}> 操作 </div>
                     </th>);
                 }
 
@@ -43,7 +47,8 @@ export default function bind(source) {
                 return (<div className={className}>
                     {searchEle}
                     {addPosition === 'top' ? addBtnEle : null}
-                    <TableCom header={header}>{children}</TableCom>
+                    {view ? null : <TableCom hasHeader={hasHeader} header={header}>{children}</TableCom>}
+                    {view ? children : null}
                     {addPosition === 'bottom' ? addBtnEle : null}
                 </div>);
             }}
@@ -62,11 +67,13 @@ export default function bind(source) {
                 const {
                     status,
                     multiple = false,
-                    hasDelete = true, hasUpdate = true,
+                    hasDelete = true, hasUpdate = true, itemAlign = 'left',
                     updateText = 'update', deleteText = 'delete',
-                    saveText = 'save', cancelText = 'cancel',
+                    saveText = 'save', cancelText = 'cancel',                    
                     children,
                 } = jsxProps;
+
+                const cellCls = `repeater-table-cell-wrapper repeater-table-cell-wrapper-${itemAlign}`;
 
                 const focusMode = core.$focus;
                 const editable = status === 'edit';
@@ -79,7 +86,7 @@ export default function bind(source) {
 
                 let listItems = null;
                 const childMap = {};
-                children.forEach((childitem) => {
+                [].concat(children).forEach((childitem) => {
                     const { label, name } = childitem.props;
                     childMap[`${label}${name}`] = React.cloneElement(childitem, { label: undefined });
                 });
@@ -92,7 +99,7 @@ export default function bind(source) {
                             {childMap[`${conf.label}${conf.name}`]}
                         </div>);
                     } else {
-                        innerItem = (<div className="repeater-table-cell-wrapper">
+                        innerItem = (<div className={cellCls}>
                             {val[conf.name]}
                         </div>);
                     }
@@ -103,7 +110,7 @@ export default function bind(source) {
                 });
 
                 const operEle = (<td>
-                    {editable ? <div className="repeater-table-cell-wrapper">
+                    {editable ? <div className={cellCls}>
                         {saveBtn}
                         {cancelBtn}
                         {updateBtn}

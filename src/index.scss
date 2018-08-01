@@ -36,12 +36,7 @@
         &-label{
             line-height: 28px;
             text-align: right;
-            @include gen(24);
-            .required &:before{
-                content: '*';
-                color: red;
-                margin: 0 5px 0 2px;
-            }
+            @include gen(24);            
             &:after{
                 content: ':';
                 margin: 0 12px 0 2px;
@@ -51,6 +46,13 @@
                 margin: 0;
             }
         }
+
+        &-label.required:before{
+            content: '*';
+            color: red;
+            margin: 0 5px 0 2px;
+        }
+        
         &-control{
             display: inline-block;
             vertical-align: top;
@@ -108,6 +110,17 @@
 
         }
     }
+}
+
+.no-form-item-no-colon {
+    .no-form-item-label {
+        &:after{
+            content: '';
+        }
+        &:empty:after{
+            content: '';
+        }
+    }    
 }
 
 .no-form-item-inset {

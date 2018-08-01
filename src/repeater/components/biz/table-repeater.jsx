@@ -13,10 +13,11 @@ export default function bind(source) {
             render={(context) => {
                 const { val, idx, className } = context.props;
                 const { itemsConfig, jsxProps } = context;
+                const { core } = props;
 
                 const {
                     status,
-                    hasDelete = true, hasUpdate = true,
+                    hasDelete = true, hasUpdate = true, itemAlign = 'left',
                     updateText = 'update', deleteText = 'delete',
                 } = jsxProps;
 
@@ -26,9 +27,18 @@ export default function bind(source) {
                 const deleteBtn = hasDelete ? <ActionButton type="delete" deleteText={deleteText} /> : null;
 
                 return (<tr key={idx} className={className}>
-                    {itemsConfig.map(conf => (<td key={`${conf.label}${conf.name}`}>
-                        <div className="repeater-table-cell-wrapper">{val[conf.name]}</div>
-                    </td>))}
+                    {itemsConfig.map((conf) => {
+                        let cell = val[conf.name];
+                        if (conf.renderCell) {
+                            cell = conf.renderCell(val[conf.name], { values: val, id: idx, core });
+                        }
+
+                        return (<td key={`${conf.label}${conf.name}`}>
+                            <div className={`repeater-table-cell-wrapper repeater-table-cell-wrapper-${itemAlign}`}>
+                                {cell}
+                            </div>
+                        </td>);
+                    })}
                     <td>
                         {editable ? <div className="repeater-table-cell-wrapper table-repeater-oper-cell">
                             {updateBtn}
@@ -46,26 +56,38 @@ export default function bind(source) {
             render={(context) => {
                 const { itemsConfig } = context;
                 const {
-                    searchEle, className, jsxProps, children,
+                    searchEle, className, jsxProps, children, itemAlign = 'left',
                 } = context.props;
-                const { status, addText = 'add' } = jsxProps;
+                const {
+                    status, hasHeader = true, view,
+                    addText = 'add', hasAdd = true, addPosition = 'top',
+                } = jsxProps;
 
                 const editable = status === 'edit';
 
+                const cellCls = `repeater-table-cell-wrapper repeater-table-cell-wrapper-${itemAlign}`;
+
                 const header = itemsConfig.map(conf => (<th className="repeater-table-header-node" key={`${conf.label}${conf.name}`}>
-                    <div className="repeater-table-cell-wrapper"> {conf.label} </div>
+                    <div className={cellCls}> {conf.label} </div>
                 </th>));
 
                 if (editable) {
                     header.push(<th className="repeater-table-header-node" key="last">
-                        <div className="repeater-table-cell-wrapper"> 操作 </div>
+                        <div className={cellCls}> 操作 </div>
                     </th>);
+                }
+
+                let addBtnEle = null;
+                if (hasAdd && editable) {
+                    addBtnEle = <ActionButton type="add" addText={addText} />;
                 }
 
                 return (<div className={className}>
                     {searchEle}
-                    {editable ? <ActionButton type="add" addText={addText} /> : null}
-                    <TableCom header={header}>{children}</TableCom>
+                    {addPosition === 'top' ? addBtnEle : null}
+                    {view ? null : <TableCom hasHeader={hasHeader} header={header}>{children}</TableCom>}
+                    {view ? children : null}
+                    {addPosition === 'bottom' ? addBtnEle : null}
                 </div>);
             }}
         />);

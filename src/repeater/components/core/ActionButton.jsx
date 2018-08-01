@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Form from '../../../component/Form';
 
-function createActionButton(source) {
-    const { Dialog } = source;
-
+function createActionButton() {
     return class ActionButton extends Component {
         static contextTypes = {
             getId: PropTypes.func,
@@ -12,6 +9,8 @@ function createActionButton(source) {
             jsxProps: PropTypes.object,
             doAdd: PropTypes.func,
             doUpdate: PropTypes.func,
+            doAddDialog: PropTypes.func,
+            doUpdateDialog: PropTypes.func,
             doDelete: PropTypes.func,
             doSave: PropTypes.func,
             doCancel: PropTypes.func,
@@ -30,12 +29,18 @@ function createActionButton(source) {
             this.doUpdate = context.doUpdate;
             this.doDelete = context.doDelete;
             this.doSave = context.doSave;
+            this.doAddDialog = context.doAddDialog;
+            this.doUpdateDialog = context.doUpdateDialog;
             this.doCancel = context.doCancel;
             this.doAddInline = context.doAddInline;
             this.doMultipleInline = context.doMultipleInline;
             this.doUpdateInline = context.doUpdateInline;
             this.getCore = context.getCore;
             this.getId = context.getId;
+
+            this.state = {
+                loading: false,
+            };
         }
 
         handleAddMultipleInline = async () => {
@@ -46,73 +51,53 @@ function createActionButton(source) {
             await this.doAddInline();
         }
 
-        handleUpdateInline = () => {
-            this.doUpdateInline(this.getId());
+        handleUpdateInline = async () => {
+            const core = this.getCore();
+            await this.doUpdateInline(core, this.getId());
         }
 
-        handleDelete = () => {
-            this.doDelete(this.getId());
+        handleDelete = async () => {
+            const core = this.getCore();
+            await this.doDelete(core, this.getId());
         }
 
-        handleSave = () => {
-            this.doSave(this.getId());
+        handleSave = async () => {
+            await this.doSave(this.getId());
         }
 
-        handleCancel = () => {
-            this.doCancel(this.getId());
+        handleCancel = async () => {
+            await this.doCancel(this.getId());
         }
 
-        handleAdd = () => {
-            const { children, layout } = this.jsxProps;
+        handleAdd = async () => {
             const core = this.repeaterCore.generateCore();
-            Dialog.show({
-                title: '添加',
-                content: <Form core={core} layout={layout || { label: 8, control: 16 }}>
-                    {children}
-                </Form>,
-                onOk: async (_, hide) => {
-                    const error = await core.validate();
-                    if (error) {
-                        return;
-                    }
-
-                    await this.doAdd(core);
-                    hide();
-                },
-            });
+            await this.doAddDialog(core);
         }
 
-        handleUpdate = () => {
-            const { children, layout } = this.jsxProps;
-            Dialog.show({
-                title: '更新',
-                content: <Form core={this.getCore()} layout={layout || { label: 8, control: 16 }}>
-                    {children}
-                </Form>,
-                onOk: async (_, hide) => {
-                    await this.doUpdate(this.getCore().getValue(), this.getId());
-                    hide();
-                },
-            });
+        handleUpdate = async () => {
+            const core = this.getCore();
+            const copyCore = this.repeaterCore.generateCore(core.getValues());
+            const id = this.getId();
+            await this.doUpdateDialog(copyCore, id);
         }
 
         renderBtn = () => {
             const {
-                type, addText, updateText, saveText, cancelText, deleteText,
+                type, addText, updateText, saveText, cancelText, deleteText, children,
             } = this.props;
             let ele = null;
 
             switch (type) {
-            case 'add': ele = <button className="repeater-action-btn repeater-add" onClick={this.handleAdd}>{addText}</button>; break;
-            case 'addInline': ele = <button className="repeater-action-btn repeater-add" onClick={this.handleAddInline}>{addText}</button>; break;
-            case 'addMultipleInline': ele = <button className="repeater-action-btn repeater-add" onClick={this.handleAddMultipleInline}>{addText}</button>; break;
-            case 'update': ele = <button className="repeater-action-btn repeater-update" onClick={this.handleUpdate}>{updateText}</button>; break;
-            case 'updateInline': ele = <button className="repeater-action-btn repeater-update" onClick={this.handleUpdateInline}>{updateText}</button>; break;
-            case 'save': ele = <button className="repeater-action-btn repeater-save" onClick={this.handleSave}>{saveText}</button>; break;
-            case 'cancel': ele = <button className="repeater-action-btn repeater-cancel" onClick={this.handleCancel}>{cancelText}</button>; break;
+            case 'add': ele = <button className="repeater-action-btn repeater-add" onClick={this.handleAdd}>{children || addText}</button>; break;
+            case 'addInline': ele = <button className="repeater-action-btn repeater-add" onClick={this.handleAddInline}>{children || addText}</button>; break;
+            case 'addMultipleInline': ele = <button className="repeater-action-btn repeater-add" onClick={this.handleAddMultipleInline}>{children || addText}</button>; break;
+            case 'update': ele = <button className="repeater-action-btn repeater-update" onClick={this.handleUpdate}>{children || updateText}</button>; break;
+            case 'updateInline': ele = <button className="repeater-action-btn repeater-update" onClick={this.handleUpdateInline}>{children || updateText}</button>; break;
+            case 'save': ele = <button className="repeater-action-btn repeater-save" onClick={this.handleSave}>{children || saveText}</button>; break;
+            case 'cancel': ele = <button className="repeater-action-btn repeater-cancel" onClick={this.handleCancel}>{children || cancelText}</button>; break;
             case 'remove':
-            case 'delete': ele = <button className="repeater-action-btn repeater-delete" onClick={this.handleDelete}>{deleteText}</button>; break;
-            default: ele = null; break;
+            case 'delete': ele = <button className="repeater-action-btn repeater-delete" onClick={this.handleDelete}>{children || deleteText}</button>; break;
+            default: break;
             }
 
             return ele;

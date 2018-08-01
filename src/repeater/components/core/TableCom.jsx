@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function TableCom({ header, children }) {
+function TableCom({ header, children, hasHeader }) {
     return (<table>
-        <thead>
+        { hasHeader ? <thead>
             <tr>
                 {header}
             </tr>
-        </thead>
+        </thead> : null }
         <tbody>
             {children}
         </tbody>
@@ -17,6 +17,7 @@ function TableCom({ header, children }) {
 TableCom.propTypes = {
     header: PropTypes.any,
     children: PropTypes.any,
+    hasHeader: PropTypes.bool,
 };
 
 export default TableCom;

@@ -13,12 +13,14 @@ class Form {
     constructor(option = {}) {
         const {
             validateConfig, onChange, value, values, status, globalStatus, interceptor, uniqueId,
+            autoValidate,
         } = option || {};
 
         this.onChange = onChange || noop;
         this.children = [];
         this.childrenMap = {};
         this.currentEventType = 'api';
+        this.autoValidate = autoValidate || false;
 
         this.globalStatus = globalStatus || 'edit';
 
@@ -57,8 +59,13 @@ class Form {
     // 上报change事件到JSX
     handleChange = (name) => {
         if (!this.silent && !this.hasEmitted) { // 变化的keys必须为数组
-            this.onChange(this.settingBatchKeys || [name], this.value, this);
-            this.emit(CHANGE, this.value, this.settingBatchKeys || [name], this);
+            const relatedKeys = this.settingBatchKeys || [name];
+            if (this.autoValidate) { // 按需校验
+                this.validateItem(relatedKeys);
+            }
+
+            this.onChange(relatedKeys, this.value, this);
+            this.emit(CHANGE, this.value, relatedKeys, this);
         }
 
         if (this.silent) this.hasEmitted = false;
@@ -80,7 +87,9 @@ class Form {
             }
         });
 
+        this.validatng = true;
         const errs = await Promise.all(validators);
+        this.validatng = false;
         const errors = {};
         const retErr = {};
         let hasError = false;
@@ -112,6 +121,7 @@ class Form {
     validate(cb = x => x) {
         const validators = [];
         let hasPromise = false;
+        this.validatng = true;
         this.children.forEach((child) => {
             const result = child.validate();
             if (result instanceof Promise) {
@@ -122,6 +132,7 @@ class Form {
         if (hasPromise) {
             return Promise.all(validators).then(this.handleErrors).then(cb);
         }
+        this.validatng = false;
         return cb(this.handleErrors(validators));
     }
 
@@ -129,6 +140,7 @@ class Form {
         const errors = {};
         const retErr = {};
         let hasError = false;
+        this.validatng = false;
 
         this.children.forEach((child, idx) => {
             if (errs[idx] && child.status !== 'hidden') {
@@ -333,6 +345,7 @@ class Form {
             const mrOption = Object.assign({}, option);
             const {
                 value, name, status, error, props, func_status,
+                interceptor: localInterceptor,
             } = option;
 
             if (this.childrenMap[name]) {
@@ -357,7 +370,7 @@ class Form {
                 on: this.on.bind(this),
                 emit: this.emit.bind(this),
                 removeListener: this.removeListener.bind(this),
-                interceptor: this.interceptor[mrOption.name],
+                interceptor: localInterceptor || this.interceptor[mrOption.name],
                 form: this,
             });
 

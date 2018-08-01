@@ -116,6 +116,10 @@ class Item extends Component {
             }
         }
 
+        if ('interceptor' in jsxProps) {
+            option.interceptor = jsxProps.interceptor;
+        }
+
         // 注册item, 绑定视图
         this.ifCore = context.ifCore;
         this.core = form.addField(option);
@@ -176,10 +180,12 @@ class Item extends Component {
         }
 
         this.form.currentCore = this.core;
+        this.form.currentEventOpts = opts;
         this.form.currentEventType = 'manual';
         this.core.set('value', val);
         Promise.resolve().then(() => {
             this.form.currentCore = null;
+            this.form.currentEventOpts = null;
             this.form.currentEventType = 'api';
         });
     }
@@ -238,7 +244,7 @@ class Item extends Component {
             when,
             ...others
         } = props || {};
-        const { inset } = this.props;
+        const { inset, style } = this.props;
 
         const component = React.Children.only(this.props.children);
         let disabled = false;
@@ -248,8 +254,21 @@ class Item extends Component {
         }
 
         const cloneProps = {
-            inset, disabled, name, value, error, status, onChange, onBlur, onFocus, ...others,
+            inset,
+            disabled,
+            name,
+            value,
+            error,
+            status,
+            onChange,
+            onBlur,
+            onFocus,
+            ...others,
         };
+
+        if (style) {
+            cloneProps.style = Object.assign({}, cloneProps.style || {}, style);
+        }
 
         if (component && component.type && component.type.displayName === 'If') {
             delete cloneProps.name;

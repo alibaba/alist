@@ -14,6 +14,7 @@ class Form extends Component {
         onMount: PropTypes.func,
         map: PropTypes.func,
         full: PropTypes.bool,
+        colon: PropTypes.bool,
         style: PropTypes.object,
         children: PropTypes.any,
         className: PropTypes.any,
@@ -37,22 +38,7 @@ class Form extends Component {
         onFocus: noop,
         onBlur: noop,
         onMount: noop,
-        map: v => v,
-        core: null,
-        validateConfig: null,
-        value: null,
-        error: null,
-        status: STATUS_ENUMS.EDIT,
-        globalStatus: STATUS_ENUMS.EDIT,
-        props: null,
-    };
-
-
-    static defaultProps = {
-        onChange: noop,
-        onFocus: noop,
-        onBlur: noop,
-        onMount: noop,
+        colon: true,
         map: v => v,
         core: null,
         validateConfig: null,

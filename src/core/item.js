@@ -18,8 +18,8 @@ class Item {
     }
     validate() {
         let { validateConfig } = this;
-        if (typeof this.option.func_validateConfig === 'function') {
-            validateConfig = this.option.func_validateConfig(validateConfig, this.form);
+        if (typeof this.func_validateConfig === 'function') {
+            validateConfig = this.func_validateConfig(this.form.value, this.form);
         }
 
         if (!validateConfig) {
@@ -74,7 +74,24 @@ class Item {
         this.jsx_status = jsx_status;
         this.func_validateConfig = func_validateConfig;
 
+        if (func_validateConfig || validateConfig) {
+            this.jsxValidate = true;
+        }
+
         this.selfConsistent();
+    }
+
+    consistValidate() {
+        if (this.name && this.form && this.form.validateConfig &&
+            (this.name in this.form.validateConfig) &&
+            !this.jsxValidate) {
+            const currentValidateConfig = this.form.validateConfig[this.name];
+            if (typeof currentValidateConfig === 'function') {
+                this.func_validateConfig = currentValidateConfig;
+            } else {
+                this.validateConfig = currentValidateConfig;
+            }
+        }
     }
 
     // 自我调整
@@ -113,6 +130,8 @@ class Item {
         if (whenResult instanceof Promise) {
             whenResultFlag = await whenResult;
         }
+
+        this.consistValidate();
 
         if (whenResultFlag === true) {
             this.set('status', statusResult);

@@ -52,22 +52,28 @@ describe('Repeater', () => {
     it('should render', () => {
         formCore.setValue('repeat', [{}]);
     });
-    it('should add', () => {
+    it('should add', async () => {
         // console.log(form.find(TableRepeater).instance().doAdd);
-        form.find(TableRepeater).instance().doAdd(testValues);
+        await form.find(TableRepeater).instance().doAdd(testValues);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
     });
     it('should add with validation', async () => {
         const validateConfig = {
             drawerName: { type: 'string', required: true },
         };
+
+        const formConfig = {
+            validateConfig,
+            autoValidate: true,
+        };
+
         let validateCore = null;
         function validateMount(core) {
             validateCore = core;
         }
         const validateForm = mount(<Form onMount={validateMount}>
             <Item name="repeat">
-                <TableRepeater filter={filter} validateConfig={validateConfig}>
+                <TableRepeater filter={filter} formConfig={formConfig}>
                     <FormItem label="开票人" name="drawerName"><Input /></FormItem>
                     <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
                     <FormItem label="子公司" name="branchName"><Input /></FormItem>
@@ -100,28 +106,34 @@ describe('Repeater', () => {
         await sleep(500);
         expect(validateCore.getValue('repeat').length).toEqual(1);
     });
-    it('should update', () => {
-        form.find(TableRepeater).instance().doAdd(testValues);
+    it('should update', async () => {
+        await form.find(TableRepeater).instance().doAdd(testValues);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
 
-        const { id } = form.find(TableRepeater).instance().repeaterCore.formList[0];
-        form.find(TableRepeater).instance().doUpdate({
+        const core = form.find(TableRepeater).instance().repeaterCore.formList[0];
+        core.setValueSilent({
             ...testValues,
             drawerName: 'xxxxx',
-        }, id);
+        });
+        await form.find(TableRepeater).instance().doUpdate(core, core.id);
 
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([{
             ...testValues,
             drawerName: 'xxxxx',
         }]));
     });
-    it('should delete', () => {
-        form.find(TableRepeater).instance().doAdd(testValues);
+    it('should delete', async () => {
+        await form.find(TableRepeater).instance().doAdd(testValues);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
 
-        const { id } = form.find(TableRepeater).instance().repeaterCore.formList[0];
+        const core = form.find(TableRepeater).instance().repeaterCore.formList[0];
+        const { id } = core;
+        await form.find(TableRepeater).instance().doDelete(core, id);
+        expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn').length).toEqual(1);
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn')[0]);
 
-        form.find(TableRepeater).instance().doDelete(id);
+        await sleep(500);
+
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([]));
     });
     it('should add by click add button', async () => {
@@ -137,7 +149,7 @@ describe('Repeater', () => {
     });
 
     it('should update by click update', async () => {
-        form.find(TableRepeater).instance().doAdd(testValues);
+        await form.find(TableRepeater).instance().doAdd(testValues);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
         expect(formCore.getValue('repeat').length).toEqual(1);
         expect(document.querySelectorAll('.ant-modal-body .ant-btn').length).toEqual(0);
@@ -162,7 +174,7 @@ describe('Repeater', () => {
     });
 
     it('should delete by click delete', async () => {
-        form.find(TableRepeater).instance().doAdd({
+        await form.find(TableRepeater).instance().doAdd({
             drawerName: '开票人',
             taxpayerNumber: '税号',
             branchName: '子公司',
@@ -173,6 +185,13 @@ describe('Repeater', () => {
         form.mount();
         await sleep(500);
         form.find('.repeater-delete').simulate('click');
+        await sleep(500);
+        form.mount();
+
+        expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn').length).toEqual(1);
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn')[0]);
+
+        await sleep(500);
 
         expect(JSON.stringify(formCore.getValue())).toEqual(JSON.stringify({
             repeat: [],
@@ -187,10 +206,10 @@ describe('Repeater', () => {
             { drawerName: '销售' },
         ];
 
-        form.find(TableRepeater).instance().doAdd(valuesArr[0]);
-        form.find(TableRepeater).instance().doAdd(valuesArr[1]);
-        form.find(TableRepeater).instance().doAdd(valuesArr[2]);
-        form.find(TableRepeater).instance().doAdd(valuesArr[3]);
+        await form.find(TableRepeater).instance().doAdd(valuesArr[0]);
+        await form.find(TableRepeater).instance().doAdd(valuesArr[1]);
+        await form.find(TableRepeater).instance().doAdd(valuesArr[2]);
+        await form.find(TableRepeater).instance().doAdd(valuesArr[3]);
         form.mount();
 
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify(valuesArr));

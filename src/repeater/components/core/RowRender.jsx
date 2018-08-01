@@ -41,7 +41,7 @@ class RowRender extends Component {
         this.jsxProps = context.jsxProps;
 
         this.core = props.core;
-        this.idx = props.idx;
+        this.id = props.id;
         this.val = props.val;
     }
 

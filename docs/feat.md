@@ -27,7 +27,7 @@ const popup = () => {
     const core = new FormCore();
     Dialog.show({
         title: '弹窗表单',
-        content: <Form core={core}>
+        content: <Form core={core} >
             <FormItem label="username" name="username"><Input /></FormItem>
             <FormItem label="age" name="age"><Input /></FormItem>
         </Form>
@@ -54,103 +54,156 @@ let children = [
         return <div>{str}</div>
     }
 
-    let formcore
-    return <Form style={{ marginBottom: 12 }} onMount={core => formcore = core} layout={{label: 5, control: 19}} full>
-        <h3>FormItem值为0</h3>
-        <div className="demo-form">
-            <FormItem label="zeroSelect" name="zero" defaultValue={0}><Select options={options} /></FormItem>
-        </div>
-        <br/><br/>
-        <button onClick={() => console.log(formcore.getValue())}> console value </button>
-    </Form>
-})(),
-(() => {
-    let formcore
-    return <Form style={{ marginBottom: 12 }} onMount={core => formcore = core} layout={{label: 5, control: 19}} full>
-        <h3>外部触发IF</h3>
-        <div className="demo-form">
-            <FormItem label="username" name="username"><Input /></FormItem>
-            <If when={({ outside }) => {
-                return outside === '123';
-            }}>
-                <div>bingo</div>
-            </If>
-            <If when={({ outsideObj }) => {
-                return outsideObj === '123';
-            }}>
-                <div>bingo(obj)</div>
-            </If>
-        </div>
-        <br/><br/>
-        <button onClick={() => console.log(formcore.getValue())}> console value </button>
-        <button onClick={() => {
-            formcore.setValue('outside', '123');
-            formcore.setValue('otheraaa', '44441231');
-        }}> outside trigger </button>
-        <button onClick={() => formcore.setValues({ 'outsideObj': '123' })}> outside trigger(obj) </button>
-    </Form>
-})(),
-(() => {
-    let formcore
-    return <Form onMount={core => formcore = core} style={{ marginBottom: 12 }} layout={{label: 5, control: 19}} full>
-        <h3>If布局</h3>
-        <div className="demo-form">
-            <FormItem label="username" name="username" defaultValue="bobby"><Input /></FormItem>
-            <FormItem label="age" name="age"><Input /></FormItem>
-            <If when={({ username }) => {
-                return username === 'bobby';
-            }}>
-                <FormItem label="hulalal" name="hulalal"><Input /></FormItem>
-                <FormItem label="ooolll" name="ooolll"><Input /></FormItem>
-            </If>
-            <button onClick={() => formcore.setGlobalStatus('preview')}>preview</button>
-        </div>
-    </Form>
-})(),
-(() => {
-    let formcore
-    return <Form onMount={core => formcore = core} direction="hoz" style={{ marginBottom: 12 }} full>
-        <h3>If布局(水平)</h3>
-        <div className="demo-form">
-            <FormItem label="username" name="username" defaultValue="bobby"><Input /></FormItem>
-            <FormItem label="age" name="age"><Input /></FormItem>
-            <If when={({ username }) => {
-                return username === 'bobby';
-            }}>
-                <FormItem label="hulalal" name="hulalal"><Input /></FormItem>
-                <FormItem label="ooolll" name="ooolll"><Input /></FormItem>
-            </If>
-            <button onClick={() => formcore.setGlobalStatus('preview')}>preview</button>
-        </div>
-    </Form>
-})(),
-(() => {
-    const extCore = new FormCore({
-        onChange: (fields, values, context) => {
-            console.log(context, fields, values);
-            console.log(context.ext);
+    const validateConfig = {
+        username: {type: "string", required: true},
+        age: (values, ctx) => {
+            // const { username } = ctx.getValues();
+            const { username } = values;
+            if (username === 'r') {
+                return {type: "string", required: true};
+            } else {
+                return null;
+            }
+            
         }
+    }
+
+    let formcore = new FormCore({
+        validateConfig,
+        autoValidate: true
     });
 
-    const extTarget = {
-        username: 'bobby'
-    };
-    return <Form core={extCore} style={{ marginBottom: 12 }} full>
-        <h3>setValue with Extra</h3>
+    return <Form core={formcore} colon={false} style={{ marginBottom: 12 }} layout={{label: 5, control: 19}} full>
+        <h3>Validate errors</h3>
         <div className="demo-form">
-            <FormItem label="username" name="username" ><Input /></FormItem>
-            <FormItem label="age" name="age"><Input /></FormItem>
-            <If when={({ username }) => {
-                return username === 'bobby';
-            }}>
-                <FormItem label="hulalal" name="hulalal"><Input /></FormItem>
-                <FormItem label="ooolll" name="ooolll"><Input /></FormItem>
-            </If>
-            <button onClick={() => extCore.setValues(extTarget)}>setValues</button>
-            <button onClick={() => extCore.setValues(extTarget, { detail: true })}>setValuesWith</button>
+            <FormItem required label="usernmae" name="username"><Input /></FormItem>
+            {/* <FormItem required label="errorJudge" render={(values, ctx) => {
+                const { error } = ctx;
+                console.log('error', error, ctx);
+                return null;
+            }}/> */}
+            <Item render={(values) => {
+                const { username = '', isShow } = values || {};
+                return <div>
+                    <FormItem label={`${username}_age`} name="age"><Input /></FormItem>
+                </div>
+            }} />
         </div>
-    </Form>
-})()
+        <br/><br/>
+        <button onClick={() => console.log(formcore.getValue())}> console value </button>
+        <button onClick={() => console.log(formcore.validate())}> Judge </button>
+</Form>
+})(),
+// (() => {
+//     const options = [
+//         { label: 'zero', value: 0 },
+//         { label: 'one', value: 1 },
+//         // { label: 'zero(str)', value: '0' }
+//     ];
+
+//     const Plain = ({ value }) => {
+//         const str = `${value}`;
+//         return <div>{str}</div>
+//     }
+
+//     let formcore
+//     return <Form colon={false} style={{ marginBottom: 12 }} onMount={core => formcore = core} layout={{label: 5, control: 19}} full>
+//         <h3>FormItem值为0</h3>
+//         <div className="demo-form">
+//             <FormItem required label="zeroSelect" name="zero" defaultValue={0}><Select options={options} /></FormItem>
+//             <FormItem required label="noname" ><Select options={options} /></FormItem>
+//         </div>
+//         <br/><br/>
+//         <button onClick={() => console.log(formcore.getValue())}> console value </button>
+//     </Form>
+// })(),
+// (() => {
+//     let formcore
+//     return <Form style={{ marginBottom: 12 }} onMount={core => formcore = core} layout={{label: 5, control: 19}} full>
+//         <h3>外部触发IF</h3>
+//         <div className="demo-form">
+//             <FormItem label="username" name="username"><Input /></FormItem>
+//             <If when={({ outside }) => {
+//                 return outside === '123';
+//             }}>
+//                 <div>bingo</div>
+//             </If>
+//             <If when={({ outsideObj }) => {
+//                 return outsideObj === '123';
+//             }}>
+//                 <div>bingo(obj)</div>
+//             </If>
+//         </div>
+//         <br/><br/>
+//         <button onClick={() => console.log(formcore.getValue())}> console value </button>
+//         <button onClick={() => {
+//             formcore.setValue('outside', '123');
+//             formcore.setValue('otheraaa', '44441231');
+//         }}> outside trigger </button>
+//         <button onClick={() => formcore.setValues({ 'outsideObj': '123' })}> outside trigger(obj) </button>
+//     </Form>
+// })(),
+// (() => {
+//     let formcore
+//     return <Form onMount={core => formcore = core} style={{ marginBottom: 12 }} layout={{label: 5, control: 19}} full>
+//         <h3>If布局</h3>
+//         <div className="demo-form">
+//             <FormItem label="username" name="username" defaultValue="bobby"><Input /></FormItem>
+//             <FormItem label="age" name="age"><Input /></FormItem>
+//             <If when={({ username }) => {
+//                 return username === 'bobby';
+//             }}>
+//                 <FormItem label="hulalal" name="hulalal"><Input /></FormItem>
+//                 <FormItem label="ooolll" name="ooolll"><Input /></FormItem>
+//             </If>
+//             <button onClick={() => formcore.setGlobalStatus('preview')}>preview</button>
+//         </div>
+//     </Form>
+// })(),
+// (() => {
+//     let formcore
+//     return <Form onMount={core => formcore = core} direction="hoz" style={{ marginBottom: 12 }} full>
+//         <h3>If布局(水平)</h3>
+//         <div className="demo-form">
+//             <FormItem label="username" name="username" defaultValue="bobby"><Input /></FormItem>
+//             <FormItem label="age" name="age"><Input /></FormItem>
+//             <If when={({ username }) => {
+//                 return username === 'bobby';
+//             }}>
+//                 <FormItem label="hulalal" name="hulalal"><Input /></FormItem>
+//                 <FormItem label="ooolll" name="ooolll"><Input /></FormItem>
+//             </If>
+//             <button onClick={() => formcore.setGlobalStatus('preview')}>preview</button>
+//         </div>
+//     </Form>
+// })(),
+// (() => {
+//     const extCore = new FormCore({
+//         onChange: (fields, values, context) => {
+//             console.log(context, fields, values);
+//             console.log(context.ext);
+//         }
+//     });
+
+//     const extTarget = {
+//         username: 'bobby'
+//     };
+//     return <Form core={extCore} style={{ marginBottom: 12 }} full>
+//         <h3>setValue with Extra</h3>
+//         <div className="demo-form">
+//             <FormItem label="username" name="username" ><Input /></FormItem>
+//             <FormItem label="age" name="age"><Input /></FormItem>
+//             <If when={({ username }) => {
+//                 return username === 'bobby';
+//             }}>
+//                 <FormItem label="hulalal" name="hulalal"><Input /></FormItem>
+//                 <FormItem label="ooolll" name="ooolll"><Input /></FormItem>
+//             </If>
+//             <button onClick={() => extCore.setValues(extTarget)}>setValues</button>
+//             <button onClick={() => extCore.setValues(extTarget, { detail: true })}>setValuesWith</button>
+//         </div>
+//     </Form>
+// })()
 ]
 
 
