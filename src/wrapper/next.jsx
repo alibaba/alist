@@ -83,15 +83,17 @@ const defaultFileUploadProps = {
 
 function Input(props) {
     const value = props.value || '';
-    // TODO: 需要确认Textarea
     if (props.status === 'preview') return renderValue(value); // 处理预览态
     return <Next.Input {...props} value={value} {...insetify(props)} />;
 }
 function TextArea(props) {
+    const newProps = { ...props };
+    if ('value' in props) {
+        newProps.value = props.value || '';
+    }
     const value = props.value || '';
-    // TODO: 需要确认Textarea
     if (props.status === 'preview') return renderValue(value); // 处理预览态
-    return <Next.Input.TextArea {...props} value={value} {...insetify(props)} />;
+    return <Next.Input.TextArea {...newProps} {...insetify(props)} />;
 }
 
 function Select(props) {
@@ -110,10 +112,12 @@ function CheckboxGroup(props) {
 }
 
 function RadioGroup(props) {
-    const value = formatValue(props.value); // 格式化值
-
+    const newProps = { ...props };
+    if (newProps.hasOwnProperty('value')) {
+        newProps.value = formatValue(props.value); // 格式化值
+    }
     if (props.status === 'preview') return renderOption(props);
-    return <Next.Radio.Group {...props} value={value} {...insetify(props)} />;
+    return <Next.Radio.Group {...newProps} {...insetify(props)} />;
 }
 
 function Checkbox(props) {

@@ -153,7 +153,7 @@ class Item extends Component {
         this.didMount = false;
     }
     onChange = (e, opts = {}) => {
-        const { escape = false } = opts; // 直接用原生对象不进行判断        
+        const { escape = false } = opts; // 直接用原生对象不进行判断
 
         let val = e;
         if (!escape) {
@@ -198,8 +198,8 @@ class Item extends Component {
     bindForm = (childForm) => {
         this.childForm = childForm;
     }
-    update = () => {
-        if (this.didMount) {
+    update = (type, name) => {
+        if (this.didMount && (!this.core.name || this.core.name === name)) {
             this.forceUpdate();
         }
     }
