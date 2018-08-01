@@ -204,8 +204,8 @@ class Item extends Component {
     bindForm = (childForm) => {
         this.childForm = childForm;
     }
-    update = () => {
-        if (this.didMount) {
+    update = (type, name) => {
+        if (this.didMount && (!this.core.name || this.core.name === name)) {
             this.forceUpdate();
         }
     }

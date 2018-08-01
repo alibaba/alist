@@ -3,13 +3,31 @@ import * as T from 'prop-types';
 import Form from '../';
 
 class Accordion extends Component {
-    static Button = 'button'
-    state = {
-        current: 0,
+    static Button = 'button';
+    static defaultProps = {
+        onNext: () => { },
+        onEdit: () => { },
     }
-    core = [];
-    onMount = (idx, core) => {
-        this.core[idx] = core;
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            current: 0,
+        };
+        this.core = [];
+        this.accordionCore = {
+            setValue: (val) => {
+                this.core.forEach((core) => {
+                    core.setValue(val);
+                });
+            },
+            getValue: this.getValue,
+            validate: this.validate,
+        };
+    }
+    componentDidMount() {
+        const { onMount = () => { } } = this.props;
+        onMount(this.accordionCore);
     }
     onPrev = () => {
         const current = Math.max(1, this.state.current - 1);
@@ -23,6 +41,8 @@ class Accordion extends Component {
         }
         this.setState({
             current: idx + 1,
+        }, () => {
+            this.props.onNext(this.state.current);
         });
     }
     onEdit = async (idx) => {
@@ -31,18 +51,25 @@ class Accordion extends Component {
         }
         this.setState({
             current: idx,
+        }, () => {
+            this.props.onEdit(this.state.current);
         });
     }
-    beforeLeave = async () => {
-        const { current } = this.state;
-        const core = this.core[current];
-        const errors = await core.validate();
-        return !!errors;
+    onMount = (idx, core) => {
+        this.core[idx] = core;
     }
     onChange = (idx, value) => {
-        this.core.filter((c, i) => i !== idx).forEach(c => c.setValue(value));
+        // if (this.isChanging) {
+        //     return;
+        // }
+        // this.isChanging = true;
+        // setTimeout(() => {
+        //     this.core.filter((c, i) => i !== idx).forEach(c => c.setValue(value));
+        // });
         this.props.onChange(this.getValue());
+        // this.isChanging = false;
     }
+
     getValue = () => this.core.reduce((value, c) => {
         const status = c.getStatus();
         const tempValue = c.getValue();
@@ -52,6 +79,26 @@ class Accordion extends Component {
         });
         return { ...value, ...val };
     }, {})
+    validate = () => Promise.all(this.core.map(core => core.validate())).then((errors) => {
+        const error = errors.reduce((err, c) => ({
+            ...err,
+            ...c,
+        }), {});
+        if (Object.keys(error).length === 0) {
+            return null;
+        }
+        return error;
+    })
+
+    beforeLeave = async () => {
+        const { current } = this.state;
+        if (!this.core[current]) {
+            return false;
+        }
+        const core = this.core[current];
+        const errors = await core.validate();
+        return !!errors;
+    }
     render() {
         const {
             children,
@@ -60,11 +107,14 @@ class Accordion extends Component {
         } = this.props;
         const value = this.props.value || {};
         const { current } = this.state;
+        const accordionStatus = this.props.status;
         const elements = React.Children.map(children, (child, idx) => {
             if (child.type !== Form) {
                 throw Error('Accordion chilren must be Form instance');
             }
-            const active = idx === current;
+            const status = accordionStatus || child.props.status || 'edit';
+
+            const active = status === 'edit' && idx === current;
             const item = idx + 1;
             const onEdit = this.onEdit.bind(this, idx);
             const onNext = this.onNext.bind(this, idx);
@@ -74,14 +124,26 @@ class Accordion extends Component {
             } catch (e) {
                 //
             }
-            const NextButton = React.cloneElement(nextButton, {
-                onClick: onNext,
-            });
-            const EditButton = React.cloneElement(editButton, {
-                onClick: onEdit,
-            });
+            let NextButton = null;
+            let EditButton = null;
+            if (accordionStatus === 'edit') {
+                const theNextButton = 'nextButton' in child.props ? child.props.nextButton : nextButton;
+                const theEditButton = 'editButton' in child.props ? child.props.editButton : editButton;
+                NextButton = React.cloneElement(theNextButton, {
+                    onClick: onNext,
+                });
+                EditButton = React.cloneElement(theEditButton, {
+                    onClick: onEdit,
+                });
+            }
 
-            const showElement = active || child.props.value || this.core[idx] && this.core[idx].getValue();
+            let showElement = active || child.props.value;
+            if (!showElement && this.core[idx]) {
+                showElement = !!this.core[idx].getValue();
+            }
+            if (!showElement && status === 'preview') {
+                showElement = true;
+            }
 
             const element = React.cloneElement(child, {
                 value,
@@ -115,7 +177,7 @@ class Accordion extends Component {
                 </div>
             </div>);
         });
-        return <div>{elements}</div>;
+        return <div className={this.props.className}>{elements}</div>;
     }
 }
 
