@@ -48,14 +48,12 @@ class DialogForm {
         return footerElement;
     }
 
-    renderContent = async (Button) => {
+    renderContent = (Button) => {
         const { content } = this.options;
 
         let formInstance = null;
         if (typeof content === 'function') {
             formInstance = content();
-        } else if (isPromise(content)) { // promise
-            formInstance = await content;
         } else {
             formInstance = content;
         }
@@ -93,7 +91,7 @@ export default class DialogFormFactory {
         this.Button = Button;
         this.compatiMap = compatiMap;
     }
-    show = async (options) => {
+    show = (options) => {
         const { Dialog, Button, compatiMap } = this;
         if (!Dialog || !Button) {
             throw Error('DialogForm initialize failed, make sure you have passed antd components');
@@ -110,7 +108,7 @@ export default class DialogFormFactory {
             ...options,
             btnLoadingPropsName,
         }, () => dialogInstance);
-        const content = await dialogForm.renderContent(Button);
+        const content = dialogForm.renderContent(Button);
 
         // 入口属性
         const entryProps = compatiMap.show({

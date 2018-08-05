@@ -157,33 +157,39 @@ class RepeaterCore {
         if (hasError) return false;
 
         let success = true;
-
+        let values = null;
         const lastCore = this.formList.find(rp => rp.id === id);
         if (lastCore) {
             if (this.asyncHandler.save) {
                 const index = this.formList.findIndex(rp => rp.id === id);
                 const result = await this.asyncHandler.save(lastCore.getValues(), index);
-                const { success: res = true, values } = this.handleAsyncResult(result);
+                const { success: res = true, item, values: rv } = this.handleAsyncResult(result);
                 success = res;
-                if (values) {
-                    lastCore.setValueSilent(values);
+                if (item) {
+                    lastCore.setValueSilent(item);
+                }
+
+                if (rv) {
+                    values = rv;
                 }
             }
         }
 
-        this.formList = this.formList.map((core) => {
-            if (core.id === id) {
-                if (success) {
-                    delete lastCore.$focus;
-                    delete lastCore.$backup;
-                }
-
-                return lastCore;
-            }
-            return core;
-        });
-
         if (success) {
+            if (values) {
+                this.updateValue(values);
+            } else {
+                this.formList = this.formList.map((core) => {
+                    if (core.id === id) {
+                        delete lastCore.$focus;
+                        delete lastCore.$backup;
+
+                        return lastCore;
+                    }
+                    return core;
+                });
+            }
+
             this.setEditWhenFocus();
         }
         return success;
@@ -214,36 +220,48 @@ class RepeaterCore {
     handleAsyncResult = (res) => {
         let success = true;
         let values = null;
+        let item = null;
         if (typeof res === 'boolean') {
             success = res;
         } else if (Object.prototype.toString.call(res) === '[object Object]') {
-            const { success: rs, values: rv } = res || {};
+            const { success: rs, item: ri, values: rv } = res || {};
             success = rs;
             values = rv;
+            item = ri;
         }
 
         return {
             success,
             values,
+            item,
         };
     }
 
     // 增
     add = async (core) => {
         let success = true;
+        let values = null;
         if (this.asyncHandler.add) {
             const index = this.formList.length - 1;
             const result = await this.asyncHandler.add(core.getValues(), index);
-            const { success: res = true, values } = this.handleAsyncResult(result);
+            const { success: res = true, item, values: rv } = this.handleAsyncResult(result);
 
             success = res;
-            if (values) {
-                core.setValueSilent(values);
+            if (item) {
+                core.setValueSilent(item);
+            }
+
+            if (rv) {
+                values = rv;
             }
         }
 
         if (success) {
-            this.formList.push(core);
+            if (values) {
+                this.updateValue(values);
+            } else {
+                this.formList.push(core);
+            }
         }
 
         return success;
@@ -252,16 +270,25 @@ class RepeaterCore {
     // 删
     remove = async (lastCore, id) => {
         let success = true;
+        let values = null;
         if (this.asyncHandler.remove) {
             const index = this.formList.findIndex(rp => rp.id === id);
-            const values = lastCore.getValues();
-            const result = await this.asyncHandler.remove(values, index);
-            const { success: res = true } = this.handleAsyncResult(result);
+            const lastValues = lastCore.getValues();
+            const result = await this.asyncHandler.remove(lastValues, index);
+            const { success: res = true, values: rv } = this.handleAsyncResult(result);
             success = res;
+
+            if (rv) {
+                values = rv;
+            }
         }
 
         if (success) {
-            this.formList = this.formList.filter(core => core.id !== id);
+            if (values) {
+                this.updateValue(values);
+            } else {
+                this.formList = this.formList.filter(core => core.id !== id);
+            }
         }
 
         return success;
@@ -270,27 +297,37 @@ class RepeaterCore {
     // 改
     update = async (currentCore, id) => {
         let success = true;
-        let values = currentCore.getValues();
+        let currentValues = currentCore.getValues();
+        let values = null;
         if (this.asyncHandler.update) {
             const index = this.formList.findIndex(rp => rp.id === id);
-            const result = await this.asyncHandler.update(values, index);
-            const { success: res = true, values: rv } = this.handleAsyncResult(result);
+            const result = await this.asyncHandler.update(currentValues, index);
+            const { success: res = true, item, values: rv } = this.handleAsyncResult(result);
             success = res;
             if (rv) {
                 values = rv;
             }
+
+            if (item) {
+                currentValues = item;
+            }
         }
 
-        this.formList = this.formList.map((core) => {
-            if (id === core.id) {
-                if (success) {
-                    core.setValueSilent(values);
-                }
-                return core;
+        if (success) {
+            if (values) {
+                this.updateValue(values);
+            } else {
+                this.formList = this.formList.map((core) => {
+                    if (id === core.id) {
+                        if (success) {
+                            core.setValueSilent(currentValues);
+                        }
+                        return core;
+                    }
+                    return core;
+                });
             }
-            return core;
-        });
-
+        }
 
         return success;
     }

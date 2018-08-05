@@ -94,7 +94,8 @@ const asyncAdd = (values) => {
 
             resolve({
                 success: true,
-                values: newValues
+                // values: newValues
+                values: [{},{},{},newValues]
             });
         }, 1500);
     });
