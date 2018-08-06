@@ -24,16 +24,6 @@ class Item extends Component {
         onFocus: PropTypes.func,
         children: PropTypes.any,
         render: PropTypes.func,
-        className: PropTypes.string,
-        label: PropTypes.any,
-        top: PropTypes.any,
-        prefix: PropTypes.any,
-        suffix: PropTypes.any,
-        help: PropTypes.any,
-        validateConfig: PropTypes.any,
-        full: PropTypes.bool,
-        layout: PropTypes.object,
-        when: PropTypes.any,
         inset: PropTypes.bool,
     }
     static contextTypes = {

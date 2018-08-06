@@ -24,7 +24,7 @@ const layout = {label: 4}
 Accordion.Button = Button;
 const editButton = <a href="javascript:;">编辑</a>
 const nextButton = <Button type="primary">下一步</Button>
-ReactDOM.render(<Accordion onChange={console.log} editButton={editButton} nextButton={nextButton}>
+ReactDOM.render(<Accordion status="edit" onChange={console.log} editButton={editButton} nextButton={nextButton}>
     <Form name="repeat" layout={layout} label="物流订单" validateConfig={{
         drawerName: {type: "string", required: true},
     }}>
