@@ -36,64 +36,113 @@ const popup = () => {
 
 let children = [
 (() => {
-    let formcore
-    return <div>
-        <h3>DialogForm</h3>
-        <button onClick={popup}>popup</button>
-    </div>
-})(),
-(() => {
-    const options = [
-        { label: 'zero', value: 0 },
-        { label: 'one', value: 1 },
-        // { label: 'zero(str)', value: '0' }
-    ];
+    const ic = new FormCore();
+    window.ic = ic;
+    return <Form core={ic} layout={{label: 5, control: 19}} full>
+        <FormItem label="username" name="username"><Input /></FormItem>
+        <If when={(values) => {
+            const { username } = values || {};
+            return username === 'a';
+        }}>
+            <FormItem label="nested" name="nested">
+                <Form>
+                    <FormItem label="n1" name="n1">
+                        <Input />
+                    </FormItem>
+                    <FormItem label="n2" name="n2">
+                        <Input />
+                    </FormItem>
+                </Form>
+            </FormItem>
+        </If>
+    </Form>
+})(),    
+// (() => {
+//     let formcore
+//     return <div>
+//         <h3>DialogForm</h3>
+//         <button onClick={popup}>popup</button>
+//     </div>
+// })(),
+// (() => {
+//     const options = [
+//         { label: 'zero', value: 0 },
+//         { label: 'one', value: 1 },
+//         // { label: 'zero(str)', value: '0' }
+//     ];
 
-    const Plain = ({ value }) => {
-        const str = `${value}`;
-        return <div>{str}</div>
-    }
+//     const Plain = ({ value }) => {
+//         const str = `${value}`;
+//         return <div>{str}</div>
+//     }
 
-    const validateConfig = {
-        username: {type: "string", required: true},
-        age: (values, ctx) => {
-            // const { username } = ctx.getValues();
-            const { username } = values;
-            if (username === 'r') {
-                return {type: "string", required: true};
-            } else {
-                return null;
-            }
+
+//     const sleep = (time) => {
+//         return new Promise((resolve) => {
+//             setTimeout(resolve, time);
+//         });
+//     };
+
+
+//     const validateConfig = {
+//         // username: {type: "string", required: true},
+//         username: {
+//             validator: async (rule, v, callback) => {
+//                 // console.log('vusername:', v);
+//                 // return new Promise((resolve, reject) => {
+//                 //     setTimeout(() => {
+//                 //         reject((['eeee', 'ddd']))
+//                 //     }, 1000);
+//                 // });
+
+//                 await sleep(1000);
+
+//                 throw new Error('eee');
+//             }
+//         },
+//         age: (values, ctx) => {
+//             // const { username } = ctx.getValues();
+//             const { username } = values;
+//             if (username === 'r') {
+//                 return {type: "string", required: true};
+//             } else {
+//                 return null;
+//             }
             
-        }
-    }
+//         }
+//     }
 
-    let formcore = new FormCore({
-        validateConfig,
-        autoValidate: true
-    });
+//     let formcore = new FormCore({
+//         validateConfig,
+//         autoValidate: true
+//     });
 
-    return <Form core={formcore} colon={false} style={{ marginBottom: 12 }} layout={{label: 5, control: 19}} full>
-        <h3>Validate errors</h3>
-        <div className="demo-form">
-            <FormItem required label="usernmae" name="username"><Input /></FormItem>
-            {/* <FormItem required label="errorJudge" render={(values, ctx) => {
-                const { error } = ctx;
-                console.log('error', error, ctx);
-                return null;
-            }}/> */}
-            <Item render={(values) => {
-                const { username = '', isShow } = values || {};
-                return <div>
-                    <FormItem label={`${username}_age`} name="age"><Input /></FormItem>
-                </div>
-            }} />
-        </div>
-        <br/><br/>
-        <button onClick={() => console.log(formcore.getValue())}> console value </button>
-        <button onClick={() => console.log(formcore.validate())}> Judge </button>
-</Form>
-})(),
+//     const judge = async () => {
+//         const result = await formcore.validate();
+//         console.log(result, 'jdjdjdjd');
+//     };
+
+//     return <Form core={formcore} colon={false} style={{ marginBottom: 12 }} layout={{label: 5, control: 19}} full>
+//         <h3>Validate errors</h3>
+//         <div className="demo-form">
+//             <FormItem required label="usernmae" name="username"><Input /></FormItem>
+//             {/* <FormItem required label="errorJudge" render={(values, ctx) => {
+//                 const { error } = ctx;
+//                 console.log('error', error, ctx);
+//                 return null;
+//             }}/> */}
+//             <Item render={(values) => {
+//                 const { username = '', isShow } = values || {};
+//                 return <div>
+//                     <FormItem label={`${username}_age`} name="age"><Input /></FormItem>
+//                 </div>
+//             }} />
+//         </div>
+//         <br/><br/>
+//         <button onClick={() => console.log(formcore.getValue())}> console value </button>
+//         <button onClick={judge}> Judge </button>
+// </Form>
+// })(),
 // (() => {
 //     const options = [
 //         { label: 'zero', value: 0 },

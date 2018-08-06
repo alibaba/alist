@@ -29,10 +29,11 @@ class If extends Component {
     constructor(props, context) {
         super(props, context);
         const { when } = props;
-        const { form } = context;
+        const { form, ifCore } = context;
         this.form = form;
         this.core = this.form.addField({ when, name: props.name });
         this.core.jsx = this;
+        this.core.parentIf = ifCore;
     }
     getChildContext() {
         return { form: this.form, ifCore: this.core };

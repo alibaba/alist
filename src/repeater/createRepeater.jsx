@@ -253,7 +253,7 @@ export default function createRepeater(bindSource, source) {
         doDelete = async (core, id) => {
             const dialogConfig = this.getDialogConfig(core, {
                 title: '删除',
-                content: <div>是否删除该项</div>,
+                content: <div style={{ width: '280px' }}>是否删除该项</div>,
                 onOk: async (_, hide) => {
                     const success = await this.repeaterCore.remove(core, id);
                     if (success) {

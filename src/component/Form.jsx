@@ -29,9 +29,11 @@ class Form extends Component {
     }
     static contextTypes = {
         item: PropTypes.object,
+        ifCore: PropTypes.object,
     };
     static childContextTypes = {
         form: PropTypes.object,
+        ifCore: PropTypes.object,
     };
     static defaultProps = {
         onChange: noop,
@@ -76,7 +78,8 @@ class Form extends Component {
 
     getChildContext() {
         // 传递form
-        return { form: this.core };
+        return { form: this.core, ifCore: null };
+        // return { form: this.core };
     }
     componentDidMount() {
         const {

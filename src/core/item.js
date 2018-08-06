@@ -53,13 +53,14 @@ class Item {
         this.removeListener = removeListener;
 
         const {
-            interceptor, name, value, props, error, status, when = null, validateConfig,
+            interceptor, name, value, props, error, status, when = null, validateConfig, parentIf,
         } = option;
 
         this.name = name;
         this.value = value;
         this.props = props;
         this.when = when;
+        this.parentIf = parentIf;
         this.error = error;
         this.status = status;
         this.validateConfig = validateConfig;
@@ -94,11 +95,46 @@ class Item {
         }
     }
 
+    async calculateIfList(value) {
+        const { parentIf } = this;
+        const upperIfList = [];
+        let item = { parentIf };
+        while (item.parentIf) {
+            upperIfList.push(item.parentIf);
+            item = item.parentIf;
+        }
+
+        const whenResultList = upperIfList.map(async (ifCore) => {
+            const whenResult = await this.calulateWhen(value, ifCore.when);
+            return whenResult;
+        });
+
+        const boolList = await Promise.all(whenResultList);
+
+        // result表示上层整体的when的结果，如果有任意false，则整体结果为false，反之为true
+        const result = boolList.reduce((before, after) => (before && after));
+
+        return result;
+    }
+
+    async calulateWhen(value, when) {
+        const { form } = this;
+        let whenResult = when;
+        if (isFunction(when)) whenResult = when(value, form); // 可能为promise
+
+        let whenResultFlag = whenResult;
+        if (whenResult instanceof Promise) {
+            whenResultFlag = await whenResult;
+        }
+
+        return whenResultFlag;
+    }
+
     // 自我调整
     async selfConsistent() {
         this.consistenting = true; // debounce
         const {
-            when, form, func_props, func_status, jsx_status,
+            when, form, func_props, func_status, jsx_status, parentIf,
         } = this;
         const value = form.getAll('value');
 
@@ -122,16 +158,27 @@ class Item {
             }
         }
 
-        // [when]同上，直接await处理
-        let whenResult = when;
-        if (isFunction(when)) whenResult = when(value, form); // 可能为promise
+        this.consistValidate();
 
-        let whenResultFlag = whenResult;
-        if (whenResult instanceof Promise) {
-            whenResultFlag = await whenResult;
+        // // [when]同上，直接await处理
+        // let whenResult = when;
+        // if (isFunction(when)) whenResult = when(value, form); // 可能为promise
+
+        // let whenResultFlag = whenResult;
+        // if (whenResult instanceof Promise) {
+        //     whenResultFlag = await whenResult;
+        // }
+
+        let whenResultFlag = await this.calulateWhen(value, when); 
+        // 计算上层if链路结果，如果上层链路的结果不成功，则不需要计算了
+        let upperWhenResult = true;
+        if (parentIf) {
+            upperWhenResult = await this.calculateIfList(value);
         }
 
-        this.consistValidate();
+        if (!upperWhenResult) {
+            whenResultFlag = false;
+        }
 
         if (whenResultFlag === true) {
             this.set('status', statusResult);

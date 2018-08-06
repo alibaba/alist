@@ -218,7 +218,7 @@ describe('core/form basic function', () => {
     });
     it('set relative value', () => {
         core.addField([{ name: 'age' }]);
-        const name = core.addField({ name: 'gender', when: value => value.age > 18 });
+        core.addField({ name: 'gender', when: value => value.age > 18 });
         expect(core.getValue()).toEqual({ age: null });
 
         core.setValue({

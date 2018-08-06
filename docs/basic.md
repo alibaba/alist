@@ -8,8 +8,10 @@
 ---
 
 ````js
-import Form, { FormItem, Item, If } from '../src';
+import Form, { FormItem, Item, If, FormCore } from '../src';
 import '../src/index.scss'
+
+window.FormCore = FormCore;
 
 function Input(props){
     let { value, status, error, ...othersProps } = props

@@ -9,6 +9,7 @@
 
 ````js
 import Form, { FormItem, Item, If } from '../src';
+import AsyncValidator from 'async-validator';
 import '../src/index.scss'
 
 function Input(props){
@@ -35,7 +36,7 @@ function Select(props){
     return <select {...othersProps} value={value}>{ children }</select>
 }
 const defaultValue = {
-    age: 15,
+    // age: 15,
     // user: {
     //     username: 'lily',
     // },
@@ -44,7 +45,9 @@ const defaultValue = {
 let children = [
     (() => {
     let formcore
-    return <Form onMount={core => formcore = core} layout={{label: 5, control: 19}} full value={defaultValue}>
+    return <Form onMount={core => {
+            window.fc = formcore = core
+        }} layout={{label: 5, control: 19}} full value={defaultValue}>
         <h3>嵌套if</h3>
         <div className="demo-form">
             {/* <Item name="age"><Input /></Item> */}
@@ -131,17 +134,14 @@ let children = [
                         <div>deep works!</div>
                     </FormItem>
                 </If> */}
-                <FormItem label="" style={{ margin: '12px 0' }} name="wrapper">
-                    <div>
-                        hello bobby!
-                        <FormItem label="" name="deep">
-                            <Input />
-                        </FormItem>
-
+                {/* <FormItem label="" style={{ margin: '12px 0' }} name="wrapper"> */}
+                    {/* <div> */}
+                        {/* hello bobby! */}
+                        <FormItem label="" name="deep"><Input /></FormItem>
                         <If when={(values, { globalStatus }) => {
                                 return values.deep == 'abcd';
                             }}>
-                            <FormItem label="" name="deepForm">                        
+                            {/* <FormItem label="" name="deepForm">                        
                                 <Form layout={{label: 5, control: 19}} full>
                                     <FormItem label="nif" name="nif"><Input /></FormItem>
                                     <FormItem label="dif" name="dif">
@@ -154,10 +154,12 @@ let children = [
                                         </If>
                                     </FormItem>
                                 </Form>
-                            </FormItem>
+                            </FormItem> */}
+
+                            <FormItem label="whois" name="whois"><Input /></FormItem>
                         </If>
-                    </div>
-                </FormItem>
+                    {/* </div> */}
+                {/* </FormItem> */}
 
                 {/* <If when={(values, { globalStatus }) => {
                     return values.age == 23;

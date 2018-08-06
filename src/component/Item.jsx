@@ -82,6 +82,7 @@ class Item extends Component {
         // 上有if item
         if (context.ifCore) {
             option.when = context.ifCore.when;
+            option.parentIf = context.ifCore.parentIf;
         } else if ('when' in jsxProps) {
             option.when = jsxProps.when;
         }

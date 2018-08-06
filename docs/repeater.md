@@ -10,7 +10,7 @@
 ## 可执行 DEMO
 
 ````js
-import Form, { FormItem, Item, FormCore } from '../src';
+import Form, { FormItem, Item, FormCore, If } from '../src';
 import repeater  from '../src/repeater';
 import * as Antd from 'antd';
 import wrapper from '../src/wrapper/antd';
@@ -199,7 +199,7 @@ ReactDOM.render(<Form onMount={formmount} onChange={console.log}>
         </TableRepeater>
     </Item> */}
 
-    {/* <Item name="inlineRepeat">
+    {/* <FormItem label="inlineRepeat" name="inlineRepeat">
         <InlineRepeater filter={filter} formConfig={formConfig} addPosition="bottom">
             <FormItem required label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem required label="税号" name="taxpayerNumber"><Input /></FormItem>
@@ -208,7 +208,19 @@ ReactDOM.render(<Form onMount={formmount} onChange={console.log}>
             <FormItem required label="拒绝原因" name="denyReason"><Input /></FormItem>
             <FormItem required label="创建人" name="creatorName"><Input /></FormItem>
         </InlineRepeater>
-    </Item> */}
+    </FormItem> */}
+
+    <FormItem required label="username" name="username"><Input /></FormItem>
+    <If when={(values) => {
+        const { username } = values || {};
+        return username === 'billy';
+    }}>
+        <FormItem label="inlineRepeat" name="inlineRepeat">
+            <InlineRepeater addPosition="bottom">
+                <FormItem required label="开票人" name="drawerName"><Input /></FormItem>
+            </InlineRepeater>
+        </FormItem>
+    </If>
 
     <br/>
     <hr/>
@@ -220,9 +232,9 @@ ReactDOM.render(<Form onMount={formmount} onChange={console.log}>
         </SelectRepeater>        
     </FormItem> */}
 
-    <FormItem name="fuzz">
+    {/* <FormItem name="fuzz">
         <CustomEle />
-    </FormItem>
+    </FormItem> */}
 
     
     {/* <Item name="inlineRepeatMultiple">

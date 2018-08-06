@@ -69,7 +69,7 @@ export default function bind(source) {
                     multiple = false,
                     hasDelete = true, hasUpdate = true, itemAlign = 'left',
                     updateText = 'update', deleteText = 'delete',
-                    saveText = 'save', cancelText = 'cancel',                    
+                    saveText = 'save', cancelText = 'cancel',
                     children,
                 } = jsxProps;
 
