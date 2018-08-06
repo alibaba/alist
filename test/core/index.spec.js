@@ -107,7 +107,7 @@ describe('core/form basic function', () => {
 
     it('setValueSilent without onChange', (done) => {
         const value = { x: 1 };
-        core.on(CHANGE, (value) => {
+        core.on(CHANGE, () => {
             expect(true).toEqual(false);
             done();
         });
@@ -159,7 +159,7 @@ describe('core/form basic function', () => {
     it('on & removeListener', (done) => {
         const eventData = { x: 1 };
         const eventType = 'custom';
-        const handler = (ed) => {
+        const handler = () => {
             expect(true).toEqual(false);
             done();
         };
@@ -174,7 +174,7 @@ describe('core/form basic function', () => {
     it('add field', async () => {
         const count = Math.floor(Math.random() * 100);
         const mid = Math.floor(count / 2);
-        for (let i = 0; i < mid; i++) {
+        for (let i = 0; i < mid; i += 1) {
             const name = `name${i}`;
             const value = `value${i}`;
             if (i % 2 === 0) {
@@ -190,7 +190,7 @@ describe('core/form basic function', () => {
             }
         }
         const fields = [];
-        for (let i = mid; i < count; i++) {
+        for (let i = mid; i < count; i += 1) {
             const name = `name${i}`;
             const value = `value${i}`;
             fields.push({
@@ -200,7 +200,7 @@ describe('core/form basic function', () => {
         }
         core.addField(fields);
         const values = await core.getValue();
-        for (let i = 0; i < count; i++) {
+        for (let i = 0; i < count; i += 1) {
             const name = `name${i}`;
             const value = `value${i}`;
             expect(values[name]).toEqual(value);
@@ -236,7 +236,7 @@ describe('core/form basic function', () => {
             { name: 'whenTrue', value: 'whenTrue', when: true },
             { name: 'whenFuncTrue', value: 'whenFuncTrue', when: () => true },
             { name: 'whenFuncFalse', value: 'whenFuncFalse', when: () => false },
-            { name: 'whenDepCondition', value: 'whenDepCondition', when: (value, core) => !!value.condition },
+            { name: 'whenDepCondition', value: 'whenDepCondition', when: value => !!value.condition },
         ]);
 
         let values;
@@ -318,7 +318,7 @@ describe('core/form basic function', () => {
         core.addField([{
             name: 'hasError',
             value: 'hasError',
-            validateConfig(rule, value, callback, source, options) {
+            validateConfig(rule, value, callback) {
                 callback([]);
             },
         }, {
@@ -339,19 +339,19 @@ describe('core/form basic function', () => {
         core.addField([{
             name: 'firstErr',
             value: 'firstErr',
-            validateConfig(rule, value, callback, source, options) {
+            validateConfig(rule, value, callback) {
                 callback(['firstErr']);
             },
         }, {
             name: 'hasError',
             value: 'hasError',
-            validateConfig(rule, value, callback, source, options) {
+            validateConfig(rule, value, callback) {
                 callback(['hasError']);
             },
         }, {
             name: 'thirdError',
             value: 'thirdError',
-            validateConfig(rule, value, callback, source, options) {
+            validateConfig(rule, value, callback) {
                 callback(['thirdError']);
             },
         }, {
@@ -383,14 +383,14 @@ describe('core/form basic function', () => {
         core.addField([{
             name: 'hasError',
             value: 'hasError',
-            validateConfig(rule, value, callback, source, options) {
+            validateConfig(rule, value, callback) {
                 const errors = ['hasError'];
                 callback(errors);
             },
         }, {
             name: 'success',
             value: 'success',
-            validateConfig(rule, value, callback, source, options) {
+            validateConfig(rule, value, callback) {
                 const errors = [];
                 callback(errors);
             },
@@ -408,14 +408,14 @@ describe('core/form basic function', () => {
         core.addField([{
             name: 'hasError',
             value: 'hasError',
-            validateConfig(rule, value, callback, source, options) {
+            validateConfig(rule, value, callback) {
                 const errors = ['hasError'];
                 callback(errors);
             },
         }, {
             name: 'success',
             value: 'success',
-            validateConfig(rule, value, callback, source, options) {
+            validateConfig(rule, value, callback) {
                 const errors = [];
                 callback(errors);
             },
@@ -435,7 +435,7 @@ describe('core/form basic function', () => {
         core.addField([{
             name: 'hasError',
             value: 'hasError',
-            validateConfig(rule, value, callback, source, options) {
+            validateConfig(rule, value, callback) {
                 const errors = ['hasError'];
                 setTimeout(() => {
                     callback(errors);
@@ -444,7 +444,7 @@ describe('core/form basic function', () => {
         }, {
             name: 'success',
             value: 'success',
-            validateConfig(rule, value, callback, source, options) {
+            validateConfig(rule, value, callback) {
                 const errors = [];
                 callback(errors);
             },
@@ -459,24 +459,24 @@ describe('core/form basic function', () => {
         core.addField([{
             name: 'hasError',
             value: 'hasError',
-            validateConfig(rule, value, callback, source, options) {
+            validateConfig(rule, value, callback) {
                 const errors = ['hasError'];
                 callback(errors);
             },
         }, {
             name: 'success',
             value: 'success',
-            validateConfig(rule, value, callback, source, options) {
+            validateConfig(rule, value, callback) {
                 const errors = [];
                 callback(errors);
             },
         }]);
         core.setValidateConfig({
-            hasError(rule, value, callback, source, options) {
+            hasError(rule, value, callback) {
                 const errors = [];
                 callback(errors);
             },
-            success(rule, value, callback, source, options) {
+            success(rule, value, callback) {
                 const errors = ['successHasError'];
                 callback(errors);
             },
@@ -506,8 +506,6 @@ describe('core/form basic function', () => {
     });
 
     it('change specific field status', () => {
-        const name = 'name';
-        const value = 'values';
         core.addField([
             { name: 'name', value: 'bojoy' },
             { name: 'gender', value: 'male' },
@@ -561,7 +559,6 @@ describe('core/form basic function', () => {
     });
 
     it('props function', () => {
-        const condition = false;
         core.addField([{
             name: 'username',
         }, {
@@ -761,7 +758,7 @@ describe('core/form emit event', () => {
         const handler = sinon.spy();
         core.addField([{
             name: 'name',
-            validateConfig(rule, value, callback, source, options) {
+            validateConfig(rule, value, callback) {
                 const errors = ['hasError'];
                 callback(errors);
             },
@@ -796,8 +793,6 @@ describe('core/form emit event', () => {
 
     it('should emit set-status when status is string', () => {
         const handler = sinon.spy();
-        const handlerName = sinon.spy();
-        const handlerGender = sinon.spy();
         core.addField([
             { name: 'name' },
             { name: 'gender' },

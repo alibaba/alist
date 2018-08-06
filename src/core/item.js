@@ -95,85 +95,13 @@ class Item {
         }
     }
 
-    async calculateIfList(value) {
-        const { parentIf } = this;
-        const upperIfList = [];
-        let item = { parentIf };
-        while (item.parentIf) {
-            upperIfList.push(item.parentIf);
-            item = item.parentIf;
-        }
-
-        const whenResultList = upperIfList.map(async (ifCore) => {
-            const whenResult = await this.calulateWhen(value, ifCore.when);
-            return whenResult;
-        });
-
-        const boolList = await Promise.all(whenResultList);
-
-        // result表示上层整体的when的结果，如果有任意false，则整体结果为false，反之为true
-        const result = boolList.reduce((before, after) => (before && after));
-
-        return result;
-    }
-
-    async calulateWhen(value, when) {
-        const { form } = this;
-        let whenResult = when;
-        if (isFunction(when)) whenResult = when(value, form); // 可能为promise
-
-        let whenResultFlag = whenResult;
-        if (whenResult instanceof Promise) {
-            whenResultFlag = await whenResult;
-        }
-
-        return whenResultFlag;
-    }
-
-    // 自我调整
-    async selfConsistent() {
-        this.consistenting = true; // debounce
-        const {
-            when, form, func_props, func_status, jsx_status, parentIf,
-        } = this;
-        const value = form.getAll('value');
-
-        // [status]静态变量可以直接await, 相当于new Promise().resolve(静态变量)
-        let statusResult = this.form.globalStatus;
-        if (jsx_status) {
-            if (isFunction(func_status)) { // 可能为promise
-                statusResult = func_status(value, form);
-            } else if (STATUS_ENUMS.has(this.jsx_status)) { // 写死静态状态
-                statusResult = this.jsx_status;
-            }
-
-            let statusResultVal = statusResult;
-            if (statusResult instanceof Promise) {
-                statusResultVal = await statusResult;
-            }
-
-            if (statusResultVal && STATUS_ENUMS.has(statusResultVal)) {
-                statusResult = statusResultVal;
-                if (when === null) this.set('status', statusResult);
-            }
-        }
-
-        this.consistValidate();
-
-        // // [when]同上，直接await处理
-        // let whenResult = when;
-        // if (isFunction(when)) whenResult = when(value, form); // 可能为promise
-
-        // let whenResultFlag = whenResult;
-        // if (whenResult instanceof Promise) {
-        //     whenResultFlag = await whenResult;
-        // }
-
-        let whenResultFlag = await this.calulateWhen(value, when); 
+    consistWhen(value, status) {
+        const { when, parentIf } = this;
+        let whenResultFlag = this.calulateWhen(value, when);
         // 计算上层if链路结果，如果上层链路的结果不成功，则不需要计算了
         let upperWhenResult = true;
         if (parentIf) {
-            upperWhenResult = await this.calculateIfList(value);
+            upperWhenResult = this.calculateIfList(value);
         }
 
         if (!upperWhenResult) {
@@ -181,22 +109,72 @@ class Item {
         }
 
         if (whenResultFlag === true) {
-            this.set('status', statusResult);
+            this.set('status', status);
         } else if (whenResultFlag === false) {
             this.set('status', 'hidden');
         }
+    }
 
-        // [props]同上，直接await处理
+    calculateIfList(value) {
+        const { parentIf } = this;
+        const upperIfList = [];
+        let item = { parentIf };
+        while (item.parentIf) {
+            upperIfList.push(item.parentIf);
+            item = item.parentIf;
+        }
+        // result表示上层整体的when的结果，如果有任意false，则整体结果为false，反之为true
+        const boolList = upperIfList.map(ifCore => this.calulateWhen(value, ifCore.when));
+        return boolList.reduce((before, after) => (before && after));
+    }
+
+    calulateWhen(value, when) {
+        const { form } = this;
+        let whenResult = when;
+        if (isFunction(when)) whenResult = when(value, form); // 可能为promise
+
+        return whenResult;
+    }
+
+    consistStatus(value) {
+        const {
+            form, jsx_status, func_status, when,
+        } = this;
+        let statusResult = form.globalStatus;
+        if (jsx_status) {
+            if (isFunction(func_status)) { // 可能为promise
+                statusResult = func_status(value, form);
+            } else if (STATUS_ENUMS.has(jsx_status)) { // 写死静态状态
+                statusResult = jsx_status;
+            }
+
+            if (statusResult && STATUS_ENUMS.has(statusResult)) {
+                if (when === null) this.set('status', statusResult);
+            }
+        }
+
+        return statusResult;
+    }
+
+    consistProps() {
+        const { form, func_props } = this;
         if (isFunction(func_props)) {
             const props = form.getAll('props', this.name);
             const propsResult = func_props(props, form);
-            let tmpPropResult = propsResult;
-            if (propsResult instanceof Promise) {
-                tmpPropResult = await propsResult;
-            }
 
-            this.set('props', tmpPropResult);
+            this.set('props', propsResult);
         }
+    }
+
+    // 自我调整
+    selfConsistent() {
+        this.consistenting = true; // debounce
+        const value = this.form.getAll('value');
+
+        const status = this.consistStatus(value); // 调整状态
+        this.consistValidate(); // 调整校验规则
+        this.consistWhen(value, status); // 调整联动判断
+        this.consistProps(); // 调整属性
 
         this.consistenting = false;
     }

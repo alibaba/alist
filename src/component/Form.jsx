@@ -79,7 +79,6 @@ class Form extends Component {
     getChildContext() {
         // 传递form
         return { form: this.core, ifCore: null };
-        // return { form: this.core };
     }
     componentDidMount() {
         const {
