@@ -76,6 +76,31 @@ const dialogConfig = {
     }
 };
 
+const easyAdd = (values) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const newValues = {
+                ...values,
+                id: 'add' + Math.random().toString(36).slice(2)
+            };
+
+            const { deep } = formCore.getValues();
+            const { dataSource } = deep;
+            fuzzCore.setValues({
+                deep: {
+                    ...deep,
+                    value: [newValues]
+                }
+            });
+
+            resolve({
+                success: true,
+                values: [...dataSource, newValues]
+            });
+        }, 1500);
+    });
+};
+
 const asyncAdd = (values) => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -93,8 +118,6 @@ const asyncAdd = (values) => {
                 }
             });
 
-            debugger;
-
             resolve({
                 success: true,
                 values: [...dataSource, newValues]
@@ -104,7 +127,8 @@ const asyncAdd = (values) => {
 };
 
 const asyncHandler = {
-    add: asyncAdd,
+    // add: asyncAdd,
+    add: easyAdd,
     save: asyncAdd,
     update: (values) => {
         return new Promise((resolve, reject) => {
@@ -137,9 +161,10 @@ const renderList = () => {
         },
         onChange: (fireKeys, values) => {
             const { list } = values;
-            fuzzCore.setValues({
-                address: list
-            });
+            console.log('list change....', list);
+            // fuzzCore.setValues({
+            //     address: list
+            // });
         }
     });
     Dialog.show({
@@ -192,7 +217,18 @@ const CustomEle = ({ onChange }) => {
     </Form>
 }
 
-ReactDOM.render(<Form onMount={formmount} onChange={console.log}>
+const defaultValue = {
+    deep: {
+        dataSource: [
+            { drawerName: 'aa', taxpayerNumber: 'bb', id: 1 },
+            { drawerName: 'cc', taxpayerNumber: 'dd', id: 2 },
+            { drawerName: 'ee', taxpayerNumber: 'ff', id: 3 }
+        ],
+        value: []
+    }
+}; 
+
+ReactDOM.render(<Form onMount={formmount} onChange={console.log} value={defaultValue}>
     {/* <Item name="tableRepeat" >
         <TableRepeater formConfig={formConfig}>
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
@@ -230,16 +266,16 @@ ReactDOM.render(<Form onMount={formmount} onChange={console.log}>
     <br/>
     <hr/>
 
-    {/* <FormItem name="deep">
-        <SelectRepeater selectMode="multiple" asyncHandler={asyncHandler} formConfig={formConfig}>
+    <FormItem name="deep">
+        <SelectRepeater selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig}>
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
         </SelectRepeater>        
-    </FormItem> */}
-
-    <FormItem name="fuzz">
-        <CustomEle />
     </FormItem>
+
+    {/* <FormItem name="fuzz">
+        <CustomEle />
+    </FormItem> */}
 
     
     {/* <Item name="inlineRepeatMultiple">

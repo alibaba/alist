@@ -61,6 +61,7 @@ export default function SelectRepeaterHOC(Source, Com) {
                     }
                 });
             }
+
             this.core.setValues({
                 dataSource: formatDataSource,
                 value: formatValue,
@@ -89,6 +90,7 @@ export default function SelectRepeaterHOC(Source, Com) {
                     }
 
                     this.core.setValue('value', lastVal);
+                    this.repeater.forceUpdate(); // 强制刷新repeater，否则datasource内的内容不会刷新
                 }}
             />);
         }
@@ -116,7 +118,7 @@ export default function SelectRepeaterHOC(Source, Com) {
 
             return (<Form core={this.core} onChange={onChange}>
                 <Item name="dataSource">
-                    <Com {...otherprops}>
+                    <Com {...otherprops} ref={(rp) => { this.repeater = rp; }}>
                         {this.renderSelectTrigger()}
                         {children}
                     </Com>

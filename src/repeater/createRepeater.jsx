@@ -53,6 +53,7 @@ export default function createRepeater(bindSource, source) {
         async componentWillReceiveProps(nextProps) {
             const { filter } = this.props;
 
+            console.log('====inner reapter update ====', nextProps);
             // 没有过滤函数或者没有关键字
             if (!filter || !this.key) {
                 this.value = nextProps.value || [];
@@ -338,6 +339,9 @@ export default function createRepeater(bindSource, source) {
             if (typeof view === 'function') {
                 customView = view(formList, this);
             }
+
+            console.log('====>render inner repeater<======');
+
             return (
                 <div>
                     <Container
