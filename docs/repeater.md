@@ -127,8 +127,8 @@ const asyncAdd = (values) => {
 };
 
 const asyncHandler = {
-    // add: asyncAdd,
-    add: easyAdd,
+    add: asyncAdd,
+    // add: easyAdd,
     save: asyncAdd,
     update: (values) => {
         return new Promise((resolve, reject) => {
@@ -225,7 +225,17 @@ const defaultValue = {
             { drawerName: 'ee', taxpayerNumber: 'ff', id: 3 }
         ],
         value: []
-    }
+    },
+    fuzz: {
+        address: {
+            dataSource: [
+                { drawerName: 'aa', taxpayerNumber: 'bb', id: 1 },
+                { drawerName: 'cc', taxpayerNumber: 'dd', id: 2 },
+                { drawerName: 'ee', taxpayerNumber: 'ff', id: 3 }
+            ],
+            value: []
+        }
+    },
 }; 
 
 ReactDOM.render(<Form onMount={formmount} onChange={console.log} value={defaultValue}>
@@ -266,16 +276,16 @@ ReactDOM.render(<Form onMount={formmount} onChange={console.log} value={defaultV
     <br/>
     <hr/>
 
-    <FormItem name="deep">
+    {/* <FormItem name="deep">
         <SelectRepeater selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig}>
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
         </SelectRepeater>        
-    </FormItem>
-
-    {/* <FormItem name="fuzz">
-        <CustomEle />
     </FormItem> */}
+
+    <FormItem name="fuzz">
+        <CustomEle />
+    </FormItem>
 
     
     {/* <Item name="inlineRepeatMultiple">
