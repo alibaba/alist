@@ -85,6 +85,7 @@ const asyncAdd = (values) => {
             };
 
             const { address } = fuzzCore.getValues();
+            const { dataSource } = address;
             fuzzCore.setValues({
                 address: {
                     ...address,
@@ -92,10 +93,11 @@ const asyncAdd = (values) => {
                 }
             });
 
+            debugger;
+
             resolve({
                 success: true,
-                // values: newValues
-                values: [{},{},{},newValues]
+                values: [...dataSource, newValues]
             });
         }, 1500);
     });
@@ -150,8 +152,11 @@ const renderList = () => {
                 </SelectRepeater>
             </Item>                
         </Form>,
-        onOk: (values, hide) => {
-            hide();
+        // onOk: (values, hide) => {
+        //     hide();
+        // }
+        footer: (hide) => {
+            return <div><Button onClick={hide}>xxx</Button></div>
         }
     });
 }
@@ -210,7 +215,7 @@ ReactDOM.render(<Form onMount={formmount} onChange={console.log}>
         </InlineRepeater>
     </FormItem> */}
 
-    <FormItem required label="username" name="username"><Input /></FormItem>
+    {/* <FormItem required label="username" name="username"><Input /></FormItem>
     <If when={(values) => {
         const { username } = values || {};
         return username === 'billy';
@@ -220,7 +225,7 @@ ReactDOM.render(<Form onMount={formmount} onChange={console.log}>
                 <FormItem required label="开票人" name="drawerName"><Input /></FormItem>
             </InlineRepeater>
         </FormItem>
-    </If>
+    </If> */}
 
     <br/>
     <hr/>
@@ -232,9 +237,9 @@ ReactDOM.render(<Form onMount={formmount} onChange={console.log}>
         </SelectRepeater>        
     </FormItem> */}
 
-    {/* <FormItem name="fuzz">
+    <FormItem name="fuzz">
         <CustomEle />
-    </FormItem> */}
+    </FormItem>
 
     
     {/* <Item name="inlineRepeatMultiple">

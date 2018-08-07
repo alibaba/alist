@@ -113,7 +113,7 @@ export default function createRepeater(bindSource, source) {
 
             let rewriteProps = {};
             if (custom) {
-                rewriteProps = custom(core, type);
+                rewriteProps = custom(core, type, props);
             }
 
             return {
@@ -321,6 +321,8 @@ export default function createRepeater(bindSource, source) {
                 label: child.props.label,
                 multiple: child.props.multiple,
                 renderCell: child.props.renderCell,
+                style: child.props.style,
+                className: child.props.className,
             })).filter(item => (item.name || item.multiple));
 
             const searchEle = filter ? <Input className="repeater-search" onChange={handleSearch} /> : null;

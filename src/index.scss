@@ -149,7 +149,7 @@
         vertical-align: top;
         width: auto;
         margin-right: 16px;
-        margin-bottom: 12px;        
+        margin-bottom: 12px;
     }    
 
     .no-form-item-has-layout {
@@ -159,4 +159,14 @@
             }
         }
     }
+}
+
+.no-form-item-inline {
+    display: inline-block;
+    vertical-align: top;
+    width: auto;
+}
+
+.no-form-item-inline + .no-form-item-inline {
+    margin-top: 0;
 }
