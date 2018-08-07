@@ -20,6 +20,7 @@ class Accordion extends Component {
                 this.core.forEach((core) => {
                     core.setValue(val);
                 });
+                setTimeout(() => this.forceUpdate());
             },
             getValue: this.getValue,
             validate: this.validate,
@@ -58,16 +59,8 @@ class Accordion extends Component {
     onMount = (idx, core) => {
         this.core[idx] = core;
     }
-    onChange = (idx, value) => {
-        // if (this.isChanging) {
-        //     return;
-        // }
-        // this.isChanging = true;
-        // setTimeout(() => {
-        //     this.core.filter((c, i) => i !== idx).forEach(c => c.setValue(value));
-        // });
-        this.props.onChange(this.getValue());
-        // this.isChanging = false;
+    onChange = (idx, value, ...args) => {
+        this.props.onChange(this.getValue(), ...args);
     }
 
     getValue = () => this.core.reduce((value, c) => {
@@ -138,6 +131,7 @@ class Accordion extends Component {
             }
 
             let showElement = active || child.props.value;
+
             if (!showElement && this.core[idx]) {
                 showElement = !!this.core[idx].getValue();
             }

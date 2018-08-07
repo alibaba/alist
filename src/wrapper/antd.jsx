@@ -61,11 +61,13 @@ class WrapperClass {
     }
 
     Input = (props) => {
-        const { status, value } = props;
+        const {
+            status, value, error, inset, ...others
+        } = props;
         const valueProps = getValueProps(props);
 
         if (status === 'preview') return renderValue(formatValue(value)); // 处理预览态
-        return <this.Antd.Input {...props} {...valueProps} {...insetify(props)} />;
+        return <this.Antd.Input {...others} {...valueProps} {...insetify(props)} />;
     }
 
     Textarea = (props) => {

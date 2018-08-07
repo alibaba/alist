@@ -16,29 +16,35 @@ class Item {
             }
         });
     }
-    validate() {
+    validate(cb = e => e) {
         let { validateConfig } = this;
+        let errors = null;
         if (typeof this.func_validateConfig === 'function') {
             validateConfig = this.func_validateConfig(this.form.value, this.form);
         }
 
         if (!validateConfig) {
-            return Promise.resolve(null);
+            errors = null;
+            cb(errors);
+            return errors;
         }
         this.validator = new AsyncValidator({
             [this.name]: validateConfig,
         });
-        return new Promise((resolve) => {
+        let walked = false;
+        const prom = new Promise((resolve) => {
             this.validator.validate({
                 [this.name]: this.get('value'),
-            }, (errors) => {
-                if (errors) {
-                    resolve(errors[0].message);
-                } else {
-                    resolve(null);
-                }
+            }, (err) => {
+                errors = err ? err[0].message : null;
+                walked = true;
+                resolve(errors);
             });
         });
+        if (walked) {
+            return cb(errors);
+        }
+        return prom.then(cb);
     }
     updateField(option) {
         this.initWith({ ...this, ...option });
