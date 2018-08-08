@@ -147,10 +147,16 @@ export default function createRepeater(bindSource, source) {
 
 
         handleCoreUpdate = (core) => {
-            const { multiple } = this.props;
+            const { multiple, onMultipleChange } = this.props;
             if (multiple) {
                 core.$focus = true;
-                // core.on('change', this.sync);
+                core.on('change', () => {
+                    if (onMultipleChange && typeof onMultipleChange === 'function') {
+                        const currentValues = core.getValues();
+                        const listValues = this.repeaterCore.getValues();
+                        onMultipleChange(currentValues, listValues, this);
+                    }
+                });
                 core.$multiple = true;
             }
 

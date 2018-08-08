@@ -246,6 +246,10 @@ const CustomEle = ({ onChange }) => {
     </Form>
 }
 
+const onMultipleChange = (values, listValues) => {
+    console.log('===values', values, listValues);
+};
+
 const defaultValue = {
     deep: {
         dataSource: [
@@ -317,7 +321,7 @@ ReactDOM.render(<Form core={formCore} onChange={console.log} value={defaultValue
     </FormItem> */}
     
     <FormItem name="inlineRepeatMultiple">
-        <InlineRepeater multiple filter={filter} formConfig={formConfig} addPosition="bottom">
+        <InlineRepeater onMultipleChange={onMultipleChange} multiple filter={filter} formConfig={formConfig} addPosition="bottom">
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
             {/* <FormItem label="multi" multiple required>
                 <div>
