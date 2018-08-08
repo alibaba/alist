@@ -30,19 +30,48 @@ function filter(value, key){
 
 const SelectRepeater = Selectify(TableRepeater);
 
-let formCore = null;
-function formmount(core) {
-    formCore = core;
-    window.formCore = core;
-}
+const formCore = new FormCore({
+    // autoValidate: true,
+    validateConfig: {
+        inlineRepeatMultiple: [
+            // { required: true, message: 'errrrrrrr' },
+            { validator: (rule, value, callback) => {
+                console.log(rule, value);
+                if (value && value.length > 1) {
+                    callback(['mammmmmmx']);
+                } else {
+                    callback([]);
+                }
+            }}
+            // return new Promise((resolve, reject) => {
+            //         setTimeout(() => {
+            //             if (value && value.length > 1) {
+            //                 reject('iii');
+            //             } else {
+            //                 resolve('null');
+            //             }
+                        
+            //             // resolve(null);
+            //         }, 200);
+            //     });
+        ]
+    },
+    onChange: (fireKeys, values) => {
+        console.log('====>', fireKeys, values);
+    }
+});
 
+window.formCore = formCore;
 const validateConfig = {
     drawerName: { type: 'string', required: true }
 };
 
 const formConfig = {
     validateConfig,
-    autoValidate: true
+    // autoValidate: true,
+    onChange: (fireKeys, values) => {
+        // console.log('====>', fireKeys, values);
+    }
 };
 
 const deepFormConfig = {
@@ -238,7 +267,7 @@ const defaultValue = {
     },
 }; 
 
-ReactDOM.render(<Form onMount={formmount} onChange={console.log} value={defaultValue}>
+ReactDOM.render(<Form core={formCore} onChange={console.log} value={defaultValue}>
     {/* <Item name="tableRepeat" >
         <TableRepeater formConfig={formConfig}>
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
@@ -283,15 +312,14 @@ ReactDOM.render(<Form onMount={formmount} onChange={console.log} value={defaultV
         </SelectRepeater>        
     </FormItem> */}
 
-    <FormItem name="fuzz">
+    {/* <FormItem name="fuzz">
         <CustomEle />
-    </FormItem>
-
+    </FormItem> */}
     
-    {/* <Item name="inlineRepeatMultiple">
+    <FormItem name="inlineRepeatMultiple">
         <InlineRepeater multiple filter={filter} formConfig={formConfig} addPosition="bottom">
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
-            <FormItem label="multi" multiple required>
+            {/* <FormItem label="multi" multiple required>
                 <div>
                     <FormItem name="aaa"><Input addonBefore="xxoo" style={{ width: '100px' }}  /></FormItem>
                     <FormItem name="bbb"><Input /></FormItem>
@@ -301,9 +329,9 @@ ReactDOM.render(<Form onMount={formmount} onChange={console.log} value={defaultV
             <FormItem label="子公司" name="branchName"><Input /></FormItem>
             <FormItem label="核查结果" name="checkResultName"><Input /></FormItem>
             <FormItem label="拒绝原因" name="denyReason"><Input /></FormItem>
-            <FormItem label="创建人" name="creatorName"><Input /></FormItem>
+            <FormItem label="创建人" name="creatorName"><Input /></FormItem> */}
         </InlineRepeater>
-    </Item> */}
+    </FormItem>
 </Form>, mountNode);
 ````
 

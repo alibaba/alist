@@ -49,7 +49,7 @@ export default function SelectRepeaterHOC(Source, Com) {
                 formatDataSource = dataSource;
                 const idMap = {};
                 dataSource.forEach((item) => {
-                    if (item.id) {
+                    if (item && item.id) {
                         idMap[item.id] = item;
                     }
                 });

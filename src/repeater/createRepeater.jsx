@@ -10,6 +10,10 @@ export default function createRepeater(bindSource, source) {
     const { Input = noop, Dialog } = source;
 
     return class OtRepeater extends Component {
+        static contextTypes = {
+            item: PropTypes.object
+        };
+
         static propTypes = {
             view: PropTypes.any,
             core: PropTypes.any,
@@ -31,6 +35,7 @@ export default function createRepeater(bindSource, source) {
             const {
                 value, status, formConfig, asyncHandler, core,
             } = props;
+            const { item } = context;
             this.value = value || [];
             this.status = status;
             this.formConfig = formConfig || {};
@@ -41,6 +46,10 @@ export default function createRepeater(bindSource, source) {
                 formConfig: this.formConfig,
                 asyncHandler: this.asyncHandler,
             });
+
+            if (item && item.core) {
+                // item.core.addSubField(this.repeaterCore);
+            }
         }
 
         componentDidMount() {
@@ -53,7 +62,6 @@ export default function createRepeater(bindSource, source) {
         async componentWillReceiveProps(nextProps) {
             const { filter } = this.props;
 
-            console.log('====inner reapter update ====', nextProps);
             // 没有过滤函数或者没有关键字
             if (!filter || !this.key) {
                 this.value = nextProps.value || [];
@@ -142,6 +150,7 @@ export default function createRepeater(bindSource, source) {
             const { multiple } = this.props;
             if (multiple) {
                 core.$focus = true;
+                // core.on('change', this.sync);
                 core.$multiple = true;
             }
 
@@ -220,7 +229,7 @@ export default function createRepeater(bindSource, source) {
         }
 
         doMultipleInline = async () => {
-            const canSync = await this.repeaterCore.addMultipleInline(this.syncAndUpdate);
+            const canSync = await this.repeaterCore.addMultipleInline();
 
             if (canSync) {
                 this.sync({ type: 'addMultiple', index: this.repeaterCore.formList.length - 1 });
@@ -339,8 +348,6 @@ export default function createRepeater(bindSource, source) {
             if (typeof view === 'function') {
                 customView = view(formList, this);
             }
-
-            console.log('====>render inner repeater<======');
 
             return (
                 <div>

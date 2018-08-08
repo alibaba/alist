@@ -27,6 +27,46 @@ class RepeaterCore {
 
     }
 
+    handleFormError = (error) => {
+        if (!error) return null;
+
+        let err = null;
+        if (Array.isArray(error)) {
+            const errList = error.map(item => this.handleFormError(item));
+            return errList[0];
+        }
+
+        Object.keys(error).forEach((key) => {
+            if (error[key] && !err) {
+                err = error[key];
+            }
+        });
+
+        return err;
+    }
+
+    validate = (cb = e => e) => {
+        const err = null;
+        let hasPromise = false;
+        const promiseValidator = [];
+        this.formList.forEach((item) => {
+            const result = item.validate();
+            if (result instanceof Promise) {
+                hasPromise = true;
+            }
+
+            promiseValidator.push(result);
+        });
+
+        if (hasPromise) {
+            return Promise.all(promiseValidator).then(this.handleFormError).then(cb);
+        }
+
+        const errList = promiseValidator.map(this.handleFormError).filter(v => !!v);
+
+        return cb(errList[0]);
+    }
+
     // 更新构建属性
     updateProps = (props) => {
         const formProps = props || {};
@@ -118,12 +158,11 @@ class RepeaterCore {
     }
 
     // 增加多项临时编辑项
-    addMultipleInline = async (cb) => {
+    addMultipleInline = async () => {
         const hasError = await this.hasValidateError();
         if (hasError) return false;
 
         const tmp = this.generateCore();
-        tmp.on('change', cb);
         tmp.$focus = true;
         tmp.$multiple = true;
         this.formList.push(tmp);
