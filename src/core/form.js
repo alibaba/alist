@@ -1,3 +1,4 @@
+import AsyncValidator from 'async-validator';
 import EventEmitter from 'events';
 import { VALUE_CHANGE, CHANGE, ANY_CHANGE, BASIC_EVENT, INITIALIZED } from '../static';
 import ItemCore from './item';
@@ -119,6 +120,21 @@ class Form {
             return cb(null);
         }
         return cb(retErr);
+    }
+
+    validateAll = (cb = x => x) => { // 纯净的校验方法, ui无关，不会涉及页面error 展示
+        const validator = new AsyncValidator(this.validateConfig);
+        const result = validator.validate(this.value);
+        let hasPromise = false;
+        if (result instanceof Promise) {
+            hasPromise = true;
+        }
+
+        if (hasPromise) {
+            return result;
+        }
+
+        return cb(result);
     }
 
     // 表单校验,返回错误对象

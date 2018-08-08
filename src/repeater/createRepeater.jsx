@@ -48,7 +48,7 @@ export default function createRepeater(bindSource, source) {
             });
 
             if (item && item.core) {
-                // item.core.addSubField(this.repeaterCore);
+                item.core.addSubField(this.repeaterCore);
             }
         }
 
