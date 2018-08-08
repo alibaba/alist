@@ -798,6 +798,7 @@ describe('core/form emit event', () => {
             { name: 'gender' },
         ]);
         core.on(BASIC_EVENT.status, handler);
+        expect(core.getGlobalStatus()).toEqual('edit');
         core.setGlobalStatus('preview');
         expect(handler.called).toEqual(true);
         expect(handler.calledWith('name', 'preview')).toEqual(true);

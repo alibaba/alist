@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { ANY_CHANGE, BLUR, FOCUS } from '../static';
 
+const Component = React.PureComponent;
 const isFunction = func => typeof func === 'function';
 const isObject = obj => Object.prototype.toString.call(obj) === '[object Object]';
 const noop = () => { };
@@ -9,12 +10,11 @@ const noop = () => { };
 const getValue = (jsxProps) => {
     const hasVal = ('value' in jsxProps);
     const hasDefaultVal = ('defaultValue' in jsxProps);
-    if ((hasVal && hasDefaultVal) || hasVal) {
+    if (hasVal) {
         return jsxProps.value;
     } else if (hasDefaultVal) {
         return jsxProps.defaultValue;
     }
-
     return null;
 };
 
@@ -140,9 +140,9 @@ class Item extends Component {
         this.didMount = true;
         this.forceUpdate();
     }
-    shouldComponentUpdate() {
-        return false;
-    }
+    // shouldComponentUpdate() {
+    //     return false;
+    // }
     componentWillUnmount() {
         this.core.removeListener(ANY_CHANGE, this.update);
         this.didMount = false;
@@ -264,7 +264,6 @@ class Item extends Component {
         if (component && component.type && component.type.displayName === 'If') {
             delete cloneProps.name;
         }
-
         return React.cloneElement(component, cloneProps);
     }
 }

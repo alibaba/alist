@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { ANY_CHANGE } from '../static';
 
+const Component = React.PureComponent;
 class If extends Component {
     static propTypes = {
         when: PropTypes.any,

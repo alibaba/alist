@@ -10,8 +10,8 @@
 ## 可执行 DEMO
 
 ````js
-import Form, { FormItem, Item } from '../src';
-import Accordion, {AccordionCore}  from '../src/accordion';
+import Form, { FormItem, Item, FormCore } from '../src';
+import Accordion  from '../src/accordion';
 import * as Antd from 'antd';
 import wrapper from '../src/wrapper/antd';
 import "../src/accordion/index.scss";
@@ -21,11 +21,15 @@ import "../src/index.scss";
 const { Button, Input }  = wrapper(Antd);
 // const core = window.core = new AccordionCore();
 const layout = {label: 4}
-Accordion.Button = Button;
-const editButton = <a href="javascript:;">编辑</a>
-const nextButton = <Button type="primary">下一步</Button>
-ReactDOM.render(<Accordion status="edit" onChange={console.log} editButton={editButton} nextButton={nextButton}>
-    <Form name="repeat" layout={layout} label="物流订单" validateConfig={{
+const accordionCore = [
+    new FormCore({status: 'preview'}),
+    new FormCore({status: 'preview'}),
+    new FormCore({status: 'preview'}),
+    new FormCore({status: 'preview'})
+]
+
+ReactDOM.render(<Accordion core={accordionCore}>
+    <Form name="repeat" layout={layout} core={accordionCore[0]} label="物流订单" validateConfig={{
         drawerName: {type: "string", required: true},
     }}>
         <FormItem label="开票人" required name="drawerName"><Input /></FormItem>
@@ -35,7 +39,7 @@ ReactDOM.render(<Accordion status="edit" onChange={console.log} editButton={edit
         <FormItem label="拒绝原因" name="denyReason"><Input /></FormItem>
         <FormItem label="创建人" name="creatorName"><Input /></FormItem>
     </Form>
-    <Form name="repeat" layout={layout} label="重要报关信息">
+    <Form name="repeat" layout={layout} core={accordionCore[1]} label="重要报关信息">
         <FormItem label="开票人" name="drawerName1"><Input /></FormItem>
         <FormItem label="税号" name="taxpayerNumber1"><Input /></FormItem>
         <FormItem label="子公司" name="branchName1"><Input /></FormItem>
@@ -43,7 +47,7 @@ ReactDOM.render(<Accordion status="edit" onChange={console.log} editButton={edit
         <FormItem label="拒绝原因" name="denyReason1"><Input /></FormItem>
         <FormItem label="创建人" name="creatorName1"><Input /></FormItem>
     </Form>
-    <Form name="repeat" layout={layout} label="随附单证">
+    <Form name="repeat" layout={layout} core={accordionCore[2]} label="随附单证">
         <FormItem label="开票人" name="drawerName2"><Input /></FormItem>
         <FormItem label="税号" name="taxpayerNumber2"><Input /></FormItem>
         <FormItem label="子公司" name="branchName2"><Input /></FormItem>
@@ -51,7 +55,7 @@ ReactDOM.render(<Accordion status="edit" onChange={console.log} editButton={edit
         <FormItem label="拒绝原因" name="denyReason2"><Input /></FormItem>
         <FormItem label="创建人" name="creatorName2"><Input /></FormItem>
     </Form>
-    <Form name="repeat" layout={layout} label="预估费用">
+    <Form name="repeat" layout={layout} core={accordionCore[3]} label="预估费用">
         <FormItem label="开票人" name="drawerName3"><Input /></FormItem>
         <FormItem label="税号" name="taxpayerNumber3"><Input /></FormItem>
         <FormItem label="子公司" name="branchName3"><Input /></FormItem>

@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import deepEqual from 'deep-equal';
 import FormCore from '../core/form';
 import { STATUS_ENUMS, CHANGE, FOCUS, BLUR, INITIALIZED } from '../static';
 
 const noop = () => {};
-
+const Component = React.PureComponent;
 class Form extends Component {
     static propTypes = {
         onChange: PropTypes.func,

@@ -120,9 +120,7 @@ class Form {
         }
         return cb(retErr);
     }
-
-    // 表单校验,返回错误对象
-    validate(cb = x => x) {
+    validateBase(cb, withRender) {
         const validators = [];
         let hasPromise = false;
         this.validatng = true;
@@ -137,10 +135,18 @@ class Form {
             return Promise.all(validators).then(this.handleErrors).then(cb);
         }
         this.validatng = false;
-        return cb(this.handleErrors(validators));
+        return cb(this.handleErrors(validators, withRender));
     }
 
-    handleErrors = (errs) => {
+    validateWithoutRender(cb) {
+        return this.validateBase(cb, false);
+    }
+    // 表单校验,返回错误对象
+    validate(cb = x => x) {
+        return this.validateBase(cb, true);
+    }
+
+    handleErrors = (errs, WithRender) => {
         const errors = {};
         const retErr = {};
         let hasError = false;
@@ -157,8 +163,9 @@ class Form {
                 errors[child.name] = errs[idx] || null;
             }
         });
-
-        this.setError(errors);
+        if (WithRender) {
+            this.setError(errors);
+        }
         if (!hasError) {
             return null;
         }
@@ -283,12 +290,14 @@ class Form {
 
     // 全局状态
     setGlobalStatus(targetStatus) {
+        if (this.globalStatus === targetStatus) {
+            return this;
+        }
         this.globalStatus = targetStatus;
         const status = {};
         this.children.forEach((child) => {
             status[child.name] = targetStatus;
         });
-
         return this.setStatus(status);
     }
 

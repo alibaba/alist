@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Item from './Item';
 import { ANY_CHANGE, EDIT, HIDDEN } from '../static';
 
 const formItemPrefix = 'no-form';
 
+const Component = React.PureComponent;
 class FormItem extends Component {
     static propTypes = {
         name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -48,6 +49,7 @@ class FormItem extends Component {
         // 绑定set事件就会执行更新 TODO：优化渲染
         this.form.on(ANY_CHANGE, this.update);
         this.didMount = true;
+        this.forceUpdate();
     }
 
     componentWillUnmount() {
@@ -55,13 +57,11 @@ class FormItem extends Component {
         this.form.removeListener(ANY_CHANGE, this.update);
         this.didMount = false;
     }
-
     update = () => { // 强制刷新
         if (this.didMount) {
             this.forceUpdate();
         }
     }
-
     render() {
         const { children, ...itemProps } = this.props;
         const { name, style = {} } = itemProps;
@@ -69,7 +69,6 @@ class FormItem extends Component {
         const props = this.form.getItemProps(name) || {}; // 动态props
         const status = this.form.getItemStatus(name); // 动态status
         const error = this.form.getItemError(name); // 动态error
-
         // 保留item关键字属性
         const {
             label, top, suffix, prefix, help, required, full: coreFull,
@@ -87,6 +86,9 @@ class FormItem extends Component {
             requiredCls = ' required';
         }
 
+        if (name === 'drawerName') {
+            console.log(name, props, required, status, requiredCls);
+        }
         // 处理布局
         const {
             inset = false, colon, layout = {}, full: jsxFull,

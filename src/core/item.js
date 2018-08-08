@@ -210,7 +210,6 @@ class Item {
         if (deepEqual(this[type], ftValue)) {
             return false;
         }
-
         this.form[type][this.name] = ftValue;
         this[type] = ftValue;
 

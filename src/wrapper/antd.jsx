@@ -120,7 +120,7 @@ class WrapperClass {
             if (props.children) { // 存在label
                 return checked ? renderValue(props.children) : null;
             } // 不存在
-            window && window.console && window.console.warn('label必须写在Checkbox内，如需编写外部label, 请使用suffix、prefix等熟悉'); // 给出警告
+            window && window.console && window.console.warn('label必须写在Checkbox内，如需编写外部label, 请使用suffix、prefix等属性'); // 给出警告
             return null;
         }
 
@@ -144,7 +144,7 @@ class WrapperClass {
             if (props.children) { // 存在label
                 return checked ? renderValue(props.children) : null;
             } // 不存在
-            window && window.console && window.console.warn('label必须写在Radio内，如需编写外部label, 请使用suffix、prefix等熟悉'); // 给出警告
+            window && window.console && window.console.warn('label必须写在Radio内，如需编写外部label, 请使用suffix、prefix等属性'); // 给出警告
             return null;
         }
 
@@ -324,30 +324,39 @@ class WrapperClass {
     }
 
     format = () => {
-        if (this.Antd.Select && this.Antd.Select.Option) this.Select.Option = this.Antd.Select.Option;
-        if (this.Antd.TreeSelect) this.TreeSelect.Node = this.Antd.TreeSelect.Node;
+        if (this.Antd.Select && this.Antd.Select.Option) {
+            this.Select.Option = this.Antd.Select.Option;
+            this.Select.Option.displayName = 'wrapper(Option)';
+        }
+        if (this.Antd.TreeSelect) {
+            this.TreeSelect.Node = this.Antd.TreeSelect.Node;
+        }
 
         this.Checkbox.Group = this.CheckboxGroup;
         this.Radio.Group = this.RadioGroup;
         this.Input.Textarea = this.Textarea;
-
+        const result = ['Input',
+            'Select',
+            'Checkbox',
+            'Radio',
+            'AutoComplete',
+            'Switch',
+            'Slider',
+            'DatePicker',
+            'TimePicker',
+            'InputNumber',
+            'Rate',
+            'Mention',
+            'Cascader',
+            'TreeSelect',
+            'Upload'].reduce((ret, key) => {
+            this[key].displayName = `wrapper(${key})`;
+            ret[key] = this[key];
+            return ret;
+        }, {});
         return {
             ...this.Antd,
-            Input: this.Input,
-            Select: this.Select,
-            Checkbox: this.Checkbox,
-            Radio: this.Radio,
-            AutoComplete: this.AutoComplete,
-            Switch: this.Switch,
-            Slider: this.Slider,
-            DatePicker: this.DatePicker,
-            TimePicker: this.TimePicker,
-            InputNumber: this.InputNumber,
-            Rate: this.Rate,
-            Mention: this.Mention,
-            Cascader: this.Cascader,
-            TreeSelect: this.TreeSelect,
-            Upload: this.Upload,
+            ...result,
         };
     }
 }
