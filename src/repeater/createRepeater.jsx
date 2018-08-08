@@ -10,6 +10,10 @@ export default function createRepeater(bindSource, source) {
     const { Input = noop, Dialog } = source;
 
     return class OtRepeater extends Component {
+        static contextTypes = {
+            item: PropTypes.object
+        };
+
         static propTypes = {
             view: PropTypes.any,
             core: PropTypes.any,
@@ -31,6 +35,7 @@ export default function createRepeater(bindSource, source) {
             const {
                 value, status, formConfig, asyncHandler, core,
             } = props;
+            const { item } = context;
             this.value = value || [];
             this.status = status;
             this.formConfig = formConfig || {};
@@ -41,6 +46,10 @@ export default function createRepeater(bindSource, source) {
                 formConfig: this.formConfig,
                 asyncHandler: this.asyncHandler,
             });
+
+            if (item && item.core) {
+                item.core.addSubField(this.repeaterCore);
+            }
         }
 
         componentDidMount() {
@@ -113,7 +122,7 @@ export default function createRepeater(bindSource, source) {
 
             let rewriteProps = {};
             if (custom) {
-                rewriteProps = custom(core, type);
+                rewriteProps = custom(core, type, props);
             }
 
             return {
@@ -138,9 +147,16 @@ export default function createRepeater(bindSource, source) {
 
 
         handleCoreUpdate = (core) => {
-            const { multiple } = this.props;
+            const { multiple, onMultipleChange } = this.props;
             if (multiple) {
                 core.$focus = true;
+                core.on('change', () => {
+                    if (onMultipleChange && typeof onMultipleChange === 'function') {
+                        const currentValues = core.getValues();
+                        const listValues = this.repeaterCore.getValues();
+                        onMultipleChange(currentValues, listValues, this);
+                    }
+                });
                 core.$multiple = true;
             }
 
@@ -219,7 +235,7 @@ export default function createRepeater(bindSource, source) {
         }
 
         doMultipleInline = async () => {
-            const canSync = await this.repeaterCore.addMultipleInline(this.syncAndUpdate);
+            const canSync = await this.repeaterCore.addMultipleInline();
 
             if (canSync) {
                 this.sync({ type: 'addMultiple', index: this.repeaterCore.formList.length - 1 });
@@ -321,6 +337,8 @@ export default function createRepeater(bindSource, source) {
                 label: child.props.label,
                 multiple: child.props.multiple,
                 renderCell: child.props.renderCell,
+                style: child.props.style,
+                className: child.props.className,
             })).filter(item => (item.name || item.multiple));
 
             const searchEle = filter ? <Input className="repeater-search" onChange={handleSearch} /> : null;
@@ -336,6 +354,7 @@ export default function createRepeater(bindSource, source) {
             if (typeof view === 'function') {
                 customView = view(formList, this);
             }
+
             return (
                 <div>
                     <Container

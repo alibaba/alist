@@ -17,7 +17,7 @@ class Item {
         });
     }
     validate(cb = e => e) {
-        let { validateConfig } = this;
+        let { validateConfig, subField } = this;
         let errors = null;
         if (typeof this.func_validateConfig === 'function') {
             validateConfig = this.func_validateConfig(this.form.value, this.form);
@@ -28,6 +28,21 @@ class Item {
             cb(errors);
             return errors;
         }
+
+        // 需要判断是否有更下层的校验(组件层面)
+        let subValidator = null;
+        let hasSubPromise = false;
+        // if (subField) {
+        //     const result = subField.validate();
+        //     if (result instanceof Promise) {
+        //         hasSubPromise = true;
+        //     } else {
+        //         errors = result;
+        //     }
+
+        //     subValidator = result;
+        // }
+
         this.validator = new AsyncValidator({
             [this.name]: validateConfig,
         });
@@ -36,19 +51,40 @@ class Item {
             this.validator.validate({
                 [this.name]: this.get('value'),
             }, (err) => {
-                errors = err ? err[0].message : null;
+                errors = err ? err[0].message : errors;
                 walked = true;
                 resolve(errors);
             });
         });
+
+        // 处理子项是promise的情况
+        const subPromiseHandler = errMsg => Promise.resolve(subValidator).then(subErr => errMsg || subErr).then(cb);
+
         if (walked) {
+            if (hasSubPromise) {
+                return subPromiseHandler(errors);
+            }
             return cb(errors);
         }
-        return prom.then(cb);
+        return prom.then((errs) => {
+            if (hasSubPromise) {
+                return subPromiseHandler(errs);
+            }
+
+            return cb(errs);
+        });
     }
     updateField(option) {
         this.initWith({ ...this, ...option });
     }
+
+    // 通用组件层，目前主要用于层级校验
+    // 需要commonField实现validate
+    addSubField(subField) {
+        subField.parent = this;
+        this.subField = subField;
+    }
+
     initWith(option) {
         const {
             form, on, emit, removeListener,
@@ -71,6 +107,7 @@ class Item {
         this.status = status;
         this.validateConfig = validateConfig;
         this.interceptor = interceptor;
+        this.subField = null;
 
         const {
             jsx_status, func_props = null, func_status = null, func_validateConfig = null,

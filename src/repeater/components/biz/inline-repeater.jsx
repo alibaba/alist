@@ -28,9 +28,13 @@ export default function bind(source) {
 
                 const cellCls = `repeater-table-cell-wrapper repeater-table-cell-wrapper-${itemAlign}`;
 
-                const header = itemsConfig.map(conf => (<th className="repeater-table-header-node" key={`${conf.label}${conf.name}`}>
-                    <div className={cellCls}> {conf.label} </div>
-                </th>));
+                const header = itemsConfig.map((conf) => {
+                    const cls = conf.className || '';
+                    const style = conf.style || {};
+                    return (<th style={style} className={`${cls} repeater-table-header-node`} key={`${conf.label}${conf.name}`}>
+                        <div className={cellCls}> {conf.label} </div>
+                    </th>);
+                });
 
                 if (editable) {
                     header.push(<th className="repeater-table-header-node" key="last">
@@ -93,18 +97,20 @@ export default function bind(source) {
 
                 // 遍历渲染数据
                 listItems = itemsConfig.map((conf) => {
+                    const cls = conf.className || '';
+                    const style = conf.style || {};
                     let innerItem = null;
                     if (focusMode) {
-                        innerItem = (<div className="repeater-table-cell-wrapper inline-repeater-focus">
+                        innerItem = (<div className={`repeater-table-cell-wrapper inline-repeater-focus ${cls}`}>
                             {childMap[`${conf.label}${conf.name}`]}
                         </div>);
                     } else {
-                        innerItem = (<div className={cellCls}>
+                        innerItem = (<div className={`${cellCls} ${cls}`}>
                             {val[conf.name]}
                         </div>);
                     }
 
-                    return (<td key={`${conf.label}${conf.name}`}>
+                    return (<td style={style} key={`${conf.label}${conf.name}`}>
                         {innerItem}
                     </td>);
                 });

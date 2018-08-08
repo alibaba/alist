@@ -65,6 +65,8 @@ class FormItem extends Component {
     render() {
         const { children, ...itemProps } = this.props;
         const { name, style = {} } = itemProps;
+        const restItemProps = { ...itemProps };
+        delete restItemProps.style;
         const { className = '' } = itemProps;
         const props = this.form.getItemProps(name) || {}; // 动态props
         const status = this.form.getItemStatus(name); // 动态status
@@ -91,28 +93,27 @@ class FormItem extends Component {
         }
         // 处理布局
         const {
-            inset = false, colon, layout = {}, full: jsxFull,
+            inline = false, inset = false, colon, layout = {}, full: jsxFull,
         } = {
             ...this.form.jsx.props, ...itemProps,
         };
 
         const full = jsxFull || coreFull || inset;
-        const componentProps = { };
-
         const errCls = hasError ? `${formItemPrefix}-item-has-error` : '';
         const insetCls = inset ? `${formItemPrefix}-item-inset` : '';
         const layoutCls = (layout.label && layout.control) ? `${formItemPrefix}-item-has-layout` : '';
         const colonCls = colon ? '' : `${formItemPrefix}-item-no-colon`;
+        const inlineCls = inline ? `${formItemPrefix}-item-inline` : '';
 
         return (
-            <div name={`form-item-${name}`} className={`${formItemPrefix}-item ${className} ${layoutCls} ${colonCls}`} style={style}>
+            <div name={`form-item-${name}`} className={`${formItemPrefix}-item ${className} ${layoutCls} ${colonCls} ${inlineCls}`} style={style}>
                 <div className={`${insetCls} ${errCls}`}>
                     <span className={`${formItemPrefix}-item-label ${requiredCls} ${layout.label ? `col-${layout.label}` : ''}`} >{label}</span>
                     <span className={`${formItemPrefix}-item-control ${layout.control ? `col-${layout.control}` : ''}`} >
                         { top ? <span className={`${formItemPrefix}-item-top`}>{top}</span> : null }
                         <span className={`${formItemPrefix}-item-content ${full ? `${formItemPrefix}-full` : ''}`}>
                             { prefix ? <span className={`${formItemPrefix}-item-content-prefix`}>{prefix}</span> : null }
-                            <span className={`${formItemPrefix}-item-content-elem is-${status}`}><Item {...itemProps} {...componentProps} >{children}</Item></span>
+                            <span className={`${formItemPrefix}-item-content-elem is-${status}`}><Item {...restItemProps}>{children}</Item></span>
                             { suffix ? <span className={`${formItemPrefix}-item-content-suffix`}>{suffix}</span> : null }
                         </span>
                         { help ? <span className={`${formItemPrefix}-item-help`}>{help}</span> : null }

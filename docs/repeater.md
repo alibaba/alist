@@ -30,19 +30,48 @@ function filter(value, key){
 
 const SelectRepeater = Selectify(TableRepeater);
 
-let formCore = null;
-function formmount(core) {
-    formCore = core;
-    window.formCore = core;
-}
+const formCore = new FormCore({
+    // autoValidate: true,
+    validateConfig: {
+        inlineRepeatMultiple: [
+            // { required: true, message: 'errrrrrrr' },
+            { validator: (rule, value, callback) => {
+                console.log(rule, value);
+                if (value && value.length > 1) {
+                    callback(['mammmmmmx']);
+                } else {
+                    callback([]);
+                }
+            }}
+            // return new Promise((resolve, reject) => {
+            //         setTimeout(() => {
+            //             if (value && value.length > 1) {
+            //                 reject('iii');
+            //             } else {
+            //                 resolve('null');
+            //             }
+                        
+            //             // resolve(null);
+            //         }, 200);
+            //     });
+        ]
+    },
+    onChange: (fireKeys, values) => {
+        console.log('====>', fireKeys, values);
+    }
+});
 
+window.formCore = formCore;
 const validateConfig = {
     drawerName: { type: 'string', required: true }
 };
 
 const formConfig = {
     validateConfig,
-    autoValidate: true
+    // autoValidate: true,
+    onChange: (fireKeys, values) => {
+        // console.log('====>', fireKeys, values);
+    }
 };
 
 const deepFormConfig = {
@@ -76,6 +105,31 @@ const dialogConfig = {
     }
 };
 
+const easyAdd = (values) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const newValues = {
+                ...values,
+                id: 'add' + Math.random().toString(36).slice(2)
+            };
+
+            const { deep } = formCore.getValues();
+            const { dataSource } = deep;
+            fuzzCore.setValues({
+                deep: {
+                    ...deep,
+                    value: [newValues]
+                }
+            });
+
+            resolve({
+                success: true,
+                values: [...dataSource, newValues]
+            });
+        }, 1500);
+    });
+};
+
 const asyncAdd = (values) => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -85,6 +139,7 @@ const asyncAdd = (values) => {
             };
 
             const { address } = fuzzCore.getValues();
+            const { dataSource } = address;
             fuzzCore.setValues({
                 address: {
                     ...address,
@@ -94,8 +149,7 @@ const asyncAdd = (values) => {
 
             resolve({
                 success: true,
-                // values: newValues
-                values: [{},{},{},newValues]
+                values: [...dataSource, newValues]
             });
         }, 1500);
     });
@@ -103,6 +157,7 @@ const asyncAdd = (values) => {
 
 const asyncHandler = {
     add: asyncAdd,
+    // add: easyAdd,
     save: asyncAdd,
     update: (values) => {
         return new Promise((resolve, reject) => {
@@ -135,9 +190,10 @@ const renderList = () => {
         },
         onChange: (fireKeys, values) => {
             const { list } = values;
-            fuzzCore.setValues({
-                address: list
-            });
+            console.log('list change....', list);
+            // fuzzCore.setValues({
+            //     address: list
+            // });
         }
     });
     Dialog.show({
@@ -150,8 +206,11 @@ const renderList = () => {
                 </SelectRepeater>
             </Item>                
         </Form>,
-        onOk: (values, hide) => {
-            hide();
+        // onOk: (values, hide) => {
+        //     hide();
+        // }
+        footer: (hide) => {
+            return <div><Button onClick={hide}>xxx</Button></div>
         }
     });
 }
@@ -187,7 +246,32 @@ const CustomEle = ({ onChange }) => {
     </Form>
 }
 
-ReactDOM.render(<Form onMount={formmount} onChange={console.log}>
+const onMultipleChange = (values, listValues) => {
+    console.log('===values', values, listValues);
+};
+
+const defaultValue = {
+    deep: {
+        dataSource: [
+            { drawerName: 'aa', taxpayerNumber: 'bb', id: 1 },
+            { drawerName: 'cc', taxpayerNumber: 'dd', id: 2 },
+            { drawerName: 'ee', taxpayerNumber: 'ff', id: 3 }
+        ],
+        value: []
+    },
+    fuzz: {
+        address: {
+            dataSource: [
+                { drawerName: 'aa', taxpayerNumber: 'bb', id: 1 },
+                { drawerName: 'cc', taxpayerNumber: 'dd', id: 2 },
+                { drawerName: 'ee', taxpayerNumber: 'ff', id: 3 }
+            ],
+            value: []
+        }
+    },
+}; 
+
+ReactDOM.render(<Form core={formCore} onChange={console.log} value={defaultValue}>
     {/* <Item name="tableRepeat" >
         <TableRepeater formConfig={formConfig}>
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
@@ -210,7 +294,7 @@ ReactDOM.render(<Form onMount={formmount} onChange={console.log}>
         </InlineRepeater>
     </FormItem> */}
 
-    <FormItem required label="username" name="username"><Input /></FormItem>
+    {/* <FormItem required label="username" name="username"><Input /></FormItem>
     <If when={(values) => {
         const { username } = values || {};
         return username === 'billy';
@@ -220,13 +304,13 @@ ReactDOM.render(<Form onMount={formmount} onChange={console.log}>
                 <FormItem required label="开票人" name="drawerName"><Input /></FormItem>
             </InlineRepeater>
         </FormItem>
-    </If>
+    </If> */}
 
     <br/>
     <hr/>
 
     {/* <FormItem name="deep">
-        <SelectRepeater selectMode="multiple" asyncHandler={asyncHandler} formConfig={formConfig}>
+        <SelectRepeater selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig}>
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
         </SelectRepeater>        
@@ -235,12 +319,11 @@ ReactDOM.render(<Form onMount={formmount} onChange={console.log}>
     {/* <FormItem name="fuzz">
         <CustomEle />
     </FormItem> */}
-
     
-    {/* <Item name="inlineRepeatMultiple">
-        <InlineRepeater multiple filter={filter} formConfig={formConfig} addPosition="bottom">
+    <FormItem name="inlineRepeatMultiple">
+        <InlineRepeater onMultipleChange={onMultipleChange} multiple filter={filter} formConfig={formConfig} addPosition="bottom">
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
-            <FormItem label="multi" multiple required>
+            {/* <FormItem label="multi" multiple required>
                 <div>
                     <FormItem name="aaa"><Input addonBefore="xxoo" style={{ width: '100px' }}  /></FormItem>
                     <FormItem name="bbb"><Input /></FormItem>
@@ -250,9 +333,9 @@ ReactDOM.render(<Form onMount={formmount} onChange={console.log}>
             <FormItem label="子公司" name="branchName"><Input /></FormItem>
             <FormItem label="核查结果" name="checkResultName"><Input /></FormItem>
             <FormItem label="拒绝原因" name="denyReason"><Input /></FormItem>
-            <FormItem label="创建人" name="creatorName"><Input /></FormItem>
+            <FormItem label="创建人" name="creatorName"><Input /></FormItem> */}
         </InlineRepeater>
-    </Item> */}
+    </FormItem>
 </Form>, mountNode);
 ````
 
