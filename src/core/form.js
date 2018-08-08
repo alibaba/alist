@@ -124,17 +124,21 @@ class Form {
 
     validateAll = (cb = x => x) => { // 纯净的校验方法, ui无关，不会涉及页面error 展示
         const validator = new AsyncValidator(this.validateConfig);
-        const result = validator.validate(this.value);
-        let hasPromise = false;
-        if (result instanceof Promise) {
-            hasPromise = true;
-        }
+        let walked = false;
+        let errors = null;
+        console.log('valll');
+        const prom = new Promise((resolve) => {
+            validator.validate(this.value, (err) => {
+                errors = err ? err[0].message : errors;
+                walked = true;
+                resolve(errors);
+            });
+        });
 
-        if (hasPromise) {
-            return result;
+        if (walked) {
+            return cb(errors);
         }
-
-        return cb(result);
+        return prom.then(errs => cb(errs));
     }
 
     // 表单校验,返回错误对象

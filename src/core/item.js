@@ -32,16 +32,16 @@ class Item {
         // 需要判断是否有更下层的校验(组件层面)
         let subValidator = null;
         let hasSubPromise = false;
-        if (subField) {
-            const result = subField.validate();
-            if (result instanceof Promise) {
-                hasSubPromise = true;
-            } else {
-                errors = result;
-            }
+        // if (subField) {
+        //     const result = subField.validate();
+        //     if (result instanceof Promise) {
+        //         hasSubPromise = true;
+        //     } else {
+        //         errors = result;
+        //     }
 
-            subValidator = result;
-        }
+        //     subValidator = result;
+        // }
 
         this.validator = new AsyncValidator({
             [this.name]: validateConfig,
