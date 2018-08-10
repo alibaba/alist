@@ -125,7 +125,6 @@ class Form {
         const validator = new AsyncValidator(this.validateConfig);
         let walked = false;
         let errors = null;
-        console.log('valll');
         const prom = new Promise((resolve) => {
             validator.validate(this.value, (err) => {
                 errors = err ? err[0].message : errors;

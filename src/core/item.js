@@ -23,7 +23,7 @@ class Item {
             validateConfig = this.func_validateConfig(this.form.value, this.form);
         }
 
-        if (!validateConfig) {
+        if (!validateConfig && !subField) {
             errors = null;
             cb(errors);
             return errors;
@@ -32,30 +32,36 @@ class Item {
         // 需要判断是否有更下层的校验(组件层面)
         let subValidator = null;
         let hasSubPromise = false;
-        // if (subField) {
-        //     const result = subField.validate();
-        //     if (result instanceof Promise) {
-        //         hasSubPromise = true;
-        //     } else {
-        //         errors = result;
-        //     }
 
-        //     subValidator = result;
-        // }
+        if (subField) {
+            const result = subField.validate();
+            if (result instanceof Promise) {
+                hasSubPromise = true;
+            } else {
+                errors = result;
+            }
 
-        this.validator = new AsyncValidator({
-            [this.name]: validateConfig,
-        });
+            subValidator = result;
+        }
+
         let walked = false;
-        const prom = new Promise((resolve) => {
-            this.validator.validate({
-                [this.name]: this.get('value'),
-            }, (err) => {
-                errors = err ? err[0].message : errors;
-                walked = true;
-                resolve(errors);
+        let prom = null;
+        if (validateConfig) {
+            this.validator = new AsyncValidator({
+                [this.name]: validateConfig,
             });
-        });
+            prom = new Promise((resolve) => {
+                this.validator.validate({
+                    [this.name]: this.get('value'),
+                }, (err) => {
+                    errors = err ? err[0].message : errors;
+                    walked = true;
+                    resolve(errors);
+                });
+            });
+        } else {
+            walked = true;
+        }
 
         // 处理子项是promise的情况
         const subPromiseHandler = errMsg => Promise.resolve(subValidator).then(subErr => errMsg || subErr).then(cb);
@@ -66,13 +72,17 @@ class Item {
             }
             return cb(errors);
         }
-        return prom.then((errs) => {
-            if (hasSubPromise) {
-                return subPromiseHandler(errs);
-            }
 
-            return cb(errs);
-        });
+        if (prom) {
+            return prom.then((errs) => {
+                if (hasSubPromise) {
+                    return subPromiseHandler(errs);
+                }
+
+                return cb(errs);
+            });
+        }
+        return cb(errors);
     }
     updateField(option) {
         this.initWith({ ...this, ...option });

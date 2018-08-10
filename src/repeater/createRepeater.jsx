@@ -2,8 +2,26 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import RepeaterCore from './repeaterCore';
 import Form, { FormCore } from '..';
+import { ANY_CHANGE } from '../static';
 
 const noop = () => {};
+const isObject = obj => Object.prototype.toString.call(obj) === '[object Object]';
+const assignItem = (obj) => {
+    if (!obj) return obj;
+    if (isObject(obj)) {
+        return Object.assign({}, obj);
+    }
+    return obj;
+};
+
+const assignListItem = (arr) => {
+    if (!arr) return arr;
+    if (Array.isArray(arr)) {
+        return arr.map(item => assignItem(item));
+    }
+
+    return arr;
+};
 
 export default function createRepeater(bindSource, source) {
     const { Container, RowRender } = bindSource(source);
@@ -11,7 +29,7 @@ export default function createRepeater(bindSource, source) {
 
     return class OtRepeater extends Component {
         static contextTypes = {
-            item: PropTypes.object
+            item: PropTypes.object,
         };
 
         static propTypes = {
@@ -40,6 +58,7 @@ export default function createRepeater(bindSource, source) {
             this.status = status;
             this.formConfig = formConfig || {};
             this.asyncHandler = asyncHandler || {};
+            this.manualEvent = {};
             this.repeaterCore = core || new RepeaterCore({
                 value: this.value,
                 status: this.status,
@@ -48,7 +67,8 @@ export default function createRepeater(bindSource, source) {
             });
 
             if (item && item.core) {
-                item.core.addSubField(this.repeaterCore);
+                this.contextItem = item.core;
+                this.contextItem.addSubField(this.repeaterCore);
             }
         }
 
@@ -64,21 +84,24 @@ export default function createRepeater(bindSource, source) {
 
             // 没有过滤函数或者没有关键字
             if (!filter || !this.key) {
-                this.value = nextProps.value || [];
-                this.repeaterCore.updateValue(this.value, this.handleCoreUpdate);
+                // this.value = (nextProps.value || []); // 静默更新值的做法，废弃
+                this.value = assignListItem(nextProps.value || []);
+
+                this.repeaterCore.updateValue(this.value, this.manualEvent, this.handleCoreUpdate);
                 this.forceUpdate();
                 return;
             }
 
             if (nextProps.value !== this.props.value) {
-                this.value = await this.handleFilter(nextProps.value, this.key);
+                const filteredValue = await this.handleFilter(nextProps.value, this.key);
+                this.value = assignListItem(filteredValue);
 
-                this.repeaterCore.updateValue(this.value, this.handleCoreUpdate);
+                this.repeaterCore.updateValue(this.value, this.manualEvent, this.handleCoreUpdate);
                 this.forceUpdate();
             }
         }
 
-        onChange = async (val, opts) => {
+        onChange = (val, opts) => {
             // val是onChange后的值
             // thisVal是onChange前的值，跟实际值合并之后存入value
             // 主要是考虑存在filter的情况, thisVal是过滤之后的值
@@ -147,16 +170,16 @@ export default function createRepeater(bindSource, source) {
 
 
         handleCoreUpdate = (core) => {
-            const { multiple, onMultipleChange } = this.props;
+            const { multiple } = this.props;
             if (multiple) {
                 core.$focus = true;
-                core.on('change', () => {
-                    if (onMultipleChange && typeof onMultipleChange === 'function') {
-                        const currentValues = core.getValues();
-                        const listValues = this.repeaterCore.getValues();
-                        onMultipleChange(currentValues, listValues, this);
-                    }
-                });
+                if (!core.settingChangeHandler) {
+                    core.on('change', (v, k, ctx) => {
+                        const index = this.repeaterCore.formList.findIndex(item => item.id === ctx.id);
+                        this.sync({ type: 'update', index, multiple: true });
+                    });
+                    core.settingChangeHandler = true;
+                }
                 core.$multiple = true;
             }
 
@@ -193,13 +216,9 @@ export default function createRepeater(bindSource, source) {
         }
 
         sync = (opts) => {
+            this.manualEvent = opts || {};
             this.onChange(this.repeaterCore.getValues(), opts);
         }
-
-        syncAndUpdate = () => {
-            this.sync();
-            this.forceUpdate();
-        };
 
         doSave = async (id) => {
             const success = await this.repeaterCore.saveInline(id);
@@ -238,7 +257,7 @@ export default function createRepeater(bindSource, source) {
             const canSync = await this.repeaterCore.addMultipleInline();
 
             if (canSync) {
-                this.sync({ type: 'addMultiple', index: this.repeaterCore.formList.length - 1 });
+                this.sync({ type: 'add', multiple: true, index: this.repeaterCore.formList.length - 1 });
             }
             this.forceUpdate();
         }
@@ -246,7 +265,7 @@ export default function createRepeater(bindSource, source) {
         doAddInline = async () => {
             const canSync = await this.repeaterCore.addInline();
             if (canSync) {
-                this.sync({ type: 'addInline', index: this.repeaterCore.formList.length - 1 });
+                this.sync({ type: 'add', inline: true, index: this.repeaterCore.formList.length - 1 });
             }
             this.forceUpdate();
         }

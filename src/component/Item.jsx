@@ -134,6 +134,7 @@ class Item extends Component {
                 if (type === 'value') {
                     return;
                 }
+
                 this.form.set(type, this.core.name, this.childForm.getAll(type));
             });
         }
@@ -195,8 +196,8 @@ class Item extends Component {
     bindForm = (childForm) => {
         this.childForm = childForm;
     }
-    update = (type, name) => {
-        if (this.didMount && (this.props.render || this.core.name === name)) {
+    update = (type, name, value, silent = false) => {
+        if (this.didMount && (this.props.render || this.core.name === name) && !silent) {
             this.forceUpdate();
         }
     }

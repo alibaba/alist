@@ -1,0 +1,158 @@
+# 基本
+
+- layout: default
+- order: 0
+
+---
+
+````js
+import Form, { FormItem, Item, FormCore, If } from '../src';
+import repeater  from '../src/repeater';
+import * as Antd from 'antd';
+import wrapper from '../src/wrapper/antd';
+import dialogWrapper from '../src/dialog/antd';
+import "./repeater.scss";
+
+const { Modal, Button, Input, Checkbox, Radio, Select }  = wrapper(Antd);
+const Dialog = dialogWrapper(Antd)
+const { TableRepeater, InlineRepeater, Selectify, ActionButton } = repeater({ Dialog, Button, Input, Checkbox, Radio });
+const SelectRepeater = Selectify(TableRepeater);
+
+const innerValidateConfig = {
+    first: {
+        validator: (rule, value, callback) => {
+            if (value && value.length > 3) {
+                callback([]);
+            } else {
+                callback(['input不能为空且长度需要大于3']);
+            }
+        }
+    }
+};
+
+class SubItem extends React.Component {
+    static contextTypes = {
+        item: React.PropTypes.object,
+    };
+
+    constructor(props, context) {
+        super(props, context);
+        const aSource = [{ label: 'a', value: 'a' }];
+        const bSource = [{ label: 'b', value: 'b' }];
+
+        if (context.item) {
+            context.item.core.addSubField(this);
+        }
+
+        this.core = new FormCore({
+            validateConfig: innerValidateConfig,
+            autoValidate: true,
+            onChange: (firekey, values, ctx) => {
+                const { first } = values;
+                if (first && first.length > 3) {
+                    ctx.setValue('second', 'b');
+                    ctx.setItemProps('second', { options: bSource });
+                } else {
+                    ctx.setValue('second', 'a');
+                    ctx.setItemProps('second', { options: aSource });
+                }
+            }
+        });
+    }
+
+    // promise
+    // validate = async () => {
+    //     const err = await this.core.validate();
+    //     const msg = Object.keys(err || {}).map((key) => err[key]).filter(item => !!item)[0];
+    //     return msg;
+    // }
+
+    // plain
+    validate = () => {
+        const { first } = this.core.getValues();
+        if (first && first.length > 3) {
+            return null;
+        } else {
+            return 'inner error';
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if ('value' in nextProps) { // 受控
+            const { value } = nextProps;
+            this.core.setValues(value);
+        }
+    }
+
+    render() {
+        const { onChange } = this.props;
+        return <Form core={this.core} onChange={onChange}>
+            <FormItem name="first"><Input /></FormItem>
+            <FormItem name="second"><Select /></FormItem>
+        </Form>
+    }
+}
+
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+        window.core = this.core = new FormCore({
+            autoValidate: true,
+            validateConfig: {
+                sub: {
+                    validator: (rule, value, callback) => {
+                        if (value.first) {
+                            callback([]);
+                        } else {
+                            callback(['input不能为空']);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    onMountR = (rp) => {
+        window.rp = rp;
+    }
+
+    onMultipleChange = () => {
+        
+    }
+
+    render() {
+        const { onChange } = this.props;
+
+        const formConfig = {
+            autoValidate: true,
+            validateConfig: {
+                username: {
+                    validator: (rule, value, callback) => {
+                        if (value && value.length > 3) {
+                            callback([]);
+                        } else {
+                            callback(['input不能为空且长度需要大于3']);
+                        }
+                    }
+                }
+            }
+        };
+
+        return <Form core={this.core} onChange={onChange}>
+            {/* <FormItem name="sub"><SubItem /></FormItem> */}
+            <FormItem name="rrr">
+                <InlineRepeater multiple onMount={this.onMultipleChangeonMultipleChange} onMultipleChange={this.onMultipleChange} formConfig={formConfig} addPosition="bottom">
+                    <FormItem label="username" name="username"><Input /></FormItem>
+                </InlineRepeater>
+            </FormItem>
+            <Item render={(values) => {
+                const str = JSON.stringify((values || {}), 4);
+                return <div>{str}</div>
+            }} />
+        </Form>
+    }
+}
+
+ReactDOM.render(<App />, mountNode);
+
+````

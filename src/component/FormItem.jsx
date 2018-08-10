@@ -87,10 +87,6 @@ class FormItem extends Component {
         if (required && (status === EDIT || `${name}` === '')) {
             requiredCls = ' required';
         }
-
-        if (name === 'drawerName') {
-            console.log(name, props, required, status, requiredCls);
-        }
         // 处理布局
         const {
             inline = false, inset = false, colon, layout = {}, full: jsxFull,

@@ -85,7 +85,7 @@ class RepeaterCore {
 
 
     generateCore = (values) => {
-        const formValues = values || {};
+        const formValues = Object.assign(values || {});
         return new FormCore({
             ...this.formProps,
             values: formValues,
@@ -372,17 +372,32 @@ class RepeaterCore {
     }
 
     // 更新value
-    updateValue = async (valueArr, cb) => {
+    updateValue = async (valueArr, event, cb = x => x) => {
+        const {
+            type, index, multiple, inline,
+        } = event || {};
         if (Array.isArray(valueArr)) {
-            this.formList = valueArr.map((values) => {
-                const formValues = values || {};
-                let core = this.generateCore(formValues);
-                if (cb) {
-                    core = cb(core);
-                }
+            if (!type) {
+                this.formList = valueArr.map((values) => {
+                    const formValues = values || {};
+                    let core = this.generateCore(formValues);
+                    if (cb) {
+                        core = cb(core);
+                    }
 
-                return core;
-            });
+                    return core;
+                });
+            } else if (multiple) {
+                this.formList = this.formList.map((old, idx) => {
+                    if (type === 'update' && index === idx) {
+                        old.setValues(valueArr[index]);
+                    }
+
+                    old = cb(old);
+
+                    return old;
+                });
+            }
         }
     }
 }
