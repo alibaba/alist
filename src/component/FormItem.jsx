@@ -73,11 +73,14 @@ class FormItem extends Component {
         const error = this.form.getItemError(name); // 动态error
         // 保留item关键字属性
         const {
-            label, top, suffix, prefix, help, required, full: coreFull,
+            errorRender, label, top, suffix, prefix, help, required, full: coreFull,
         } = { ...this.props, ...props };
 
-        const errInfo = error && typeof error === 'object' ? error.__error : error;
+        let errInfo = error && typeof error === 'object' ? error.__error : error;
         const hasError = !!errInfo;
+        if (errorRender) {
+            errInfo = errorRender(errInfo);
+        }
 
         if (status === HIDDEN) {
             return null;

@@ -125,6 +125,10 @@ class App extends React.Component {
         
     }
 
+    errorRender = (err) => {
+        return <div style={{ color: 'blue '}}>{err}</div>
+    }
+
     render() {
         const { onChange } = this.props;
 
@@ -145,15 +149,15 @@ class App extends React.Component {
 
         return <Form core={this.core} onChange={onChange}>
             {/* <FormItem name="sub"><SubItem /></FormItem> */}
-            <FormItem name="rrr">
+            <FormItem name="rrr" errorRender={this.errorRender}>
                 <InlineRepeater multiple onMount={this.onMultipleChangeonMultipleChange} onMultipleChange={this.onMultipleChange} formConfig={formConfig} addPosition="bottom">
                     <FormItem label="username" name="username"><Input /></FormItem>
                 </InlineRepeater>
             </FormItem>
-            <Item render={(values) => {
+            {/* <Item render={(values) => {
                 const str = JSON.stringify((values || {}), 4);
                 return <div>{str}</div>
-            }} />
+            }} /> */}
         </Form>
     }
 }
