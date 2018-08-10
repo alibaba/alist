@@ -31,6 +31,7 @@ class Form {
         this.status = isObject(status) ? status : {}; // 避免jsx传入单值status
         this.props = {};
         this.error = {};
+        this.public = {}; // 公共属性，由最顶层form维护
 
         this.interceptor = interceptor || {}; // 拦截器
         this.validateConfig = validateConfig;
@@ -40,7 +41,7 @@ class Form {
         this.emitter = new EventEmitter();
         this.emitter.setMaxListeners(1000); // TODO: 最大值
 
-        Array.from(['Value', 'Status', 'Error', 'Props']).forEach((name) => {
+        Array.from(['Value', 'Status', 'Error', 'Props', 'Public']).forEach((name) => {
             // 多字段
             this[`set${name}`] = this.set.bind(this, name.toLowerCase());
             this[`get${name}`] = this.get.bind(this, name.toLowerCase());

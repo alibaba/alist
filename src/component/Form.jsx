@@ -70,11 +70,13 @@ class Form extends Component {
         this.core.on(CHANGE, this.onChange);
         this.core.on(FOCUS, this.props.onFocus);
         this.core.on(BLUR, this.props.onBlur);
-
         // 嵌套Form
-        if (item) this.item = item;
+        if (item) {
+            this.item = item;
+            this.core.parent = item;
+        }
+        this.core.top = this.getTopForm();
     }
-
 
     getChildContext() {
         // 传递form
@@ -135,6 +137,19 @@ class Form extends Component {
     // 核心变化时，通知jsx属性绑定的onChange
     onChange = (val, fireKey) => {
         this.props.onChange(val, fireKey, this.core);
+    }
+
+    getTopForm() {
+        let top = this.core;
+        let current = this.core;
+        while (current.parent) {
+            if (current.parent.form) {
+                current = current.parent.form;
+                top = current;
+            }
+        }
+
+        return top;
     }
 
     render() {

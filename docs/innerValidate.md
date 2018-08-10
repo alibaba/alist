@@ -115,6 +115,10 @@ class App extends React.Component {
                 }
             }
         });
+
+        this.core.setPublic({
+            bizcode: '4999'
+        });
     }
 
     onMountR = (rp) => {
@@ -135,14 +139,19 @@ class App extends React.Component {
         const formConfig = {
             autoValidate: true,
             validateConfig: {
-                username: {
-                    validator: (rule, value, callback) => {
-                        if (value && value.length > 3) {
-                            callback([]);
-                        } else {
-                            callback(['username === input不能为空且长度需要大于3']);
+                username: (values, ctx) => {
+                    const publicVal = ctx.top.getPublic();
+                    debugger;
+                    console.log('....', publicVal)
+                    return [{
+                        validator: (rule, value, callback) => {
+                            if (value && value.length > 3) {
+                                callback([]);
+                            } else {
+                                callback(['username === input不能为空且长度需要大于3']);
+                            }
                         }
-                    }
+                    }]
                 }
             }
         };
