@@ -39,6 +39,13 @@ export default function SelectRepeaterHOC(Source, Com) {
             }
         }
 
+        componentDidMount = () => {
+            const { onMount } = this.props;
+            if (onMount) {
+                onMount(this.repeater);
+            }
+        }
+
         componentWillReceiveProps = (nextProps) => {
             const { dataSource, value } = nextProps.value || {};
             // 下述代码在interceptor中完成

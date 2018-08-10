@@ -121,8 +121,19 @@ class Form {
         }
         return cb(retErr);
     }
-    validateAll = (cb = x => x) => { // 纯净的校验方法, ui无关，不会涉及页面error 展示
-        const validator = new AsyncValidator(this.validateConfig);
+
+    // 纯净的校验方法, ui无关，不会涉及页面error 展示
+    // 有别于validate方法是，不进行挂载，直接校验值
+    validateAll = (cb = x => x) => {
+        const fillValidateConfig = {};
+        Object.keys(this.validateConfig).forEach((key) => {
+            if (typeof this.validateConfig[key] === 'function') {
+                fillValidateConfig[key] = this.validateConfig[key](this.value, this);
+            } else {
+                fillValidateConfig[key] = this.validateConfig[key];
+            }
+        });
+        const validator = new AsyncValidator(fillValidateConfig);
         let walked = false;
         let errors = null;
         const prom = new Promise((resolve) => {
@@ -151,11 +162,12 @@ class Form {
             }
             validators.push(result);
         });
+
         if (hasPromise) {
-            return Promise.all(validators).then(this.handleErrors).then(cb);
+            return Promise.all(validators).then(this.handleErrors.bind(this, withRender)).then(cb);
         }
         this.validatng = false;
-        return cb(this.handleErrors(validators, withRender));
+        return cb(this.handleErrors(withRender, validators));
     }
 
     validateWithoutRender(cb) {
@@ -166,7 +178,7 @@ class Form {
         return this.validateBase(cb, true);
     }
 
-    handleErrors = (errs, WithRender) => {
+    handleErrors = (withRender, errs) => {
         const errors = {};
         const retErr = {};
         let hasError = false;
@@ -183,7 +195,7 @@ class Form {
                 errors[child.name] = errs[idx] || null;
             }
         });
-        if (WithRender) {
+        if (withRender) {
             this.setError(errors);
         }
         if (!hasError) {

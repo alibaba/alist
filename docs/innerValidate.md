@@ -61,21 +61,21 @@ class SubItem extends React.Component {
     }
 
     // promise
-    // validate = async () => {
-    //     const err = await this.core.validate();
-    //     const msg = Object.keys(err || {}).map((key) => err[key]).filter(item => !!item)[0];
-    //     return msg;
-    // }
+    validate = async () => {
+        const err = await this.core.validate();
+        const msg = Object.keys(err || {}).map((key) => err[key]).filter(item => !!item)[0];
+        return msg;
+    }
 
     // plain
-    validate = () => {
-        const { first } = this.core.getValues();
-        if (first && first.length > 3) {
-            return null;
-        } else {
-            return 'inner error';
-        }
-    }
+    // validate = () => {
+    //     const { first } = this.core.getValues();
+    //     if (first && first.length > 3) {
+    //         return null;
+    //     } else {
+    //         return 'inner error';
+    //     }
+    // }
 
     componentWillReceiveProps(nextProps) {
         if ('value' in nextProps) { // 受控
@@ -104,9 +104,14 @@ class App extends React.Component {
                         if (value.first) {
                             callback([]);
                         } else {
-                            callback(['input不能为空']);
+                            callback(['(sub inner)input不能为空']);
                         }
                     }
+                },
+                rrr: {
+                    required: true,
+                    type: 'array',
+                    message: 'rrr error'
                 }
             }
         });
@@ -131,7 +136,7 @@ class App extends React.Component {
                         if (value && value.length > 3) {
                             callback([]);
                         } else {
-                            callback(['input不能为空且长度需要大于3']);
+                            callback(['username === input不能为空且长度需要大于3']);
                         }
                     }
                 }
