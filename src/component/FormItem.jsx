@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Item from './Item';
 import { ANY_CHANGE, EDIT, HIDDEN } from '../static';
+import genId from '../util/random';
 
 const formItemPrefix = 'no-form';
 
@@ -36,6 +37,7 @@ class FormItem extends Component {
 
         this.form = context.form;
         this.ifCore = context.ifCore;
+        this.id = `__noform__item__${genId()}`;
         if (props.name) {
             this.name = props.name;
         }
@@ -65,7 +67,7 @@ class FormItem extends Component {
     render() {
         const { children, ...itemProps } = this.props;
         const { name, style = {} } = itemProps;
-        const restItemProps = { ...itemProps };
+        const restItemProps = { ...itemProps, id: this.id };
         delete restItemProps.style;
         const { className = '' } = itemProps;
         const props = this.form.getItemProps(name) || {}; // 动态props
@@ -105,7 +107,7 @@ class FormItem extends Component {
         const inlineCls = inline ? `${formItemPrefix}-item-inline` : '';
 
         return (
-            <div name={`form-item-${name}`} className={`${formItemPrefix}-item ${className} ${layoutCls} ${colonCls} ${inlineCls}`} style={style}>
+            <div id={this.id} name={`form-item-${name}`} className={`${formItemPrefix}-item ${className} ${layoutCls} ${colonCls} ${inlineCls}`} style={style}>
                 <div className={`${insetCls} ${errCls}`}>
                     <span className={`${formItemPrefix}-item-label ${requiredCls} ${layout.label ? `col-${layout.label}` : ''}`} >{label}</span>
                     <span className={`${formItemPrefix}-item-control ${layout.control ? `col-${layout.control}` : ''}`} >

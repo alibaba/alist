@@ -1,6 +1,7 @@
 import AsyncValidator from 'async-validator';
 import deepEqual from 'deep-equal';
 import { ANY_CHANGE, BASIC_EVENT, STATUS_ENUMS } from '../static';
+import genId from '../util/random';
 
 function isFunction(func) {
     return typeof func === 'function';
@@ -105,7 +106,8 @@ class Item {
         this.removeListener = removeListener;
 
         const {
-            interceptor, name, value, props, error, status, when = null, validateConfig, parentIf,
+            id, interceptor, name, value, props, error,
+            status, when = null, validateConfig, parentIf,
         } = option;
 
         this.name = name;
@@ -118,6 +120,7 @@ class Item {
         this.validateConfig = validateConfig;
         this.interceptor = interceptor;
         this.subField = null;
+        this.id = id || `__noform__item__${genId()}`;
 
         const {
             jsx_status, func_props = null, func_status = null, func_validateConfig = null,

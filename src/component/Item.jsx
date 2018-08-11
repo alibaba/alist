@@ -111,6 +111,10 @@ class Item extends Component {
             option.interceptor = jsxProps.interceptor;
         }
 
+        if ('id' in jsxProps) {
+            option.id = jsxProps.id;
+        }
+
         // 注册item, 绑定视图
         this.ifCore = context.ifCore;
         this.core = form.addField(option);

@@ -6,7 +6,7 @@ class CompatiMap {
         this.Dialog = Dialog;
     }
 
-    getUniqueId = () => Math.random().toString(36).slice(2)
+    getUniqueId = () => Math.random().toString(36).slice(2).slice(2)
 
     show = (options) => {
         const {

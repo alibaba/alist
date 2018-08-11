@@ -2,10 +2,12 @@ import AsyncValidator from 'async-validator';
 import EventEmitter from 'events';
 import { VALUE_CHANGE, CHANGE, ANY_CHANGE, BASIC_EVENT, INITIALIZED } from '../static';
 import ItemCore from './item';
+import genId from '../util/random';
+import scroll from '../util/scroll';
 
 // 工具方法
 const isObject = obj => Object.prototype.toString.call(obj) === '[object Object]';
-const genName = () => `__anonymouse__${Math.random().toString(36)}`;
+const genName = () => `__anonymouse__${genId()}`;
 const noop = () => {};
 const isInvalidVal = val => (typeof val === 'number' ? false : !val);
 const isSingleItemSet = arg => (arg.length >= 3 && typeof arg[1] === 'string');
@@ -36,7 +38,7 @@ class Form {
         this.interceptor = interceptor || {}; // 拦截器
         this.validateConfig = validateConfig;
 
-        this.id = uniqueId || `__noform__${Math.random().toString(36)}`;
+        this.id = uniqueId || `__noform__${genId()}`;
 
         this.emitter = new EventEmitter();
         this.emitter.setMaxListeners(1000); // TODO: 最大值
@@ -177,6 +179,16 @@ class Form {
     // 表单校验,返回错误对象
     validate(cb = x => x) {
         return this.validateBase(cb, true);
+    }
+
+    scrollToError() { // 滚动到第一个报错的地方
+        const errKeys = Object.keys(this.error).filter(key => !!this.error[key]);
+        if (errKeys[0]) {
+            const errorItem = this.children.find(item => item.name === errKeys[0]);
+            if (errorItem && errorItem.id) {
+                scroll(`#${errorItem.id}`);
+            }
+        }
     }
 
     handleErrors = (withRender, errs) => {
