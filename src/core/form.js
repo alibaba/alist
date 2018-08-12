@@ -86,8 +86,10 @@ class Form {
     async validateItem(name, cb = x => x) {
         const arrName = [].concat(name);
         const validators = [];
+        const validatorIdxMap = {};
         this.children.forEach((child) => {
             if (arrName.indexOf(child.name) !== -1) {
+                validatorIdxMap[child.name] = validators.length;
                 validators.push(child.validate());
             }
         });
@@ -100,7 +102,7 @@ class Form {
 
         this.children.forEach((child) => {
             if (child.name && arrName.indexOf(child.name) !== -1) {
-                const idx = arrName.indexOf(child.name);
+                const idx = validatorIdxMap[child.name];
                 const currentError = errs[idx];
                 if (isObject(errs[idx])) {
                     const { main, sub } = errs[idx];
