@@ -4,13 +4,10 @@ import { VALUE_CHANGE, CHANGE, ANY_CHANGE, BASIC_EVENT, INITIALIZED } from '../s
 import ItemCore from './item';
 import genId from '../util/random';
 import scroll from '../util/scroll';
+import { isObject, isInvalidVal, isSingleItemSet } from '../util/is';
 
-// 工具方法
-const isObject = obj => Object.prototype.toString.call(obj) === '[object Object]';
 const genName = () => `__anonymouse__${genId()}`;
 const noop = () => {};
-const isInvalidVal = val => (typeof val === 'number' ? false : !val);
-const isSingleItemSet = arg => (arg.length >= 3 && typeof arg[1] === 'string');
 
 class Form {
     constructor(option = {}) {

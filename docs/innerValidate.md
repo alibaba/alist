@@ -108,11 +108,12 @@ class App extends React.Component {
                         }
                     }
                 },
-                rrr: {
-                    required: true,
-                    type: 'array',
-                    message: 'rrr error'
-                }
+                rrr: [
+                    { required: true, type: 'array', message: 'rrr error' },
+                    { validator: async () => {
+                        throw new Error('ooo');
+                    }}
+                ]
             }
         });
 
@@ -139,20 +140,23 @@ class App extends React.Component {
         const formConfig = {
             autoValidate: true,
             validateConfig: {
-                username: (values, ctx) => {
-                    const publicVal = ctx.top.getPublic();
-                    debugger;
-                    console.log('....', publicVal)
-                    return [{
-                        validator: (rule, value, callback) => {
-                            if (value && value.length > 3) {
-                                callback([]);
-                            } else {
-                                callback(['username === input不能为空且长度需要大于3']);
-                            }
-                        }
-                    }]
-                }
+            //     username: (values, ctx) => {
+            //         const publicVal = ctx.top.getPublic();
+            //         return [{
+            //             validator: (rule, value, callback) => {
+            //                 if (value && value.length > 3) {
+            //                     callback([]);
+            //                 } else {
+            //                     callback(['username === input不能为空且长度需要大于3']);
+            //                 }
+            //             }
+            //         }]
+            //     }
+                username: [
+                    { validator: async () => {
+                        throw new Error('abc');
+                    }}
+                ]
             }
         };
 

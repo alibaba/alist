@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Item from './Item';
 import { ANY_CHANGE, EDIT, HIDDEN } from '../static';
 import genId from '../util/random';
+import { isObject } from '../util/is';
 
 const formItemPrefix = 'no-form';
 
@@ -78,10 +79,14 @@ class FormItem extends Component {
             errorRender, label, top, suffix, prefix, help, required, full: coreFull,
         } = { ...this.props, ...props };
 
-        let errInfo = error && typeof error === 'object' ? error.__error : error;
+        let errInfo = error;
+        if (isObject(error)) { // 对象的情况
+            errInfo = error.__error || error.main;
+        }
+
         const hasError = !!errInfo;
         if (errorRender) {
-            errInfo = errorRender(errInfo);
+            errInfo = errorRender(errInfo, error);
         }
 
         if (status === HIDDEN) {

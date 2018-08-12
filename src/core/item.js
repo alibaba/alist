@@ -26,8 +26,7 @@ class Item {
 
         if (!validateConfig && !subField) {
             errors = null;
-            cb(errors);
-            return errors;
+            return cb(errors);
         }
 
         // 需要判断是否有更下层的校验(组件层面)
@@ -35,11 +34,13 @@ class Item {
         let hasSubPromise = false;
 
         if (subField) {
+            errors = { // 错误需要增加一个维度，才能满足子项校验
+                main: null,
+                sub: null,
+            };
             const result = subField.validate();
             if (result instanceof Promise) {
                 hasSubPromise = true;
-            } else {
-                errors = result;
             }
 
             subValidator = result;
@@ -55,7 +56,14 @@ class Item {
                 this.validator.validate({
                     [this.name]: this.get('value'),
                 }, (err) => {
-                    errors = err ? err[0].message : errors;
+                    if (err) {
+                        const mainError = err[0].message;
+                        if (subField) {
+                            errors.main = mainError;
+                        } else {
+                            errors = mainError;
+                        }
+                    }
                     walked = true;
                     resolve(errors);
                 });
@@ -65,11 +73,18 @@ class Item {
         }
 
         // 处理子项是promise的情况
-        const subPromiseHandler = errMsg => Promise.resolve(subValidator).then(subErr => errMsg || subErr).then(cb);
+        const subPromiseHandler = () => Promise.resolve(subValidator).then((subErr) => {
+            errors.sub = subErr;
+            return errors;
+        }).then(cb);
 
         if (walked) {
             if (hasSubPromise) {
                 return subPromiseHandler(errors);
+            }
+
+            if (subField) {
+                errors.sub = subValidator;
             }
             return cb(errors);
         }
