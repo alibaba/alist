@@ -186,7 +186,16 @@ class Form {
     }
 
     scrollToError() { // 滚动到第一个报错的地方
-        const errKeys = Object.keys(this.error).filter(key => !!this.error[key]);
+        const errKeys = Object.keys(this.error).filter((key) => {
+            if (isObject(this.error[key])) {
+                const { main, sub } = this.error[key];
+                return main || sub;
+            } else if (this.error[key]) {
+                return true;
+            }
+            return false;
+        });
+
         if (errKeys[0]) {
             const errorItem = this.children.find(item => item.name === errKeys[0]);
             if (errorItem && errorItem.id) {
@@ -205,10 +214,10 @@ class Form {
             const currentError = errs[idx];
             if (isObject(errs[idx])) {
                 const { main, sub } = errs[idx];
-                if (main || sub) {
+                if ((main || sub) && child.status !== 'hidden') {
                     hasError = true;
                 }
-            } else if (currentError) {
+            } else if (currentError && child.status !== 'hidden') {
                 hasError = true;
             }
 
