@@ -90,6 +90,10 @@ export default class DialogFormFactory {
         this.Dialog = Dialog;
         this.Button = Button;
         this.compatiMap = compatiMap;
+        const { show, ...others } = Dialog;
+        Object.keys(others).forEach((key) => {
+            this[key] = others[key];
+        });
     }
     show = (options) => {
         const { Dialog, Button, compatiMap } = this;
