@@ -96,21 +96,25 @@ class Form {
         const errs = await Promise.all(validators);
         this.validatng = false;
         const errors = {};
-        const retErr = {};
         let hasError = false;
 
         this.children.forEach((child) => {
             if (child.name && arrName.indexOf(child.name) !== -1) {
                 const idx = arrName.indexOf(child.name);
-
-                if (errs[idx] && child.status !== 'hidden') {
+                const currentError = errs[idx];
+                if (isObject(errs[idx])) {
+                    const { main, sub } = errs[idx];
+                    if (main || sub) {
+                        hasError = true;
+                    }
+                } else if (currentError) {
                     hasError = true;
-                    retErr[child.name] = errs[idx];
                 }
+
                 if (child.status === 'hidden') {
                     errors[child.name] = null;
                 } else {
-                    errors[child.name] = errs[idx] || null;
+                    errors[child.name] = currentError || null;
                 }
             }
         });
@@ -119,7 +123,8 @@ class Form {
         if (!hasError) {
             return cb(null);
         }
-        return cb(retErr);
+
+        return cb(errors);
     }
 
     // 纯净的校验方法, ui无关，不会涉及页面error 展示
@@ -195,14 +200,24 @@ class Form {
         this.validatng = false;
 
         this.children.forEach((child, idx) => {
-            if (errs[idx] && child.status !== 'hidden') {
+            const currentError = errs[idx];
+            if (isObject(errs[idx])) {
+                const { main, sub } = errs[idx];
+                if (main || sub) {
+                    hasError = true;
+                }
+            } else if (currentError) {
                 hasError = true;
-                retErr[child.name] = errs[idx];
             }
+
+            if (child.status !== 'hidden') {
+                retErr[child.name] = currentError;
+            }
+
             if (child.status === 'hidden') {
                 errors[child.name] = null;
             } else {
-                errors[child.name] = errs[idx] || null;
+                errors[child.name] = currentError || null;
             }
         });
         if (withRender) {

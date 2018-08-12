@@ -80,11 +80,12 @@ class FormItem extends Component {
         } = { ...this.props, ...props };
 
         let errInfo = error;
+        let hasError = !!errInfo;
         if (isObject(error)) { // 对象的情况
             errInfo = error.__error || error.main;
+            hasError = error.main || error.sub;
         }
 
-        const hasError = !!errInfo;
         if (errorRender) {
             errInfo = errorRender(errInfo, error);
         }
