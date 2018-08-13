@@ -106,10 +106,10 @@ class Form {
                 const currentError = errs[idx];
                 if (isObject(errs[idx])) {
                     const { main, sub } = errs[idx];
-                    if (main || sub) {
+                    if ((main || sub) && child.status !== 'hidden') {
                         hasError = true;
                     }
-                } else if (currentError) {
+                } else if (currentError && child.status !== 'hidden') {
                     hasError = true;
                 }
 

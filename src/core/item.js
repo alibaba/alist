@@ -17,16 +17,17 @@ class Item {
             }
         });
     }
+
     validate(cb = e => e) {
-        let { validateConfig, subField } = this;
+        let { validateConfig } = this;
+        const { subField } = this;
         let errors = null;
         if (typeof this.func_validateConfig === 'function') {
             validateConfig = this.func_validateConfig(this.form.value, this.form);
         }
 
         if (!validateConfig && !subField) {
-            errors = null;
-            return cb(errors);
+            return cb(errors); // 直接返回空
         }
 
         // 需要判断是否有更下层的校验(组件层面)
