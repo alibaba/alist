@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import RepeaterCore from './repeaterCore';
 import Form, { FormCore } from '..';
-import { ANY_CHANGE } from '../static';
 
 const noop = () => {};
 const isObject = obj => Object.prototype.toString.call(obj) === '[object Object]';
@@ -28,10 +27,6 @@ export default function createRepeater(bindSource, source) {
     const { Input = noop, Dialog } = source;
 
     return class OtRepeater extends Component {
-        static contextTypes = {
-            item: PropTypes.object,
-        };
-
         static propTypes = {
             view: PropTypes.any,
             core: PropTypes.any,
@@ -48,6 +43,11 @@ export default function createRepeater(bindSource, source) {
             onChange: PropTypes.func.isRequired,
             children: PropTypes.any,
         }
+
+        static contextTypes = {
+            item: PropTypes.object,
+        };
+
         constructor(props, context) {
             super(props, context);
             const {
@@ -175,7 +175,8 @@ export default function createRepeater(bindSource, source) {
                 core.$focus = true;
                 if (!core.settingChangeHandler) {
                     core.on('change', (v, k, ctx) => {
-                        const index = this.repeaterCore.formList.findIndex(item => item.id === ctx.id);
+                        const list = this.repeaterCore.formList;
+                        const index = list.findIndex(item => item.id === ctx.id);
                         this.sync({ type: 'update', index, multiple: true });
                     });
                     core.settingChangeHandler = true;
