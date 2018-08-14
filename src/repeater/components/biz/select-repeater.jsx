@@ -76,13 +76,19 @@ export default function SelectRepeaterHOC(Source, Com) {
         }
 
         renderTrigger = (_, { values }) => {
-            const { selectMode } = this.props;
+            const { selectMode, isSelectDisabled } = this.props;
             const val = this.core.getValue('value') || [];
+
+            let disabled = false;
+            if (isSelectDisabled) {
+                disabled = isSelectDisabled(values);
+            }
 
             const icChecked = !!val.find(lastItem => values.id === lastItem.id);
             const { TriggerCom } = this;
 
             return (<TriggerCom
+                disabled={disabled}
                 value={icChecked}
                 onChange={(checked) => {
                     let lastVal = this.core.getValue('value') || [];
