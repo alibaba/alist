@@ -77,7 +77,7 @@ export default function bind(source) {
                     children,
                 } = jsxProps;
 
-                const cellCls = `repeater-table-cell-wrapper repeater-table-cell-wrapper-${itemAlign}`;
+                const cellCls = `repeater-table-cell-wrapper repeater-table-cell-wrapper-${itemAlign}`;                
 
                 const focusMode = core.$focus;
                 const editable = status === 'edit';

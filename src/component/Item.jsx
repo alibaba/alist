@@ -129,7 +129,7 @@ class Item extends Component {
     componentDidMount() {
         // 绑定更新函数
         this.core.on(ANY_CHANGE, this.update);
-        if (this.childForm) {
+        if (this.childForm && !this.childForm.disabledSyncChildForm) {
             this.form.setValueSilent(this.core.name, this.childForm.getAll('value'));
             this.form.setProps(this.core.name, this.childForm.getAll('props'));
             this.form.setStatus(this.core.name, this.childForm.getAll('status'));

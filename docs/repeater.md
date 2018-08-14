@@ -33,7 +33,7 @@ const SelectRepeater = Selectify(TableRepeater);
 const formCore = new FormCore({
     // autoValidate: true,
     validateConfig: {
-        inlineRepeatMultiple: [
+        ir: [
             // { required: true, message: 'errrrrrrr' },
             { validator: (rule, value, callback) => {
                 console.log(rule, value);
@@ -246,10 +246,6 @@ const CustomEle = ({ onChange }) => {
     </Form>
 }
 
-const onMultipleChange = (values, listValues) => {
-    console.log('===values', values, listValues);
-};
-
 const defaultValue = {
     deep: {
         dataSource: [
@@ -270,6 +266,18 @@ const defaultValue = {
         }
     },
 }; 
+
+formCore.setValues({
+    ir: [
+        {  drawerName: '1' },
+        {  drawerName: '2' }
+    ],
+    irn: [
+        {  drawerName: '1' },
+        {  drawerName: '2' }
+    ],
+    name: 'billy'
+});
 
 ReactDOM.render(<Form core={formCore} onChange={console.log} value={defaultValue}>
     {/* <Item name="tableRepeat" >
@@ -319,9 +327,9 @@ ReactDOM.render(<Form core={formCore} onChange={console.log} value={defaultValue
     {/* <FormItem name="fuzz">
         <CustomEle />
     </FormItem> */}
-    
-    <FormItem name="inlineRepeatMultiple">
-        <InlineRepeater onMultipleChange={onMultipleChange} multiple filter={filter} formConfig={formConfig} addPosition="bottom">
+
+    <FormItem name="irn">
+        <InlineRepeater multiple filter={filter} formConfig={formConfig} addPosition="bottom">
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
             {/* <FormItem label="multi" multiple required>
                 <div>
@@ -336,6 +344,27 @@ ReactDOM.render(<Form core={formCore} onChange={console.log} value={defaultValue
             <FormItem label="创建人" name="creatorName"><Input /></FormItem> */}
         </InlineRepeater>
     </FormItem>
+    
+    <If when={(values) => {
+        return values.name === 'billy';
+    }}>
+        <FormItem name="ir">
+            <InlineRepeater multiple filter={filter} formConfig={formConfig} addPosition="bottom">
+                <FormItem label="开票人" name="drawerName"><Input /></FormItem>
+                {/* <FormItem label="multi" multiple required>
+                    <div>
+                        <FormItem name="aaa"><Input addonBefore="xxoo" style={{ width: '100px' }}  /></FormItem>
+                        <FormItem name="bbb"><Input /></FormItem>
+                    </div>
+                </FormItem>
+                <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
+                <FormItem label="子公司" name="branchName"><Input /></FormItem>
+                <FormItem label="核查结果" name="checkResultName"><Input /></FormItem>
+                <FormItem label="拒绝原因" name="denyReason"><Input /></FormItem>
+                <FormItem label="创建人" name="creatorName"><Input /></FormItem> */}
+            </InlineRepeater>
+        </FormItem>
+    </If>
 </Form>, mountNode);
 ````
 

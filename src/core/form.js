@@ -15,6 +15,7 @@ class Form {
             validateConfig, onChange, value, values, status, globalStatus, interceptor, uniqueId,
             initialized,
             autoValidate,
+            disabledSyncChildForm,
         } = option || {};
 
         this.onChange = onChange || noop;
@@ -35,6 +36,7 @@ class Form {
         this.interceptor = interceptor || {}; // 拦截器
         this.validateConfig = validateConfig;
 
+        this.disabledSyncChildForm = disabledSyncChildForm || false; // 禁止子Form自动向Item同步数据
         this.id = uniqueId || `__noform__${genId()}`;
 
         this.emitter = new EventEmitter();

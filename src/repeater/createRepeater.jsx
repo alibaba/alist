@@ -15,6 +15,7 @@ const assignItem = (obj) => {
 
 const assignListItem = (arr) => {
     if (!arr) return arr;
+    // const arrft = [].concat(arr);
     if (Array.isArray(arr)) {
         return arr.map(item => assignItem(item));
     }
@@ -58,7 +59,7 @@ export default function createRepeater(bindSource, source) {
             this.status = status;
             this.formConfig = formConfig || {};
             this.asyncHandler = asyncHandler || {};
-            this.manualEvent = {};
+            this.manualEvent = this.genManualEvent();
             this.repeaterCore = core || new RepeaterCore({
                 value: this.value,
                 status: this.status,
@@ -81,14 +82,14 @@ export default function createRepeater(bindSource, source) {
 
         async componentWillReceiveProps(nextProps) {
             const { filter } = this.props;
+            const manualEvent = this.genManualEvent();
 
             // 没有过滤函数或者没有关键字
             if (!filter || !this.key) {
-                // this.value = (nextProps.value || []); // 静默更新值的做法，废弃
                 this.value = assignListItem(nextProps.value || []);
-
-                this.repeaterCore.updateValue(this.value, this.manualEvent, this.handleCoreUpdate);
+                this.repeaterCore.updateValue(this.value, manualEvent, this.handleCoreUpdate);
                 this.forceUpdate();
+                this.manualEvent = {};
                 return;
             }
 
@@ -96,7 +97,8 @@ export default function createRepeater(bindSource, source) {
                 const filteredValue = await this.handleFilter(nextProps.value, this.key);
                 this.value = assignListItem(filteredValue);
 
-                this.repeaterCore.updateValue(this.value, this.manualEvent, this.handleCoreUpdate);
+                this.repeaterCore.updateValue(this.value, manualEvent, this.handleCoreUpdate);
+                this.manualEvent = {};
                 this.forceUpdate();
             }
         }
@@ -166,6 +168,12 @@ export default function createRepeater(bindSource, source) {
             return (<Form core={core} {...formProps}>
                 {children}
             </Form>);
+        }
+
+        genManualEvent = () => {
+            const currentEvent = this.manualEvent || {};
+            const { multiple } = this.props;
+            return { ...currentEvent, multiple };
         }
 
 
@@ -242,9 +250,7 @@ export default function createRepeater(bindSource, source) {
             if (core instanceof FormCore) {
                 success = await this.repeaterCore.add(core);
             } else {
-                success = await this.repeaterCore.add(new FormCore({
-                    values: core,
-                }));
+                success = await this.repeaterCore.add(this.repeaterCore.generateCore(core));
             }
 
             if (success) {

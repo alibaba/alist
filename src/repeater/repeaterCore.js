@@ -11,11 +11,7 @@ class RepeaterCore {
         this.asyncHandler = asyncHandler || {};
 
         if (Array.isArray(value)) {
-            this.formList = value.map(itemValues => new FormCore({
-                ...this.formProps,
-                values: itemValues || {},
-                globalStatus: this.status,
-            }));
+            this.formList = value.map(itemValues => this.generateCore(itemValues));
         }
     }
 
@@ -46,7 +42,6 @@ class RepeaterCore {
     }
 
     validate = (cb = e => e) => {
-        const err = null;
         let hasPromise = false;
         const promiseValidator = [];
         this.formList.forEach((item) => {
@@ -90,6 +85,7 @@ class RepeaterCore {
             ...this.formProps,
             values: formValues,
             globalStatus: this.status,
+            disabledSyncChildForm: true,
         });
     }
 
@@ -376,13 +372,15 @@ class RepeaterCore {
         const {
             type, index, multiple, inline,
         } = event || {};
+
         if (Array.isArray(valueArr)) {
             if (!type) {
                 this.formList = valueArr.map((values) => {
                     const formValues = values || {};
                     let core = this.generateCore(formValues);
-                    if (cb) {
-                        core = cb(core);
+                    core = cb(core);
+                    if (multiple && !core.$focus) {
+                        core.$focus = true;
                     }
 
                     return core;
