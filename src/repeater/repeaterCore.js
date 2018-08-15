@@ -141,49 +141,116 @@ class RepeaterCore {
 
     // 增加临时编辑项
     addInline = async () => {
-        let canSync = false;
+        let values = null;
+        let success = true;
+
         const hasError = await this.hasValidateError();
         if (hasError) return false;
 
-        canSync = this.autoSaveInline();
+        this.autoSaveInline();
         const tmp = this.generateCore();
-        tmp.$focus = true;
-        this.formList.push(tmp);
-        this.setEditWhenFocus();
-        return canSync;
+
+        if (this.asyncHandler.add) {
+            const index = this.formList.length - 1 < 0 ? 0 : this.formList.length - 1;
+            const result = await this.asyncHandler.add(tmp.getValues(), index);
+            const { success: res = true, item, values: rv } = this.handleAsyncResult(result);
+            success = res;
+            if (item) {
+                tmp.setValueSilent(item);
+            }
+
+            if (rv) {
+                values = rv;
+            }
+        }
+
+        if (success) {
+            if (values) {
+                this.updateValue(values);
+            } else {
+                tmp.$focus = true;
+                this.formList.push(tmp);
+                this.setEditWhenFocus();
+            }
+        }
+
+        return success;
     }
 
     // 增加多项临时编辑项
     addMultipleInline = async () => {
+        let values = null;
+        let success = true;
         const hasError = await this.hasValidateError();
         if (hasError) return false;
 
         const tmp = this.generateCore();
-        tmp.$focus = true;
-        tmp.$multiple = true;
-        this.formList.push(tmp);
-        return true;
+        const index = this.formList.length - 1 < 0 ? 0 : this.formList.length - 1;
+        const result = await this.asyncHandler.add(tmp.getValues(), index);
+        const { success: res = true, item, values: rv } = this.handleAsyncResult(result);
+
+        success = res;
+        if (item) {
+            tmp.setValueSilent(item);
+        }
+
+        if (rv) {
+            values = rv;
+        }
+
+        if (success) {
+            if (values) {
+                this.updateValue(values);
+            } else {
+                tmp.$focus = true;
+                tmp.$multiple = true;
+                this.formList.push(tmp);
+            }
+        }
+
+        return success;
     }
 
     // 激活已有项为临时编辑项
     updateInline = async (lastCore, id) => {
+        let success = true;
+        let values = null;
+        let currentValues = lastCore.getValues();
         const hasError = await this.hasValidateError();
         if (hasError) return false;
 
-        this.formList = this.formList.map((core) => {
-            if (core.id === id) {
-                core.$focus = true;
-                core.$backup = core.getValues();
-
-                return core;
+        if (this.asyncHandler.updateInline) {
+            const index = this.formList.findIndex(rp => rp.id === id);
+            const result = await this.asyncHandler.updateInline(currentValues, index);
+            const { success: res = true, item, values: rv } = this.handleAsyncResult(result);
+            success = res;
+            if (rv) {
+                values = rv;
             }
 
-            if (core.$focus) delete core.$focus;
-            return core;
-        });
+            if (item) {
+                currentValues = item;
+            }
+        }
 
-        this.setEditWhenFocus();
-        return true;
+        if (success) {
+            if (values) {
+                this.updateValue(values);
+            } else {
+                this.formList = this.formList.map((core) => {
+                    if (core.id === id) {
+                        core.$focus = true;
+                        core.$backup = core.getValues();
+                        return core;
+                    }
+                    if (core.$focus) delete core.$focus;
+                    return core;
+                });
+                this.setEditWhenFocus();
+            }
+        }
+
+        return success;
     }
 
     // 保存临时编辑项
@@ -277,7 +344,7 @@ class RepeaterCore {
         let success = true;
         let values = null;
         if (this.asyncHandler.add) {
-            const index = this.formList.length - 1;
+            const index = this.formList.length - 1 < 0 ? 0 : thisc.formList.length - 1;
             const result = await this.asyncHandler.add(core.getValues(), index);
             const { success: res = true, item, values: rv } = this.handleAsyncResult(result);
 

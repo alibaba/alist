@@ -213,17 +213,20 @@ class Form {
         this.validatng = false;
 
         this.children.forEach((child, idx) => {
+            let currentHasError = false;
             const currentError = errs[idx];
             if (isObject(errs[idx])) {
                 const { main, sub } = errs[idx];
                 if ((main || sub) && child.status !== 'hidden') {
                     hasError = true;
+                    currentHasError = true;
                 }
             } else if (currentError && child.status !== 'hidden') {
                 hasError = true;
+                currentHasError = true;
             }
 
-            if (child.status !== 'hidden') {
+            if (currentHasError && child.status !== 'hidden') {
                 retErr[child.name] = currentError;
             }
 
@@ -239,6 +242,8 @@ class Form {
         if (!hasError) {
             return null;
         }
+
+        console.log('***retErr', retErr);
         return retErr;
     }
     // 静默设值

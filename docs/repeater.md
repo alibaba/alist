@@ -279,6 +279,22 @@ formCore.setValues({
     name: 'billy'
 });
 
+const inlineAsyncHandler = {
+    add: () => {
+        return {
+            success: true,
+            // item: { drawerName: 'abcd' }
+            // values: [{
+            //     drawerName: 'abcd'
+            // }]
+        }
+    },
+    save: (values) => {
+        console.log('save===>', values);
+        return true;
+    }
+};
+
 ReactDOM.render(<Form core={formCore} onChange={console.log} value={defaultValue}>
     {/* <Item name="tableRepeat" >
         <TableRepeater formConfig={formConfig}>
@@ -329,42 +345,28 @@ ReactDOM.render(<Form core={formCore} onChange={console.log} value={defaultValue
     </FormItem> */}
 
     <FormItem name="irn">
-        <InlineRepeater multiple filter={filter} formConfig={formConfig} addPosition="bottom">
+        <InlineRepeater asyncHandler={inlineAsyncHandler} filter={filter} formConfig={formConfig} addPosition="bottom">
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
-            {/* <FormItem label="multi" multiple required>
+            <FormItem label="multi" multiple required>
                 <div>
                     <FormItem name="aaa"><Input addonBefore="xxoo" style={{ width: '100px' }}  /></FormItem>
                     <FormItem name="bbb"><Input /></FormItem>
                 </div>
             </FormItem>
             <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
-            <FormItem label="子公司" name="branchName"><Input /></FormItem>
-            <FormItem label="核查结果" name="checkResultName"><Input /></FormItem>
-            <FormItem label="拒绝原因" name="denyReason"><Input /></FormItem>
-            <FormItem label="创建人" name="creatorName"><Input /></FormItem> */}
         </InlineRepeater>
     </FormItem>
-    
+
+{/*     
     <If when={(values) => {
         return values.name === 'billy';
     }}>
         <FormItem name="ir">
             <InlineRepeater multiple filter={filter} formConfig={formConfig} addPosition="bottom">
                 <FormItem label="开票人" name="drawerName"><Input /></FormItem>
-                {/* <FormItem label="multi" multiple required>
-                    <div>
-                        <FormItem name="aaa"><Input addonBefore="xxoo" style={{ width: '100px' }}  /></FormItem>
-                        <FormItem name="bbb"><Input /></FormItem>
-                    </div>
-                </FormItem>
-                <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
-                <FormItem label="子公司" name="branchName"><Input /></FormItem>
-                <FormItem label="核查结果" name="checkResultName"><Input /></FormItem>
-                <FormItem label="拒绝原因" name="denyReason"><Input /></FormItem>
-                <FormItem label="创建人" name="creatorName"><Input /></FormItem> */}
             </InlineRepeater>
         </FormItem>
-    </If>
+    </If> */}
 </Form>, mountNode);
 ````
 
