@@ -177,6 +177,16 @@ class RepeaterCore {
         return success;
     }
 
+    updateMultiple = (cb = x => x) => (v, keys, ctx) => {
+        const list = this.formList;
+        const index = list.findIndex(item => item.id === ctx.id);
+        cb(index);
+
+        if (this.asyncHandler.updateMultiple) {
+            this.asyncHandler.updateMultiple(keys, v, index);
+        }
+    }
+
     // 增加多项临时编辑项
     addMultipleInline = async () => {
         let values = null;
@@ -185,17 +195,20 @@ class RepeaterCore {
         if (hasError) return false;
 
         const tmp = this.generateCore();
-        const index = this.formList.length - 1 < 0 ? 0 : this.formList.length - 1;
-        const result = await this.asyncHandler.add(tmp.getValues(), index);
-        const { success: res = true, item, values: rv } = this.handleAsyncResult(result);
 
-        success = res;
-        if (item) {
-            tmp.setValueSilent(item);
-        }
+        if (this.asyncHandler.add) {
+            const index = this.formList.length - 1 < 0 ? 0 : this.formList.length - 1;
+            const result = await this.asyncHandler.add(tmp.getValues(), index);
+            const { success: res = true, item, values: rv } = this.handleAsyncResult(result);
 
-        if (rv) {
-            values = rv;
+            success = res;
+            if (item) {
+                tmp.setValueSilent(item);
+            }
+
+            if (rv) {
+                values = rv;
+            }
         }
 
         if (success) {

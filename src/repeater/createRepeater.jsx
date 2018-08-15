@@ -182,11 +182,9 @@ export default function createRepeater(bindSource, source) {
             if (multiple) {
                 core.$focus = true;
                 if (!core.settingChangeHandler) {
-                    core.on('change', (v, k, ctx) => {
-                        const list = this.repeaterCore.formList;
-                        const index = list.findIndex(item => item.id === ctx.id);
+                    core.on('change', this.repeaterCore.updateMultiple((index) => {
                         this.sync({ type: 'update', index, multiple: true });
-                    });
+                    }));
                     core.settingChangeHandler = true;
                 }
                 core.$multiple = true;
