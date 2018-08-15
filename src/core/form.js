@@ -243,7 +243,6 @@ class Form {
             return null;
         }
 
-        console.log('***retErr', retErr);
         return retErr;
     }
     // 静默设值
