@@ -357,7 +357,7 @@ class RepeaterCore {
         let success = true;
         let values = null;
         if (this.asyncHandler.add) {
-            const index = this.formList.length - 1 < 0 ? 0 : thisc.formList.length - 1;
+            const index = this.formList.length - 1 < 0 ? 0 : this.formList.length - 1;
             const result = await this.asyncHandler.add(core.getValues(), index);
             const { success: res = true, item, values: rv } = this.handleAsyncResult(result);
 
