@@ -31,9 +31,9 @@ function filter(value, key){
 const SelectRepeater = Selectify(TableRepeater);
 
 const formCore = new FormCore({
-    // autoValidate: true,
+    autoValidate: true,
     validateConfig: {
-        ir: [
+        irn: [
             // { required: true, message: 'errrrrrrr' },
             { validator: (rule, value, callback) => {
                 console.log(rule, value);
@@ -68,9 +68,12 @@ const validateConfig = {
 
 const formConfig = {
     validateConfig,
-    // autoValidate: true,
+    autoValidate: true,
     onChange: (fireKeys, values) => {
         // console.log('====>', fireKeys, values);
+    },
+    values: {
+        drawerName: 'box',
     }
 };
 
@@ -345,7 +348,7 @@ ReactDOM.render(<Form core={formCore} onChange={console.log} value={defaultValue
     </FormItem> */}
 
     <FormItem name="irn">
-        <InlineRepeater asyncHandler={inlineAsyncHandler} filter={filter} formConfig={formConfig} addPosition="bottom">
+        <InlineRepeater multiple asyncHandler={inlineAsyncHandler} filter={filter} formConfig={formConfig} addPosition="bottom">
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem label="multi" multiple required>
                 <div>

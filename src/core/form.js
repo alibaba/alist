@@ -68,7 +68,8 @@ class Form {
         if (!this.silent && !this.hasEmitted) { // 变化的keys必须为数组
             const relatedKeys = this.settingBatchKeys || [name];
             if (this.autoValidate) { // 按需校验
-                this.validateItem(relatedKeys);
+                const opts = this.currentEventOpts || {};
+                this.validateItem(relatedKeys, undefined, opts);
             }
 
             this.onChange(relatedKeys, this.value, this);
@@ -85,14 +86,14 @@ class Form {
     removeListener(...args) { this.emitter.removeListener(...args); }
 
     // 检验单项
-    async validateItem(name, cb = x => x) {
+    async validateItem(name, cb = x => x, opts = {}) {
         const arrName = [].concat(name);
         const validators = [];
         const validatorIdxMap = {};
         this.children.forEach((child) => {
             if (arrName.indexOf(child.name) !== -1) {
                 validatorIdxMap[child.name] = validators.length;
-                validators.push(child.validate());
+                validators.push(child.validate(undefined, opts));
             }
         });
 

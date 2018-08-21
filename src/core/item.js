@@ -18,7 +18,7 @@ class Item {
         });
     }
 
-    validate(cb = e => e) {
+    validate(cb = e => e, opts) {
         let { validateConfig } = this;
         const { subField } = this;
         let errors = null;
@@ -39,7 +39,7 @@ class Item {
                 main: null,
                 sub: null,
             };
-            const result = subField.validate();
+            const result = subField.validate(undefined, opts);
             if (result instanceof Promise) {
                 hasSubPromise = true;
             }

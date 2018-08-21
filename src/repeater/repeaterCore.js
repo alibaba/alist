@@ -28,7 +28,7 @@ class RepeaterCore {
 
         let err = null;
         if (Array.isArray(error)) {
-            const errList = error.map(item => this.handleFormError(item));
+            const errList = error.map(item => this.handleFormError(item)).filter(v => !!v);
             return errList[0];
         }
 
@@ -41,23 +41,36 @@ class RepeaterCore {
         return err;
     }
 
-    validate = (cb = e => e) => {
+    validate = (cb = e => e, opts) => {
+        const { changeKeys = null, index = -1 } = opts || {};
         let hasPromise = false;
         const promiseValidator = [];
-        this.formList.forEach((item) => {
-            const result = item.validate();
-            if (result instanceof Promise) {
-                hasPromise = true;
-            }
 
-            promiseValidator.push(result);
+        this.formList.forEach((item, coreIdx) => {
+            let result = null;
+            if (index !== -1) { // 只为特定的core的特定字段做校验
+                if (coreIdx === index && Array.isArray(changeKeys)) {
+                    result = item.validateItem(changeKeys);
+                    if (result instanceof Promise) {
+                        hasPromise = true;
+                    }
+                    promiseValidator.push(result);
+                }
+            } else {
+                result = item.validate();
+                if (result instanceof Promise) {
+                    hasPromise = true;
+                }
+
+                promiseValidator.push(result);
+            }
         });
 
         if (hasPromise) {
             return Promise.all(promiseValidator).then(this.handleFormError).then(cb);
         }
 
-        const errList = promiseValidator.map(this.handleFormError).filter(v => !!v);
+        const errList = promiseValidator.map(this.handleFormError);
 
         return cb(errList[0]);
     }
@@ -80,7 +93,8 @@ class RepeaterCore {
 
 
     generateCore = (values) => {
-        const formValues = Object.assign(values || {});
+        const { values: userValues } = this.formProps;
+        const formValues = Object.assign(values || userValues || {});
         return new FormCore({
             ...this.formProps,
             values: formValues,
@@ -450,7 +464,7 @@ class RepeaterCore {
     // 更新value
     updateValue = async (valueArr, event, cb = x => x) => {
         const {
-            type, index, multiple, inline,
+            type, index, multiple, inline, changeKeys,
         } = event || {};
 
         if (Array.isArray(valueArr)) {
@@ -468,7 +482,16 @@ class RepeaterCore {
             } else if (multiple) {
                 this.formList = this.formList.map((old, idx) => {
                     if (type === 'update' && index === idx) {
-                        old.setValues(valueArr[index]);
+                        // 处理同步修改，只修改动的值
+                        if (Array.isArray(changeKeys)) {
+                            const changedValues = {};
+                            changeKeys.forEach((ck) => {
+                                changedValues[ck] = valueArr[index][ck];
+                            });
+                            old.setValues(changedValues);
+                        } else {
+                            old.setValues(valueArr[index]);
+                        }
                     }
 
                     old = cb(old);
