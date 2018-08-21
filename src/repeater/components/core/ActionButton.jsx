@@ -35,12 +35,29 @@ function createActionButton() {
             this.doAddInline = context.doAddInline;
             this.doMultipleInline = context.doMultipleInline;
             this.doUpdateInline = context.doUpdateInline;
-            this.getCore = context.getCore;
-            this.getId = context.getId;
+            // this.getCore = context.getCore;
+            // this.getId = context.getId;
 
             this.state = {
                 loading: false,
             };
+        }
+
+        getId = () => {
+            const core = this.getCore();
+            const { id } = core;
+            return id;
+        }
+
+        getCore = () => {
+            const { getCore } = this.context;
+
+            if (!getCore) {
+                const { findBy } = this.props;
+                return this.repeaterCore.formList.find(findBy);
+            }
+            const core = getCore();
+            return core;
         }
 
         handleAddMultipleInline = async () => {
@@ -53,12 +70,18 @@ function createActionButton() {
 
         handleUpdateInline = async () => {
             const core = this.getCore();
-            await this.doUpdateInline(core, this.getId());
+            await this.doUpdateInline(core, core.id);
+        }
+
+        handleUpdate = async () => {
+            const core = this.getCore();
+            const copyCore = this.repeaterCore.generateCore(core.getValues());
+            await this.doUpdateDialog(copyCore, core.id);
         }
 
         handleDelete = async () => {
             const core = this.getCore();
-            await this.doDelete(core, this.getId());
+            await this.doDelete(core, core.id);
         }
 
         handleSave = async () => {
@@ -72,13 +95,6 @@ function createActionButton() {
         handleAdd = async () => {
             const core = this.repeaterCore.generateCore();
             await this.doAddDialog(core);
-        }
-
-        handleUpdate = async () => {
-            const core = this.getCore();
-            const copyCore = this.repeaterCore.generateCore(core.getValues());
-            const id = this.getId();
-            await this.doUpdateDialog(copyCore, id);
         }
 
         renderBtn = () => {
