@@ -70,7 +70,7 @@ class RepeaterCore {
             return Promise.all(promiseValidator).then(this.handleFormError).then(cb);
         }
 
-        const errList = promiseValidator.map(this.handleFormError);
+        const errList = promiseValidator.map(this.handleFormError).filter(v => !!v);
 
         return cb(errList[0]);
     }
