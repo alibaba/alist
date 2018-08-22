@@ -81,11 +81,13 @@ class FormItem extends Component {
 
         let errInfo = error;
         let hasError = !!errInfo;
+        let hasMainError = !!errInfo;
         let hasSubError = false;
         if (isObject(error)) { // 对象的情况
             errInfo = error.__error || error.main;
-            hasError = error.main;
+            hasMainError = error.main;
             hasSubError = error.sub;
+            hasError = hasMainError || hasSubError;
         }
 
         if (errorRender) {
@@ -108,7 +110,7 @@ class FormItem extends Component {
         };
 
         const full = jsxFull || coreFull || inset;
-        const errCls = hasError ? `${formItemPrefix}-item-has-error` : '';
+        const errCls = hasMainError ? `${formItemPrefix}-item-has-error` : '';
         const subErrCls = hasSubError ? `${formItemPrefix}-item-has-sub-error` : '';
         const insetCls = inset ? `${formItemPrefix}-item-inset` : '';
         const layoutCls = (layout.label && layout.control) ? `${formItemPrefix}-item-has-layout` : '';
