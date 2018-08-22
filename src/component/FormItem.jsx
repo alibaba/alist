@@ -81,9 +81,11 @@ class FormItem extends Component {
 
         let errInfo = error;
         let hasError = !!errInfo;
+        let hasSubError = false;
         if (isObject(error)) { // 对象的情况
             errInfo = error.__error || error.main;
-            hasError = error.main || error.sub;
+            hasError = error.main;
+            hasSubError = error.sub;
         }
 
         if (errorRender) {
@@ -107,6 +109,7 @@ class FormItem extends Component {
 
         const full = jsxFull || coreFull || inset;
         const errCls = hasError ? `${formItemPrefix}-item-has-error` : '';
+        const subErrCls = hasSubError ? `${formItemPrefix}-item-has-sub-error` : '';
         const insetCls = inset ? `${formItemPrefix}-item-inset` : '';
         const layoutCls = (layout.label && layout.control) ? `${formItemPrefix}-item-has-layout` : '';
         const colonCls = colon ? '' : `${formItemPrefix}-item-no-colon`;
@@ -114,7 +117,7 @@ class FormItem extends Component {
 
         return (
             <div id={this.id} name={`form-item-${name}`} className={`${formItemPrefix}-item ${className} ${layoutCls} ${colonCls} ${inlineCls}`} style={style}>
-                <div className={`${insetCls} ${errCls}`}>
+                <div className={`${insetCls} ${errCls} ${subErrCls}`}>
                     <span className={`${formItemPrefix}-item-label ${requiredCls} ${layout.label ? `col-${layout.label}` : ''}`} >{label}</span>
                     <span className={`${formItemPrefix}-item-control ${layout.control ? `col-${layout.control}` : ''}`} >
                         { top ? <span className={`${formItemPrefix}-item-top`}>{top}</span> : null }
