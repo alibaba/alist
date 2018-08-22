@@ -92,12 +92,18 @@ class RepeaterCore {
     }
 
 
-    generateCore = (values) => {
+    generateCore = (raw) => {
         const { values: userValues } = this.formProps;
-        const formValues = Object.assign(values || userValues || {});
+        let values = {};
+        if (raw) {
+            values = { ...raw };
+        } else if (userValues) {
+            values = { ...userValues };
+        }
+
         return new FormCore({
             ...this.formProps,
-            values: formValues,
+            values,
             globalStatus: this.status,
             disabledSyncChildForm: true,
         });
