@@ -1,4 +1,5 @@
 import FormCore from '../core/form';
+import { isPromise } from '../util/is';
 
 class RepeaterCore {
     constructor(props) {
@@ -51,14 +52,14 @@ class RepeaterCore {
             if (index !== -1) { // 只为特定的core的特定字段做校验
                 if (coreIdx === index && Array.isArray(changeKeys)) {
                     result = item.validateItem(changeKeys);
-                    if (result instanceof Promise) {
+                    if (isPromise(result)) {
                         hasPromise = true;
                     }
                     promiseValidator.push(result);
                 }
             } else {
                 result = item.validate();
-                if (result instanceof Promise) {
+                if (isPromise(result)) {
                     hasPromise = true;
                 }
 

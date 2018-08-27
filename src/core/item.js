@@ -2,6 +2,7 @@ import AsyncValidator from 'async-validator';
 import deepEqual from 'deep-equal';
 import { ANY_CHANGE, BASIC_EVENT, STATUS_ENUMS } from '../static';
 import genId from '../util/random';
+import { isPromise } from '../util/is';
 
 function isFunction(func) {
     return typeof func === 'function';
@@ -40,7 +41,7 @@ class Item {
                 sub: null,
             };
             const result = subField.validate(undefined, opts);
-            if (result instanceof Promise) {
+            if (isPromise(result)) {
                 hasSubPromise = true;
             }
 
@@ -265,7 +266,7 @@ class Item {
         // interceptor一般为function, 在类型为value时处理
         if (type === 'value' && typeof this.interceptor === 'function') {
             const ftResult = this.interceptor(value);
-            if (ftResult instanceof Promise) {
+            if (isPromise(ftResult)) {
                 const ftValTmp = await ftResult;
                 if (ftValTmp !== undefined) ftValue = ftValTmp;
             } else if (ftResult !== undefined) {

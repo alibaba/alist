@@ -4,7 +4,7 @@ import { VALUE_CHANGE, CHANGE, ANY_CHANGE, BASIC_EVENT, INITIALIZED } from '../s
 import ItemCore from './item';
 import genId from '../util/random';
 import scroll from '../util/scroll';
-import { isObject, isInvalidVal, isSingleItemSet } from '../util/is';
+import { isPromise, isObject, isInvalidVal, isSingleItemSet } from '../util/is';
 
 const genName = () => `__anonymouse__${genId()}`;
 const noop = () => {};
@@ -167,7 +167,7 @@ class Form {
         this.validatng = true;
         this.children.forEach((child) => {
             const result = child.validate();
-            if (result instanceof Promise) {
+            if (isPromise(result)) {
                 hasPromise = true;
             }
             validators.push(result);

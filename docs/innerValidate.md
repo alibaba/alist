@@ -131,6 +131,7 @@ class App extends React.Component {
     }
 
     errorRender = (err) => {
+        console.log('===', err);
         return <div style={{ color: 'blue '}}>{err}</div>
     }
 
@@ -140,6 +141,7 @@ class App extends React.Component {
         const formConfig = {
             autoValidate: true,
             validateConfig: {
+                // username: [{ required: true, message: 'username is required' }]
             //     username: (values, ctx) => {
             //         const publicVal = ctx.top.getPublic();
             //         return [{
@@ -152,11 +154,26 @@ class App extends React.Component {
             //             }
             //         }]
             //     }
-                username: [
-                    { validator: async () => {
-                        throw new Error('abc');
-                    }}
-                ]
+                // username: [
+                //     { validator: async (values) => {
+                //         if (values.username) {
+                //             return null;
+                //         } else {
+                //             throw new Error('abc');
+                //         }                        
+                //     }}
+                // ]
+                username: () => {
+                    return [
+                        { validator: async (values) => {
+                            if (values.username) {
+                                return null;
+                            } else {
+                                throw new Error('abc');
+                            }                        
+                        }}
+                    ]
+                }
             }
         };
 

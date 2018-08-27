@@ -1,4 +1,5 @@
 import { format } from './util';
+import { isPromise } from '../util/is';
 
 const rules = {
     string(value, field, source, schema) {
@@ -258,13 +259,13 @@ export default class Rule {
     }
     validate(value, field, source) {
         const result = this.valid(value, field, source);
-        if (result instanceof Promise) {
+        if (isPromise(result)) {
             return result.then(this.formatValidate);
         }
         return this.formatValidate(result, value, field, source);
     }
     formatValid = (ret) => {
-        if (ret instanceof Promise) {
+        if (isPromise(ret)) {
             return ret.then(this.formatValid);
         } else if (typeof ret === 'boolean') {
             return ret;

@@ -1,5 +1,6 @@
 import messages from './messages';
 import Rule from './rules';
+import { isPromise } from '../util/is';
 
 class Validate {
     constructor(schema, locale = 'zh_CN') {
@@ -19,7 +20,7 @@ class Validate {
         let hasPromise = false;
         const validatePromise = this.keys.map((key) => {
             const result = new Rule(this.schema[key]).validate(value[key], key, value);
-            if (result instanceof Promise) {
+            if (isPromise(result)) {
                 hasPromise = true;
                 return result.then((res) => {
                     if (res) {
