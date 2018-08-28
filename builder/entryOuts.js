@@ -51,7 +51,7 @@ const entryOuts = [
         }, basicConfig),
     },
     {
-        entry: resolveApp('src/repeater/antd.jsx'),
+        entry: resolveApp('src/repeater/antd.js'),
         output: Object.assign({
             path: path.join(dist, 'repeater'),
             filename: 'antd.js',
