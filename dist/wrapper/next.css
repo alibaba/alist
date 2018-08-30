@@ -81,3 +81,9 @@
 
 .next-preview-select .next-select-placeholder {
   display: none; }
+
+.no-form-item-has-error > .no-form-item-control > .no-form-item-content > .no-form-item-content-elem > .next-select .next-input,
+.no-form-item-has-error > .no-form-item-control > .no-form-item-content > .no-form-item-content-elem > .next-input-group .next-input-group-text,
+.no-form-item-has-error > .no-form-item-control > .no-form-item-content > .no-form-item-content-elem > .next-input-group .next-input,
+.no-form-item-has-error > .no-form-item-control > .no-form-item-content > .no-form-item-content-elem > .next-input {
+  border-color: red; }

@@ -48,39 +48,54 @@ const { TableRepeater, InlineRepeater } = repeater({ Dialog, Button, Input }); /
 
     const { default: Form, FormItem, FormCore } = noform;
     const { antd: antdWrapper } = noformWrapper;
-    const { Input, Select, Checkbox, Radio, Switch, Button, Modal } = antdWrapper(antd);
+    const formatAntd = antdWrapper(antd);
+    const { Input, Select, Checkbox, Radio, Switch, Button, Modal } = formatAntd;
     const Dialog = noformDialog.antd(antd);
-    const { TableRepeater, InlineRepeater } = noformRepeater.antd(antd);
+    const { TableRepeater, InlineRepeater, Selectify } = noformRepeater.antd({ ...formatAntd, Dialog });
+    const SelectifyRepeater = Selectify(TableRepeater);
 
     const { Group: RadioGroup } = Radio;
-
     const dataSource = [{ label: 'male', value: 'male' }, { label: 'female', value: 'female' }];
 
-    function filter(value, key) {
-        return value.filter(item => item.drawerName.startsWith(key));
-    }
-
-    const validateConfig = {
-        username: { type: 'string', required: true },
+    const formConfig = {
+        autoValidate: true,
+        validateConfig: {
+            username: { type: 'string', required: true },
+        }
     };
+
+    const initvalue = [
+        { username: 'abcd', id: 'abcd' },
+        { username: 'efgh', id: 'efgh' },
+    ];
 
     class App extends React.Component {
 
         render() { // inject core        
             const inlineStyle = { style: { width: '100px', minWidth: '100px' } };
-            return <Form core={this.core} layout={{ label: 8, control: 16 }}>
-                <FormItem label="repeater" name="repeater">
-                    <TableRepeater filter={filter} validateConfig={validateConfig}>
+            return <Form style={{ height: '600px' }} core={this.core} layout={{ label: 8, control: 16 }}>
+                <FormItem value={initvalue} label="tableRepeater" name="tableRepeater">
+                    <TableRepeater formConfig={formConfig}>
                         <FormItem label="username" name="username"><Input {...inlineStyle} /></FormItem>
-                        <FormItem label="gender" name="gender"><RadioGroup {...inlineStyle} options={dataSource} /></FormItem>
                     </TableRepeater>
                 </FormItem>
 
-                <FormItem label="inlineRepeater" name="inlineRepeater">
-                    <InlineRepeater filter={filter} validateConfig={validateConfig}>
+                <FormItem value={initvalue} label="inlineRepeater(single)" name="inlineRepeater">
+                    <InlineRepeater formConfig={formConfig}>
                         <FormItem label="username" name="username"><Input {...inlineStyle} /></FormItem>
-                        <FormItem label="gender" name="gender"><RadioGroup {...inlineStyle} options={dataSource} /></FormItem>
                     </InlineRepeater>
+                </FormItem>
+
+                <FormItem defaultValue={initvalue} label="inlineRepeater(multiple)" name="inlineRepeaterMultiple">
+                    <InlineRepeater multiple formConfig={formConfig}>
+                        <FormItem label="username" name="username"><Input {...inlineStyle} /></FormItem>
+                    </InlineRepeater>
+                </FormItem>
+
+                <FormItem value={{ dataSource: initvalue }} label="selectifyRepeater" name="selectifyRepeater">
+                    <SelectifyRepeater selectMode="single" formConfig={formConfig}>
+                        <FormItem label="username" name="username"><Input {...inlineStyle} /></FormItem>
+                    </SelectifyRepeater>
                 </FormItem>
             </Form>
         }
@@ -93,7 +108,7 @@ const { TableRepeater, InlineRepeater } = repeater({ Dialog, Button, Input }); /
 
 ### 代码实现
 
-要结合antd使用，主要代码如下图所示：
+要结合antd使用，主要代码如下图所示（非按需加载）：
 
 @sep
 

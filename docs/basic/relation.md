@@ -20,7 +20,7 @@ What's more, `Item/FormItem` Component's `render` method is very powerful and yo
 
     const { default: Form, FormItem, FormCore, If } = noform;
     const { antd: antdWrapper } = noformWrapper;
-    const { Input, Button } = antdWrapper(antd);
+    const { Input, Button, Alert } = antdWrapper(antd);
 
     class App extends React.Component {
         componentWillMount = () => { // initialized core instance

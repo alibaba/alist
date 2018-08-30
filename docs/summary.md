@@ -18,4 +18,5 @@
 * [DialogForm]()
    * [接入 Ant Design|Integrate With Ant Design](docs/dialog/antd.md)
 * [Repeater]()
-   * [接入 Ant Design(BETA)|Integrate With Ant Design](docs/repeater/antd.md)
+   * [基础类型|Base](docs/repeater/base.md)
+   * [接入 Ant Design|Integrate With Ant Design](docs/repeater/antd.md)
