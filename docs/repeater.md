@@ -141,18 +141,19 @@ const asyncAdd = (values) => {
                 id: 'add' + Math.random().toString(36).slice(2)
             };
 
-            const { address } = fuzzCore.getValues();
-            const { dataSource } = address;
-            fuzzCore.setValues({
-                address: {
-                    ...address,
-                    value: [newValues]
-                }
-            });
+            // const { address } = fuzzCore.getValues();
+            // const { dataSource } = address;
+            // fuzzCore.setValues({
+            //     address: {
+            //         ...address,
+            //         value: [newValues]
+            //     }
+            // });
 
             resolve({
                 success: true,
-                values: [...dataSource, newValues]
+                // values: [...dataSource, newValues]
+                item: newValues
             });
         }, 1500);
     });
@@ -299,6 +300,22 @@ const inlineAsyncHandler = {
 };
 
 ReactDOM.render(<Form core={formCore} onChange={console.log} value={defaultValue}>
+    <FormItem name="tabledemo" >
+        <TableRepeater formConfig={formConfig}>
+            <FormItem label="username" name="username"><Input /></FormItem>
+        </TableRepeater>
+    </FormItem>
+    <FormItem name="tabledemo" >
+        <InlineRepeater multiple formConfig={formConfig}>
+            <FormItem label="username" name="username"><Input /></FormItem>
+        </InlineRepeater>
+    </FormItem>
+    <FormItem name="deepselect">
+        <SelectRepeater selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig}>
+            <FormItem label="username" name="username"><Input /></FormItem>
+        </SelectRepeater>        
+    </FormItem>
+    
     {/* <Item name="tableRepeat" >
         <TableRepeater formConfig={formConfig}>
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
