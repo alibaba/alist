@@ -83,7 +83,7 @@ class CodeRenderer extends React.Component {
     }
 
     render() {
-        const { language, inline = false, value } = this.props;
+        const { language, inline = false, value, lang: globalLang } = this.props;
         const isEn = this.queryIsEn();
 
         let mdValue = value;
@@ -109,9 +109,11 @@ class CodeRenderer extends React.Component {
             lang = language.split('/')[1];
             if (!lang) {
                 return <Markdown source={i18nVal} renderers={{
-                    link: LinkRenderer
+                    link: (props) => {
+                        return <LinkRenderer {...props} lang={globalLang} />
+                    }
                 }} />
-            }            
+            }
         }
 
         let parsedDemo = null;

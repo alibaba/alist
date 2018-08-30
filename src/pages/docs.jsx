@@ -71,7 +71,9 @@ class Docs extends React.Component {
             <ScrollToTopOnMount location={location} />
             <Layout location={location} match={match}>
                 <Markdown source={mdContent} lang={lang} renderers={{
-                    code: CodeRenderer,
+                    code: (props) => {
+                        return <CodeRenderer {...props} lang={lang} />
+                    },
                     link: LinkRenderer
                 }} />
             </Layout>

@@ -191,9 +191,19 @@ export default {
       "level": "6",
       "articles": [
         {
-          "path": "/docs?md=repeater/antd",
-          "title": "接入 Ant Design(BETA)",
+          "path": "/docs?md=repeater/base",
+          "title": "基础类型",
           "level": "6.1",
+          "articles": [],
+          "exists": true,
+          "external": false,
+          "introduction": false,
+          "enTitle": "Base"
+        },
+        {
+          "path": "/docs?md=repeater/antd",
+          "title": "接入 Ant Design",
+          "level": "6.2",
           "articles": [],
           "exists": true,
           "external": false,

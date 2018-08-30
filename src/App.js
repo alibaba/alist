@@ -21,9 +21,11 @@ class App extends Component {
     return (
       <Router>
           <div>
-            <Redirect from="/" to={`/${lang}/`} />
-            <Route exact path={`/:lang/`} component={Home} />
+            <Switch>
             <Route path={`/:lang/:type`} render={SwitchDocRoutes} />
+            <Route exact path={`/:lang/`} component={Home} />            
+            <Redirect strict exact from="/" to={`/${lang}/`} />
+            </Switch>            
           </div>
       </Router>
     );

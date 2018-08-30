@@ -7,13 +7,17 @@ class LinkRenderer extends React.Component {
     }
 
     render() {
-        const { children, href = '' } = this.props;
+        const { children, href = '', lang } = this.props;
         let linkText = (children && children[0]) || '';
 
         if (href && href.indexOf('http') !== -1) {
             return <a href={href} target="_blank">{linkText}</a>
-        } else {            
-            return <Link to={href}>{linkText}</Link>
+        } else {
+            let url = href;
+            if (href.indexOf(lang) === -1) {
+                url = `/${lang}${url}`;
+            }
+            return <Link to={url}>{linkText}</Link>
         }        
     }
 }
