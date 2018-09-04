@@ -49,10 +49,12 @@ else
 fi
 
 # install and build examples
-echo "start installing && build for examples"
+echo "start installing && build for examples."
+echo "current location is ${dir_name}/examples"
 cd "${dir_name}/examples"
 
 if [ ! -d "node_modules" ]; then
+	echo "node_modules doesnt exist, start installing examples/node_modules"
 	npm install
 else
 	echo "node_modules already exist skip install section"
