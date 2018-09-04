@@ -300,7 +300,7 @@ const inlineAsyncHandler = {
 };
 
 ReactDOM.render(<Form core={formCore} onChange={console.log} value={defaultValue}>
-    <FormItem name="tabledemo" >
+    {/* <FormItem name="tabledemo" >
         <TableRepeater formConfig={formConfig}>
             <FormItem label="username" name="username"><Input /></FormItem>
         </TableRepeater>
@@ -314,6 +314,18 @@ ReactDOM.render(<Form core={formCore} onChange={console.log} value={defaultValue
         <SelectRepeater selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig}>
             <FormItem label="username" name="username"><Input /></FormItem>
         </SelectRepeater>        
+    </FormItem>
+
+    <FormItem defaultValue={{ dataSource: [{username: 'a', id: 'a'}, {username: 'b', id: 'b'}] }} name="deepselectxxxxx">
+        <SelectRepeater selectMode="single" formConfig={formConfig}>
+            <FormItem label="username" name="username"><Input /></FormItem>
+        </SelectRepeater>        
+    </FormItem> */}
+
+    <FormItem name="deepselect">
+         <InlineRepeater filter={filter} formConfig={formConfig} addPosition="bottom">
+            <FormItem required label="开票人" name="drawerName"><Input /></FormItem>
+       </InlineRepeater>      
     </FormItem>
     
     {/* <Item name="tableRepeat" >

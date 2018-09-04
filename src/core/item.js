@@ -23,8 +23,9 @@ class Item {
         let { validateConfig } = this;
         const { subField } = this;
         let errors = null;
-        if (typeof this.func_validateConfig === 'function') {
-            validateConfig = this.func_validateConfig(this.form.value, this.form);
+
+        if (typeof validateConfig === 'function') {
+            validateConfig = validateConfig(this.form.value, this.form);
         }
 
         if (!validateConfig && !subField) {
@@ -140,15 +141,13 @@ class Item {
         this.id = id || `__noform__item__${genId()}`;
 
         const {
-            jsx_status, func_props = null, func_status = null, func_validateConfig = null,
+            jsx_status, func_props = null, func_status = null,
         } = option;
         this.func_props = func_props;
         this.func_status = func_status;
 
         this.jsx_status = jsx_status;
-        this.func_validateConfig = func_validateConfig;
-
-        if (func_validateConfig || validateConfig) {
+        if (validateConfig) {
             this.jsxValidate = true;
         }
 
@@ -160,11 +159,7 @@ class Item {
             (this.name in this.form.validateConfig) &&
             !this.jsxValidate) {
             const currentValidateConfig = this.form.validateConfig[this.name];
-            if (typeof currentValidateConfig === 'function') {
-                this.func_validateConfig = currentValidateConfig;
-            } else {
-                this.validateConfig = currentValidateConfig;
-            }
+            this.validateConfig = currentValidateConfig;
         }
     }
 

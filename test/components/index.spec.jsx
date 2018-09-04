@@ -797,6 +797,7 @@ describe('component/form status', () => {
         };
 
         let formcore;
+
         const form = mount(<Form onMount={core => formcore = core} value={defaultValue}>
             <Item name="user">
                 <Form>
@@ -817,7 +818,7 @@ describe('component/form status', () => {
 
         expect(form.find('Item[name="username"] Input').prop('status')).toEqual('preview');
         expect(form.find('Item[name="password"] Input').prop('status')).toEqual('preview');
-        expect(form.find('Item[name="user"] Form').prop('status')).toEqual({
+        expect(form.find('Item[name="user"]').children(Form).prop('status')).toEqual({
             username: 'preview',
             password: 'preview',
         });

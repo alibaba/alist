@@ -237,7 +237,7 @@ describe('Inline Repeater', () => {
 
         await sleep(500);
         validateForm.mount();
-        expect(validateCore.getValue('repeat')).toEqual(null);
+        expect(validateCore.getValue('repeat')).toEqual([]);
         expect(validateForm.find('.no-form-item-error').length).toEqual(1);
         ReactTestUtils.Simulate.change(validateForm.find('.inline-repeater-focus input[name="drawerName"]').getDOMNode(), {
             target: {
@@ -293,7 +293,7 @@ describe('Inline Repeater', () => {
 
         await sleep(500);
         validateForm.mount();
-        expect(validateCore.getValue('repeat')).toEqual(null);
+        expect(validateCore.getValue('repeat')).toEqual([]);
         expect(validateForm.find('.no-form-item-error').length).toEqual(1);
         ReactTestUtils.Simulate.change(validateForm.find('.inline-repeater-focus input[name="drawerName"]').getDOMNode(), {
             target: {
@@ -425,13 +425,14 @@ describe('Inline Repeater', () => {
 
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify(valuesArr));
         expect(form.find('Input.repeater-search').length).toEqual(1);
-        expect(form.find('Form.table-repeater-row').length).toEqual(4);
+        expect(form.find(Form).children('.table-repeater-row').length).toEqual(4);
+
         ReactTestUtils.Simulate.change(form.find('Input.repeater-search').getDOMNode(), {
             target: { value: 'hello world' },
         });
         await sleep(500);
         form.mount();
-        expect(form.find('Form.table-repeater-row').length).toEqual(0);
+        expect(form.find(Form).children('.table-repeater-row').length).toEqual(0);
 
         ReactTestUtils.Simulate.change(form.find('Input.repeater-search').getDOMNode(), {
             target: { value: '客户' },
@@ -439,14 +440,14 @@ describe('Inline Repeater', () => {
         await sleep(500);
         form.mount();
 
-        expect(form.find('Form.table-repeater-row').length).toEqual(1);
-        expect(form.find('Form.table-repeater-row .repeater-table-cell-wrapper').at(0).prop('children')).toEqual('客户');
+        expect(form.find(Form).children('.table-repeater-row').length).toEqual(1);
+        expect(form.find(Form).children('.table-repeater-row').find('.repeater-table-cell-wrapper').at(0).prop('children')).toEqual('客户');
 
         ReactTestUtils.Simulate.change(form.find('Input.repeater-search').getDOMNode(), {
             target: { value: '' },
         });
         await sleep(500);
         form.mount();
-        expect(form.find('Form.table-repeater-row').length).toEqual(4);
+        expect(form.find(Form).children('.table-repeater-row').length).toEqual(4);
     });
 });
