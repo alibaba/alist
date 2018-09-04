@@ -39,9 +39,9 @@ else
 		echo "copy dist and examples to docs"
 
 		# start copy dist to docs
-		cp -r "${dir_name}/tmppack/dist" "${dir_name}/dist"
+		cp -r "${dir_name}/tmppack/dist" "${dir_name}/"
 		# start copy dist to examples
-		cp -r "${dir_name}/tmppack/examples" "${dir_name}/examples"
+		cp -r "${dir_name}/tmppack/examples" "${dir_name}/"
 	else 
 		echo "fetching error, please try again"
 		exit $?
@@ -55,7 +55,7 @@ cd "${dir_name}/examples"
 
 if [ ! -d "node_modules" ]; then
 	echo "node_modules doesnt exist, start installing examples/node_modules"
-	npm install
+	tnpm install
 else
 	echo "node_modules already exist skip install section"
 fi
