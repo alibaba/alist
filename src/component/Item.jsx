@@ -100,11 +100,7 @@ class Item extends Component {
 
         // 校验规则
         if ('validateConfig' in jsxProps) {
-            if (isFunction(jsxProps.validateConfig)) {
-                option.func_validateConfig = jsxProps.validateConfig;
-            } else {
-                option.validateConfig = jsxProps.validateConfig;
-            }
+            option.validateConfig = jsxProps.validateConfig;
         }
 
         if ('interceptor' in jsxProps) {

@@ -318,8 +318,10 @@ describe('core/form basic function', () => {
         core.addField([{
             name: 'hasError',
             value: 'hasError',
-            validateConfig(rule, value, callback) {
-                callback([]);
+            validateConfig: {
+                validator: (rule, value, callback) => {
+                    callback([]);
+                },
             },
         }, {
             name: 'success',
@@ -339,20 +341,26 @@ describe('core/form basic function', () => {
         core.addField([{
             name: 'firstErr',
             value: 'firstErr',
-            validateConfig(rule, value, callback) {
-                callback(['firstErr']);
+            validateConfig: {
+                validator: (rule, value, callback) => {
+                    callback(['firstErr']);
+                },
             },
         }, {
             name: 'hasError',
             value: 'hasError',
-            validateConfig(rule, value, callback) {
-                callback(['hasError']);
+            validateConfig: {
+                validator: (rule, value, callback) => {
+                    callback(['hasError']);
+                },
             },
         }, {
             name: 'thirdError',
             value: 'thirdError',
-            validateConfig(rule, value, callback) {
-                callback(['thirdError']);
+            validateConfig: {
+                validator: (rule, value, callback) => {
+                    callback(['thirdError']);
+                },
             },
         }, {
             name: 'success',
@@ -379,20 +387,62 @@ describe('core/form basic function', () => {
         });
     });
 
+    it('dynamic validate normal', async () => {
+        core.addField([{
+            name: 'hasError',
+            value: 'abcd',
+        }, {
+            name: 'success',
+            value: 'efgh',
+        }]);
+
+        core.setValidateConfig({
+            hasError: values => [
+                {
+                    validator: (rule, value, callback) => {
+                        const { hasError } = values;
+                        const errors = [`hasError${hasError}`];
+                        callback(errors);
+                    },
+                },
+            ],
+            success: () => [
+                {
+                    validator: (rule, value, callback) => {
+                        const errors = [];
+                        callback(errors);
+                    },
+                },
+            ],
+        });
+
+        expect(core.getItemError('hasError')).toEqual(null);
+        expect(core.getItemError('success')).toEqual(null);
+        // 调用validate之后才生成error信息
+        const errors = await core.validate();
+        expect(errors).toEqual({ hasError: 'hasErrorabcd' });
+        expect(core.getItemError('hasError')).toEqual('hasErrorabcd');
+        expect(core.getItemError('success')).toEqual(null);
+    });
+
     it('add validate field (prosmise)', async () => {
         core.addField([{
             name: 'hasError',
             value: 'hasError',
-            validateConfig(rule, value, callback) {
-                const errors = ['hasError'];
-                callback(errors);
+            validateConfig: {
+                validator: (rule, value, callback) => {
+                    const errors = ['hasError'];
+                    callback(errors);
+                },
             },
         }, {
             name: 'success',
             value: 'success',
-            validateConfig(rule, value, callback) {
-                const errors = [];
-                callback(errors);
+            validateConfig: {
+                validator: (rule, value, callback) => {
+                    const errors = [];
+                    callback(errors);
+                },
             },
         }]);
         expect(core.getItemError('hasError')).toEqual(null);
@@ -408,16 +458,20 @@ describe('core/form basic function', () => {
         core.addField([{
             name: 'hasError',
             value: 'hasError',
-            validateConfig(rule, value, callback) {
-                const errors = ['hasError'];
-                callback(errors);
+            validateConfig: {
+                validator: (rule, value, callback) => {
+                    const errors = ['hasError'];
+                    callback(errors);
+                },
             },
         }, {
             name: 'success',
             value: 'success',
-            validateConfig(rule, value, callback) {
-                const errors = [];
-                callback(errors);
+            validateConfig: {
+                validator: (rule, value, callback) => {
+                    const errors = [];
+                    callback(errors);
+                },
             },
         }]);
         expect(core.getItemError('hasError')).toEqual(null);
@@ -435,18 +489,22 @@ describe('core/form basic function', () => {
         core.addField([{
             name: 'hasError',
             value: 'hasError',
-            validateConfig(rule, value, callback) {
-                const errors = ['hasError'];
-                setTimeout(() => {
-                    callback(errors);
-                }, 20);
+            validateConfig: {
+                validator: (rule, value, callback) => {
+                    const errors = ['hasError'];
+                    setTimeout(() => {
+                        callback(errors);
+                    }, 20);
+                },
             },
         }, {
             name: 'success',
             value: 'success',
-            validateConfig(rule, value, callback) {
-                const errors = [];
-                callback(errors);
+            validateConfig: {
+                validator: (rule, value, callback) => {
+                    const errors = [];
+                    callback(errors);
+                },
             },
         }]);
         core.validate((errors) => {
@@ -459,26 +517,34 @@ describe('core/form basic function', () => {
         core.addField([{
             name: 'hasError',
             value: 'hasError',
-            validateConfig(rule, value, callback) {
-                const errors = ['hasError'];
-                callback(errors);
+            validateConfig: {
+                validator: (rule, value, callback) => {
+                    const errors = ['hasError'];
+                    callback(errors);
+                },
             },
         }, {
             name: 'success',
             value: 'success',
-            validateConfig(rule, value, callback) {
-                const errors = [];
-                callback(errors);
+            validateConfig: {
+                validator: (rule, value, callback) => {
+                    const errors = [];
+                    callback(errors);
+                },
             },
         }]);
         core.setValidateConfig({
-            hasError(rule, value, callback) {
-                const errors = [];
-                callback(errors);
+            hasError: {
+                validator: (rule, value, callback) => {
+                    const errors = [];
+                    callback(errors);
+                },
             },
-            success(rule, value, callback) {
-                const errors = ['successHasError'];
-                callback(errors);
+            success: {
+                validator: (rule, value, callback) => {
+                    const errors = ['successHasError'];
+                    callback(errors);
+                },
             },
         });
         core.validate((errors) => {
@@ -758,9 +824,11 @@ describe('core/form emit event', () => {
         const handler = sinon.spy();
         core.addField([{
             name: 'name',
-            validateConfig(rule, value, callback) {
-                const errors = ['hasError'];
-                callback(errors);
+            validateConfig: {
+                validator: (rule, value, callback) => {
+                    const errors = ['hasError'];
+                    callback(errors);
+                },
             },
         }, {
             name: 'gender',
