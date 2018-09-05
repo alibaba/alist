@@ -6,6 +6,10 @@ export default function SelectRepeaterHOC(Source, Com) {
     const { Checkbox, Radio } = Source;
 
     return class SelectRepeater extends Component {
+        static defaultProps = {
+            selectMode: 'single',
+        };
+
         static propTypes = {
             children: PropTypes.any,
             selectFormConfig: PropTypes.object,
@@ -18,7 +22,8 @@ export default function SelectRepeaterHOC(Source, Com) {
         constructor(props, context) {
             super(props, context);
             const {
-                selectMode, value,
+                selectMode,
+                value,
                 selectFormConfig,
             } = props;
 
@@ -86,6 +91,7 @@ export default function SelectRepeaterHOC(Source, Com) {
 
             const icChecked = !!val.find(lastItem => values.id === lastItem.id);
             const { TriggerCom } = this;
+
 
             return (<TriggerCom
                 disabled={disabled}

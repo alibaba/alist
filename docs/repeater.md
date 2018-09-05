@@ -322,11 +322,11 @@ ReactDOM.render(<Form core={formCore} onChange={console.log} value={defaultValue
         </SelectRepeater>        
     </FormItem> */}
 
-    <FormItem name="deepselect">
+    {/* <FormItem name="deepselect">
          <InlineRepeater filter={filter} formConfig={formConfig} addPosition="bottom">
             <FormItem required label="开票人" name="drawerName"><Input /></FormItem>
        </InlineRepeater>      
-    </FormItem>
+    </FormItem> */}
     
     {/* <Item name="tableRepeat" >
         <TableRepeater formConfig={formConfig}>
@@ -365,18 +365,18 @@ ReactDOM.render(<Form core={formCore} onChange={console.log} value={defaultValue
     <br/>
     <hr/>
 
-    {/* <FormItem name="deep">
-        <SelectRepeater selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig}>
+    <FormItem name="deep">
+        <SelectRepeater selectMode="multiple" asyncHandler={asyncHandler} formConfig={formConfig}>
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
         </SelectRepeater>        
-    </FormItem> */}
+    </FormItem>
 
     {/* <FormItem name="fuzz">
         <CustomEle />
     </FormItem> */}
 
-    <FormItem name="irn">
+    {/* <FormItem name="irn">
         <InlineRepeater multiple asyncHandler={inlineAsyncHandler} filter={filter} formConfig={formConfig} addPosition="bottom">
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem label="multi" multiple required>
@@ -387,7 +387,7 @@ ReactDOM.render(<Form core={formCore} onChange={console.log} value={defaultValue
             </FormItem>
             <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
         </InlineRepeater>
-    </FormItem>
+    </FormItem> */}
 
 {/*     
     <If when={(values) => {

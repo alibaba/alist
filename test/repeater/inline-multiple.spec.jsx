@@ -40,11 +40,6 @@ describe('Inline multiple Repeater', () => {
             <Item name="repeat">
                 <InlineRepeater multiple filter={filter}>
                     <FormItem label="开票人" name="drawerName"><Input /></FormItem>
-                    <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
-                    <FormItem label="子公司" name="branchName"><Input /></FormItem>
-                    <FormItem label="核查结果" name="checkResultName"><Input /></FormItem>
-                    <FormItem label="拒绝原因" name="denyReason"><Input /></FormItem>
-                    <FormItem label="创建人" name="creatorName"><Input /></FormItem>
                 </InlineRepeater>
             </Item>
         </Form>);
@@ -123,288 +118,113 @@ describe('Inline multiple Repeater', () => {
         expect(form.find('button.repeater-delete').length).toEqual(2);
     });
 
-    // it('should only one node is focus when click add', async () => {
-    //     expect(formCore.getValue('repeat')).toEqual(null);
-    //     expect(form.find('button.repeater-save').length).toEqual(0);
-    //     expect(form.find('button.repeater-cancel').length).toEqual(0);
-    //     form.find('button.repeater-add').simulate('click');
-    //     await sleep(500);
-    //     form.mount();
-    //     expect(form.find('button.repeater-save').length).toEqual(1);
-    //     expect(form.find('button.repeater-cancel').length).toEqual(1);
-    //     ReactTestUtils.Simulate.click(form.find('button.repeater-save').getDOMNode());
+    it('should not add(validate fail) when last node is editing and click add', async () => {
+        const validateConfig = {
+            drawerName: { type: 'string', required: true },
+        };
 
-    //     await sleep(500);
-    //     form.mount();
-    //     expect(formCore.getValue('repeat').length).toEqual(1);
-    // });
+        const formConfig = {
+            validateConfig,
+            autoValidate: true,
+        };
 
-    // it('should only one node is focus when click update', async () => {
-    //     expect(formCore.getValue('repeat')).toEqual(null);
-    //     expect(form.find('button.repeater-save').length).toEqual(0);
-    //     expect(form.find('button.repeater-cancel').length).toEqual(0);
-    //     form.find('button.repeater-add').simulate('click');
-    //     await sleep(500);
-    //     form.mount();
-    //     expect(form.find('button.repeater-save').length).toEqual(1);
-    //     expect(form.find('button.repeater-cancel').length).toEqual(1);
-    //     ReactTestUtils.Simulate.click(form.find('button.repeater-save').getDOMNode());
+        let validateCore = null;
+        function validateMount(core) {
+            validateCore = core;
+        }
+        const validateForm = mount(<Form onMount={validateMount}>
+            <Item name="repeat">
+                <InlineRepeater multiple filter={filter} formConfig={formConfig}>
+                    <FormItem label="开票人" name="drawerName"><Input /></FormItem>
+                </InlineRepeater>
+            </Item>
+        </Form>);
 
-    //     await sleep(500);
-    //     form.mount();
-    //     expect(formCore.getValue('repeat').length).toEqual(1);
-    // });
+        expect(validateCore.getValue('repeat')).toEqual(null);
+        expect(validateForm.find('button.repeater-delete').length).toEqual(0);
+        validateForm.find('button.repeater-add').simulate('click');
+        await sleep(500);
+        validateForm.mount();
+        expect(validateForm.find('button.repeater-delete').length).toEqual(1);
+        validateForm.find('button.repeater-add').simulate('click');
+        await sleep(500);
+        validateForm.mount();
+        expect(validateCore.getValue('repeat')).toEqual([{}]);
+        expect(validateForm.find('.no-form-item-error').length).toEqual(1);
+        ReactTestUtils.Simulate.change(validateForm.find('.inline-repeater-focus input[name="drawerName"]').getDOMNode(), {
+            target: {
+                value: 'hello world',
+            },
+        });
 
-    // it('should save(validate fail) when last node is editing when click save', async () => {
-    //     const validateConfig = {
-    //         drawerName: { type: 'string', required: true },
-    //     };
+        await sleep(500);
+        validateForm.mount();
+        ReactTestUtils.Simulate.click(validateForm.find('button.repeater-add').getDOMNode());
+        await sleep(500);
+        validateForm.mount();
+        expect(validateForm.find('.no-form-item-error').length).toEqual(0);
+        expect(validateCore.getValue('repeat').length).toEqual(2);
+    });
 
-    //     const formConfig = {
-    //         validateConfig,
-    //         autoValidate: true,
-    //     };
+    it('should delete by click delete', async () => {
+        await form.find(InlineRepeater).instance().doAdd({
+            drawerName: '开票人'
+        });
+        form.mount();
+        await sleep(500);
+        expect(formCore.getValue('repeat').length).toEqual(1);
+        form.find('.repeater-delete').simulate('click');
+        await sleep(500);
+        form.mount();
+        expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn').length).toEqual(1);
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn')[0]);
 
-    //     let validateCore = null;
-    //     function validateMount(core) {
-    //         validateCore = core;
-    //     }
-    //     const validateForm = mount(<Form onMount={validateMount}>
-    //         <Item name="repeat">
-    //             <InlineRepeater filter={filter} formConfig={formConfig}>
-    //                 <FormItem label="开票人" name="drawerName"><Input /></FormItem>
-    //                 <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
-    //                 <FormItem label="子公司" name="branchName"><Input /></FormItem>
-    //                 <FormItem label="核查结果" name="checkResultName"><Input /></FormItem>
-    //                 <FormItem label="拒绝原因" name="denyReason"><Input /></FormItem>
-    //                 <FormItem label="创建人" name="creatorName"><Input /></FormItem>
-    //             </InlineRepeater>
-    //         </Item>
-    //     </Form>);
+        await sleep(500);
 
-    //     expect(validateCore.getValue('repeat')).toEqual(null);
-    //     expect(validateForm.find('button.repeater-save').length).toEqual(0);
-    //     expect(validateForm.find('button.repeater-cancel').length).toEqual(0);
-    //     validateForm.find('button.repeater-add').simulate('click');
-    //     await sleep(500);
-    //     validateForm.mount();
-    //     expect(validateForm.find('button.repeater-save').length).toEqual(1);
-    //     expect(validateForm.find('button.repeater-cancel').length).toEqual(1);
-    //     ReactTestUtils.Simulate.click(validateForm.find('button.repeater-add').getDOMNode());
+        expect(JSON.stringify(formCore.getValue())).toEqual(JSON.stringify({
+            repeat: [],
+        }));
+    });
 
-    //     await sleep(500);
-    //     validateForm.mount();
-    //     expect(validateCore.getValue('repeat')).toEqual([]);
-    //     expect(validateForm.find('.no-form-item-error').length).toEqual(1);
-    //     ReactTestUtils.Simulate.change(validateForm.find('.inline-repeater-focus input[name="drawerName"]').getDOMNode(), {
-    //         target: {
-    //             value: 'hello world',
-    //         },
-    //     });
+    it('filter works', async () => {
+        const valuesArr = [
+            { drawerName: '开票人' },
+            { drawerName: '客户' },
+            { drawerName: '拍档' },
+            { drawerName: '销售' },
+        ];
 
-    //     await sleep(500);
-    //     validateForm.mount();
-    //     ReactTestUtils.Simulate.click(validateForm.find('button.repeater-add').getDOMNode());
-    //     await sleep(500);
-    //     validateForm.mount();
-    //     expect(validateForm.find('.no-form-item-error').length).toEqual(0);
-    //     expect(validateCore.getValue('repeat').length).toEqual(1);
-    // });
+        await form.find(InlineRepeater).instance().doAdd(valuesArr[0]);
+        await form.find(InlineRepeater).instance().doAdd(valuesArr[1]);
+        await form.find(InlineRepeater).instance().doAdd(valuesArr[2]);
+        await form.find(InlineRepeater).instance().doAdd(valuesArr[3]);
+        form.mount();
 
-    // it('should auto save(validate fail) when last node is editing when click save', async () => {
-    //     const validateConfig = {
-    //         drawerName: { type: 'string', required: true },
-    //     };
+        expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify(valuesArr));
+        expect(form.find('Input.repeater-search').length).toEqual(1);
+        expect(form.find(Form).children('.table-repeater-row').length).toEqual(4);
 
-    //     const formConfig = {
-    //         validateConfig,
-    //         autoValidate: true,
-    //     };
+        ReactTestUtils.Simulate.change(form.find('Input.repeater-search').getDOMNode(), {
+            target: { value: 'hello world' },
+        });
+        await sleep(500);
+        form.mount();
+        expect(form.find(Form).children('.table-repeater-row').length).toEqual(0);
 
-    //     let validateCore = null;
-    //     function validateMount(core) {
-    //         validateCore = core;
-    //     }
-    //     const validateForm = mount(<Form onMount={validateMount}>
-    //         <Item name="repeat">
-    //             <InlineRepeater filter={filter} formConfig={formConfig}>
-    //                 <FormItem label="开票人" name="drawerName"><Input /></FormItem>
-    //                 <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
-    //                 <FormItem label="子公司" name="branchName"><Input /></FormItem>
-    //                 <FormItem label="核查结果" name="checkResultName"><Input /></FormItem>
-    //                 <FormItem label="拒绝原因" name="denyReason"><Input /></FormItem>
-    //                 <FormItem label="创建人" name="creatorName"><Input /></FormItem>
-    //             </InlineRepeater>
-    //         </Item>
-    //     </Form>);
+        ReactTestUtils.Simulate.change(form.find('Input.repeater-search').getDOMNode(), {
+            target: { value: '客户' },
+        });
+        await sleep(500);
+        form.mount();
 
-    //     expect(validateCore.getValue('repeat')).toEqual(null);
-    //     expect(validateForm.find('button.repeater-save').length).toEqual(0);
-    //     expect(validateForm.find('button.repeater-cancel').length).toEqual(0);
-    //     validateForm.find('button.repeater-add').simulate('click');
-    //     await sleep(500);
-    //     validateForm.mount();
-    //     expect(validateForm.find('button.repeater-save').length).toEqual(1);
-    //     expect(validateForm.find('button.repeater-cancel').length).toEqual(1);
-    //     ReactTestUtils.Simulate.click(validateForm.find('button.repeater-save').getDOMNode());
+        expect(form.find(Form).children('.table-repeater-row').length).toEqual(1);
+        expect(form.find(Form).children('.table-repeater-row').find('.repeater-table-cell-wrapper').at(0).prop('children')).toEqual('客户');
 
-    //     await sleep(500);
-    //     validateForm.mount();
-    //     expect(validateCore.getValue('repeat')).toEqual([]);
-    //     expect(validateForm.find('.no-form-item-error').length).toEqual(1);
-    //     ReactTestUtils.Simulate.change(validateForm.find('.inline-repeater-focus input[name="drawerName"]').getDOMNode(), {
-    //         target: {
-    //             value: 'hello world',
-    //         },
-    //     });
-
-    //     await sleep(500);
-    //     validateForm.mount();
-    //     ReactTestUtils.Simulate.click(validateForm.find('button.repeater-save').getDOMNode());
-    //     await sleep(500);
-    //     validateForm.mount();
-    //     expect(validateForm.find('.no-form-item-error').length).toEqual(0);
-    //     expect(validateCore.getValue('repeat').length).toEqual(1);
-    // });
-
-    // it('should auto save(no validation) when last node is editing when click save', async () => {
-    //     expect(formCore.getValue('repeat')).toEqual(null);
-    //     expect(form.find('button.repeater-save').length).toEqual(0);
-    //     expect(form.find('button.repeater-cancel').length).toEqual(0);
-    //     form.find('button.repeater-add').simulate('click');
-    //     await sleep(500);
-    //     form.mount();
-    //     expect(form.find('button.repeater-save').length).toEqual(1);
-    //     expect(form.find('button.repeater-cancel').length).toEqual(1);
-    //     ReactTestUtils.Simulate.click(form.find('button.repeater-save').getDOMNode());
-
-    //     await sleep(500);
-    //     form.mount();
-    //     expect(formCore.getValue('repeat').length).toEqual(1);
-    // });
-
-    // it('shouldnt add by click cancel button', async () => {
-    //     expect(formCore.getValue('repeat')).toEqual(null);
-    //     expect(form.find('button.repeater-cancel').length).toEqual(0);
-    //     expect(form.find('button.repeater-save').length).toEqual(0);
-    //     form.find('button.repeater-add').simulate('click');
-    //     await sleep(500);
-    //     form.mount();
-    //     expect(form.find('button.repeater-cancel').length).toEqual(1);
-    //     expect(form.find('button.repeater-save').length).toEqual(1);
-    //     ReactTestUtils.Simulate.click(form.find('button.repeater-cancel').getDOMNode());
-
-    //     await sleep(500);
-    //     form.mount();
-    //     expect(formCore.getValue('repeat').length).toEqual(0);
-    // });
-
-    // it('shouldnt update by click cancel button', async () => {
-    //     expect(formCore.getValue('repeat')).toEqual(null);
-    //     expect(form.find('button.repeater-cancel').length).toEqual(0);
-    //     expect(form.find('button.repeater-save').length).toEqual(0);
-    //     form.find('button.repeater-add').simulate('click');
-    //     await sleep(500);
-    //     form.mount();
-    //     expect(form.find('button.repeater-cancel').length).toEqual(1);
-    //     expect(form.find('button.repeater-save').length).toEqual(1);
-    //     ReactTestUtils.Simulate.click(form.find('button.repeater-cancel').getDOMNode());
-
-    //     await sleep(500);
-    //     form.mount();
-    //     expect(formCore.getValue('repeat').length).toEqual(0);
-    // });
-
-    // it('should update by click update', async () => {
-    //     await form.find(InlineRepeater).instance().doAdd(testValues);
-    //     expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
-    //     expect(formCore.getValue('repeat').length).toEqual(1);
-    //     expect(form.find('button.repeater-save').length).toEqual(0);
-    //     await sleep(500);
-    //     form.mount();
-    //     form.find('button.repeater-update').simulate('click');
-
-    //     await sleep(500);
-    //     form.mount();
-    //     expect(form.find('button.repeater-save').length).toEqual(1);
-    //     ReactTestUtils.Simulate.change(form.find('.inline-repeater-focus input[name="drawerName"]').getDOMNode(), {
-    //         target: {
-    //             value: 'hello world',
-    //         },
-    //     });
-
-    //     form.find('button.repeater-save').simulate('click');
-    //     await sleep(500);
-    //     form.mount();
-    //     expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([{
-    //         ...testValues,
-    //         drawerName: 'hello world',
-    //     }]));
-    // });
-
-    // it('should delete by click delete', async () => {
-    //     await form.find(InlineRepeater).instance().doAdd({
-    //         drawerName: '开票人',
-    //         taxpayerNumber: '税号',
-    //         branchName: '子公司',
-    //         checkResultName: '核查结果',
-    //         denyReason: '拒绝原因',
-    //         creatorName: '创建人',
-    //     });
-    //     form.mount();
-    //     await sleep(500);
-    //     form.find('.repeater-delete').simulate('click');
-    //     await sleep(500);
-    //     form.mount();
-    //     expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn').length).toEqual(1);
-    //     ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn')[0]);
-
-    //     await sleep(500);
-
-    //     expect(JSON.stringify(formCore.getValue())).toEqual(JSON.stringify({
-    //         repeat: [],
-    //     }));
-    // });
-
-    // it('filter works', async () => {
-    //     const valuesArr = [
-    //         { drawerName: '开票人' },
-    //         { drawerName: '客户' },
-    //         { drawerName: '拍档' },
-    //         { drawerName: '销售' },
-    //     ];
-
-    //     await form.find(InlineRepeater).instance().doAdd(valuesArr[0]);
-    //     await form.find(InlineRepeater).instance().doAdd(valuesArr[1]);
-    //     await form.find(InlineRepeater).instance().doAdd(valuesArr[2]);
-    //     await form.find(InlineRepeater).instance().doAdd(valuesArr[3]);
-    //     form.mount();
-
-    //     expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify(valuesArr));
-    //     expect(form.find('Input.repeater-search').length).toEqual(1);
-    //     expect(form.find(Form).children('.table-repeater-row').length).toEqual(4);
-
-    //     ReactTestUtils.Simulate.change(form.find('Input.repeater-search').getDOMNode(), {
-    //         target: { value: 'hello world' },
-    //     });
-    //     await sleep(500);
-    //     form.mount();
-    //     expect(form.find(Form).children('.table-repeater-row').length).toEqual(0);
-
-    //     ReactTestUtils.Simulate.change(form.find('Input.repeater-search').getDOMNode(), {
-    //         target: { value: '客户' },
-    //     });
-    //     await sleep(500);
-    //     form.mount();
-
-    //     expect(form.find(Form).children('.table-repeater-row').length).toEqual(1);
-    //     expect(form.find(Form).children('.table-repeater-row').find('.repeater-table-cell-wrapper').at(0).prop('children')).toEqual('客户');
-
-    //     ReactTestUtils.Simulate.change(form.find('Input.repeater-search').getDOMNode(), {
-    //         target: { value: '' },
-    //     });
-    //     await sleep(500);
-    //     form.mount();
-    //     expect(form.find(Form).children('.table-repeater-row').length).toEqual(4);
-    // });
+        ReactTestUtils.Simulate.change(form.find('Input.repeater-search').getDOMNode(), {
+            target: { value: '' },
+        });
+        await sleep(500);
+        form.mount();
+        expect(form.find(Form).children('.table-repeater-row').length).toEqual(4);
+    });
 });
