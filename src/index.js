@@ -4,6 +4,7 @@ import Item from './component/Item';
 import If from './component/If';
 import FormCore from './core/form';
 import RepeaterCore from './repeater/repeaterCore';
+import Repeater from './repeater';
 
 export {
     Form as default,
@@ -12,4 +13,5 @@ export {
     If,
     FormCore,
     RepeaterCore,
+    Repeater,
 };
