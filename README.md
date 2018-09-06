@@ -5,6 +5,7 @@
 <p align="center">
   <a href="https://github.com/alibaba/ice/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg"></a>
   <img src="https://api.travis-ci.org/alibaba/noform.svg?branch=master">
+  <a href="https://codeclimate.com/github/alibaba/noform/test_coverage"><img src="https://api.codeclimate.com/v1/badges/5d238ef911e7a20269a4/test_coverage" /></a>
 </p>
 
 ---
