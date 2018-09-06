@@ -1,0 +1,4 @@
+1. selectifyInlineRepeater 情况下勾选新建的项，然后cancel掉的值，此时勾选的值没有被随cancel的项被删掉
+2. 默认selectRepeater的数据没有id时，需要内部赋个随机唯一值
+3. repeater过滤状态下，新增的值不会触发过滤
+4. addMultipleInline 的时候，需要保证非当前添加的值也具有focus和multiple标记
