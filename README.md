@@ -4,6 +4,7 @@
 
 <p align="center">
   <a href="https://github.com/alibaba/ice/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg"></a>
+  <img src="https://api.travis-ci.org/alibaba/noform.svg?branch=master">
 </p>
 
 ---
