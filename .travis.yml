@@ -15,4 +15,6 @@ cache:
     - node_modules
 
 on:
-  branch: master
+  branch: 
+    - master
+    - dev
