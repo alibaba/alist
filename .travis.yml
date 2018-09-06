@@ -8,6 +8,8 @@ language: node_js
 node_js:
   - 9
   - 8
+addons:
+  chrome: stable
 
 before_script:
   - yarn global add nyc
