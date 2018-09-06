@@ -117,6 +117,7 @@ export default function SelectRepeaterHOC(Source, Com) {
         renderSelectTrigger = () => {
             const { selectMode } = this.props;
             const { TriggerCom } = this;
+
             if (selectMode === 'single' || selectMode === 'multiple') {
                 return (<FormItem renderCell={this.renderTrigger} status="hidden" name="selected">
                     <TriggerCom />

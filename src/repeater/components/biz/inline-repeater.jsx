@@ -77,7 +77,7 @@ export default function bind(source) {
                     children,
                 } = jsxProps;
 
-                const cellCls = `repeater-table-cell-wrapper repeater-table-cell-wrapper-${itemAlign}`;                
+                const cellCls = `repeater-table-cell-wrapper repeater-table-cell-wrapper-${itemAlign}`;
 
                 const focusMode = core.$focus;
                 const editable = status === 'edit';
@@ -90,7 +90,8 @@ export default function bind(source) {
 
                 let listItems = null;
                 const childMap = {};
-                [].concat(children).forEach((childitem) => {
+                const childrenRefArr = ([].concat(children)).reduce((a, b) => [].concat(a, b), []);
+                childrenRefArr.forEach((childitem) => {
                     const { label, name } = childitem.props;
                     childMap[`${label}${name}`] = React.cloneElement(childitem, { label: undefined });
                 });
@@ -99,14 +100,18 @@ export default function bind(source) {
                 listItems = itemsConfig.map((conf) => {
                     const cls = conf.className || '';
                     const style = conf.style || {};
+                    let customRender = null;
+                    if (conf.renderCell) {
+                        customRender = conf.renderCell(val[conf.name], { values: val, id: idx, core });
+                    }
                     let innerItem = null;
                     if (focusMode) {
                         innerItem = (<div className={`repeater-table-cell-wrapper inline-repeater-focus ${cls}`}>
-                            {childMap[`${conf.label}${conf.name}`]}
+                            { customRender || childMap[`${conf.label}${conf.name}`]}
                         </div>);
                     } else {
                         innerItem = (<div className={`${cellCls} ${cls}`}>
-                            {val[conf.name]}
+                            { customRender || val[conf.name]}
                         </div>);
                     }
 

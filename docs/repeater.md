@@ -22,13 +22,17 @@ import "./repeater.scss";
 const { Modal, Button, Input, Checkbox, Radio }  = wrapper(Antd);
 const Dialog = dialogWrapper(Antd)
 const { TableRepeater, InlineRepeater, Selectify, ActionButton } = repeater({ Dialog, Button, Input, Checkbox, Radio });
-// const { TableRepeater, InlineRepeater } = repeater({ Dialog, Button, Input });
 // 自定义的过滤函数
 function filter(value, key){
     return value.filter(item => item.drawerName.startsWith(key))
 }
 
+function filterUsername(value, key){
+    return value.filter(item => item.username.startsWith(key))
+}
+
 const SelectRepeater = Selectify(TableRepeater);
+const SelectRepeaterInline = Selectify(InlineRepeater);
 
 const formCore = new FormCore({
     autoValidate: true,
@@ -300,23 +304,23 @@ const inlineAsyncHandler = {
 };
 
 ReactDOM.render(<Form core={formCore} onChange={console.log} value={defaultValue}>
-    {/* <FormItem name="tabledemo" >
-        <TableRepeater formConfig={formConfig}>
+    {/* <FormItem name="tabledemo" defaultValue={[{ username: 'a' }, { username: 'b' }]}>
+        <TableRepeater filter={filterUsername} formConfig={formConfig}>
             <FormItem label="username" name="username"><Input /></FormItem>
         </TableRepeater>
     </FormItem>
-    <FormItem name="tabledemo" >
-        <InlineRepeater multiple formConfig={formConfig}>
+    <FormItem name="tabledemoff" defaultValue={[{ username: 'a' }, { username: 'b' }]}>
+        <InlineRepeater filter={filterUsername} formConfig={formConfig}>
             <FormItem label="username" name="username"><Input /></FormItem>
         </InlineRepeater>
-    </FormItem>
-    <FormItem name="deepselect">
+    </FormItem> */}
+    {/* <FormItem name="deepselect">
         <SelectRepeater selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig}>
             <FormItem label="username" name="username"><Input /></FormItem>
         </SelectRepeater>        
-    </FormItem>
+    </FormItem> */}
 
-    <FormItem defaultValue={{ dataSource: [{username: 'a', id: 'a'}, {username: 'b', id: 'b'}] }} name="deepselectxxxxx">
+    {/* <FormItem defaultValue={{ dataSource: [{username: 'a', id: 'a'}, {username: 'b', id: 'b'}] }} name="deepselectxxxxx">
         <SelectRepeater selectMode="single" formConfig={formConfig}>
             <FormItem label="username" name="username"><Input /></FormItem>
         </SelectRepeater>        
@@ -365,12 +369,26 @@ ReactDOM.render(<Form core={formCore} onChange={console.log} value={defaultValue
     <br/>
     <hr/>
 
-    <FormItem name="deep">
+    {/* <FormItem name="deep">
         <SelectRepeater selectMode="multiple" asyncHandler={asyncHandler} formConfig={formConfig}>
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
         </SelectRepeater>        
+    </FormItem> */}
+    {/* <FormItem name="deep">
+        <SelectRepeaterInline selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig}>
+            <FormItem label="开票人" name="drawerName"><Input /></FormItem>
+            <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
+        </SelectRepeaterInline>
+    </FormItem> */}
+
+    <FormItem name="deep">
+        <SelectRepeaterInline formConfig={formConfig}>
+            <FormItem label="开票人" name="drawerName"><Input /></FormItem>
+            <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
+        </SelectRepeaterInline>
     </FormItem>
+
 
     {/* <FormItem name="fuzz">
         <CustomEle />
