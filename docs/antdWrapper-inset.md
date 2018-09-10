@@ -20,7 +20,7 @@ const { Input, Select, Checkbox, Radio, Switch, Slider, DatePicker, TimePicker,
   Rate, Cascader, TreeSelect, Upload, Button, Modal, Icon, InputNumber, AutoComplete, Mention
 } = AntdWrapper(Antd);
 
-const { Textarea } = Input;
+const { TextArea } = Input;
 const { Group: RadioGroup } = Radio;
 const { Group: CheckboxGroup } = Checkbox;
 
@@ -68,7 +68,7 @@ class PageDemo extends React.Component {
               <FormItem label="AutoComplete" name="AutoComplete"><AutoComplete options={dataSource} /></FormItem>
               <FormItem label="超长中文换行" name="AutoComplete2"><AutoComplete options={dataSource} /></FormItem>
               <FormItem label="Mention" name="Mention"><Mention suggestions={['aaaaa', 'bbbbb', 'cccc']} /></FormItem>
-              <FormItem label="Textarea" name="Textarea"><Textarea /></FormItem>
+              <FormItem label="TextArea" name="TextArea"><TextArea /></FormItem>
 	          <FormItem label="select" name="select" full><Select options={dataSource} /></FormItem>
 	          <FormItem label="Checkbox" name="Checkbox"><Checkbox >选中</Checkbox></FormItem>
 	          <FormItem label="Radio" name="Radio"><Radio >选中</Radio></FormItem>

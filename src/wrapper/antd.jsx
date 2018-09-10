@@ -70,7 +70,7 @@ class WrapperClass {
         return <this.Antd.Input {...others} {...valueProps} {...insetify(props)} />;
     }
 
-    Textarea = (props) => {
+    TextArea = (props) => {
         const { status, value } = props;
         const valueProps = getValueProps(props);
 
@@ -334,7 +334,7 @@ class WrapperClass {
 
         this.Checkbox.Group = this.CheckboxGroup;
         this.Radio.Group = this.RadioGroup;
-        this.Input.Textarea = this.Textarea;
+        this.Input.TextArea = this.TextArea;
         const result = ['Input',
             'Select',
             'Checkbox',

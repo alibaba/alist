@@ -18,7 +18,7 @@ const { Input, Select, Checkbox, Radio, Switch, Slider, DatePicker, TimePicker,
 
 const Dialog = AntdDialogFormWrapper(Antd)
 
-const { Textarea } = Input;
+const { TextArea } = Input;
 const { Group: RadioGroup } = Radio;
 const { Group: CheckboxGroup } = Checkbox;
 import './antd.scss';
