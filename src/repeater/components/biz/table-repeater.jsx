@@ -60,7 +60,7 @@ export default function bind(source) {
                 } = context.props;
                 const {
                     status, hasHeader = true, view,
-                    addText = 'add', hasAdd = true, addPosition = 'top',
+                    addText = 'add', hasAdd = true, addPosition = 'top', maxLength,
                 } = jsxProps;
 
                 const editable = status === 'edit';
@@ -79,7 +79,12 @@ export default function bind(source) {
 
                 let addBtnEle = null;
                 if (hasAdd && editable) {
-                    addBtnEle = <ActionButton type="add" addText={addText} />;
+                    if (maxLength !== undefined && Array.isArray(children) &&
+                        (children.length > maxLength || children.length === maxLength)) {
+                        // do nothing...
+                    } else {
+                        addBtnEle = <ActionButton type="add" addText={addText} />;
+                    }
                 }
 
                 return (<div className={className}>

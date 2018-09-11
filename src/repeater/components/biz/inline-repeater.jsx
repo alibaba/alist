@@ -22,6 +22,7 @@ export default function bind(source) {
                     multiple = false,
                     hasHeader = true,
                     view,
+                    maxLength,
                 } = jsxProps;
 
                 const editable = status === 'edit';
@@ -45,7 +46,12 @@ export default function bind(source) {
                 const addType = multiple ? 'addMultipleInline' : 'addInline';
                 let addBtnEle = null;
                 if (hasAdd && editable) {
-                    addBtnEle = <ActionButton type={addType} addText={addText} />;
+                    if (maxLength !== undefined && Array.isArray(children) &&
+                        (children.length > maxLength || children.length === maxLength)) {
+                        // do nothing...
+                    } else {
+                        addBtnEle = <ActionButton type={addType} addText={addText} />;
+                    }
                 }
 
                 return (<div className={className}>

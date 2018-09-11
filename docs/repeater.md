@@ -383,7 +383,7 @@ ReactDOM.render(<Form core={formCore} onChange={console.log} value={defaultValue
     </FormItem> */}
 
     <FormItem name="deep">
-        <SelectRepeaterInline formConfig={formConfig}>
+        <SelectRepeaterInline formConfig={formConfig} maxLength={3}>
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
         </SelectRepeaterInline>
