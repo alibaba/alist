@@ -67,9 +67,11 @@ export default function createRepeater(bindSource, source) {
                 asyncHandler: this.asyncHandler,
             });
 
+            this.superFormProps = {};
             if (item && item.core) {
                 this.contextItem = item.core;
                 this.contextItem.addSubField(this.repeaterCore);
+                this.superFormProps = this.getSuperFormProps(item.core);
             }
         }
 
@@ -136,6 +138,19 @@ export default function createRepeater(bindSource, source) {
             }
 
             this.props.onChange(value, opts);
+        }
+
+        getSuperFormProps = (core) => {
+            let formProps = {};
+            if (core.form && core.form.jsx.props) {
+                const {
+                    defaultMinWidth, full, inline, inset, layout, colon,
+                } = core.form.jsx.props;
+                formProps = {
+                    defaultMinWidth, full, inline, inset, layout, colon,
+                };
+            }
+            return formProps;
         }
 
         getValue = () => this.props.value || []
@@ -353,7 +368,7 @@ export default function createRepeater(bindSource, source) {
         }
 
         render() {
-            const { repeaterCore, handleSearch } = this;
+            const { repeaterCore, handleSearch, superFormProps } = this;
             const {
                 style = {}, className, children, filter, view,
             } = this.props;
@@ -363,6 +378,8 @@ export default function createRepeater(bindSource, source) {
             const itemsConfig = React.Children.map(children, child => ({
                 name: child.props.name,
                 label: child.props.label,
+                prefix: child.props.prefix,
+                suffix: child.props.suffix,
                 multiple: child.props.multiple,
                 renderCell: child.props.renderCell,
                 style: child.props.style,
@@ -374,7 +391,9 @@ export default function createRepeater(bindSource, source) {
             const rowList = formList.map((core) => {
                 const val = core.getValues();
                 const { id } = core;
-                const itemProps = { id, val, core };
+                const itemProps = {
+                    id, val, core, formProps: superFormProps,
+                };
                 return <RowRender key={id} className="table-repeater-row" {...itemProps} />;
             });
 
@@ -392,6 +411,7 @@ export default function createRepeater(bindSource, source) {
                         jsxProps={this.props}
                         itemsConfig={itemsConfig}
                         repeaterCore={repeaterCore}
+                        formProps={this.superFormProps}
                         doAdd={this.doAdd}
                         doAddDialog={this.doAddDialog}
                         doUpdateDialog={this.doUpdateDialog}

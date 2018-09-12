@@ -34,6 +34,22 @@ function filterUsername(value, key){
 const SelectRepeater = Selectify(TableRepeater);
 const SelectRepeaterInline = Selectify(InlineRepeater);
 
+const tCore = new FormCore({
+    onChange: (fireKeys, values) => {
+        console.log('ffff', fireKeys, values);
+    }
+});
+
+setTimeout(() => {
+    tCore.setValues({
+        a: 'a',
+        b: 'b',
+        c: 'c',
+        d: 'd',
+    });
+});
+
+
 const formCore = new FormCore({
     autoValidate: true,
     validateConfig: {
@@ -62,7 +78,14 @@ const formCore = new FormCore({
     },
     onChange: (fireKeys, values) => {
         console.log('====>', fireKeys, values);
-    }
+    },
+    // values: {
+    //     rules: [{ price: '', threshold: '' }]
+    // }
+});
+
+formCore.setValues({
+    rules: [{ price: '', threshold: '' }]
 });
 
 window.formCore = formCore;
@@ -303,7 +326,24 @@ const inlineAsyncHandler = {
     }
 };
 
-ReactDOM.render(<Form core={formCore} onChange={console.log} value={defaultValue}>
+const extraProps = {
+    maxLength: 5
+};
+
+const sleep = (time) => {
+    return new Promise((resolve) => {
+        setTimeout(resolve, time);
+    });
+}
+
+const selectAsyncHandler = {
+    select: async (checked, values, arr) => {
+        await sleep(1000);
+        return true;
+    }
+};
+
+ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.log} value={defaultValue}>
     {/* <FormItem name="tabledemo" defaultValue={[{ username: 'a' }, { username: 'b' }]}>
         <TableRepeater filter={filterUsername} formConfig={formConfig}>
             <FormItem label="username" name="username"><Input /></FormItem>
@@ -382,11 +422,18 @@ ReactDOM.render(<Form core={formCore} onChange={console.log} value={defaultValue
         </SelectRepeaterInline>
     </FormItem> */}
 
-    <FormItem name="deep">
-        <SelectRepeaterInline formConfig={formConfig} maxLength={3}>
+    {/* <FormItem name="deep">
+        <SelectRepeaterInline asyncHandler={selectAsyncHandler} formConfig={formConfig} maxLength={3}>
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
         </SelectRepeaterInline>
+    </FormItem> */}
+
+    <FormItem name="rules">
+        <InlineRepeater {...extraProps} formConfig={formConfig}>
+            <FormItem prefix="满" suffix="元" label="threshold" name="threshold"><Input style={{ width: '100px' }}/></FormItem>
+            <FormItem defaultMinWidth prefix="减" suffix="元" label="price" name="price"><Input style={{ width: '100px' }} /></FormItem>
+        </InlineRepeater>
     </FormItem>
 
 

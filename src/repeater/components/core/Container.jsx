@@ -34,6 +34,7 @@ class Container extends Component {
         this.doAddInline = props.doAddInline;
         this.doUpdateInline = props.doUpdateInline;
         this.jsxProps = props.jsxProps;
+        this.formProps = props.formProps;
     }
 
     getChildContext() {
@@ -75,6 +76,7 @@ Container.propTypes = {
     doMultipleInline: PropTypes.func,
     render: PropTypes.func,
     jsxProps: PropTypes.object,
+    formProps: PropTypes.object,
 };
 
 export default Container;

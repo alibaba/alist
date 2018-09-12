@@ -70,7 +70,7 @@ export default function bind(source) {
             {...props}
             render={(context) => {
                 const {
-                    val, idx, core, className,
+                    val, idx, core, className, formProps,
                 } = context.props;
                 const { itemsConfig, jsxProps } = context;
 
@@ -116,8 +116,14 @@ export default function bind(source) {
                             { customRender || childMap[`${conf.label}${conf.name}`]}
                         </div>);
                     } else {
+                        const valElement = (<div className="repeater-table-cell-wrapper-inner">
+                            {conf.prefix ? <span className="repeater-table-cell-wrapper-inner-prefix">{conf.prefix}</span> : null}
+                            <span className="repeater-table-cell-wrapper-inner-content">{val[conf.name]}</span>
+                            {conf.suffix ? <span className="repeater-table-cell-wrapper-inner-suffix">{conf.suffix}</span> : null}
+                        </div>);
+
                         innerItem = (<div className={`${cellCls} ${cls}`}>
-                            { customRender || val[conf.name]}
+                            { customRender || valElement}
                         </div>);
                     }
 
@@ -135,7 +141,7 @@ export default function bind(source) {
                     </div> : null}
                 </td>);
 
-                return (<Form core={core} className={className} key={idx}>
+                return (<Form {...formProps} core={core} className={className} key={idx}>
                     {listItems}
                     {operEle}
                 </Form>);

@@ -105,10 +105,12 @@ class FormItem extends Component {
         // 处理布局
         const {
             inline = false, inset = false, colon, layout = {}, full: jsxFull,
+            defaultMinWidth = true,
         } = {
             ...this.form.jsx.props, ...itemProps,
         };
 
+        const defaultMinCls = defaultMinWidth ? `${formItemPrefix}-item-default-width` : `${formItemPrefix}-item-no-default-width`;
         const full = jsxFull || coreFull || inset;
         const errCls = hasMainError ? `${formItemPrefix}-item-has-error` : '';
         const subErrCls = hasSubError ? `${formItemPrefix}-item-has-sub-error` : '';
@@ -118,7 +120,7 @@ class FormItem extends Component {
         const inlineCls = inline ? `${formItemPrefix}-item-inline` : '';
 
         return (
-            <div id={this.id} name={`form-item-${name}`} className={`${formItemPrefix}-item ${className} ${layoutCls} ${colonCls} ${inlineCls}`} style={style}>
+            <div id={this.id} name={`form-item-${name}`} className={`${formItemPrefix}-item ${className} ${layoutCls} ${colonCls} ${inlineCls} ${defaultMinCls}`} style={style}>
                 <div className={`${insetCls} ${errCls} ${subErrCls}`}>
                     <span className={`${formItemPrefix}-item-label ${requiredCls} ${layout.label ? `col-${layout.label}` : ''}`} >{label}</span>
                     <span className={`${formItemPrefix}-item-control ${layout.control ? `col-${layout.control}` : ''}`} >

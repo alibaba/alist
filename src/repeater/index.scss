@@ -9,6 +9,18 @@
         min-width: 100px;
     }
 
+    .repeater-table-cell-wrapper-inner {
+        display: flex;
+        .repeater-table-cell-wrapper-inner-prefix,
+        .repeater-table-cell-wrapper-inner-suffix {
+            flex: initial;
+        }
+
+        .repeater-table-cell-wrapper-inner-content {
+            flex: 1;
+        }
+    }
+
     .repeater-table-cell-wrapper-left {
         text-align: left;
     }

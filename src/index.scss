@@ -21,6 +21,20 @@
         display: flex;
     }
 
+    .no-form-item.no-form-item-no-default-width {
+        .no-form-item-content-elem > * {
+            min-width: unset;
+        }
+    }
+
+    .no-form-item.no-form-item-no-default-width {
+        .no-form-item.no-form-item-default-width {
+            .no-form-item-content-elem > * {
+                min-width: 200px;
+            }
+        }
+    }
+
     &-item{
         width: 100%;
         position: relative;
@@ -68,6 +82,7 @@
                 min-width: 200px;
                 box-sizing: border-box;
             }
+
             &-elem{
                 flex: initial;
                 display: inline-block;

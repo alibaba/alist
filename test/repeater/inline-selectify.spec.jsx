@@ -364,7 +364,7 @@ describe('Repeater', () => {
 
         expect(form.find(Form).children('.table-repeater-row').length).toEqual(1);
         expect(form.find(Form).children('.table-repeater-row').at(0).find(Radio).length).toEqual(1);
-        expect(form.find(Form).children('.table-repeater-row').find('.repeater-table-cell-wrapper').at(1).prop('children')).toEqual('客户');
+        expect(form.find(Form).children('.table-repeater-row').find('.repeater-table-cell-wrapper').at(1).find('.repeater-table-cell-wrapper-inner-content').prop('children')).toEqual('客户');
 
         ReactTestUtils.Simulate.change(form.find('Input.repeater-search').getDOMNode(), {
             target: { value: '' },

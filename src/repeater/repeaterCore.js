@@ -173,7 +173,13 @@ class RepeaterCore {
 
         if (this.asyncHandler.add) {
             const index = this.formList.length - 1 < 0 ? 0 : this.formList.length - 1;
-            const result = await this.asyncHandler.add(tmp.getValues(), index);
+            let result = true;
+            try {
+                result = await this.asyncHandler.add(tmp.getValues(), index);
+            } catch (e) {
+                result = false;
+            }
+
             const { success: res = true, item, values: rv } = this.handleAsyncResult(result);
             success = res;
             if (item) {
@@ -219,7 +225,13 @@ class RepeaterCore {
 
         if (this.asyncHandler.add) {
             const index = this.formList.length - 1 < 0 ? 0 : this.formList.length - 1;
-            const result = await this.asyncHandler.add(tmp.getValues(), index);
+            let result = true;
+            try {
+                result = await this.asyncHandler.add(tmp.getValues(), index);
+            } catch (e) {
+                result = false;
+            }
+
             const { success: res = true, item, values: rv } = this.handleAsyncResult(result);
 
             success = res;
@@ -255,7 +267,13 @@ class RepeaterCore {
 
         if (this.asyncHandler.updateInline) {
             const index = this.formList.findIndex(rp => rp.id === id);
-            const result = await this.asyncHandler.updateInline(currentValues, index);
+            let result = true;
+            try {
+                result = await this.asyncHandler.updateInline(currentValues, index);
+            } catch (e) {
+                result = false;
+            }
+
             const { success: res = true, item, values: rv } = this.handleAsyncResult(result);
             success = res;
             if (rv) {
@@ -298,7 +316,13 @@ class RepeaterCore {
         if (lastCore) {
             if (this.asyncHandler.save) {
                 const index = this.formList.findIndex(rp => rp.id === id);
-                const result = await this.asyncHandler.save(lastCore.getValues(), index);
+                let result = true;
+                try {
+                    result = await this.asyncHandler.save(lastCore.getValues(), index);
+                } catch (e) {
+                    result = false;
+                }
+
                 const { success: res = true, item, values: rv } = this.handleAsyncResult(result);
                 success = res;
                 if (item) {
@@ -379,7 +403,13 @@ class RepeaterCore {
         let values = null;
         if (this.asyncHandler.add) {
             const index = this.formList.length - 1 < 0 ? 0 : this.formList.length - 1;
-            const result = await this.asyncHandler.add(core.getValues(), index);
+            let result = true;
+            try {
+                result = await this.asyncHandler.add(core.getValues(), index);
+            } catch (e) {
+                result = false;
+            }
+
             const { success: res = true, item, values: rv } = this.handleAsyncResult(result);
 
             success = res;
@@ -410,7 +440,13 @@ class RepeaterCore {
         if (this.asyncHandler.remove) {
             const index = this.formList.findIndex(rp => rp.id === id);
             const lastValues = lastCore.getValues();
-            const result = await this.asyncHandler.remove(lastValues, index);
+            let result = true;
+            try {
+                result = await this.asyncHandler.remove(lastValues, index);
+            } catch (e) {
+                result = false;
+            }
+
             const { success: res = true, values: rv } = this.handleAsyncResult(result);
             success = res;
 
@@ -437,7 +473,13 @@ class RepeaterCore {
         let values = null;
         if (this.asyncHandler.update) {
             const index = this.formList.findIndex(rp => rp.id === id);
-            const result = await this.asyncHandler.update(currentValues, index);
+            let result = true;
+            try {
+                result = await this.asyncHandler.update(currentValues, index);
+            } catch (e) {
+                result = false;
+            }
+
             const { success: res = true, item, values: rv } = this.handleAsyncResult(result);
             success = res;
             if (rv) {

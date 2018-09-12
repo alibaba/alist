@@ -81,7 +81,8 @@ export default function SelectRepeaterHOC(Source, Com) {
         }
 
         renderTrigger = (_, { values }) => {
-            const { selectMode, isSelectDisabled } = this.props;
+            const { selectMode, isSelectDisabled, asyncHandler } = this.props;
+            const { select: asyncSelect } = asyncHandler || {};
             const val = this.core.getValue('value') || [];
 
             let disabled = false;
@@ -92,11 +93,10 @@ export default function SelectRepeaterHOC(Source, Com) {
             const icChecked = !!val.find(lastItem => values.id === lastItem.id);
             const { TriggerCom } = this;
 
-
             return (<TriggerCom
                 disabled={disabled}
                 value={icChecked}
-                onChange={(checked) => {
+                onChange={async (checked) => {
                     let lastVal = this.core.getValue('value') || [];
                     if (selectMode === 'single') {
                         if (checked) {
@@ -108,8 +108,22 @@ export default function SelectRepeaterHOC(Source, Com) {
                         lastVal = lastVal.filter(fv => fv.id !== values.id);
                     }
 
-                    this.core.setValue('value', lastVal);
-                    this.repeater.forceUpdate(); // 强制刷新repeater，否则datasource内的内容不会刷新
+                    if (asyncSelect) {
+                        let canSyncSelect = true;
+                        try {
+                            canSyncSelect = await asyncSelect(checked, values, lastVal);
+                        } catch (e) {
+                            canSyncSelect = false;
+                        }
+
+                        if (canSyncSelect) {
+                            this.core.setValue('value', lastVal);
+                            this.repeater.forceUpdate(); // 强制刷新repeater，否则datasource内的内容不会刷新
+                        }
+                    } else {
+                        this.core.setValue('value', lastVal);
+                        this.repeater.forceUpdate(); // 强制刷新repeater，否则datasource内的内容不会刷新
+                    }
                 }}
             />);
         }
