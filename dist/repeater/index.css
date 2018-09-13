@@ -5,6 +5,13 @@
   margin-bottom: 12px; }
   .table-repeater-wrapper .repeater-table-header-node {
     min-width: 100px; }
+  .table-repeater-wrapper .repeater-table-cell-wrapper-inner {
+    display: flex; }
+    .table-repeater-wrapper .repeater-table-cell-wrapper-inner .repeater-table-cell-wrapper-inner-prefix,
+    .table-repeater-wrapper .repeater-table-cell-wrapper-inner .repeater-table-cell-wrapper-inner-suffix {
+      flex: initial; }
+    .table-repeater-wrapper .repeater-table-cell-wrapper-inner .repeater-table-cell-wrapper-inner-content {
+      flex: 1; }
   .table-repeater-wrapper .repeater-table-cell-wrapper-left {
     text-align: left; }
   .table-repeater-wrapper .repeater-table-cell-wrapper-center {
