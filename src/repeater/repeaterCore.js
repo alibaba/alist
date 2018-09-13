@@ -209,8 +209,8 @@ class RepeaterCore {
         const index = list.findIndex(item => item.id === ctx.id);
         cb(index);
 
-        if (this.asyncHandler.updateMultiple) {
-            this.asyncHandler.updateMultiple(keys, v, index);
+        if (this.asyncHandler.update) {
+            this.asyncHandler.update(keys, v, index);
         }
     }
 
@@ -265,11 +265,11 @@ class RepeaterCore {
         const hasError = await this.hasValidateError();
         if (hasError) return false;
 
-        if (this.asyncHandler.updateInline) {
+        if (this.asyncHandler.update) {
             const index = this.formList.findIndex(rp => rp.id === id);
             let result = true;
             try {
-                result = await this.asyncHandler.updateInline(currentValues, index);
+                result = await this.asyncHandler.update(currentValues, index);
             } catch (e) {
                 result = false;
             }

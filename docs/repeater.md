@@ -193,19 +193,19 @@ const asyncHandler = {
     update: (values) => {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                debugger;
-                resolve({
-                    success: true,
-                    values
-                });
-            }, 1500);
+                // resolve({
+                //     success: true,
+                //     values
+                // });
+                resolve(true);
+            }, 500);
         });
     },
     remove: () => {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 resolve(true);
-            }, 1500);
+            }, 500);
         });
     }
 };
@@ -409,16 +409,22 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
     <br/>
     <hr/>
 
-    {/* <FormItem name="deep">
+    <FormItem name="deep2">
         <SelectRepeater selectMode="multiple" asyncHandler={asyncHandler} formConfig={formConfig}>
-            <FormItem label="开票人" name="drawerName"><Input /></FormItem>
-            <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
+            <FormItem label="username" name="username"><Input /></FormItem>
+            <FormItem label="age" name="age"><Input /></FormItem>
         </SelectRepeater>        
-    </FormItem> */}
-    {/* <FormItem name="deep">
+    </FormItem>
+    <FormItem name="deep3">
+        <SelectRepeater selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig}>
+            <FormItem label="username" name="username"><Input /></FormItem>
+            <FormItem label="age" name="age"><Input /></FormItem>
+        </SelectRepeater>        
+    </FormItem>
+    {/* <FormItem name="deep3">
         <SelectRepeaterInline selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig}>
-            <FormItem label="开票人" name="drawerName"><Input /></FormItem>
-            <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
+            <FormItem label="username" name="username"><Input /></FormItem>
+            <FormItem label="age" name="age"><Input /></FormItem>
         </SelectRepeaterInline>
     </FormItem> */}
 

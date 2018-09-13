@@ -8,8 +8,8 @@ describe('RepeaterCore asyncHandler', () => {
     let repeaterCore;
     const asyncHandler = {
         add: () => {},
-        updateMultiple: () => {},
-        updateInline: () => {},
+        // updateMultiple: () => {},
+        // updateInline: () => {},
         save: () => {},
         remove: () => {},
         update: () => {},
@@ -55,7 +55,7 @@ describe('RepeaterCore asyncHandler', () => {
     });
 
     it('asyncHandler updateMultiple', async () => {
-        const fnHook = jest.spyOn(asyncHandler, 'updateMultiple');
+        const fnHook = jest.spyOn(asyncHandler, 'update');
         const lastCount = fnHook.mock.calls.length;
         const newForm = new FormCore();
         await repeaterCore.add(newForm);
@@ -80,7 +80,7 @@ describe('RepeaterCore asyncHandler', () => {
     });
 
     it('asyncHandler updateInline', async () => {
-        const fnHook = jest.spyOn(asyncHandler, 'updateInline');
+        const fnHook = jest.spyOn(asyncHandler, 'update');
         const newForm = new FormCore();
         const lastCount = fnHook.mock.calls.length;
         await repeaterCore.add(newForm);
