@@ -100,7 +100,7 @@ export default function bind(source) {
                 const childrenRefArr = ([].concat(children)).reduce((a, b) => [].concat(a, b), []);
                 childrenRefArr.forEach((childitem) => {
                     const { label, name } = childitem.props;
-                    childMap[`${label}${name}`] = React.cloneElement(childitem, { label: undefined, layout: {} });
+                    childMap[`${label}${name}`] = React.cloneElement(childitem, { label: undefined, layout: { label: null, control: null } });
                 });
 
                 // 遍历渲染数据
