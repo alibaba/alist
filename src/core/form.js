@@ -287,7 +287,12 @@ class Form {
     // 重置value
     reset(keys) {
         const emptyValue = {};
-        const resetKeys = keys || Object.keys(this.value);
+        let resetKeys = [];
+        if (Array.isArray(keys)) {
+            resetKeys = keys;
+        } else {
+            resetKeys = Object.keys(this.value);
+        }
         resetKeys.forEach((key) => {
             emptyValue[key] = null;
         });
