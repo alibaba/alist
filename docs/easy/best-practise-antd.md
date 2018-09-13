@@ -12,7 +12,7 @@
 
 We are going to use `create-react-app` to generate start-up prject, and use `NoForm` and `antd` to write our form application.
 
-You can alos clone [this repo](https://github.com/quirkyshop/noform-start-app)
+You can also just clone [this repo](https://github.com/quirkyshop/noform-start-app)
 
 ```
 
