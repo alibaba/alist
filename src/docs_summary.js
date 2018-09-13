@@ -201,9 +201,29 @@ export default {
           "enTitle": "Base"
         },
         {
+          "path": "/docs?md=repeater/config",
+          "title": "配置",
+          "level": "6.2",
+          "articles": [],
+          "exists": true,
+          "external": false,
+          "introduction": false,
+          "enTitle": "Config"
+        },
+        {
+          "path": "/docs?md=repeater/asyncHandler",
+          "title": "钩子",
+          "level": "6.3",
+          "articles": [],
+          "exists": true,
+          "external": false,
+          "introduction": false,
+          "enTitle": "Hook"
+        },
+        {
           "path": "/docs?md=repeater/antd",
           "title": "接入 Ant Design",
-          "level": "6.2",
+          "level": "6.4",
           "articles": [],
           "exists": true,
           "external": false,

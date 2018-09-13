@@ -129,11 +129,11 @@ render() {
 
 ```i18n
 
-Repeater也提供以下钩子函数。
+Repeater也提供以下钩子函数。详细情况请查看[asyncHandler](/docs?md=repeater/asyncHandler)
 
 @sep
 
-Rpeater also provides these hook funtion.
+Rpeater also provides these hook funtion.Please check [asyncHandler](/docs?md=repeater/asyncHandler) for more informations.
 
 ```
 
@@ -159,11 +159,12 @@ const asyncHandler = {
 
 ```i18n
 
-Rpeater 还能够定义单行的Form的配置`formConfig`，配置方式与独立的[core](/docs?md=basic/core)完全一致。
+Rpeater 还能够定义单行的Form的配置`formConfig`，配置方式与独立的[core](/docs?md=basic/core)完全一致。更多配置请查看[Config](/docs?md=repeater/config)
+
 
 @sep
 
-Rpeater also provide `formConfig` to decalre form of each row. FormConfig is compatible with [core](/docs?md=basic/core).
+Rpeater also provide `formConfig` to decalre form of each row. FormConfig is compatible with [core](/docs?md=basic/core). Please check [Config](/docs?md=repeater/config) for more configuration.
 
 ```
 

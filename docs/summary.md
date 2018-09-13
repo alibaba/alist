@@ -19,4 +19,6 @@
    * [接入 Ant Design|Integrate With Ant Design](docs/dialog/antd.md)
 * [Repeater]()
    * [基础类型|Base](docs/repeater/base.md)
+   * [配置|Config](docs/repeater/config.md)
+   * [钩子|Hook](docs/repeater/asyncHandler.md)
    * [接入 Ant Design|Integrate With Ant Design](docs/repeater/antd.md)
