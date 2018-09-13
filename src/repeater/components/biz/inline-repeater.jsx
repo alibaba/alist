@@ -95,12 +95,13 @@ export default function bind(source) {
                 const saveBtn = !multiple && focusMode ? <ActionButton type="save" saveText={saveText} /> : null;
                 const cancelBtn = !multiple && focusMode ? <ActionButton type="cancel" cancelText={cancelText} /> : null;
 
+                const cleanLayout = { layout: { label: null, control: null } };
                 let listItems = null;
                 const childMap = {};
                 const childrenRefArr = ([].concat(children)).reduce((a, b) => [].concat(a, b), []);
                 childrenRefArr.forEach((childitem) => {
                     const { label, name } = childitem.props;
-                    childMap[`${label}${name}`] = React.cloneElement(childitem, { label: undefined, layout: { label: null, control: null } });
+                    childMap[`${label}${name}`] = React.cloneElement(childitem, { label: undefined, ...cleanLayout });
                 });
 
                 // 遍历渲染数据
@@ -142,7 +143,7 @@ export default function bind(source) {
                     </div> : null}
                 </td>);
 
-                return (<Form {...formProps} core={core} className={className} key={idx}>
+                return (<Form {...formProps} {...cleanLayout} core={core} className={className} key={idx}>
                     {listItems}
                     {operEle}
                 </Form>);
