@@ -61,6 +61,7 @@ export default function bind(source) {
                 const {
                     status, hasHeader = true, view,
                     addText = 'add', hasAdd = true, addPosition = 'top', maxLength,
+                    operateText = 'operate',
                 } = jsxProps;
 
                 const editable = status === 'edit';
@@ -73,7 +74,7 @@ export default function bind(source) {
 
                 if (editable) {
                     header.push(<th className="repeater-table-header-node" key="last">
-                        <div className={cellCls}> 操作 </div>
+                        <div className={cellCls}>{operateText}</div>
                     </th>);
                 }
 

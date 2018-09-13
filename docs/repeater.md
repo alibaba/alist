@@ -436,6 +436,13 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
         </InlineRepeater>
     </FormItem>
 
+    <FormItem name="rulesx">
+        <InlineRepeater multiple {...extraProps} formConfig={formConfig}>
+            <FormItem prefix="满" suffix="元" label="threshold" name="threshold"><Input style={{ width: '100px' }}/></FormItem>
+            <FormItem defaultMinWidth prefix="减" suffix="元" label="price" name="price"><Input style={{ width: '100px' }} /></FormItem>
+        </InlineRepeater>
+    </FormItem>
+
 
     {/* <FormItem name="fuzz">
         <CustomEle />

@@ -23,6 +23,7 @@ export default function bind(source) {
                     hasHeader = true,
                     view,
                     maxLength,
+                    operateText = 'operate',
                 } = jsxProps;
 
                 const editable = status === 'edit';
@@ -39,7 +40,7 @@ export default function bind(source) {
 
                 if (editable) {
                     header.push(<th className="repeater-table-header-node" key="last">
-                        <div className={cellCls}> 操作 </div>
+                        <div className={cellCls}>{operateText}</div>
                     </th>);
                 }
 
@@ -99,7 +100,7 @@ export default function bind(source) {
                 const childrenRefArr = ([].concat(children)).reduce((a, b) => [].concat(a, b), []);
                 childrenRefArr.forEach((childitem) => {
                     const { label, name } = childitem.props;
-                    childMap[`${label}${name}`] = React.cloneElement(childitem, { label: undefined });
+                    childMap[`${label}${name}`] = React.cloneElement(childitem, { label: undefined, layout: {} });
                 });
 
                 // 遍历渲染数据
