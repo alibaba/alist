@@ -4,10 +4,15 @@
 # 结合 Ant Design 最佳实践
 
 本文会使用create-react-app作为脚手架，然后在创建的工程里使用 NoForm 和 antd 组件 的结合，快速的编写表单应用。
+
+当然，你也可以直接clone [这个项目](https://github.com/quirkyshop/noform-start-app)
+
 @sep
 # Best Practise with Ant Design
 
 We are going to use `create-react-app` to generate start-up prject, and use `NoForm` and `antd` to write our form application.
+
+You can alos clone [this repo](https://github.com/quirkyshop/noform-start-app)
 
 ```
 
