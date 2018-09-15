@@ -26,6 +26,7 @@ class Form extends Component {
         status: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
         globalStatus: PropTypes.string,
         props: PropTypes.object,
+        Com: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     }
     static contextTypes = {
         item: PropTypes.object,
@@ -49,6 +50,7 @@ class Form extends Component {
         status: STATUS_ENUMS.EDIT,
         globalStatus: STATUS_ENUMS.EDIT,
         props: null,
+        Com: 'div',
     };
 
     constructor(props, context) {
@@ -155,9 +157,9 @@ class Form extends Component {
     render() {
         // 默认布局为垂直布局
         const {
-            full, style = {}, children, className = '', direction = 'vertical',
+            Com, full, style = {}, children, className = '', direction = 'vertical',
         } = this.props;
-        return <div style={style} className={`no-form no-form-${direction} ${className} no-form-${full ? 'full' : 'auto'}`}>{children}</div>;
+        return <Com style={style} className={`no-form no-form-${direction} ${className} no-form-${full ? 'full' : 'auto'}`}>{children}</Com>;
     }
 }
 

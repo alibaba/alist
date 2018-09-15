@@ -5,8 +5,12 @@ import ContainerJSX from '../core/Container';
 import RowRenderJSX from '../core/RowRender';
 import createActionButton from '../core/ActionButton';
 
-export default function bind(source) {
+export default function bind(type, source) {
     const ActionButton = createActionButton(source);
+
+    const isInline = type === 'inline';
+    const isTable = type === 'table';
+    const addSuffix = isInline ? 'Inline' : '';
 
     function Container(props) {
         return (<ContainerJSX
@@ -43,8 +47,8 @@ export default function bind(source) {
                         <div className={cellCls}>{operateText}</div>
                     </th>);
                 }
-
-                const addType = multiple ? 'addMultipleInline' : 'addInline';
+                
+                const addType = multiple ? `addMultiple${addSuffix}` : `add${addSuffix}`;
                 let addBtnEle = null;
                 if (hasAdd && editable) {
                     if (maxLength !== undefined && Array.isArray(children) &&
@@ -70,10 +74,9 @@ export default function bind(source) {
         return (<RowRenderJSX
             {...props}
             render={(context) => {
-                const {
-                    val, idx, core, className, formProps,
-                } = context.props;
+                const { val, idx, className, formProps } = context.props;
                 const { itemsConfig, jsxProps } = context;
+                const { core } = props;
 
                 const {
                     status,
@@ -89,11 +92,11 @@ export default function bind(source) {
                 const focusMode = core.$focus;
                 const editable = status === 'edit';
 
-                const updateBtn = !multiple && !focusMode && hasUpdate ? <ActionButton type="updateInline" updateText={updateText} /> : null;
+                const updateBtn = !multiple && !focusMode && hasUpdate ? <ActionButton type={`update${addSuffix}`} updateText={updateText} /> : null;
                 const deleteBtn = (!focusMode || multiple) && hasDelete ? <ActionButton type="delete" deleteText={deleteText} /> : null;
 
-                const saveBtn = !multiple && focusMode ? <ActionButton type="save" saveText={saveText} /> : null;
-                const cancelBtn = !multiple && focusMode ? <ActionButton type="cancel" cancelText={cancelText} /> : null;
+                const saveBtn = !isTable && !multiple && focusMode ? <ActionButton type="save" saveText={saveText} /> : null;
+                const cancelBtn = !isTable && !multiple && focusMode ? <ActionButton type="cancel" cancelText={cancelText} /> : null;
 
                 const cleanLayout = { layout: { label: null, control: null } };
                 let listItems = null;
@@ -112,6 +115,7 @@ export default function bind(source) {
                     if (conf.renderCell) {
                         customRender = conf.renderCell(val[conf.name], { values: val, id: idx, core });
                     }
+
                     let innerItem = null;
                     if (focusMode) {
                         innerItem = (<div className={`repeater-table-cell-wrapper inline-repeater-focus ${cls}`}>
@@ -143,7 +147,7 @@ export default function bind(source) {
                     </div> : null}
                 </td>);
 
-                return (<Form {...formProps} {...cleanLayout} core={core} className={className} key={idx}>
+                return (<Form Com="tr" {...formProps} {...cleanLayout} core={core} className={className} key={idx}>
                     {listItems}
                     {operEle}
                 </Form>);
@@ -151,9 +155,5 @@ export default function bind(source) {
         />);
     }
 
-    return {
-        Container,
-        RowRender,
-        inline: true,
-    };
+    return { Container, RowRender };
 }

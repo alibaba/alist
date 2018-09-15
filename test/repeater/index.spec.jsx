@@ -229,7 +229,7 @@ describe('Repeater', () => {
         form.mount();
 
         expect(form.find('tr.table-repeater-row').length).toEqual(1);
-        expect(form.find('tr.table-repeater-row .repeater-table-cell-wrapper').at(0).prop('children')).toEqual('客户');
+        expect(form.find('tr.table-repeater-row .repeater-table-cell-wrapper').at(0).find('.repeater-table-cell-wrapper-inner-content').prop('children')).toEqual('客户');
 
         ReactTestUtils.Simulate.change(form.find('Input.repeater-search').getDOMNode(), {
             target: { value: '' },

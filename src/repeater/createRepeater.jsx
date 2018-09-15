@@ -23,15 +23,18 @@ const assignListItem = (arr) => {
     return arr;
 };
 
-export default function createRepeater(bindSource, source) {
-    const { Container, RowRender } = bindSource(source);
+export default function createRepeater(bindSource, type, source) {
+    const { Container, RowRender } = bindSource(type, source);
     const { Input = noop, Dialog } = source;
 
     return class OtRepeater extends Component {
         static propTypes = {
             view: PropTypes.any,
             core: PropTypes.any,
-            status: PropTypes.string,
+            status: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.object,
+            ]),
             asyncHandler: PropTypes.object,
             dialogConfig: PropTypes.object,
             formConfig: PropTypes.object,
@@ -40,13 +43,21 @@ export default function createRepeater(bindSource, source) {
             multiple: PropTypes.bool,
             filter: PropTypes.func,
             onMount: PropTypes.func,
-            value: PropTypes.array,
-            onChange: PropTypes.func.isRequired,
+            value: PropTypes.oneOfType([
+                PropTypes.array,
+                PropTypes.object,
+            ]),
+            onChange: PropTypes.func,
             children: PropTypes.any,
         }
 
         static contextTypes = {
             item: PropTypes.object,
+        };
+
+        static defaultProps = {
+            onChange: () => {},
+            status: 'edit',
         };
 
         constructor(props, context) {

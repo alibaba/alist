@@ -75,9 +75,13 @@ class DialogForm {
 
         const footer = this.renderFooter(Button);
         const mixFooterContent = [].concat(children, footer);
+        const onMountProps = {};
+        if (formInstance.displayName === 'NoForm') {
+            onMountProps.onMount = hijackCore;
+        }
         const modalContent = React.cloneElement(formInstance, {
             ...formInstanceProps,
-            onMount: hijackCore,
+            ...onMountProps,
             children: mixFooterContent,
         });
 
@@ -137,7 +141,7 @@ class ActionButton extends React.Component {
         offLoading: PropTypes.func,
         onClick: PropTypes.func,
         btnLoadingPropsName: PropTypes.string,
-        btnOrigin: PropTypes.oneOf([PropTypes.func, PropTypes.string]),
+        btnOrigin: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     }
     constructor(props, context) {
         super(props, context);

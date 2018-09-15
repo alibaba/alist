@@ -8,14 +8,21 @@ export default function SelectRepeaterHOC(Source, Com) {
     return class SelectRepeater extends Component {
         static defaultProps = {
             selectMode: 'single',
+            dataSource: [],
         };
 
         static propTypes = {
             children: PropTypes.any,
             selectFormConfig: PropTypes.object,
             selectMode: PropTypes.string,
-            dataSource: PropTypes.array,
-            value: PropTypes.array,
+            dataSource: PropTypes.oneOfType([
+                PropTypes.array,
+                PropTypes.object,
+            ]),
+            value: PropTypes.oneOfType([
+                PropTypes.array,
+                PropTypes.object,
+            ]),
             onChange: PropTypes.func,
         };
 
