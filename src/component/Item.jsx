@@ -242,7 +242,12 @@ class Item extends Component {
         } = props || {};
         const { inset, style } = this.props;
 
-        const component = React.Children.only(this.props.children);
+        let component = null;
+        if (this.props.children === null) {
+            return null;
+        }
+
+        component = React.Children.only(this.props.children);
         let disabled = false;
 
         if (status === 'disabled') {

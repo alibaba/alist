@@ -67,13 +67,22 @@ class FormItem extends Component {
     }
     render() {
         const { children, ...itemProps } = this.props;
-        const { name, style = {} } = itemProps;
+        const {
+            name, style = {},
+            status: propStatus,
+            error: propError,
+        } = itemProps;
         const restItemProps = { ...itemProps, id: this.id };
         delete restItemProps.style;
         const { className = '' } = itemProps;
         const props = this.form.getItemProps(name) || {}; // 动态props
-        const status = this.form.getItemStatus(name); // 动态status
-        const error = this.form.getItemError(name); // 动态error
+        let status = this.form.getItemStatus(name); // 动态status
+        let error = this.form.getItemError(name); // 动态error
+        if (!name) {
+            status = propStatus;
+            error = propError;
+        }
+
         // 保留item关键字属性
         const {
             errorRender, label, top, suffix, prefix, help, required, full: coreFull,

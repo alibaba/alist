@@ -23,7 +23,7 @@ const assignListItem = (arr) => {
     return arr;
 };
 
-export default function createRepeater(bindSource, type, source) {
+export default function CreateRepeater(bindSource, type, source) {
     const { Container, RowRender } = bindSource(type, source);
     const { Input = noop, Dialog } = source;
 
@@ -395,15 +395,16 @@ export default function createRepeater(bindSource, type, source) {
                 renderCell: child.props.renderCell,
                 style: child.props.style,
                 className: child.props.className,
-            })).filter(item => (item.name || item.multiple));
+            })).filter(item => (item.name || item.multiple || item.renderCell));
 
             const searchEle = filter ? <Input className="repeater-search" onChange={handleSearch} /> : null;
 
-            const rowList = formList.map((core) => {
+            const rowList = formList.map((core, rowIndex) => {
                 const val = core.getValues();
                 const { id } = core;
                 const itemProps = {
                     id, val, core, formProps: superFormProps,
+                    rowIndex,
                 };
                 return <RowRender key={id} className="table-repeater-row" {...itemProps} />;
             });

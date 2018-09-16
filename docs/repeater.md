@@ -344,21 +344,23 @@ const selectAsyncHandler = {
 };
 
 ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.log} value={defaultValue}>
-    {/* <FormItem name="tabledemo" defaultValue={[{ username: 'a' }, { username: 'b' }]}>
-        <TableRepeater filter={filterUsername} formConfig={formConfig}>
+    <FormItem name="tabledemo" defaultValue={[{ username: 'a' }, { username: 'b' }]}>
+        <TableRepeater hasOrder filter={filterUsername} formConfig={formConfig}>
+            <FormItem status="hidden" label="order" renderCell={(_, { index: order }) => <div>{order+1}</div> } />
             <FormItem label="username" name="username"><Input /></FormItem>
         </TableRepeater>
     </FormItem>
     <FormItem name="tabledemoff" defaultValue={[{ username: 'a' }, { username: 'b' }]}>
-        <InlineRepeater filter={filterUsername} formConfig={formConfig}>
-            <FormItem label="username" name="username"><Input /></FormItem>
+        <InlineRepeater hasOrder filter={filterUsername} formConfig={formConfig}>
+            <FormItem status="hidden" label="order" renderCell={(_, { index: order }) => <div>{order+1}</div> } />
+            <FormItem suffix="USD" label="username" name="username"><Input /></FormItem>
         </InlineRepeater>
-    </FormItem> */}
-    {/* <FormItem name="deepselect">
+    </FormItem>
+    <FormItem name="deepselect">
         <SelectRepeater selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig}>
             <FormItem label="username" name="username"><Input /></FormItem>
         </SelectRepeater>        
-    </FormItem> */}
+    </FormItem>
 
     {/* <FormItem defaultValue={{ dataSource: [{username: 'a', id: 'a'}, {username: 'b', id: 'b'}] }} name="deepselectxxxxx">
         <SelectRepeater selectMode="single" formConfig={formConfig}>
@@ -409,7 +411,7 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
     <br/>
     <hr/>
 
-    <FormItem name="deep2">
+    {/* <FormItem name="deep2">
         <SelectRepeater selectMode="multiple" asyncHandler={asyncHandler} formConfig={formConfig}>
             <FormItem label="username" name="username"><Input /></FormItem>
             <FormItem label="age" name="age"><Input /></FormItem>
@@ -420,7 +422,7 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
             <FormItem label="username" name="username"><Input /></FormItem>
             <FormItem label="age" name="age"><Input /></FormItem>
         </SelectRepeater>        
-    </FormItem>
+    </FormItem> */}
     {/* <FormItem name="deep3">
         <SelectRepeaterInline selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig}>
             <FormItem label="username" name="username"><Input /></FormItem>

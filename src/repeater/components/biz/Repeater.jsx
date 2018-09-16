@@ -47,7 +47,7 @@ export default function bind(type, source) {
                         <div className={cellCls}>{operateText}</div>
                     </th>);
                 }
-                
+
                 const addType = multiple ? `addMultiple${addSuffix}` : `add${addSuffix}`;
                 let addBtnEle = null;
                 if (hasAdd && editable) {
@@ -59,11 +59,18 @@ export default function bind(type, source) {
                     }
                 }
 
+                let containerContent = (<TableCom hasHeader={hasHeader} header={header}>
+                    {children}
+                </TableCom>);
+
+                if (view) {
+                    containerContent = children;
+                }
+
                 return (<div className={className}>
                     {searchEle}
                     {addPosition === 'top' ? addBtnEle : null}
-                    {view ? null : <TableCom hasHeader={hasHeader} header={header}>{children}</TableCom>}
-                    {view ? children : null}
+                    {containerContent}
                     {addPosition === 'bottom' ? addBtnEle : null}
                 </div>);
             }}
@@ -74,9 +81,11 @@ export default function bind(type, source) {
         return (<RowRenderJSX
             {...props}
             render={(context) => {
-                const { val, idx, className, formProps } = context.props;
+                const {
+                    val, idx, className, formProps,
+                } = context.props;
                 const { itemsConfig, jsxProps } = context;
-                const { core } = props;
+                const { core, rowIndex } = props;
 
                 const {
                     status,
@@ -87,10 +96,10 @@ export default function bind(type, source) {
                     children,
                 } = jsxProps;
 
-                const cellCls = `repeater-table-cell-wrapper repeater-table-cell-wrapper-${itemAlign}`;
-
                 const focusMode = core.$focus;
                 const editable = status === 'edit';
+                const focusCls = focusMode ? 'inline-repeater-focus' : '';
+                const cellCls = `repeater-table-cell-wrapper ${focusCls} repeater-table-cell-wrapper-${itemAlign}`;
 
                 const updateBtn = !multiple && !focusMode && hasUpdate ? <ActionButton type={`update${addSuffix}`} updateText={updateText} /> : null;
                 const deleteBtn = (!focusMode || multiple) && hasDelete ? <ActionButton type="delete" deleteText={deleteText} /> : null;
@@ -113,25 +122,27 @@ export default function bind(type, source) {
                     const style = conf.style || {};
                     let customRender = null;
                     if (conf.renderCell) {
-                        customRender = conf.renderCell(val[conf.name], { values: val, id: idx, core });
+                        customRender = conf.renderCell(val[conf.name], {
+                            values: val, id: idx, core, index: rowIndex,
+                        });
                     }
 
                     let innerItem = null;
-                    if (focusMode) {
-                        innerItem = (<div className={`repeater-table-cell-wrapper inline-repeater-focus ${cls}`}>
-                            { customRender || childMap[`${conf.label}${conf.name}`]}
-                        </div>);
-                    } else {
-                        const valElement = (<div className="repeater-table-cell-wrapper-inner">
-                            {conf.prefix ? <span className="repeater-table-cell-wrapper-inner-prefix">{conf.prefix}</span> : null}
-                            <span className="repeater-table-cell-wrapper-inner-content">{val[conf.name]}</span>
-                            {conf.suffix ? <span className="repeater-table-cell-wrapper-inner-suffix">{conf.suffix}</span> : null}
-                        </div>);
+                    const innerValElement = customRender || val[conf.name];
+                    let valElement = (<div className="repeater-table-cell-wrapper-inner">
+                        {conf.prefix ? <span className="repeater-table-cell-wrapper-inner-prefix">{conf.prefix}</span> : null}
+                        <span className="repeater-table-cell-wrapper-inner-content">{innerValElement}</span>
+                        {conf.suffix ? <span className="repeater-table-cell-wrapper-inner-suffix">{conf.suffix}</span> : null}
+                    </div>);
 
-                        innerItem = (<div className={`${cellCls} ${cls}`}>
-                            { customRender || valElement}
-                        </div>);
+                    if (!customRender && focusMode) {
+                        valElement = childMap[`${conf.label}${conf.name}`];
                     }
+
+                    innerItem = (<div className={`${cellCls} ${cls}`}>
+                        {valElement}
+                    </div>);
+
 
                     return (<td style={style} key={`${conf.label}${conf.name}`}>
                         {innerItem}

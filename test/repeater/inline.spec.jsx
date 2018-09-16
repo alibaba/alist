@@ -57,6 +57,20 @@ describe('Inline Repeater', () => {
         await form.find(InlineRepeater).instance().doAdd(testValues);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
     });
+    it('max length', async () => {
+        form = mount(<Form onMount={formmount}>
+            <Item name="repeat">
+                <InlineRepeater maxLength={1}>
+                    <FormItem label="开票人" name="drawerName"><Input /></FormItem>
+                </InlineRepeater>
+            </Item>
+        </Form>);
+        expect(form.find('button.repeater-add').length).toEqual(1);
+        await form.find(InlineRepeater).instance().doAdd(testValues);
+        form.mount();
+        expect(form.find('button.repeater-add').length).toEqual(0);
+        expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
+    });
     it('should update', async () => {
         // console.log(form.find(InlineRepeater).instance().doAdd);
         await form.find(InlineRepeater).instance().doAdd(testValues);

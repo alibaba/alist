@@ -57,6 +57,20 @@ describe('Repeater', () => {
         await form.find(TableRepeater).instance().doAdd(testValues);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
     });
+    it('max length', async () => {
+        form = mount(<Form onMount={formmount}>
+            <Item name="repeat">
+                <TableRepeater maxLength={1}>
+                    <FormItem label="开票人" name="drawerName"><Input /></FormItem>
+                </TableRepeater>
+            </Item>
+        </Form>);
+        expect(form.find('button.repeater-add').length).toEqual(1);
+        await form.find(TableRepeater).instance().doAdd(testValues);
+        form.mount();
+        expect(form.find('button.repeater-add').length).toEqual(0);
+        expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
+    });
     it('should add with validation', async () => {
         const validateConfig = {
             drawerName: { type: 'string', required: true },
@@ -196,6 +210,35 @@ describe('Repeater', () => {
         expect(JSON.stringify(formCore.getValue())).toEqual(JSON.stringify({
             repeat: [],
         }));
+    });
+
+    it('custom render(order)', async () => {
+        form = mount(<Form onMount={formmount}>
+            <Item name="repeat">
+                <TableRepeater>
+                    <FormItem label="order" renderCell={(_, { index: order }) => <div>{order + 1}</div>} />
+                    <FormItem label="开票人" name="drawerName"><Input /></FormItem>
+                </TableRepeater>
+            </Item>
+        </Form>);
+
+        const valuesArr = [
+            { drawerName: '开票人' },
+            { drawerName: '客户' },
+            { drawerName: '拍档' },
+            { drawerName: '销售' },
+        ];
+
+        await form.find(TableRepeater).instance().doAdd(valuesArr[0]);
+        await form.find(TableRepeater).instance().doAdd(valuesArr[1]);
+        await form.find(TableRepeater).instance().doAdd(valuesArr[2]);
+        await form.find(TableRepeater).instance().doAdd(valuesArr[3]);
+        form.mount();
+
+        expect(form.find('tr.table-repeater-row').at(0).find('.repeater-table-cell-wrapper .repeater-table-cell-wrapper-inner-content div').prop('children')).toEqual(1);
+        expect(form.find('tr.table-repeater-row').at(1).find('.repeater-table-cell-wrapper .repeater-table-cell-wrapper-inner-content div').prop('children')).toEqual(2);
+        expect(form.find('tr.table-repeater-row').at(2).find('.repeater-table-cell-wrapper .repeater-table-cell-wrapper-inner-content div').prop('children')).toEqual(3);
+        expect(form.find('tr.table-repeater-row').at(3).find('.repeater-table-cell-wrapper .repeater-table-cell-wrapper-inner-content div').prop('children')).toEqual(4);
     });
 
     it('filter works', async () => {
