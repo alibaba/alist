@@ -216,7 +216,7 @@ describe('Repeater', () => {
         form = mount(<Form onMount={formmount}>
             <Item name="repeat">
                 <TableRepeater>
-                    <FormItem label="order" renderCell={(_, { index: order }) => <div>{order + 1}</div>} />
+                    <FormItem label="order" status="hidden" renderCell={(_, { index: order }) => <div>{order + 1}</div>} />
                     <FormItem label="开票人" name="drawerName"><Input /></FormItem>
                 </TableRepeater>
             </Item>
@@ -239,6 +239,10 @@ describe('Repeater', () => {
         expect(form.find('tr.table-repeater-row').at(1).find('.repeater-table-cell-wrapper .repeater-table-cell-wrapper-inner-content div').prop('children')).toEqual(2);
         expect(form.find('tr.table-repeater-row').at(2).find('.repeater-table-cell-wrapper .repeater-table-cell-wrapper-inner-content div').prop('children')).toEqual(3);
         expect(form.find('tr.table-repeater-row').at(3).find('.repeater-table-cell-wrapper .repeater-table-cell-wrapper-inner-content div').prop('children')).toEqual(4);
+
+        form.find('button.repeater-update').at(0).simulate('click');
+        await sleep(500);
+        expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .no-form-item-label').length).toEqual(1);
     });
 
     it('filter works', async () => {
