@@ -9,6 +9,7 @@ export default function SelectRepeaterHOC(Source, Com) {
         static defaultProps = {
             selectMode: 'single',
             dataSource: [],
+            selectKey: 'id',
         };
 
         static propTypes = {
@@ -24,6 +25,7 @@ export default function SelectRepeaterHOC(Source, Com) {
                 PropTypes.object,
             ]),
             onChange: PropTypes.func,
+            selectKey: PropTypes.string,
         };
 
         constructor(props, context) {
@@ -59,6 +61,7 @@ export default function SelectRepeaterHOC(Source, Com) {
         }
 
         componentWillReceiveProps = (nextProps) => {
+            const { selectKey } = this.props;
             const { dataSource, value } = nextProps.value || {};
             // 下述代码在interceptor中完成
             let formatValue = [].concat(value);
@@ -68,15 +71,15 @@ export default function SelectRepeaterHOC(Source, Com) {
                 formatDataSource = dataSource;
                 const idMap = {};
                 dataSource.forEach((item) => {
-                    if (item && item.id) {
-                        idMap[item.id] = item;
+                    if (item && item[selectKey]) {
+                        idMap[item[selectKey]] = item;
                     }
                 });
 
                 formatValue = formatValue.filter(f => !!f);
                 formatValue.forEach((valItem, index) => {
-                    if (valItem.id in idMap) {
-                        formatValue.splice(index, 1, idMap[valItem.id]);
+                    if (valItem[selectKey] in idMap) {
+                        formatValue.splice(index, 1, idMap[valItem[selectKey]]);
                     }
                 });
             }
@@ -87,8 +90,36 @@ export default function SelectRepeaterHOC(Source, Com) {
             });
         }
 
+        syncDeletedValues = (values, event) => {
+            const { selectKey } = this.props;
+            const { dataSource = [], value = [] } = values || {};
+            const { index = -1, item } = event || {};
+            if (index !== -1 && value.length > 0) {
+                const itemValues = item.getValues() || {};
+                return {
+                    dataSource,
+                    value: value.filter(valItem => valItem[selectKey] !== itemValues[selectKey]),
+                };
+            }
+            return values;
+        }
+
+        handleChange = (values, fireKeys, ctx) => {
+            const { onChange } = this.props;
+            const { currentEventOpts } = ctx;
+            const { type } = currentEventOpts || {};
+            if (type === 'delete') {
+                const syncedValues = this.syncDeletedValues(values, currentEventOpts);
+                onChange(syncedValues, fireKeys, ctx);
+            } else {
+                onChange(values, fireKeys, ctx);
+            }
+        }
+
         renderTrigger = (_, { values }) => {
-            const { selectMode, isSelectDisabled, asyncHandler } = this.props;
+            const {
+                selectMode, isSelectDisabled, asyncHandler, selectKey,
+            } = this.props;
             const { select: asyncSelect } = asyncHandler || {};
             const val = this.core.getValue('value') || [];
 
@@ -97,7 +128,8 @@ export default function SelectRepeaterHOC(Source, Com) {
                 disabled = isSelectDisabled(values);
             }
 
-            const icChecked = !!val.find(lastItem => values.id === lastItem.id);
+            const valuesKey = values[selectKey];
+            const icChecked = !!val.find(lastItem => valuesKey === lastItem[selectKey]);
             const { TriggerCom } = this;
 
             return (<TriggerCom
@@ -112,7 +144,7 @@ export default function SelectRepeaterHOC(Source, Com) {
                     } else if (checked) {
                         lastVal.push(values);
                     } else {
-                        lastVal = lastVal.filter(fv => fv.id !== values.id);
+                        lastVal = lastVal.filter(lastItem => valuesKey !== lastItem[selectKey]);
                     }
 
                     if (asyncSelect) {
@@ -148,16 +180,15 @@ export default function SelectRepeaterHOC(Source, Com) {
             return null;
         }
 
-
         render() {
-            const { children, onChange } = this.props;
+            const { children } = this.props;
             const otherprops = { ...this.props };
             delete otherprops.children;
             delete otherprops.onChange;
             delete otherprops.selectMode;
             delete otherprops.selectFormConfig;
 
-            return (<Form core={this.core} onChange={onChange}>
+            return (<Form core={this.core} onChange={this.handleChange}>
                 <Item name="dataSource">
                     <Com {...otherprops} ref={(rp) => { this.repeater = rp; }}>
                         {this.renderSelectTrigger()}

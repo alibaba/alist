@@ -344,8 +344,8 @@ const selectAsyncHandler = {
 };
 
 ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.log} value={defaultValue}>
-    <FormItem name="tabledemo" defaultValue={[{ username: 'a' }, { username: 'b' }]}>
-        <TableRepeater hasOrder filter={filterUsername} formConfig={formConfig}>
+    {/* <FormItem name="tabledemo" defaultValue={[{ username: 'a' }, { username: 'b' }]}>
+        <TableRepeater hasDeleteConfirm={false} hasOrder filter={filterUsername} formConfig={formConfig}>
             <FormItem status="hidden" label="order" renderCell={(_, { index: order }) => <div>{order+1}</div> } />
             <FormItem label="username" name="username"><Input /></FormItem>
         </TableRepeater>
@@ -355,12 +355,12 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
             <FormItem status="hidden" label="order" renderCell={(_, { index: order }) => <div>{order+1}</div> } />
             <FormItem suffix="USD" label="username" name="username"><Input /></FormItem>
         </InlineRepeater>
-    </FormItem>
-    <FormItem name="deepselect">
+    </FormItem> */}
+    {/* <FormItem name="deepselect">
         <SelectRepeater selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig}>
             <FormItem label="username" name="username"><Input /></FormItem>
         </SelectRepeater>        
-    </FormItem>
+    </FormItem> */}
 
     {/* <FormItem defaultValue={{ dataSource: [{username: 'a', id: 'a'}, {username: 'b', id: 'b'}] }} name="deepselectxxxxx">
         <SelectRepeater selectMode="single" formConfig={formConfig}>
@@ -430,14 +430,14 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
         </SelectRepeaterInline>
     </FormItem> */}
 
-    {/* <FormItem name="deep">
+    <FormItem name="deep">
         <SelectRepeaterInline asyncHandler={selectAsyncHandler} formConfig={formConfig} maxLength={3}>
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
         </SelectRepeaterInline>
-    </FormItem> */}
+    </FormItem>
 
-    <FormItem name="rules">
+    {/* <FormItem name="rules">
         <InlineRepeater {...extraProps} formConfig={formConfig}>
             <FormItem prefix="满" suffix="元" label="threshold" name="threshold"><Input style={{ width: '100px' }}/></FormItem>
             <FormItem defaultMinWidth prefix="减" suffix="元" label="price" name="price"><Input style={{ width: '100px' }} /></FormItem>
@@ -449,7 +449,7 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
             <FormItem prefix="满" suffix="元" label="threshold" name="threshold"><Input style={{ width: '100px' }}/></FormItem>
             <FormItem defaultMinWidth prefix="减" suffix="元" label="price" name="price"><Input style={{ width: '100px' }} /></FormItem>
         </InlineRepeater>
-    </FormItem>
+    </FormItem> */}
 
 
     {/* <FormItem name="fuzz">
@@ -484,6 +484,8 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
 
 ````css
 body {
-    background-color: #FFF;
+    background-color: #000;
+    background: #000 !important;
+    color: #fff !important;
 }
 ````

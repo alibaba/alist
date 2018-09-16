@@ -321,21 +321,30 @@ export default function CreateRepeater(bindSource, type, source) {
         }
 
         doDelete = async (core, id) => {
-            const dialogConfig = this.getDialogConfig(core, {
-                title: '删除',
-                content: <div style={{ width: '280px' }}>是否删除该项</div>,
-                onOk: async (_, hide) => {
-                    const success = await this.repeaterCore.remove(core, id);
-                    if (success) {
-                        const index = this.repeaterCore.formList.findIndex(rp => rp.id === id);
-                        hide();
-
-                        this.sync({ type: 'delete', index });
-                    }
-                },
-                type: 'remove',
-            });
-            Dialog.show(dialogConfig);
+            const { hasDeleteConfirm = true } = this.props;
+            const index = this.repeaterCore.formList.findIndex(rp => rp.id === id);
+            const currentDelete = this.repeaterCore.formList.find(rp => rp.id === id);
+            const event = { type: 'delete', index, item: currentDelete };
+            if (hasDeleteConfirm) {
+                const dialogConfig = this.getDialogConfig(core, {
+                    title: '删除',
+                    content: <div style={{ width: '280px' }}>是否删除该项</div>,
+                    onOk: async (_, hide) => {
+                        const success = await this.repeaterCore.remove(core, id);
+                        if (success) {
+                            hide();
+                            this.sync(event);
+                        }
+                    },
+                    type: 'remove',
+                });
+                Dialog.show(dialogConfig);
+            } else {
+                const success = await this.repeaterCore.remove(core, id);
+                if (success) {
+                    this.sync(event);
+                }
+            }
         }
 
 
@@ -403,7 +412,10 @@ export default function CreateRepeater(bindSource, type, source) {
                 const val = core.getValues();
                 const { id } = core;
                 const itemProps = {
-                    id, val, core, formProps: superFormProps,
+                    id,
+val,
+core,
+formProps: superFormProps,
                     rowIndex,
                 };
                 return <RowRender key={id} className="table-repeater-row" {...itemProps} />;

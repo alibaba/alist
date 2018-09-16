@@ -150,6 +150,7 @@ describe('Repeater', () => {
 
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([]));
     });
+
     it('should add by click add button', async () => {
         expect(formCore.getValue('repeat')).toEqual(null);
         expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn').length).toEqual(0);
@@ -206,6 +207,29 @@ describe('Repeater', () => {
         ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn')[0]);
 
         await sleep(500);
+
+        expect(JSON.stringify(formCore.getValue())).toEqual(JSON.stringify({
+            repeat: [],
+        }));
+    });
+
+    it('should delete by click delete without confirm', async () => {
+        form = mount(<Form onMount={formmount}>
+            <Item name="repeat">
+                <TableRepeater hasDeleteConfirm={false} >
+                    <FormItem label="开票人" name="drawerName"><Input /></FormItem>
+                </TableRepeater>
+            </Item>
+        </Form>);
+
+        await form.find(TableRepeater).instance().doAdd({
+            drawerName: '开票人',
+        });
+        form.mount();
+        await sleep(500);
+        form.find('.repeater-delete').simulate('click');
+        await sleep(500);
+        form.mount();
 
         expect(JSON.stringify(formCore.getValue())).toEqual(JSON.stringify({
             repeat: [],
