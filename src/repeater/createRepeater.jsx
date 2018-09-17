@@ -169,11 +169,11 @@ export default function CreateRepeater(bindSource, type, source) {
         getDialogConfig = (core, props) => {
             const { dialogConfig } = this.props;
             const { custom } = dialogConfig || {};
-            const { type, content } = props;
+            const { type: dialogType, content } = props;
 
             let rewriteProps = {};
             if (custom) {
-                rewriteProps = custom(core, type, props);
+                rewriteProps = custom(core, dialogType, props);
             }
 
             return {
@@ -413,9 +413,9 @@ export default function CreateRepeater(bindSource, type, source) {
                 const { id } = core;
                 const itemProps = {
                     id,
-val,
-core,
-formProps: superFormProps,
+                    val,
+                    core,
+                    formProps: superFormProps,
                     rowIndex,
                 };
                 return <RowRender key={id} className="table-repeater-row" {...itemProps} />;

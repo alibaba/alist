@@ -1,4 +1,4 @@
-import CreateRepeater from './CreateRepeater';
+import CreateRepeater from './createRepeater';
 import Repeater from './components/biz/Repeater';
 import SelectRepeater from './components/biz/SelectRepeater';
 import createActionButton from './components/core/ActionButton';
