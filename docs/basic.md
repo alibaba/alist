@@ -189,6 +189,7 @@ let children = [
             </FormItem>
             </div>
         <br/><br/>
+        <button onClick={() => formcore.setGlobalStatus('preview')}> set preview </button>
         <button onClick={() => formcore.setValue(newValue)}> set value </button>
         <button onClick={() => console.log(formcore.getValue())}> console value </button>
     </Form>

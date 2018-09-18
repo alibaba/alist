@@ -50,6 +50,9 @@
         &-label{
             line-height: 28px;
             text-align: right;
+            word-break: break-all;
+            white-space: pre-wrap;
+            
             @include gen(24);            
             &:after{
                 content: ':';

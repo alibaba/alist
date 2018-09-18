@@ -17,7 +17,7 @@ import Form, { FormItem, FormCore, Item, If } from '../src';
 import AntdWrapper from '../src/wrapper/antd';
 import AntdDialogFormWrapper from '../src/dialog/antd';
 const { Input, Select, Checkbox, Radio, Switch, Slider, DatePicker, TimePicker,
-  Rate, Cascader, TreeSelect, Upload, Button, Modal, Icon, InputNumber, AutoComplete, Mention
+  Rate, Cascader, TreeSelect, Upload, Button, Modal, Icon, InputNumber, AutoComplete
 } = AntdWrapper(Antd);
 
 const { TextArea } = Input;
@@ -66,7 +66,6 @@ class PageDemo extends React.Component {
 	      <Form core={this.core} layout={{ label: 8, control: 16 }}>
 	          <FormItem label="input" name="input"><Input /></FormItem>
               <FormItem label="AutoComplete" name="AutoComplete"><AutoComplete options={dataSource} /></FormItem>
-              <FormItem label="Mention" name="Mention"><Mention suggestions={['aaaaa', 'bbbbb', 'cccc']} /></FormItem>
               <FormItem label="TextArea" name="TextArea"><TextArea /></FormItem>
 	          <FormItem label="select" name="select"><Select options={dataSource} /></FormItem>
 	          <FormItem label="Checkbox" name="Checkbox"><Checkbox >选中</Checkbox></FormItem>
@@ -76,7 +75,11 @@ class PageDemo extends React.Component {
 	          <FormItem label="RadioGroup" name="RadioGroup"><RadioGroup options={dataSource} /></FormItem>
 	          <FormItem label="Slider" name="Slider"><Slider /></FormItem>
 	          <FormItem label="Rate" name="Rate"><Rate /></FormItem>
-	          <FormItem label="DatePicker" name="DatePicker"><DatePicker /></FormItem>
+            <FormItem label="DatePicker" name="DatePicker"><DatePicker /></FormItem>
+            <FormItem label="RangePicker" name="RangePicker"><DatePicker.RangePicker /></FormItem>
+
+            <FormItem label="MonthPicker" name="MonthPicker"><DatePicker.MonthPicker /></FormItem>
+            <FormItem label="WeekPicker" name="WeekPicker"><DatePicker.WeekPicker /></FormItem>
 	          <FormItem label="TimePicker" name="TimePicker"><TimePicker /></FormItem>
 	          <FormItem label="InputNumber" name="InputNumber"><InputNumber /></FormItem>
 	          <FormItem label="Cascader" name="Cascader"><Cascader options={dataSource} /></FormItem>

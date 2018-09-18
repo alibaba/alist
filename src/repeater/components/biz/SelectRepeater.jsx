@@ -62,6 +62,7 @@ export default function SelectRepeaterHOC(Source, Com) {
 
         componentWillReceiveProps = (nextProps) => {
             const { selectKey } = this.props;
+            const { status } = nextProps;
             const { dataSource, value } = nextProps.value || {};
             // 下述代码在interceptor中完成
             let formatValue = [].concat(value);
@@ -82,6 +83,17 @@ export default function SelectRepeaterHOC(Source, Com) {
                         formatValue.splice(index, 1, idMap[valItem[selectKey]]);
                     }
                 });
+            }
+
+            const globalStatus = this.core.getGlobalStatus();
+            let localStatus = status;
+            if (typeof status === 'object') {
+                const { dataSource: innerStatus = 'edit' } = status || {};
+                localStatus = innerStatus;
+            }
+
+            if (localStatus !== globalStatus) {
+                this.core.setGlobalStatus(localStatus);
             }
 
             this.core.setValues({
@@ -122,10 +134,15 @@ export default function SelectRepeaterHOC(Source, Com) {
             } = this.props;
             const { select: asyncSelect } = asyncHandler || {};
             const val = this.core.getValue('value') || [];
+            const globalStatus = this.core.getGlobalStatus();
 
             let disabled = false;
             if (isSelectDisabled) {
                 disabled = isSelectDisabled(values);
+            }
+
+            if (globalStatus === 'preview') {
+                disabled = true;
             }
 
             const valuesKey = values[selectKey];

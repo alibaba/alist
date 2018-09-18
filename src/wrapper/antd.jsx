@@ -202,12 +202,41 @@ class WrapperClass {
             return <this.Antd.DatePicker placeholder="" {...props} value={value} locale={placeholderClearer} disabled className={`${className || ''} ${prefix}-preview-datepicker`} />;
         }
 
-        const onChange = (momentVal, formatDate) => {
+        const onChange = (momentVal) => {
             const { onChange } = props;
             onChange && onChange(momentVal, { escape: true });
         };
 
         return <this.Antd.DatePicker {...props} {...valueProps} onChange={onChange} {...insetify(props)} />;
+    }
+
+    SubDatePicker = (subType, props) => {
+        const { className = '', value } = props;
+        const valueProps = getValueProps(props);
+        const SubDatePicker = this.Antd.DatePicker[subType];
+
+        if (props.status === 'preview') {
+            const placeholderClearer = {
+                datePlaceholder: '',
+                monthPlaceholder: '',
+                yearPlaceholder: '',
+                rangeStartPlaceholder: '',
+                rangeEndPlaceholder: '',
+            };
+
+            if (value === null || (Array.isArray(value) && value.length === 0)) {
+                return null;
+            }
+
+            return <SubDatePicker placeholder="" {...props} value={value} locale={placeholderClearer} disabled className={`${className || ''} ${prefix}-preview-datepicker`} />;
+        }
+
+        const onChange = (momentVal) => {
+            const { onChange } = props;
+            onChange && onChange(momentVal, { escape: true });
+        };
+
+        return <SubDatePicker {...props} {...valueProps} onChange={onChange} {...insetify(props)} />;
     }
 
     TimePicker = (props) => {
@@ -253,7 +282,7 @@ class WrapperClass {
         const { className = '', value } = props;
         const valueProps = getValueProps(props);
         if (props.status === 'preview') {
-            return <this.Antd.Cascader placeholder="" {...props} className={`${className || ''} ${prefix}-preview-select`} disabled value={formatValue(value)} />;
+            return <this.Antd.Cascader {...props} className={`${className || ''} ${prefix}-preview-select`} disabled value={formatValue(value)} placeholder="" />;
         }
         return <this.Antd.Cascader {...props} {...valueProps} {...insetify(props)} />;
     }
@@ -324,17 +353,6 @@ class WrapperClass {
     }
 
     format = () => {
-        if (this.Antd.Select && this.Antd.Select.Option) {
-            this.Select.Option = this.Antd.Select.Option;
-            this.Select.Option.displayName = 'wrapper(Option)';
-        }
-        if (this.Antd.TreeSelect) {
-            this.TreeSelect.Node = this.Antd.TreeSelect.Node;
-        }
-
-        this.Checkbox.Group = this.CheckboxGroup;
-        this.Radio.Group = this.RadioGroup;
-        this.Input.TextArea = this.TextArea;
         const result = ['Input',
             'Select',
             'Checkbox',
@@ -346,14 +364,35 @@ class WrapperClass {
             'TimePicker',
             'InputNumber',
             'Rate',
-            'Mention',
             'Cascader',
             'TreeSelect',
             'Upload'].reduce((ret, key) => {
             this[key].displayName = `wrapper(${key})`;
+            let extraProps = {};
+            if (this.Antd[key]) {
+                extraProps = { ...this.Antd[key] };
+            }
+
+            const that = this;
+            Object.keys(extraProps).forEach((extraKey) => {
+                that[key][extraKey] = extraProps[extraKey];
+            });
             ret[key] = this[key];
+
             return ret;
         }, {});
+
+        result.Checkbox.Group = this.CheckboxGroup;
+        result.Radio.Group = this.RadioGroup;
+        result.Input.TextArea = this.TextArea;
+        result.DatePicker.RangePicker = this.SubDatePicker.bind(this, 'RangePicker');
+        result.DatePicker.MonthPicker = this.SubDatePicker.bind(this, 'MonthPicker');
+        result.DatePicker.WeekPicker = this.SubDatePicker.bind(this, 'WeekPicker');
+
+        if (this.Antd.Select) {
+            result.Select.Option.displayName = 'wrapper(Option)';
+        }
+
         return {
             ...this.Antd,
             ...result,

@@ -16,18 +16,19 @@ export default function bind(type, source) {
         return (<ContainerJSX
             {...props}
             render={(context) => {
+                const { status } = props;
                 const { itemsConfig } = context;
                 const {
                     searchEle, className, jsxProps, children, itemAlign = 'left',
                 } = context.props;
                 const {
-                    status,
                     addText = 'add', hasAdd = true, addPosition = 'top',
                     multiple = false,
                     hasHeader = true,
                     view,
                     maxLength,
                     operateText = 'operate',
+                    operateClassName = '',
                 } = jsxProps;
 
                 const editable = status === 'edit';
@@ -43,7 +44,7 @@ export default function bind(type, source) {
                 });
 
                 if (editable) {
-                    header.push(<th className="repeater-table-header-node" key="last">
+                    header.push(<th className={`repeater-table-header-node ${operateClassName}`} key="last">
                         <div className={cellCls}>{operateText}</div>
                     </th>);
                 }
@@ -85,10 +86,10 @@ export default function bind(type, source) {
                     val, idx, className, formProps,
                 } = context.props;
                 const { itemsConfig, jsxProps } = context;
-                const { core, rowIndex } = props;
+                const { core, rowIndex, status } = props;
+
 
                 const {
-                    status,
                     multiple = false,
                     hasDelete = true, hasUpdate = true, itemAlign = 'left',
                     updateText = 'update', deleteText = 'delete',

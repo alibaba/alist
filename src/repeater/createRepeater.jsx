@@ -391,6 +391,7 @@ export default function CreateRepeater(bindSource, type, source) {
             const { repeaterCore, handleSearch, superFormProps } = this;
             const {
                 style = {}, className, children, filter, view,
+                filterElement, status,
             } = this.props;
 
             const { formList } = repeaterCore;
@@ -406,7 +407,16 @@ export default function CreateRepeater(bindSource, type, source) {
                 className: child.props.className,
             })).filter(item => (item.name || item.multiple || item.renderCell));
 
-            const searchEle = filter ? <Input className="repeater-search" onChange={handleSearch} /> : null;
+            let searchEle = null;
+            if (filter) {
+                if (typeof filterElement === 'function') {
+                    searchEle = filterElement(handleSearch);
+                } else if (React.isValidElement(filterElement)) {
+                    searchEle = filterElement;
+                } else {
+                    searchEle = <Input className="repeater-search" onChange={handleSearch} />;
+                }
+            }
 
             const rowList = formList.map((core, rowIndex) => {
                 const val = core.getValues();
@@ -417,6 +427,7 @@ export default function CreateRepeater(bindSource, type, source) {
                     core,
                     formProps: superFormProps,
                     rowIndex,
+                    status,
                 };
                 return <RowRender key={id} className="table-repeater-row" {...itemProps} />;
             });
@@ -446,6 +457,7 @@ export default function CreateRepeater(bindSource, type, source) {
                         doAddInline={this.doAddInline}
                         doMultipleInline={this.doMultipleInline}
                         doUpdateInline={this.doUpdateInline}
+                        status={status}
                     >
                         {view ? customView : rowList}
                     </Container>

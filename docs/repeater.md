@@ -337,9 +337,21 @@ const sleep = (time) => {
 }
 
 const selectAsyncHandler = {
-    select: async (checked, values, arr) => {
-        await sleep(1000);
-        return true;
+    // select: async (checked, values, arr) => {
+    //     // await sleep(1000);
+    //     return true;
+    // }
+};
+
+const dasyncHandler = {
+    add: (values) => {
+        return ({
+            success: true,
+            item: {
+                ...values,
+                id: 'add' + Math.random().toString(36).slice(2)
+            }
+        });
     }
 };
 
@@ -368,11 +380,11 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
         </SelectRepeater>        
     </FormItem> */}
 
-    {/* <FormItem name="deepselect">
+    <FormItem name="deepselect">
          <InlineRepeater filter={filter} formConfig={formConfig} addPosition="bottom">
             <FormItem required label="开票人" name="drawerName"><Input /></FormItem>
        </InlineRepeater>      
-    </FormItem> */}
+    </FormItem>
     
     {/* <Item name="tableRepeat" >
         <TableRepeater formConfig={formConfig}>
@@ -430,10 +442,31 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
         </SelectRepeaterInline>
     </FormItem> */}
 
-    <FormItem name="deep">
+    {/* <FormItem name="deep">
         <SelectRepeaterInline asyncHandler={selectAsyncHandler} formConfig={formConfig} maxLength={3}>
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
+        </SelectRepeaterInline>
+    </FormItem> */}
+
+    {/* <FormItem label="SelectTableRepeater" name="selectTableRepeater">
+        <SelectRepeater asyncHandler={dasyncHandler}>
+            <FormItem label="username" name="username"><Input style={{ width: 100 }} /></FormItem>
+            <FormItem label="gender" name="gender"><Input style={{ width: 100 }}/></FormItem>
+        </SelectRepeater>
+    </FormItem>
+
+    <FormItem label="SelectTableRepeater" name="selectRepeaterInline">
+        <SelectRepeaterInline asyncHandler={dasyncHandler}>
+            <FormItem label="username" name="username"><Input style={{ width: 100 }} /></FormItem>
+            <FormItem label="gender" name="gender"><Input style={{ width: 100 }}/></FormItem>
+        </SelectRepeaterInline>
+    </FormItem> */}
+
+    <FormItem label="selectRepeaterInlinemultiple" name="selectRepeaterInlinemultiple">
+        <SelectRepeaterInline multiple asyncHandler={dasyncHandler}>
+            <FormItem label="username" name="username"><Input style={{ width: 100 }} /></FormItem>
+            <FormItem label="gender" name="gender"><Input style={{ width: 100 }}/></FormItem>
         </SelectRepeaterInline>
     </FormItem>
 
