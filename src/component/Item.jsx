@@ -115,6 +115,7 @@ class Item extends Component {
         this.ifCore = context.ifCore;
         this.core = form.addField(option);
         this.core.jsx = this;
+        this.core.getSuperFormProps = this.getSuperFormProps.bind(this);
     }
 
     getChildContext() {
@@ -148,6 +149,7 @@ class Item extends Component {
         this.core.removeListener(ANY_CHANGE, this.update);
         this.didMount = false;
     }
+    
     onChange = (e, opts = {}) => {
         const { escape = false } = opts; // 直接用原生对象不进行判断
 
@@ -205,6 +207,21 @@ class Item extends Component {
             this.forceUpdate();
         }
     }
+
+    getSuperFormProps = () => {
+        let formProps = {};
+        if (this.core.form && this.core.form.jsx.props) {
+            const {
+                defaultMinWidth, full, inline, inset, layout, colon,
+            } = this.core.form.jsx.props;
+            formProps = {
+                defaultMinWidth, full, inline, inset, layout, colon,
+            };
+        }
+
+        return formProps;
+    }
+
     render() {
         if (this.props.render && this.didMount) {
             return this.props.render(this.form.getValue(), this.form);
@@ -254,7 +271,7 @@ class Item extends Component {
             disabled = true;
         }
 
-        const cloneProps = {
+        let cloneProps = {
             inset,
             disabled,
             name,
@@ -266,6 +283,14 @@ class Item extends Component {
             onFocus,
             ...others,
         };
+
+        if (this.predictChildForm) {
+            const formProps = this.getSuperFormProps();
+            cloneProps = {
+                ...formProps,
+                ...cloneProps,
+            };
+        }
 
         if (style) {
             cloneProps.style = Object.assign({}, cloneProps.style || {}, style);

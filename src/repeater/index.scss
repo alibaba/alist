@@ -9,6 +9,14 @@
         min-width: 120px;
     }
 
+    .select-repeater-feature-head.repeater-table-header-node {
+        min-width: 36px;
+    }
+
+    .select-repeater-feature-head.repeater-table-cell-wrapper {
+        text-align: center;
+    }
+
     .repeater-table-cell-wrapper-inner {
         display: flex;
         .repeater-table-cell-wrapper-inner-prefix,

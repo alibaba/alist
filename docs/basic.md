@@ -173,17 +173,17 @@ let children = [
         }
     }
     let formcore
-    return <Form onMount={core => formcore = core} value={defaultValue} layout={{label: 5, control: 19}} full>
+    return <Form defaultMinWidth={false} onMount={core => formcore = core} value={defaultValue} layout={{label: 5, control: 19}} full>
         <h3>嵌套form</h3>
         <div className="demo-form">
             <p>复杂表单中有些项的值可能的对象的情况</p>
             <FormItem label="user" name="user">
                 <Form layout={{label: 5, control: 19}} full>
                     <FormItem label="username" name="username">
-                        <Input />
+                        <Input width={100} />
                     </FormItem>
                     <FormItem label="password" name="password">
-                        <Input />
+                        <Input style={{width: '100px' }} />
                     </FormItem>
                 </Form>
             </FormItem>

@@ -28,6 +28,10 @@ export default function SelectRepeaterHOC(Source, Com) {
             selectKey: PropTypes.string,
         };
 
+        static contextTypes = {
+            item: PropTypes.object,
+        };
+
         constructor(props, context) {
             super(props, context);
             const {
@@ -50,6 +54,10 @@ export default function SelectRepeaterHOC(Source, Com) {
                 this.TriggerCom = Radio;
             } else if (selectMode === 'multiple') {
                 this.TriggerCom = Checkbox;
+            }
+
+            if (context.item) {
+                this.item = context.item;
             }
         }
 
@@ -189,7 +197,7 @@ export default function SelectRepeaterHOC(Source, Com) {
             const { TriggerCom } = this;
 
             if (selectMode === 'single' || selectMode === 'multiple') {
-                return (<FormItem renderCell={this.renderTrigger} status="hidden" name="selected">
+                return (<FormItem className="select-repeater-feature-head" renderCell={this.renderTrigger} status="hidden" name="selected">
                     <TriggerCom />
                 </FormItem>);
             }
@@ -205,7 +213,12 @@ export default function SelectRepeaterHOC(Source, Com) {
             delete otherprops.selectMode;
             delete otherprops.selectFormConfig;
 
-            return (<Form core={this.core} onChange={this.handleChange}>
+            let inheritProps = {};
+            if (this.item) {
+                inheritProps = this.item.getSuperFormProps();
+            }
+
+            return (<Form {...inheritProps} core={this.core} onChange={this.handleChange}>
                 <Item name="dataSource">
                     <Com {...otherprops} ref={(rp) => { this.repeater = rp; }}>
                         {this.renderSelectTrigger()}

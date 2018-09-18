@@ -161,6 +161,7 @@ export default function CreateRepeater(bindSource, type, source) {
                     defaultMinWidth, full, inline, inset, layout, colon,
                 };
             }
+
             return formProps;
         }
 
