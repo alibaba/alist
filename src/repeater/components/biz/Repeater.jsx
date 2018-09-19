@@ -15,19 +15,17 @@ export default function bind(type, source) {
     function Container(props) {
         return (<ContainerJSX
             {...props}
-            render={(context) => {
-                const { status } = props;
-                const { itemsConfig } = context;
+            render={() => {
                 const {
-                    searchEle, className, jsxProps, children, itemAlign = 'left',
-                } = context.props;
+                    itemsConfig, children, className, status, jsxProps, searchEle,
+                } = props;
                 const {
-                    addText = 'add', hasAdd = true, addPosition = 'top',
+                    itemAlign = 'left',
+                    addText = 'add', operateText = 'operate',
+                    hasAdd = true, hasHeader = true, addPosition = 'top',
                     multiple = false,
-                    hasHeader = true,
                     view,
                     maxLength,
-                    operateText = 'operate',
                     operateClassName = '',
                 } = jsxProps;
 
@@ -81,17 +79,20 @@ export default function bind(type, source) {
     function RowRender(props) {
         return (<RowRenderJSX
             {...props}
-            render={(context) => {
+            render={(ctx) => {
+                // const {
+                //     val, idx, className, formProps,
+                // } = ctx.props;
+                const { itemsConfig } = ctx;
                 const {
+                    core, rowIndex, status, jsxProps,
                     val, idx, className, formProps,
-                } = context.props;
-                const { itemsConfig, jsxProps } = context;
-                const { core, rowIndex, status } = props;
-
+                } = props;
 
                 const {
                     multiple = false,
-                    hasDelete = true, hasUpdate = true, itemAlign = 'left',
+                    hasDelete = true, hasUpdate = true,
+                    itemAlign = 'left',
                     updateText = 'update', deleteText = 'delete',
                     saveText = 'save', cancelText = 'cancel',
                     children,

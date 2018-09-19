@@ -429,6 +429,7 @@ export default function CreateRepeater(bindSource, type, source) {
                     formProps: superFormProps,
                     rowIndex,
                     status,
+                    jsxProps: this.props,
                 };
                 return <RowRender key={id} className="table-repeater-row" {...itemProps} />;
             });
