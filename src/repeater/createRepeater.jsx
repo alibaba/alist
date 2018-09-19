@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import deepEqual from 'deep-equal';
 import RepeaterCore from './repeaterCore';
 import Form, { FormCore } from '..';
 
@@ -94,8 +95,12 @@ export default function CreateRepeater(bindSource, type, source) {
         }
 
         async componentWillReceiveProps(nextProps) {
-            const { filter } = this.props;
+            const { filter, asyncHandler } = this.props;
             const manualEvent = this.genManualEvent();
+
+            if (!deepEqual(asyncHandler, nextProps.asyncHandler)) {
+                this.repeaterCore.asyncHandler = nextProps.asyncHandler;
+            }
 
             // 没有过滤函数或者没有关键字
             if (!filter || !this.key) {

@@ -26,7 +26,9 @@ $ npm install --save noform
 
 [🌈 Live DEMO - Simple Example with Ant Design](https://alibaba.github.io/noform/examples/build)
 
-[🌈 Live DEMO - Repeater Example with Ant Design](https://alibaba.github.io/noform/examples/build)
+[🔥] Live DEMO - Repeater Example](https://alibaba.github.io/noform/examples/build/#/repeaterConfig)
+
+[🔥] Live DEMO - Repeater Configuration Example](https://alibaba.github.io/noform/examples/build/#/repeater)
 
 You can visit [here](https://github.com/quirkyshop/noform-examples) for more information.
 
@@ -34,13 +36,9 @@ You can visit [here](https://github.com/quirkyshop/noform-examples) for more inf
 
 [Core API](https://alibaba.github.io/noform/#/api?md=all)
 
-[Repeater API](https://alibaba.github.io/noform/#/api?md=repeater)
-
 ### Usage
 
 [中文文档](https://alibaba.github.io/noform/#/zh-CN/)
 
 [Document](https://alibaba.github.io/noform/#/en-US/)
-
-### Roadmap
 
