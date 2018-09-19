@@ -18,13 +18,12 @@ class Example extends Component {
                     colon: !!values.colon,
                 };
 
-                let layout = {};
+                const { layoutControl, layoutLabel } = values;
+                let layout = { label: layoutLabel, control: layoutControl };
                 if (fireKeys.indexOf('layoutControl') !== -1) {
                     layout.label = 24 - (values.layoutControl || 0);
                     layout.control = values.layoutControl || 0;
-                }
-
-                if (fireKeys.indexOf('layoutLabel') !== -1) {                    
+                } else if (fireKeys.indexOf('layoutLabel') !== -1) {                    
                     layout.label = values.layoutLabel || 0;
                     layout.control = 24 - (values.layoutLabel || 0);
                 }
