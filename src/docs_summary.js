@@ -98,9 +98,19 @@ export default {
       "level": "3",
       "articles": [
         {
+          "path": "/docs?md=component/form",
+          "title": "Form 配置",
+          "level": "3.1",
+          "articles": [],
+          "exists": true,
+          "external": false,
+          "introduction": false,
+          "enTitle": "Form Configuration"
+        },
+        {
           "path": "/docs?md=component/item",
           "title": "FormItem与Item",
-          "level": "3.1",
+          "level": "3.2",
           "articles": [],
           "exists": true,
           "external": false,
@@ -110,7 +120,7 @@ export default {
         {
           "path": "/docs?md=component/custom",
           "title": "接入自定义组件",
-          "level": "3.2",
+          "level": "3.3",
           "articles": [],
           "exists": true,
           "external": false,

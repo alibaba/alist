@@ -4,6 +4,8 @@
 
 Repeater 抽象了日常的表单列表 CRUD的操作，使用起来会减少很多代码，不过由于内置了逻辑，因此开放了配置供开发者调整。
 
+查看DEMO可以直接看到更详细的配置，请参考[Repeater 配置](https://alibaba.github.io/noform/examples/build/#/repeaterConfig)
+
 ### 文案配置
 
 @sep
@@ -11,6 +13,8 @@ Repeater 抽象了日常的表单列表 CRUD的操作，使用起来会减少很
 # Common Config
 
 Since Repeater can make it more easier to make list fo form, which can save lots of time doing CRUD work and noform also provide config to make repeater you want.
+
+Check this DEMO for more detail[Repeater Configuration](https://alibaba.github.io/noform/examples/build/#/repeaterConfig)
 
 ### Text Config
 
@@ -53,6 +57,7 @@ const hasProps = {
     hasUpdate: true,
     hasDelete: true,
     hasHeader: true,
+    hasDeleteConfirm: true,
     addPosition: 'top' ('top' | 'bottom')
 };
 
@@ -176,6 +181,34 @@ maxLength (since: `0.0.95`)
 ### maxLength
 
 maxLength (since: `0.0.95`)
+
+```
+
+```i18n
+
+### 添加按钮位置
+
+addPosition: 'top' | 'bottom'
+
+@sep
+
+### addPosition
+
+addPosition: 'top' | 'bottom'
+
+```
+
+```i18n
+
+### 对齐方式
+
+itemAlign: 'left' | 'center' | 'right'
+
+@sep
+
+### itemAlign
+
+itemAlign: 'left' | 'center' | 'right'
 
 ```
 

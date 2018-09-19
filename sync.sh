@@ -6,11 +6,15 @@ clean_build()
 	rm -rf noform-*.tgz
 	rm -rf package
 	rm -rf tmppack	
+	rm -rf tmpexamples
 }
 
 clean_build # clean
 
+mkdir tmpexamples
 mkdir tmppack
+mkdir tmppack/dist
+mkdir tmppack/package
 dir_name=`pwd`
 
 # exmaples and dist is flag that should script install the latest package
@@ -18,30 +22,33 @@ if [[ -d "${dir_name}/examples" && -d "${dir_name}/dist" ]]; then
 	echo "examples and dist exist, just build examples"
 else
 	echo "fetching noform@latest tgz"
-	npm pack noform@latest # download npm package
-
+	tnpm pack noform@latest # download npm package	
 	if [ "$?" -eq 0 ]; then
 		echo "unziping noform.tgz"
-		tar -zxvf noform-*.tgz 
-		
+		tar -zxvf noform-*.tgz
 		dist_path="${dir_name}/package/dist"
-		examples_path="${dir_name}/package/examples"
 		if [ -d $dist_path ]; then
 			echo "dist exist, copy dist to tmp package"
-			cp -r $dist_path "${dir_name}/tmppack/"
+			# start copy dist to docs
+			cp -r $dist_path "${dir_name}/dist"
+		else
+			echo "######"
 		fi
+	else 
+		echo "fetching error, please try again"
+		exit $?
+	fi
 
-		if [ -d $examples_path ]; then
-			echo "examples exist, copy examples to tmp package"
-			cp -r $examples_path "${dir_name}/tmppack/"
-		fi
-
+	tnpm pack noform-app@latest
+	if [ "$?" -eq 0 ]; then
+		echo "unziping examples"
+		tar -zxvf noform-app-*.tgz -C ./tmpexamples
+		
+		examples_path="${dir_name}/tmpexamples/package"
 		echo "copy dist and examples to docs"
-
-		# start copy dist to docs
-		cp -r "${dir_name}/tmppack/dist" "${dir_name}/"
+		
 		# start copy dist to examples
-		cp -r "${dir_name}/tmppack/examples" "${dir_name}/"
+		cp -r "${examples_path}" "${dir_name}/examples"
 	else 
 		echo "fetching error, please try again"
 		exit $?
@@ -70,6 +77,8 @@ if [ "$?" -eq 0 ]; then
 	mkdir -p "${dir_name}/public/examples"
 	cp -r "${dir_name}/examples/build" "${dir_name}/public/examples/"
 	clean_build
+
+	tnpm run ln
 
 	# now offically build
 	echo "final building..."

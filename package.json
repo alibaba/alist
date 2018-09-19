@@ -33,7 +33,7 @@
     "menu": "node scripts/menu.js",
     "sync": "./sync.sh",
     "ln": "./link.sh",
-    "refresh": "npm run clean && npm run sync && npm run ln",
+    "refresh": "npm run clean && npm run sync",
     "clean": "rm -rf dist && rm -rf examples/build && rm -rf examples/node_modules"
   },
   "devDependencies": {
