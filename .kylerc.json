@@ -1,8 +1,0 @@
-{
-  "extends": "@ali/kyle-config-saga",
-  "ignore": [
-    "test/**",
-    "coverage/**",
-    "lib/**"
-  ]
-}
