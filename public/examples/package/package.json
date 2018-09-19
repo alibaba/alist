@@ -1,9 +1,9 @@
 {
   "name": "noform-app",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "dependencies": {
     "antd": "^3.9.2",
-    "noform": "^0.1.9",
+    "noform": "^0.1.10",
     "react": "^16.5.0",
     "react-app-rewire-less": "^2.1.3",
     "react-dom": "^16.5.0",
