@@ -78,8 +78,6 @@ if [ "$?" -eq 0 ]; then
 	cp -r "${dir_name}/examples/build" "${dir_name}/public/examples/"
 	clean_build
 
-	tnpm run ln
-
 	# now offically build
 	echo "final building..."
 	npm run build
