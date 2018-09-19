@@ -9,6 +9,7 @@
    * [联动|Condition](docs/basic/relation.md)
    * [校验|Validate](docs/basic/validation.md)
 * [组件标准|Component Standard]()
+   * [Form 配置|Form Configuration](docs/component/form.md)
    * [FormItem与Item|FormItem and Item](docs/component/item.md)
    * [接入自定义组件|Custom Component](docs/component/custom.md)
 * [接入组件库|3rd Party Lib]()

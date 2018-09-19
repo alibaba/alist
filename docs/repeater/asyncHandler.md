@@ -2,6 +2,8 @@
 
 ### 钩子与拦截函数
 
+查看DEMO可以直接看到更详细的配置，请参考[Repeater 钩子](https://alibaba.github.io/noform/examples/build/#/RepeaterAdvanced)
+
 该配置函数能够控制 Repeter的以下操作： `add`, `update`, `save`, `remove`
 
 通用格式如下：
@@ -9,6 +11,8 @@
 @sep
 
 ### Hook and Interceptor
+
+Check this DEMO for more detail[Repeater Advanced](https://alibaba.github.io/noform/examples/build/#/RepeaterAdvanced)
 
 This config can control these operate: `add`, `update`, `save`, `remove`
 

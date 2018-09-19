@@ -4,7 +4,11 @@
 .table-repeater-wrapper {
   margin-bottom: 12px; }
   .table-repeater-wrapper .repeater-table-header-node {
-    min-width: 100px; }
+    min-width: 120px; }
+  .table-repeater-wrapper .select-repeater-feature-head.repeater-table-header-node {
+    min-width: 36px; }
+  .table-repeater-wrapper .select-repeater-feature-head.repeater-table-cell-wrapper {
+    text-align: center; }
   .table-repeater-wrapper .repeater-table-cell-wrapper-inner {
     display: flex; }
     .table-repeater-wrapper .repeater-table-cell-wrapper-inner .repeater-table-cell-wrapper-inner-prefix,

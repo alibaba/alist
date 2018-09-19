@@ -1,11 +1,3 @@
-# Noform Examples
+# NoForm start app with Ant-Design
 
-Noform Examples usage.
-
-### install
-
-yarn install
-
-### run 
-
-yarn start
+[link](https://alibaba.github.io/noform/#/zh-CN/docs?md=easy/best-practise-antd)
