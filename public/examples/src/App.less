@@ -1,10 +1,17 @@
-@import '~antd/dist/antd.css';
+@import '~antd/dist/antd.less';
 @import '~noform/dist/index.css';
 @import '~noform/dist/wrapper/antd.css';
 
 .app-wrapper {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+  grid-auto-flow: row;
+}
+
+.app-wrapper-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   grid-gap: 10px;
   grid-auto-flow: row;
 }

@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import { Checkbox } from 'antd';
-import Core from './examples/Core';
-import Status from './examples/Status';
-import Condition from './examples/Condition';
-import Validation from './examples/Validation';
-import Antd from './examples/Antd';
-import Dialog from './examples/Dialog';
-import Repeater from './examples/Repeater';
-import './App.less';
-
+import Core from '../examples/Core';
+import Status from '../examples/Status';
+import Condition from '../examples/Condition';
+import Validation from '../examples/Validation';
+import Antd from '../examples/Antd';
+import Dialog from '../examples/Dialog';
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -23,7 +20,6 @@ class App extends Component {
             Validation,
             Antd,
             Dialog,
-            Repeater,
         };
 
         this.examplesOptions = Object.keys(this.examplesMap).map(exampleKey => ({ label: exampleKey, value: this.examplesMap[exampleKey] }));

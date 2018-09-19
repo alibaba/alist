@@ -4,7 +4,7 @@ import { Input, Select, Checkbox, Radio, Switch, Slider, DatePicker, TimePicker,
     Rate, Cascader, TreeSelect, Upload, Button, Modal, Icon, InputNumber, AutoComplete } from 'noform/lib/wrapper/antd';
 import { Alert } from 'antd';
 
-const { Textarea } = Input;
+const { TextArea } = Input;
 const { Group: RadioGroup } = Radio;
 const { Group: CheckboxGroup } = Checkbox;
 
@@ -57,7 +57,7 @@ class Example extends Component {
                 
                 <FormItem label="input" name="input"><Input /></FormItem>
                 <FormItem label="AutoComplete" name="AutoComplete"><AutoComplete options={dataSource} /></FormItem>                
-                <FormItem label="Textarea" name="Textarea"><Textarea /></FormItem>
+                <FormItem label="TextArea" name="TextArea"><TextArea /></FormItem>
                 <FormItem label="select" name="select"><Select options={dataSource} /></FormItem>
                 <FormItem label="Checkbox" name="Checkbox"><Checkbox >Selected</Checkbox></FormItem>
                 <FormItem label="Radio" name="Radio"><Radio >Selected</Radio></FormItem>
