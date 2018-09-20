@@ -172,6 +172,21 @@ const dialogConfig = {
 
 ```i18n
 
+### selectKey
+
+Selectify后的Repeater默认根据数据中的`id`来选择，通过`selectKey`的配置可以改变这个默认值。
+
+@sep
+
+### selectKey
+
+Selectifed Repeater use `id` in data of each row to as its main key.
+You can use `selectKey` to modify the main key.
+
+```
+
+```i18n
+
 ### 限制最长数量
 
 maxLength (since: `0.0.95`)
