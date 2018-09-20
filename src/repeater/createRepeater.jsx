@@ -215,7 +215,7 @@ export default function CreateRepeater(bindSource, type, source) {
             const textMap = {};
 
             Object.keys(map).forEach((key) => {
-                textMap[key] = (key in this.props) ? this.props[key] : map[key];
+                textMap[key] = ((key in this.props) && this.props[key]) ? this.props[key] : map[key];
             });
 
             return textMap;
