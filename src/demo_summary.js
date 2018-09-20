@@ -17,13 +17,13 @@ export default {
       "articles": [
         {
           "path": "/demo?md=simple",
-          "title": "simple",
+          "title": "Entry",
           "level": "1.1",
           "articles": [],
           "exists": true,
           "external": false,
           "introduction": false,
-          "enTitle": "simple"
+          "enTitle": "Entry"
         }
       ],
       "exists": false,
