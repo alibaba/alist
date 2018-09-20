@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import deepEqual from 'deep-equal';
 import RepeaterCore from './repeaterCore';
+import localeMap from './locale';
 import Form, { FormCore } from '..';
 
 const noop = () => {};
@@ -36,6 +37,7 @@ export default function CreateRepeater(bindSource, type, source) {
                 PropTypes.string,
                 PropTypes.object,
             ]),
+            locale: PropTypes.string,
             asyncHandler: PropTypes.object,
             dialogConfig: PropTypes.object,
             formConfig: PropTypes.object,
@@ -59,6 +61,7 @@ export default function CreateRepeater(bindSource, type, source) {
         static defaultProps = {
             onChange: () => {},
             status: 'edit',
+            locale: 'en', // en | zh
         };
 
         constructor(props, context) {
@@ -174,6 +177,7 @@ export default function CreateRepeater(bindSource, type, source) {
 
         getDialogConfig = (core, props) => {
             const { dialogConfig } = this.props;
+            const { okText, cancelText } = this.getText();
             const { custom } = dialogConfig || {};
             const { type: dialogType, content } = props;
 
@@ -184,6 +188,8 @@ export default function CreateRepeater(bindSource, type, source) {
 
             return {
                 ...props,
+                okText,
+                cancelText,
                 content: content || this.getForm(core),
                 ...rewriteProps,
             };
@@ -202,12 +208,24 @@ export default function CreateRepeater(bindSource, type, source) {
             </Form>);
         }
 
+        // 获取多语言文案的方法
+        getText = () => {
+            const { locale } = this.props;
+            const map = localeMap[locale];
+            const textMap = {};
+
+            Object.keys(map).forEach((key) => {
+                textMap[key] = (key in this.props) ? this.props[key] : map[key];
+            });
+
+            return textMap;
+        }
+
         genManualEvent = () => {
             const currentEvent = this.manualEvent || {};
             const { multiple } = this.props;
             return { ...currentEvent, multiple };
         }
-
 
         handleCoreUpdate = (core) => {
             const { multiple } = this.props;
@@ -328,13 +346,14 @@ export default function CreateRepeater(bindSource, type, source) {
 
         doDelete = async (core, id) => {
             const { hasDeleteConfirm = true } = this.props;
+            const textMap = this.getText();
             const index = this.repeaterCore.formList.findIndex(rp => rp.id === id);
             const currentDelete = this.repeaterCore.formList.find(rp => rp.id === id);
             const event = { type: 'delete', index, item: currentDelete };
             if (hasDeleteConfirm) {
                 const dialogConfig = this.getDialogConfig(core, {
-                    title: '删除',
-                    content: <div style={{ width: '280px' }}>是否删除该项</div>,
+                    title: textMap.deleteText,
+                    content: <div style={{ minWidth: '280px' }}>{textMap.deleteConfirmText}</div>,
                     onOk: async (_, hide) => {
                         const success = await this.repeaterCore.remove(core, id);
                         if (success) {
@@ -355,8 +374,9 @@ export default function CreateRepeater(bindSource, type, source) {
 
 
         doAddDialog = async (core) => {
+            const textMap = this.getText();
             const dialogConfig = this.getDialogConfig(core, {
-                title: '添加',
+                title: textMap.addText,
                 onOk: async (_, hide) => {
                     const error = await core.validate();
                     if (error) {
@@ -375,8 +395,9 @@ export default function CreateRepeater(bindSource, type, source) {
         }
 
         doUpdateDialog = async (core, id) => {
+            const textMap = this.getText();
             const dialogConfig = this.getDialogConfig(core, {
-                title: '更新',
+                title: textMap.updateText,
                 type: 'update',
                 onOk: async (_, hide) => {
                     const error = await core.validate();
@@ -454,6 +475,7 @@ export default function CreateRepeater(bindSource, type, source) {
                         itemsConfig={itemsConfig}
                         repeaterCore={repeaterCore}
                         formProps={this.superFormProps}
+                        getText={this.getText}
                         doAdd={this.doAdd}
                         doAddDialog={this.doAddDialog}
                         doUpdateDialog={this.doUpdateDialog}

@@ -18,10 +18,11 @@ export default function bind(type, source) {
             render={() => {
                 const {
                     itemsConfig, children, className, status, jsxProps, searchEle,
+                    getText,
                 } = props;
                 const {
                     itemAlign = 'left',
-                    addText = 'add', operateText = 'operate',
+                    // addText = 'add', operateText = 'operate',
                     hasAdd = true, hasHeader = true, addPosition = 'top',
                     multiple = false,
                     view,
@@ -29,6 +30,7 @@ export default function bind(type, source) {
                     operateClassName = '',
                 } = jsxProps;
 
+                const { addText, operateText } = getText();
                 const editable = status === 'edit';
 
                 const cellCls = `repeater-table-cell-wrapper repeater-table-cell-wrapper-${itemAlign}`;
@@ -80,10 +82,7 @@ export default function bind(type, source) {
         return (<RowRenderJSX
             {...props}
             render={(ctx) => {
-                // const {
-                //     val, idx, className, formProps,
-                // } = ctx.props;
-                const { itemsConfig } = ctx;
+                const { itemsConfig, getText } = ctx;
                 const {
                     core, rowIndex, status, jsxProps,
                     val, idx, className, formProps,
@@ -93,10 +92,14 @@ export default function bind(type, source) {
                     multiple = false,
                     hasDelete = true, hasUpdate = true,
                     itemAlign = 'left',
-                    updateText = 'update', deleteText = 'delete',
-                    saveText = 'save', cancelText = 'cancel',
+                    // updateText = 'update', deleteText = 'delete',
+                    // saveText = 'save', cancelText = 'cancel',
                     children,
                 } = jsxProps;
+
+                const {
+                    updateText, deleteText, saveText, cancelText,
+                } = getText();
 
                 const focusMode = core.$focus;
                 const editable = status === 'edit';

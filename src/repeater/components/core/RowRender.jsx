@@ -13,6 +13,7 @@ const propInterface = {
     doCancel: PropTypes.func,
     doAddInline: PropTypes.func,
     doUpdateInline: PropTypes.func,
+    getText: PropTypes.func,
 };
 
 class RowRender extends Component {
@@ -39,6 +40,7 @@ class RowRender extends Component {
         this.doAddInline = context.doAddInline;
         this.doUpdateInline = context.doUpdateInline;
         this.jsxProps = context.jsxProps;
+        this.getText = context.getText;
 
         this.core = props.core;
         this.id = props.id;
@@ -50,6 +52,7 @@ class RowRender extends Component {
             jsxProps: this.jsxProps,
             itemsConfig: this.itemsConfig,
             getCore: this.getCore,
+            getText: this.getText,
             getId: this.getId,
             doAdd: this.doAdd,
             doUpdate: this.doUpdate,

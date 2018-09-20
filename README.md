@@ -45,6 +45,19 @@ You can visit [here](https://github.com/quirkyshop/noform-examples) for more inf
 
 [Document](https://alibaba.github.io/noform/#/en-US/)
 
+### i18n
+
+[Repeater](https://alibaba.github.io/noform/examples/build/#/repeaterConfig) now support `Chinese(zh)` and `English(zh)`.
+
+Since [react-intl](https://github.com/yahoo/react-intl) use `ISO639` and NoForm will follow this standard.
+
+ISO Standard Map：
+
+| Region       | Notes   | ISO_3166 | ISO_639 |
+| ------------ | ------- | -------- | ------- |
+| USA          | en-US   | US       | en      |
+| China        | zh-CN   | CN       | zh      |
+
 ### Test Case
 
 More than 190 test unit case
