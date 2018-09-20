@@ -91,11 +91,15 @@ class Example extends Component {
             },
             onChange: (fireKeys, values, ctx) => {
                 const vprops = {
+                    locale: values.locale || undefined,
                     addText: handleNull(values.addText),
                     updateText: handleNull(values.updateText),
-                    saveText: handleNull(values.saveText),
-                    cancelText: handleNull(values.cancelText),
                     deleteText: handleNull(values.deleteText),
+                    dialogAddText: handleNull(values.dialogAddText),
+                    dialogUpdateText: handleNull(values.dialogUpdateText),
+                    dialogDeleteText: handleNull(values.dialogDeleteText),
+                    saveText: handleNull(values.saveText),
+                    cancelText: handleNull(values.cancelText),                    
                     operateText: handleNull(values.operateText),
                     hasDeleteConfirm: values.hasDeleteConfirm,
                     hasAdd: values.hasAdd,
@@ -139,15 +143,19 @@ class Example extends Component {
     }
 
     renderConfig = () => {
-        const inlineLayout = { layout: { label: 8, control: 16 }, style: { width: 260, marginBottom: 12 } };
+        const inlineLayout = { layout: { label: 12, control: 12 }, style: { width: 260, marginBottom: 12 } };
         const shortInlineLayout = { layout: { label: 20, control: 4 }, style: { width: 150, marginBottom: 12 } };
         return <div>
             <FormItem label="enableFilter" name="enableFilter" defaultValue={false} ><Checkbox /></FormItem>            
-            
+            <FormItem label="locale" name="locale" defaultValue="en"><RadioGroup options={[
+                { label: 'en', value: 'en' },
+                { label: 'zh', value: 'zh' }
+            ]} /></FormItem>
             <FormItem label="addPosition" name="addPosition" defaultValue="top"><RadioGroup options={[
                 { label: 'top', value: 'top' },
                 { label: 'bottom', value: 'bottom' }
             ]} /></FormItem>
+            
             <FormItem label="itemAlign" name="itemAlign" defaultValue="left"><RadioGroup options={[
                 { label: 'left', value: 'left' },
                 { label: 'center', value: 'center' },
@@ -157,12 +165,15 @@ class Example extends Component {
 
             <FormItem label="text">
                 <div>
-                    <FormItem {...inlineLayout} inline label="addText" defaultValue="add" name="addText"><Input /></FormItem>
-                    <FormItem {...inlineLayout} inline label="updateText" defaultValue="update" name="updateText"><Input /></FormItem>
-                    <FormItem {...inlineLayout} inline label="saveText" defaultValue="save" name="saveText"><Input /></FormItem>
-                    <FormItem {...inlineLayout} inline label="cancelText" defaultValue="cancel" name="cancelText"><Input /></FormItem>
-                    <FormItem {...inlineLayout} inline label="deleteText" defaultValue="delete" name="deleteText"><Input /></FormItem>
-                    <FormItem {...inlineLayout} inline label="operateText" defaultValue="operate" name="operateText"><Input /></FormItem>
+                    <FormItem {...inlineLayout} inline label="addText"  name="addText"><Input /></FormItem>
+                    <FormItem {...inlineLayout} inline label="updateText" name="updateText"><Input /></FormItem>
+                    <FormItem {...inlineLayout} inline label="deleteText" name="deleteText"><Input /></FormItem>
+                    <FormItem {...inlineLayout} inline label="saveText" name="saveText"><Input /></FormItem>
+                    <FormItem {...inlineLayout} inline label="cancelText" name="cancelText"><Input /></FormItem>
+                    <FormItem {...inlineLayout} inline label="operateText" name="operateText"><Input /></FormItem>
+                    <FormItem {...inlineLayout} inline label="dialogAddText"  name="dialogAddText"><Input /></FormItem>
+                    <FormItem {...inlineLayout} inline label="dialogUpdateText" name="dialogUpdateText"><Input /></FormItem>
+                    <FormItem {...inlineLayout} inline label="dialogDeleteText" name="dialogDeleteText"><Input /></FormItem>
                 </div>
             </FormItem>
 

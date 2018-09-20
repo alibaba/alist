@@ -9,9 +9,16 @@ import './App.less';
 
 const Example = () => (
   <Router>
-    <div>
+    <div>     
       <ul>
-        <h1>Examples Entry:</h1>
+        <h1>Resources: </h1>         
+        <div><a href="https://github.com/alibaba/noform">NoForm Github</a></div>
+        <div><a href="https://alibaba.github.io/noform">NoForm Docs</a></div>
+          <h3>Feel free to star us! <a class="github-button" href="https://github.com/alibaba/noform" data-icon="octicon-star" data-show-count="true" aria-label="Star alibaba/noform on GitHub">Star</a></h3>
+      </ul>
+      
+      <ul>
+        <h1>Examples Entry:</h1>                
         <li><Link to="/">Basic</Link></li>
         <li><Link to="/formConfig">Form(Configuartion)</Link></li>
         <li><Link to="/repeater">Repeater</Link></li>

@@ -11,6 +11,7 @@ clean_build()
 
 clean_build # clean
 
+rm -rf examples
 mkdir tmpexamples
 mkdir tmppack
 mkdir tmppack/dist
