@@ -7,6 +7,7 @@ import { Alert } from 'antd';
 const { TextArea } = Input;
 const { Group: RadioGroup } = Radio;
 const { Group: CheckboxGroup } = Checkbox;
+const { RangePicker } = DatePicker;
 
 const dataSource = [
     { label: 'optA', value: 'optA'},
@@ -54,7 +55,7 @@ class Example extends Component {
                         <Button style={{ marginRight: 12 }} onClick={this.getValues}>getValues</Button>
                     </div>
                 </FormItem>
-                
+
                 <FormItem label="input" name="input"><Input /></FormItem>
                 <FormItem label="AutoComplete" name="AutoComplete"><AutoComplete options={dataSource} /></FormItem>                
                 <FormItem label="TextArea" name="TextArea"><TextArea /></FormItem>
@@ -66,7 +67,9 @@ class Example extends Component {
                 <FormItem label="RadioGroup" name="RadioGroup"><RadioGroup options={dataSource} /></FormItem>
                 <FormItem label="Slider" name="Slider"><Slider /></FormItem>
                 <FormItem label="Rate" name="Rate"><Rate /></FormItem>
+                <FormItem label="RangePicker" name="RangePicker"><RangePicker showTime format="YYYY-MM-DD HH:mm:ss" /></FormItem>
                 <FormItem label="DatePicker" name="DatePicker"><DatePicker /></FormItem>
+                <FormItem label="时间" name="time"><DatePicker /></FormItem>
                 <FormItem label="TimePicker" name="TimePicker"><TimePicker /></FormItem>
                 <FormItem label="InputNumber" name="InputNumber"><InputNumber /></FormItem>
                 <FormItem label="Cascader" name="Cascader"><Cascader options={dataSource} /></FormItem>
