@@ -76,7 +76,7 @@ describe('Inline multiple Repeater', () => {
         const core = form.find(InlineRepeater).instance().repeaterCore.formList[0];
         const { id } = core;
         await form.find(InlineRepeater).instance().doDelete(core, id);
-        expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn').length).toEqual(1);
+        expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn').length).toEqual(2);
         ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn')[0]);
 
         await sleep(500);
@@ -176,7 +176,7 @@ describe('Inline multiple Repeater', () => {
         form.find('.repeater-delete').simulate('click');
         await sleep(500);
         form.mount();
-        expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn').length).toEqual(1);
+        expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn').length).toEqual(2);
         ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn')[0]);
 
         await sleep(500);

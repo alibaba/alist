@@ -368,11 +368,11 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
             <FormItem suffix="USD" label="username" name="username"><Input /></FormItem>
         </InlineRepeater>
     </FormItem> */}
-    {/* <FormItem name="deepselect">
+    <FormItem name="deepselect">
         <SelectRepeater selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig}>
             <FormItem label="username" name="username"><Input /></FormItem>
         </SelectRepeater>        
-    </FormItem> */}
+    </FormItem>
 
     {/* <FormItem defaultValue={{ dataSource: [{username: 'a', id: 'a'}, {username: 'b', id: 'b'}] }} name="deepselectxxxxx">
         <SelectRepeater selectMode="single" formConfig={formConfig}>
@@ -380,11 +380,11 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
         </SelectRepeater>        
     </FormItem> */}
 
-    <FormItem name="deepselect">
+    {/* <FormItem name="deepselect">
          <InlineRepeater filter={filter} formConfig={formConfig} addPosition="bottom">
             <FormItem required label="开票人" name="drawerName"><Input /></FormItem>
        </InlineRepeater>      
-    </FormItem>
+    </FormItem> */}
     
     {/* <Item name="tableRepeat" >
         <TableRepeater formConfig={formConfig}>
