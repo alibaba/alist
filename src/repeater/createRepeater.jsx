@@ -352,7 +352,7 @@ export default function CreateRepeater(bindSource, type, source) {
             const event = { type: 'delete', index, item: currentDelete };
             if (hasDeleteConfirm) {
                 const dialogConfig = this.getDialogConfig(core, {
-                    title: textMap.deleteText,
+                    title: textMap.dialogDeleteText,
                     content: <div style={{ minWidth: '280px' }}>{textMap.deleteConfirmText}</div>,
                     onOk: async (_, hide) => {
                         const success = await this.repeaterCore.remove(core, id);
@@ -376,7 +376,7 @@ export default function CreateRepeater(bindSource, type, source) {
         doAddDialog = async (core) => {
             const textMap = this.getText();
             const dialogConfig = this.getDialogConfig(core, {
-                title: textMap.addText,
+                title: textMap.dialogAddText,
                 onOk: async (_, hide) => {
                     const error = await core.validate();
                     if (error) {
@@ -397,7 +397,7 @@ export default function CreateRepeater(bindSource, type, source) {
         doUpdateDialog = async (core, id) => {
             const textMap = this.getText();
             const dialogConfig = this.getDialogConfig(core, {
-                title: textMap.updateText,
+                title: textMap.dialogUpdateText,
                 type: 'update',
                 onOk: async (_, hide) => {
                     const error = await core.validate();

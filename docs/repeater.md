@@ -22,6 +22,9 @@ import "./repeater.scss";
 const { Modal, Button, Input, Checkbox, Radio }  = wrapper(Antd);
 const Dialog = dialogWrapper(Antd)
 const { TableRepeater, InlineRepeater, Selectify, ActionButton } = repeater({ Dialog, Button, Input, Checkbox, Radio });
+
+const { Group: RadioGroup } = Radio;
+
 // 自定义的过滤函数
 function filter(value, key){
     return value.filter(item => item.drawerName.startsWith(key))
@@ -78,6 +81,14 @@ const formCore = new FormCore({
     },
     onChange: (fireKeys, values) => {
         console.log('====>', fireKeys, values);
+        const vprops = {
+            locale: values.locale
+        };
+
+        formCore.setProps({
+            selectRepeaterInlinemultiple: vprops,
+            deepselect: vprops,
+        });
     },
     // values: {
     //     rules: [{ price: '', threshold: '' }]
@@ -368,6 +379,10 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
             <FormItem suffix="USD" label="username" name="username"><Input /></FormItem>
         </InlineRepeater>
     </FormItem> */}
+    <FormItem label="locale" name="locale" defaultValue="en"><RadioGroup options={[
+        { label: 'en', value: 'en' },
+        { label: 'zh', value: 'zh' }
+    ]} /></FormItem>
     <FormItem name="deepselect">
         <SelectRepeater selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig}>
             <FormItem label="username" name="username"><Input /></FormItem>
@@ -517,8 +532,8 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
 
 ````css
 body {
-    background-color: #000;
-    background: #000 !important;
-    color: #fff !important;
+    /* background-color: #000; */
+    /* background: #000 !important; */
+    /* color: #fff !important; */
 }
 ````
