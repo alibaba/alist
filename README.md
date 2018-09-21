@@ -62,6 +62,15 @@ ISO Standard Map：
 
 More than 190 case.
 
-### 国内用户
+### How to contribute
+
+1. clone this repo
+2. npm install
+3. npm run start
+4. pull request
+
+### For chinese user / 国内用户
+
+[NoForm - 一个更好的表单解决方案](https://zhuanlan.zhihu.com/p/44120143)
 
 欢迎钉钉入群：23134927 一起讨论
