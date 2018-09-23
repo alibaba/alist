@@ -17,7 +17,7 @@ import Form, { FormItem, FormCore, Item, If } from '../src';
 import AntdWrapper from '../src/wrapper/antd';
 import AntdDialogFormWrapper from '../src/dialog/antd';
 const { Input, Select, Checkbox, Radio, Switch, Slider, DatePicker, TimePicker,
-  Rate, Cascader, TreeSelect, Upload, Button, Modal, Icon, InputNumber, AutoComplete, Mention
+  Rate, Cascader, TreeSelect, Upload, Button, Modal, Icon, InputNumber, AutoComplete
 } = AntdWrapper(Antd);
 
 const { TextArea } = Input;
@@ -27,6 +27,11 @@ const { Group: CheckboxGroup } = Checkbox;
 const dataSource = [
   { label: 'optA', value: 'optA'},
   { label: 'optB', value: 'optB'}
+];
+
+const treeData = [
+  { title: 'optA', value: 'optA'},
+  { title: 'optB', value: 'optB'}
 ];
 
 import './antd.scss';
@@ -67,7 +72,6 @@ class PageDemo extends React.Component {
 	          <FormItem label="input" name="input"><Input /></FormItem>
               <FormItem label="AutoComplete" name="AutoComplete"><AutoComplete options={dataSource} /></FormItem>
               <FormItem label="超长中文换行" name="AutoComplete2"><AutoComplete options={dataSource} /></FormItem>
-              <FormItem label="Mention" name="Mention"><Mention suggestions={['aaaaa', 'bbbbb', 'cccc']} /></FormItem>
               <FormItem label="TextArea" name="TextArea"><TextArea /></FormItem>
 	          <FormItem label="select" name="select" full><Select options={dataSource} /></FormItem>
 	          <FormItem label="Checkbox" name="Checkbox"><Checkbox >选中</Checkbox></FormItem>
@@ -81,7 +85,7 @@ class PageDemo extends React.Component {
 	          <FormItem label="TimePicker" name="TimePicker"><TimePicker /></FormItem>
 	          <FormItem label="InputNumber" name="InputNumber"><InputNumber /></FormItem>
 	          <FormItem label="Cascader" name="Cascader"><Cascader options={dataSource} /></FormItem>
-	          <FormItem label="TreeSelect" name="TreeSelect"><TreeSelect treeData={dataSource} /></FormItem>
+	          <FormItem label="TreeSelect" name="TreeSelect"><TreeSelect treeData={treeData} /></FormItem>
 	          <FormItem label="Upload" name="Upload" value={fileList}>
                 <Upload >
                     <Button>

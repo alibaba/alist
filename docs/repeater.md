@@ -22,8 +22,10 @@ import "./repeater.scss";
 const { Modal, Button, Input, Checkbox, Radio }  = wrapper(Antd);
 const Dialog = dialogWrapper(Antd)
 const { TableRepeater, InlineRepeater, Selectify, ActionButton } = repeater({ Dialog, Button, Input, Checkbox, Radio });
-
 const { Group: RadioGroup } = Radio;
+
+const SelectRepeater = Selectify(TableRepeater);
+const SelectRepeaterInline = Selectify(InlineRepeater);
 
 // 自定义的过滤函数
 function filter(value, key){
@@ -33,9 +35,6 @@ function filter(value, key){
 function filterUsername(value, key){
     return value.filter(item => item.username.startsWith(key))
 }
-
-const SelectRepeater = Selectify(TableRepeater);
-const SelectRepeaterInline = Selectify(InlineRepeater);
 
 const tCore = new FormCore({
     onChange: (fireKeys, values) => {

@@ -6,18 +6,32 @@ function formatValue(value) {
 }
 
 function formatArray(value) {
-    if ([null, undefined].indexOf(value) !== -1) return [];
+    if (['', null, undefined].indexOf(value) !== -1) return [];
     return value;
 }
 
+function formatNumber(value) {
+    if (['0', 0, '', null, undefined].indexOf(value) !== -1) return 0;
+    return Number(value);
+}
+
 function formatBoolValue(value) {
-    if ([null, undefined].indexOf(value) !== -1) return false;
+    if (['', null, undefined].indexOf(value) !== -1) return false;
     if (`${value}` === 'true') {
         return true;
     } else if (`${value}` === 'false') {
         return false;
     }
     return false;
+}
+
+function getCleanProps(props) {
+    const otherProps = { ...props };
+    delete otherProps.status;
+    delete otherProps.value;
+    delete otherProps.inset;
+    delete otherProps.error;
+    return otherProps;
 }
 
 function getValueProps(props, opts = {}) {
@@ -43,15 +57,17 @@ function formatDate(value) {
     return value;
 }
 
-function log () {
-    
+function log() {
+
 }
 
 export default {
     formatValue,
     formatArray,
+    formatNumber,
     formatBoolValue,
     getValueProps,
     formatDate,
+    getCleanProps,
     log,
 };

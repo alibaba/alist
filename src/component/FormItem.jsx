@@ -11,7 +11,7 @@ const Component = React.PureComponent;
 class FormItem extends Component {
     static propTypes = {
         name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        value: PropTypes.object,
+        value: PropTypes.any,
         children: PropTypes.any,
     }
     // 上有form下有if

@@ -1,5 +1,8 @@
 import React from 'react';
-import { formatValue, formatArray, formatBoolValue, getValueProps } from './util';
+import {
+    formatValue, formatArray, formatBoolValue, formatNumber,
+    getValueProps, getCleanProps,
+} from './util';
 
 const IS_REACT_GREATER_FITHTEEN = parseInt(React.version, 10) > 15;
 const prefix = 'ant';
@@ -70,12 +73,13 @@ class WrapperClass {
         return <this.Antd.Input {...others} {...valueProps} {...insetify(props)} />;
     }
 
-    TextArea = (props) => {
+    TextArea = (props = {}) => {
         const { status, value } = props;
+        const otherProps = getCleanProps(props);
         const valueProps = getValueProps(props);
 
         if (status === 'preview') return renderValue(formatValue(value)); // 处理预览态
-        return <this.Antd.Input.TextArea {...props} {...valueProps} {...insetify(props)} />;
+        return <this.Antd.Input.TextArea {...otherProps} {...valueProps} {...insetify(props)} />;
     }
 
     Select = (props) => {
@@ -96,10 +100,14 @@ class WrapperClass {
     }
 
     CheckboxGroup = (props) => {
-        const valueProps = getValueProps(props);
+        const otherProps = getCleanProps(props);
+        const valueProps = getValueProps(props, {
+            format: formatArray,
+        });
 
         if (props.status === 'preview') return renderOption(props);
-        return <this.Antd.Checkbox.Group {...props} {...valueProps} {...insetify(props)} />;
+
+        return <this.Antd.Checkbox.Group {...otherProps} {...valueProps} {...insetify(props)} />;
     }
 
     RadioGroup = (props) => {
@@ -110,6 +118,7 @@ class WrapperClass {
     }
 
     Checkbox = (props) => {
+        const otherProps = getCleanProps(props);
         const valueProps = getValueProps(props, {
             format: formatBoolValue,
             keyname: 'checked',
@@ -130,10 +139,11 @@ class WrapperClass {
             onChange && onChange(checkedVal);
         };
 
-        return <this.Antd.Checkbox {...props} {...valueProps} onChange={beforeChange} />;
+        return <this.Antd.Checkbox {...otherProps} {...valueProps} onChange={beforeChange} />;
     }
 
     Radio = (props) => {
+        const otherProps = getCleanProps(props);
         const valueProps = getValueProps(props, {
             format: formatBoolValue,
             keyname: 'checked',
@@ -154,10 +164,11 @@ class WrapperClass {
             onChange && onChange(checkedVal);
         };
 
-        return <this.Antd.Radio {...props} {...valueProps} onChange={beforeChange} />;
+        return <this.Antd.Radio {...otherProps} {...valueProps} onChange={beforeChange} />;
     }
 
     Switch = (props) => {
+        const otherProps = getCleanProps(props);
         const valueProps = getValueProps(props, {
             format: formatBoolValue,
             keyname: 'checked',
@@ -172,23 +183,29 @@ class WrapperClass {
             return renderValue(`${checked}`);
         }
 
-        return <this.Antd.Switch {...props} {...valueProps} />;
+        return <this.Antd.Switch {...otherProps} {...valueProps} />;
     }
 
     Slider = (props) => {
         const { className = '', value } = props;
-        const valueProps = getValueProps(props);
+        const otherProps = getCleanProps(props);
+        const valueProps = getValueProps(props, {
+            format: formatNumber,
+        });
 
         if (props.status === 'preview') {
             return <this.Antd.Slider className={`${className || ''} ${prefix}-preview-slider`} {...props} disabled value={formatValue(value)} />;
         }
 
-        return <this.Antd.Slider {...props} {...valueProps} />;
+        return <this.Antd.Slider {...otherProps} {...valueProps} />;
     }
 
     DatePicker = (props) => {
         const { className = '', value } = props;
-        const valueProps = getValueProps(props);
+        const otherProps = getCleanProps(props);
+        const valueProps = getValueProps(props, {
+            format: val => (!val ? null : val),
+        });
 
         if (props.status === 'preview') {
             const placeholderClearer = {
@@ -199,7 +216,7 @@ class WrapperClass {
                 rangeEndPlaceholder: '',
             };
 
-            return <this.Antd.DatePicker placeholder="" {...props} value={value} locale={placeholderClearer} disabled className={`${className || ''} ${prefix}-preview-datepicker`} />;
+            return <this.Antd.DatePicker placeholder="" {...otherProps} value={value} locale={placeholderClearer} disabled className={`${className || ''} ${prefix}-preview-datepicker`} />;
         }
 
         const onChange = (momentVal) => {
@@ -207,7 +224,7 @@ class WrapperClass {
             onChange && onChange(momentVal, { escape: true });
         };
 
-        return <this.Antd.DatePicker {...props} {...valueProps} onChange={onChange} {...insetify(props)} />;
+        return <this.Antd.DatePicker {...otherProps} {...valueProps} onChange={onChange} {...insetify(props)} />;
     }
 
     SubDatePicker = (subType, props) => {
@@ -240,14 +257,17 @@ class WrapperClass {
     }
 
     TimePicker = (props) => {
+        const otherProps = getCleanProps(props);
         const { className = '', value } = props;
-        const valueProps = getValueProps(props);
+        const valueProps = getValueProps(props, {
+            format: val => (!val ? null : val),
+        });
 
         if (props.status === 'preview') {
             const placeholderClearer = {
                 placeholder: '',
             };
-            return <this.Antd.TimePicker placeholder="" {...props} value={value} locale={placeholderClearer} disabled className={`${className || ''} ${prefix}-preview-datepicker`} />;
+            return <this.Antd.TimePicker placeholder="" {...otherProps} value={value} locale={placeholderClearer} disabled className={`${className || ''} ${prefix}-preview-datepicker`} />;
         }
 
         const onChange = (momentVal, formatDate) => {
@@ -255,7 +275,7 @@ class WrapperClass {
             onChange && onChange(momentVal, { escape: true });
         };
 
-        return <this.Antd.TimePicker {...props} {...valueProps} onChange={onChange} {...insetify(props)} />;
+        return <this.Antd.TimePicker {...otherProps} {...valueProps} onChange={onChange} {...insetify(props)} />;
     }
 
     InputNumber = (props) => {
@@ -269,22 +289,27 @@ class WrapperClass {
 
     Rate = (props) => {
         const { value } = props;
-        const valueProps = getValueProps(props);
+        const otherProps = getCleanProps(props);
+        const valueProps = getValueProps(props, {
+            format: formatNumber,
+        });
 
         if (props.status === 'preview') {
-            return <this.Antd.Rate {...props} disabled value={formatValue(value)} />;
+            return <this.Antd.Rate {...otherProps} disabled value={formatValue(value)} />;
         }
 
-        return <this.Antd.Rate {...props} {...valueProps} />;
+        return <this.Antd.Rate {...otherProps} {...valueProps} />;
     }
 
     Cascader = (props) => {
         const { className = '', value } = props;
         const valueProps = getValueProps(props);
+        const otherProps = getCleanProps(props);
+
         if (props.status === 'preview') {
             return <this.Antd.Cascader {...props} className={`${className || ''} ${prefix}-preview-select`} disabled value={formatValue(value)} placeholder="" />;
         }
-        return <this.Antd.Cascader {...props} {...valueProps} {...insetify(props)} />;
+        return <this.Antd.Cascader {...otherProps} {...valueProps} {...insetify(props)} />;
     }
 
     TreeSelect = (props) => {
