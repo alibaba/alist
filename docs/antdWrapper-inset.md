@@ -70,9 +70,9 @@ class PageDemo extends React.Component {
 	    return (
 	      <Form direction="hoz" inset core={this.core}>
 	          <FormItem label="input" name="input"><Input /></FormItem>
-              <FormItem label="AutoComplete" name="AutoComplete"><AutoComplete options={dataSource} /></FormItem>
-              <FormItem label="超长中文换行" name="AutoComplete2"><AutoComplete options={dataSource} /></FormItem>
-              <FormItem label="TextArea" name="TextArea"><TextArea /></FormItem>
+            <FormItem label="AutoComplete" name="AutoComplete"><AutoComplete options={dataSource} /></FormItem>
+            <FormItem label="超长中文换行" name="AutoComplete2"><AutoComplete options={dataSource} /></FormItem>
+            <FormItem label="TextArea" name="TextArea"><TextArea /></FormItem>
 	          <FormItem label="select" name="select" full><Select options={dataSource} /></FormItem>
 	          <FormItem label="Checkbox" name="Checkbox"><Checkbox >选中</Checkbox></FormItem>
 	          <FormItem label="Radio" name="Radio"><Radio >选中</Radio></FormItem>
@@ -87,21 +87,20 @@ class PageDemo extends React.Component {
 	          <FormItem label="Cascader" name="Cascader"><Cascader options={dataSource} /></FormItem>
 	          <FormItem label="TreeSelect" name="TreeSelect"><TreeSelect treeData={treeData} /></FormItem>
 	          <FormItem label="Upload" name="Upload" value={fileList}>
-                <Upload >
-                    <Button>
-                        <Icon type="upload" /> Click to Upload
-                    </Button>
-                  </Upload>
+              <Upload >
+                <Button>
+                    <Icon type="upload" /> Click to Upload
+                </Button>
+              </Upload>
               </FormItem>
 	          <FormItem label="">
-                <div>
-                    <Button onClick={this.getValues}>获取值</Button>
-                    <Button onClick={this.setStatus.bind(this, 'edit')}>切换编辑态</Button>
-                    <Button onClick={this.setStatus.bind(this, 'preview')}>切换预览态</Button>
-                    <Button onClick={this.setStatus.bind(this, 'disabled')}>切换禁用态</Button>
-                </div>
-              </FormItem>
-
+              <div>
+                  <Button onClick={this.getValues}>获取值</Button>
+                  <Button onClick={this.setStatus.bind(this, 'edit')}>切换编辑态</Button>
+                  <Button onClick={this.setStatus.bind(this, 'preview')}>切换预览态</Button>
+                  <Button onClick={this.setStatus.bind(this, 'disabled')}>切换禁用态</Button>
+              </div>
+            </FormItem>
 	      </Form>);
   	}
 }
