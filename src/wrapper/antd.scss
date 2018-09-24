@@ -97,12 +97,22 @@
     .anticon.anticon-cross {
         display: none;
     }
+
+    .ant-upload-list-item {
+        .anticon.anticon-delete,
+        .anticon.anticon-close,
+        .anticon.anticon-cross, {
+            display: none;
+        }
+    }
 }
 
-.ant-rating,
-.ant-checkbox-wrapper,
-.ant-radio-wrapper {
-    line-height: 28px;
+.no-form-item-content  {
+    .ant-rating,
+    .ant-checkbox-wrapper,
+    .ant-radio-wrapper {
+        line-height: 28px;
+    }
 }
 
 .ant-preview-slider.ant-slider-disabled {
@@ -126,6 +136,7 @@
     .ant-calendar-picker-input,
     .ant-time-picker-input,
     .ant-cascader-input,
+    .ant-time-picker-input,
     .ant-select-selection {
         background: transparent;
         border: none;
@@ -144,6 +155,7 @@
     .ant-select-selection-selected-value {
         color: rgba(0,0,0, 0.6);
         padding: 0;
+        height: 28px;
     }
 
     .ant-calendar-picker-icon,
@@ -152,21 +164,39 @@
     .ant-select-arrow { display: none; }
 }
 
-.ant-preview-datepicker { // 预览态    
-    .ant-calendar-range-picker-separator {
-        margin: 0 4px;
-        line-height: 28px;
+.ant-upload-disabled + .ant-upload-list {
+    .anticon.anticon-close {
+        display: none;
     }
+}
+
+.ant-preview-datepicker { // 预览态        
     .ant-input.disabled {
         background: transparent;
         border: none;
-
+        
         input:disabled {
             background: transparent;
             border: none;
-            color: #000;
+            padding: 0;
+            color: rgba(0, 0, 0, 0.6);
             cursor: text;
+            height: 28px;
         }
+    }
+
+    .ant-calendar-range-picker-separator {
+        margin: 0 8px;
+    }
+
+    .ant-calendar-range-picker-input[disabled],
+    .ant-time-picker-input[disabled] {
+        background: transparent;
+        border: none;
+        color: rgba(0, 0, 0, 0.6);
+        padding: 0;
+        cursor: text;
+        height: 28px;
     }
 
     .ant-icon { display: none; }
