@@ -10,6 +10,15 @@ function formatArray(value) {
     return value;
 }
 
+
+function moment2value(value, format) {
+    if (value && value._isAMomentObject) {
+        return value.format(format);
+    } else {
+        return null;
+    }
+}
+
 function formatNumber(value) {
     if (['0', 0, '', null, undefined].indexOf(value) !== -1) return 0;
     return Number(value);
@@ -69,5 +78,6 @@ export default {
     getValueProps,
     formatDate,
     getCleanProps,
+    moment2value,
     log,
 };

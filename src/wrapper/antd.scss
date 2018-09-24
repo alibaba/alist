@@ -75,6 +75,7 @@
 
 .multi-value-item {
     white-space: nowrap;
+    color: rgba(0, 0, 0, 0.6);
 }
 
 .ant-range {
@@ -152,6 +153,10 @@
 }
 
 .ant-preview-datepicker { // 预览态    
+    .ant-calendar-range-picker-separator {
+        margin: 0 4px;
+        line-height: 28px;
+    }
     .ant-input.disabled {
         background: transparent;
         border: none;

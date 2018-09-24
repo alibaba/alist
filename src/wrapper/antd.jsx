@@ -2,6 +2,7 @@ import React from 'react';
 import {
     formatValue, formatArray, formatBoolValue, formatNumber,
     getValueProps, getCleanProps,
+    moment2value,
 } from './util';
 
 const IS_REACT_GREATER_FITHTEEN = parseInt(React.version, 10) > 15;
@@ -64,13 +65,12 @@ class WrapperClass {
     }
 
     Input = (props) => {
-        const {
-            status, value, error, inset, ...others
-        } = props;
+        const { status, value } = props;
+        const otherProps = getCleanProps(props);
         const valueProps = getValueProps(props);
 
         if (status === 'preview') return renderValue(formatValue(value)); // 处理预览态
-        return <this.Antd.Input {...others} {...valueProps} {...insetify(props)} />;
+        return <this.Antd.Input {...otherProps} {...valueProps} {...insetify(props)} />;
     }
 
     TextArea = (props = {}) => {
@@ -83,8 +83,10 @@ class WrapperClass {
     }
 
     Select = (props) => {
-        const { className = '', value, children } = props;
-        const { options, ...others } = props;
+        const {
+            status, options, className = '', value, children,
+        } = props;
+        const otherProps = getCleanProps(props);
         const opts = {};
         if (options && Array.isArray(options) && !children) {
             opts.children = options.map((item) => {
@@ -95,8 +97,8 @@ class WrapperClass {
 
         const valueProps = getValueProps(props);
 
-        if (props.status === 'preview') return <this.Antd.Select placeholder="" {...props} disabled className={`${className || ''} ${prefix}-preview-select`} value={formatValue(value)} />;
-        return <this.Antd.Select {...others} {...opts} {...valueProps} {...insetify(props)} />;
+        if (status === 'preview') return <this.Antd.Select placeholder="" {...otherProps} disabled className={`${className || ''} ${prefix}-preview-select`} value={formatValue(value)} />;
+        return <this.Antd.Select {...otherProps} {...opts} {...valueProps} {...insetify(props)} />;
     }
 
     CheckboxGroup = (props) => {
@@ -111,23 +113,27 @@ class WrapperClass {
     }
 
     RadioGroup = (props) => {
+        const otherProps = getCleanProps(props);
         const valueProps = getValueProps(props);
 
         if (props.status === 'preview') return renderOption(props);
-        return <this.Antd.Radio.Group {...props} {...valueProps} {...insetify(props)} />;
+        return <this.Antd.Radio.Group {...otherProps} {...valueProps} {...insetify(props)} />;
     }
 
     Checkbox = (props) => {
+        const {
+            onChange, status, children, value,
+        } = props;
         const otherProps = getCleanProps(props);
         const valueProps = getValueProps(props, {
             format: formatBoolValue,
             keyname: 'checked',
         });
 
-        if (props.status === 'preview') {
-            const checked = formatBoolValue(props.value);
-            if (props.children) { // 存在label
-                return checked ? renderValue(props.children) : null;
+        if (status === 'preview') {
+            const checked = formatBoolValue(value);
+            if (children) { // 存在label
+                return checked ? renderValue(children) : null;
             } // 不存在
             window && window.console && window.console.warn('label必须写在Checkbox内，如需编写外部label, 请使用suffix、prefix等属性'); // 给出警告
             return null;
@@ -135,7 +141,6 @@ class WrapperClass {
 
         const beforeChange = (e) => {
             const checkedVal = e.target.checked;
-            const { onChange } = props;
             onChange && onChange(checkedVal);
         };
 
@@ -143,16 +148,19 @@ class WrapperClass {
     }
 
     Radio = (props) => {
+        const {
+            value, status, children, onChange,
+        } = props;
         const otherProps = getCleanProps(props);
         const valueProps = getValueProps(props, {
             format: formatBoolValue,
             keyname: 'checked',
         });
 
-        if (props.status === 'preview') {
-            const checked = formatBoolValue(props.value);
-            if (props.children) { // 存在label
-                return checked ? renderValue(props.children) : null;
+        if (status === 'preview') {
+            const checked = formatBoolValue(value);
+            if (children) { // 存在label
+                return checked ? renderValue(children) : null;
             } // 不存在
             window && window.console && window.console.warn('label必须写在Radio内，如需编写外部label, 请使用suffix、prefix等属性'); // 给出警告
             return null;
@@ -160,7 +168,6 @@ class WrapperClass {
 
         const beforeChange = (e) => {
             const checkedVal = e.target.checked;
-            const { onChange } = props;
             onChange && onChange(checkedVal);
         };
 
@@ -168,16 +175,19 @@ class WrapperClass {
     }
 
     Switch = (props) => {
+        const {
+            status, value, checkedChildren, unCheckedChildren,
+        } = props;
         const otherProps = getCleanProps(props);
         const valueProps = getValueProps(props, {
             format: formatBoolValue,
             keyname: 'checked',
         });
 
-        if (props.status === 'preview') {
-            const checked = formatBoolValue(props.value);
-            if (props.checkedChildren || props.unCheckedChildren) { // 存在label
-                const checkedStr = checked ? props.checkedChildren : props.unCheckedChildren;
+        if (status === 'preview') {
+            const checked = formatBoolValue(value);
+            if (checkedChildren || unCheckedChildren) { // 存在label
+                const checkedStr = checked ? checkedChildren : unCheckedChildren;
                 return renderValue(checkedStr);
             } // 不存在
             return renderValue(`${checked}`);
@@ -187,27 +197,29 @@ class WrapperClass {
     }
 
     Slider = (props) => {
-        const { className = '', value } = props;
+        const { status, className = '', value } = props;
         const otherProps = getCleanProps(props);
         const valueProps = getValueProps(props, {
             format: formatNumber,
         });
 
-        if (props.status === 'preview') {
-            return <this.Antd.Slider className={`${className || ''} ${prefix}-preview-slider`} {...props} disabled value={formatValue(value)} />;
+        if (status === 'preview') {
+            return <this.Antd.Slider className={`${className || ''} ${prefix}-preview-slider`} {...otherProps} disabled value={formatValue(value)} />;
         }
 
         return <this.Antd.Slider {...otherProps} {...valueProps} />;
     }
 
     DatePicker = (props) => {
-        const { className = '', value } = props;
+        const {
+            onChange, status, className = '', value,
+        } = props;
         const otherProps = getCleanProps(props);
         const valueProps = getValueProps(props, {
             format: val => (!val ? null : val),
         });
 
-        if (props.status === 'preview') {
+        if (status === 'preview') {
             const placeholderClearer = {
                 datePlaceholder: '',
                 monthPlaceholder: '',
@@ -219,20 +231,27 @@ class WrapperClass {
             return <this.Antd.DatePicker placeholder="" {...otherProps} value={value} locale={placeholderClearer} disabled className={`${className || ''} ${prefix}-preview-datepicker`} />;
         }
 
-        const onChange = (momentVal) => {
-            const { onChange } = props;
+        const beforeChange = (momentVal) => {
             onChange && onChange(momentVal, { escape: true });
         };
 
-        return <this.Antd.DatePicker {...otherProps} {...valueProps} onChange={onChange} {...insetify(props)} />;
+        return <this.Antd.DatePicker {...otherProps} {...valueProps} onChange={beforeChange} {...insetify(props)} />;
     }
 
     SubDatePicker = (subType, props) => {
-        const { className = '', value } = props;
-        const valueProps = getValueProps(props);
+        const {
+            showTime, status, onChange, className = '', value, format,
+        } = props;
+
+        const defaultFormat = 'YYYY-MM-DD';
+        const ftFormat = format || (showTime ? `${defaultFormat} HH:mm:ss` : defaultFormat);
+        const otherProps = getCleanProps(props);
+        const valueProps = getValueProps(props, {
+            format: val => (!val ? null : val),
+        });
         const SubDatePicker = this.Antd.DatePicker[subType];
 
-        if (props.status === 'preview') {
+        if (status === 'preview') {
             const placeholderClearer = {
                 datePlaceholder: '',
                 monthPlaceholder: '',
@@ -245,56 +264,67 @@ class WrapperClass {
                 return null;
             }
 
-            return <SubDatePicker placeholder="" {...props} value={value} locale={placeholderClearer} disabled className={`${className || ''} ${prefix}-preview-datepicker`} />;
+            if (Array.isArray(value) && value.length === 2) {
+                return (<div className={`${className || ''} ${prefix}-preview-datepicker`}>
+                    {[value[0], { sep: true }, value[1]].map((item) => {
+                        if (item.sep) {
+                            return <span className="ant-calendar-range-picker-separator"> ~ </span>;
+                        }
+                        return renderValue(moment2value(item, ftFormat));
+                    })}
+                </div>);
+            }
+            return <SubDatePicker {...otherProps} {...valueProps} locale={placeholderClearer} disabled className={`${className || ''} ${prefix}-preview-datepicker`} placeholder="" />;
         }
 
-        const onChange = (momentVal) => {
-            const { onChange } = props;
+        const beforeChange = (momentVal) => {
             onChange && onChange(momentVal, { escape: true });
         };
 
-        return <SubDatePicker {...props} {...valueProps} onChange={onChange} {...insetify(props)} />;
+        return <SubDatePicker {...otherProps} {...valueProps} onChange={beforeChange} {...insetify(props)} />;
     }
 
     TimePicker = (props) => {
         const otherProps = getCleanProps(props);
-        const { className = '', value } = props;
+        const {
+            onChange, status, className = '', value,
+        } = props;
         const valueProps = getValueProps(props, {
             format: val => (!val ? null : val),
         });
 
-        if (props.status === 'preview') {
+        if (status === 'preview') {
             const placeholderClearer = {
                 placeholder: '',
             };
             return <this.Antd.TimePicker placeholder="" {...otherProps} value={value} locale={placeholderClearer} disabled className={`${className || ''} ${prefix}-preview-datepicker`} />;
         }
 
-        const onChange = (momentVal, formatDate) => {
-            const { onChange } = props;
+        const beforeChange = (momentVal) => {
             onChange && onChange(momentVal, { escape: true });
         };
 
-        return <this.Antd.TimePicker {...otherProps} {...valueProps} onChange={onChange} {...insetify(props)} />;
+        return <this.Antd.TimePicker {...otherProps} {...valueProps} onChange={beforeChange} {...insetify(props)} />;
     }
 
     InputNumber = (props) => {
-        const { value } = props;
+        const { status, value } = props;
+        const otherProps = getCleanProps(props);
         const valueProps = getValueProps(props);
 
-        if (props.status === 'preview') return renderValue(value); // 处理预览态
+        if (status === 'preview') return renderValue(value); // 处理预览态
 
-        return <this.Antd.InputNumber {...props} {...valueProps} {...insetify(props)} />;
+        return <this.Antd.InputNumber {...otherProps} {...valueProps} {...insetify(props)} />;
     }
 
     Rate = (props) => {
-        const { value } = props;
+        const { status, value } = props;
         const otherProps = getCleanProps(props);
         const valueProps = getValueProps(props, {
             format: formatNumber,
         });
 
-        if (props.status === 'preview') {
+        if (status === 'preview') {
             return <this.Antd.Rate {...otherProps} disabled value={formatValue(value)} />;
         }
 
@@ -302,45 +332,48 @@ class WrapperClass {
     }
 
     Cascader = (props) => {
-        const { className = '', value } = props;
+        const { status, className = '', value } = props;
         const valueProps = getValueProps(props);
         const otherProps = getCleanProps(props);
 
-        if (props.status === 'preview') {
-            return <this.Antd.Cascader {...props} className={`${className || ''} ${prefix}-preview-select`} disabled value={formatValue(value)} placeholder="" />;
+        if (status === 'preview') {
+            return <this.Antd.Cascader {...otherProps} className={`${className || ''} ${prefix}-preview-select`} disabled value={formatValue(value)} placeholder="" />;
         }
         return <this.Antd.Cascader {...otherProps} {...valueProps} {...insetify(props)} />;
     }
 
     TreeSelect = (props) => {
-        const { className = '', value } = props;
+        const { status, className = '', value } = props;
+        const otherProps = getCleanProps(props);
         const valueProps = getValueProps(props);
-        if (props.status === 'preview') {
-            return <this.Antd.TreeSelect placeholder="" {...props} className={`${className || ''} ${prefix}-preview-select`} disabled value={formatValue(value)} />;
+        if (status === 'preview') {
+            return <this.Antd.TreeSelect placeholder="" {...otherProps} className={`${className || ''} ${prefix}-preview-select`} disabled value={formatValue(value)} />;
         }
-        return <this.Antd.TreeSelect {...props} {...valueProps} {...insetify(props)} />;
+        return <this.Antd.TreeSelect {...otherProps} {...valueProps} {...insetify(props)} />;
     }
 
     Upload = (props) => {
-        const value = formatArray(props.value);
-        const { name, ...others } = props;
-        const { className = '' } = props;
+        const {
+            onChange, status, value, className = '',
+        } = props;
+        const otherProps = getCleanProps(props);
+        const uploadValue = formatArray(value);
 
-        if (props.status === 'preview') {
-            return <this.Antd.Upload {...defaultFileUploadProps} {...others} onChange={onChange} className={`${className || ''} ${prefix}-preview-upload`} disabled fileList={value} />;
+        if (status === 'preview') {
+            return <this.Antd.Upload {...defaultFileUploadProps} {...otherProps} className={`${className || ''} ${prefix}-preview-upload`} disabled fileList={uploadValue} />;
         }
 
-        const onChange = (origin) => {
+        const beforeChange = (origin) => {
             const { fileList = [] } = origin || {};
-            props.onChange && props.onChange(fileList);
+            onChange && onChange(fileList);
         };
 
-        return <this.Antd.Upload {...defaultFileUploadProps} {...others} onChange={onChange} fileList={value} />;
+        return <this.Antd.Upload {...defaultFileUploadProps} {...otherProps} onChange={beforeChange} fileList={uploadValue} />;
     }
 
     AutoComplete = (props) => {
-        const { className = '', value } = props;
-        const { options, ...others } = props;
+        const { status, options, className = '' } = props;
+        const otherProps = getCleanProps(props);
         const valueProps = getValueProps(props);
 
         const opts = {};
@@ -351,34 +384,13 @@ class WrapperClass {
             });
         }
 
-        if (props.status === 'preview') return <this.Antd.AutoComplete placeholder="" {...props} disabled className={`${className || ''} ${prefix}-preview-select`} value={formatValue(value)} {...insetify(props)} />;
-        return <this.Antd.AutoComplete {...others} {...opts} {...valueProps} {...insetify(props)} />;
-    }
-
-    Mention = (props) => {
-        const { className = '' } = props;
-        const { value, options, ...others } = props;
-        const { toContentState, toString } = this.Antd.Mention;
-        const valueProps = getValueProps(props, {
-            format: v => (typeof v === 'string' ? toContentState(v || '') : v),
-        });
-
-        const opts = {};
-        if (Array.isArray(options) && !('suggestions' in props)) {
-            opts.suggestions = options;
-        }
-
-        const onChange = (val) => {
-            const { onChange } = props;
-            onChange && onChange(val, { escape: true });
-        };
-
-        if (props.status === 'preview') return <this.Antd.Mention placeholder="" {...opts} {...props} disabled className={`${className || ''} ${prefix}-preview-select`} value={formatValue(value)} />;
-        return <this.Antd.Mention {...others} {...opts} {...valueProps} onChange={onChange} {...insetify(props)} />;
+        if (status === 'preview') return <this.Antd.AutoComplete placeholder="" {...otherProps} disabled className={`${className || ''} ${prefix}-preview-select`} {...valueProps} {...insetify(props)} />;
+        return <this.Antd.AutoComplete {...otherProps} {...opts} {...valueProps} {...insetify(props)} />;
     }
 
     format = () => {
-        const result = ['Input',
+        const result = [
+            'Input',
             'Select',
             'Checkbox',
             'Radio',
@@ -391,7 +403,8 @@ class WrapperClass {
             'Rate',
             'Cascader',
             'TreeSelect',
-            'Upload'].reduce((ret, key) => {
+            'Upload',
+        ].reduce((ret, key) => {
             this[key].displayName = `wrapper(${key})`;
             let extraProps = {};
             if (this.Antd[key]) {
