@@ -30,14 +30,14 @@ You can visit [here](https://github.com/quirkyshop/noform-examples) for more inf
 
 ### Best Practise
 
-[Best Practise integrate with Ant Design](https://alibaba.github.io/noform/#/docs?md=easy/best-practise-antd)
+[Best Practise integrate with Ant Design](https://alibaba.github.io/noform/#/docs/docs?md=easy/best-practise-antd)
 
-[Integrate with Ant Design Pro](https://alibaba.github.io/noform/#/docs?md=easy/advanced/antd-pro-demand)
+[Integrate with Ant Design Pro](https://alibaba.github.io/noform/#/docs/docs?md=advanced/antd-pro-demand)
 
 
 ### API
 
-[Core API](https://alibaba.github.io/noform/#/api?md=all)
+[Core API](https://alibaba.github.io/noform/#/docs/api?md=all)
 
 ### Usage
 
