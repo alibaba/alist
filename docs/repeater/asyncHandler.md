@@ -4,7 +4,7 @@
 
 查看DEMO可以直接看到更详细的配置，请参考[Repeater 钩子](https://alibaba.github.io/noform/examples/build/#/RepeaterAdvanced)
 
-该配置函数能够控制 Repeter的以下操作： `add`, `update`, `save`, `remove`
+该配置函数能够控制 Repeater的以下操作： `add`, `update`, `save`, `remove`
 
 通用格式如下：
 

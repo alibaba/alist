@@ -155,8 +155,6 @@ Let's Coding.
 1. style
 ```
 
-1. 首先编写样式文件
-
 ```jsx
 // src/App.less
 @import '~antd/dist/antd.less';

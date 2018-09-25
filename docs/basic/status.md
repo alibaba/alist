@@ -127,7 +127,7 @@ this.core.getGlobalStatus(); // get global status
         <Input />
     </FormItem>
     
-    // staus(string['edit'|'preview'|'disabled'] )
+    // status(string['edit'|'preview'|'disabled'] )
     <FormItem name="age" status="preview"><Input /></FormItem>
 </Form>
 
