@@ -140,8 +140,13 @@ export default function bind(type, source) {
                         {conf.suffix ? <span className="repeater-table-cell-wrapper-inner-suffix">{conf.suffix}</span> : null}
                     </div>);
 
-                    if (!customRender && focusMode) {
-                        valElement = childMap[`${conf.label}${conf.name}`];
+                    if (!customRender && focusMode && status !== 'preview') {
+                        const childElement = childMap[`${conf.label}${conf.name}`];
+                        if (React.isValidElement(childElement)) {
+                            valElement = React.cloneElement(childElement, { status });
+                        } else {
+                            valElement = childElement;
+                        }
                     }
 
                     innerItem = (<div className={`${cellCls} ${cls}`}>

@@ -382,11 +382,11 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
         { label: 'en', value: 'en' },
         { label: 'zh', value: 'zh' }
     ]} /></FormItem>
-    <FormItem name="deepselect">
+    {/* <FormItem name="deepselect">
         <SelectRepeater selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig}>
             <FormItem label="username" name="username"><Input /></FormItem>
         </SelectRepeater>        
-    </FormItem>
+    </FormItem> */}
 
     {/* <FormItem defaultValue={{ dataSource: [{username: 'a', id: 'a'}, {username: 'b', id: 'b'}] }} name="deepselectxxxxx">
         <SelectRepeater selectMode="single" formConfig={formConfig}>
@@ -477,26 +477,26 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
         </SelectRepeaterInline>
     </FormItem> */}
 
-    <FormItem label="selectRepeaterInlinemultiple" name="selectRepeaterInlinemultiple">
+    {/* <FormItem label="selectRepeaterInlinemultiple" name="selectRepeaterInlinemultiple">
         <SelectRepeaterInline multiple asyncHandler={dasyncHandler}>
             <FormItem label="username" name="username"><Input style={{ width: 100 }} /></FormItem>
             <FormItem label="gender" name="gender"><Input style={{ width: 100 }}/></FormItem>
         </SelectRepeaterInline>
-    </FormItem>
+    </FormItem> */}
 
     {/* <FormItem name="rules">
         <InlineRepeater {...extraProps} formConfig={formConfig}>
             <FormItem prefix="满" suffix="元" label="threshold" name="threshold"><Input style={{ width: '100px' }}/></FormItem>
             <FormItem defaultMinWidth prefix="减" suffix="元" label="price" name="price"><Input style={{ width: '100px' }} /></FormItem>
         </InlineRepeater>
-    </FormItem>
+    </FormItem> */}
 
     <FormItem name="rulesx">
         <InlineRepeater multiple {...extraProps} formConfig={formConfig}>
             <FormItem prefix="满" suffix="元" label="threshold" name="threshold"><Input style={{ width: '100px' }}/></FormItem>
             <FormItem defaultMinWidth prefix="减" suffix="元" label="price" name="price"><Input style={{ width: '100px' }} /></FormItem>
         </InlineRepeater>
-    </FormItem> */}
+    </FormItem>
 
 
     {/* <FormItem name="fuzz">
