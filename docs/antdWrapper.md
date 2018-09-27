@@ -10,7 +10,7 @@
 ## 可执行 DEMO
 
 ````js
-import 'babel-polyfill';
+// import 'babel-polyfill';
 
 import * as Antd from 'antd';
 import Form, { FormItem, FormCore, Item, If } from '../src';

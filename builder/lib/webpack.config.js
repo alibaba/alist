@@ -10,7 +10,7 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
 const getClientEnvironment = require('./env')
 const paths = require('./paths')
-const babelConfig = require('./babelConfig')
+const babelConfig = require('./libBabelConfig')
 const { getDocsEntry } = require('./helper')
 
 // TODO: 目前的实现和https://github.com/facebook/create-react-app/pull/4077一致

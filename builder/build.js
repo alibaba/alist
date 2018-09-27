@@ -13,14 +13,33 @@ process.on('unhandledRejection', (err) => {
 require('./lib/env');
 
 const sass = require('node-sass');
-const fs = require('fs-extra');
+const webpack = require('webpack');
 const path = require('path');
 const babel = require('babel-core');
 const assert = require('assert');
-const glob = require('glob');
 const chalk = require('chalk');
+const glob = require('glob');
+const fs = require('fs-extra');
 const { rmdir, mkdir } = require('./utils');
+const umdConfig = require('./lib/webpack.umd');
 const babelConfig = require('./lib/babelConfig');
+
+const callback = (err, stats) => {
+    if (err) {
+        console.error(err.stack || err);
+        if (err.details) console.error(err.details);
+        return;
+    }
+
+    console.log(stats.toString({
+        chunks: false, // Makes the build much quieter
+        chunkModules: false,
+        colors: true, // Shows colors in the console
+        children: false,
+        builtAt: true,
+        modules: false,
+    }));
+};
 
 const ES_PATTERN = /\.(js|jsx|mjs)$/;
 const CSS_PATTERN = /\.(scss)$/;
@@ -72,10 +91,11 @@ async function run(basedir) {
         }
     }
     console.log(chalk.green('\nTransform successfully!'));
+    console.log(chalk.green('\nexecuting webpack to build umd...'));
+    webpack(umdConfig).run(callback);
 }
 
-run(process.cwd())
-    .catch((err) => {
-        console.error(chalk.red(err.stack || err));
-        process.exit(1);
-    });
+run(process.cwd()).catch((err) => {
+    console.error(chalk.red(err.stack || err));
+    process.exit(1);
+});

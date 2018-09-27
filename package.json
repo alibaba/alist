@@ -1,17 +1,16 @@
 {
   "name": "noform",
-  "version": "0.1.21",
+  "version": "0.1.22",
   "description": "开发者友好、快捷高效的表单框架。",
   "scripts": {
     "start": "node builder/index.js dev",
     "dev": "node builder/index.js dev",
     "test": "node builder/index.js test",
     "cov": "node builder/index.js test --coverage",
+    "lib": "node builder/index.js lib",
     "build": "node builder/index.js build",
-    "umd": "node builder/index.js umd",
     "profile": "node builder/index.js profile",
-    "deploy": "node builder/index.js build && node builder/index.js umd",
-    "sh": "./builder/build.sh"
+    "deploy": "npm run lib && npm run build"
   },
   "files": [
     "src/",
@@ -19,26 +18,14 @@
     "lib/",
     "index.scss"
   ],
-  "armor": {
-    "entry": [
-      "index.js",
-      "index.scss"
-    ],
-    "src2lib": true
-  },
-  "just": {
-    "type": "component/b2b-next-comp",
-    "build": {
-      "after": "npm run build"
-    }
-  },
   "main": "lib/index.js",
   "dependencies": {
     "async-validator": "^1.8.2",
     "deep-equal": "^1.0.1",
     "events": "2.x",
     "moment": "^2.18.1",
-    "prop-types": "15.x"
+    "prop-types": "15.x",
+    "babel-runtime": "^6.26.0"
   },
   "peerDependencies": {
     "react": "15.x",
@@ -54,7 +41,6 @@
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
     "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
