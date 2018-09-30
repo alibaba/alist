@@ -10,6 +10,13 @@
 
 ---
 
+### Version
+
+| NoForm ver       | React ver   |
+| ------------ | ------- |
+| 0.x          | 15.x   |
+| 1.x        | 16.x   |
+
 ### Install
 
 ```shell
