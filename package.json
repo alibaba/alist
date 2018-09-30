@@ -28,8 +28,8 @@
     "babel-runtime": "^6.26.0"
   },
   "peerDependencies": {
-    "react": "15.x",
-    "react-dom": "15.x"
+    "react": "16.x",
+    "react-dom": "16.x"
   },
   "devDependencies": {
     "antd": "^3.5.2",
@@ -48,7 +48,7 @@
     "chalk": "^2.3.2",
     "css-loader": "^0.28.8",
     "enzyme": "^3.1.0",
-    "enzyme-adapter-react-15": "^1.0.5",
+    "enzyme-adapter-react-16": "^1.5.0",
     "escape-string-regexp": "^1.0.5",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
@@ -75,11 +75,11 @@
     "progress-bar-webpack-plugin": "^1.11.0",
     "promise": "^8.0.1",
     "raf": "^3.4.0",
-    "react": "15.x",
+    "react": "16.x",
     "react-dev-utils": "^4.2.1",
-    "react-dom": "15.x",
+    "react-dom": "16.x",
     "react-scripts": "^1.1.4",
-    "react-test-renderer": "^15.x",
+    "react-test-renderer": "^16.x",
     "rimraf": "^2.6.2",
     "simulate-event": "^1.4.0",
     "sinon": "^4.0.1",
