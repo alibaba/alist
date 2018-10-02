@@ -9,7 +9,7 @@ class BaseItem extends React.Component {
             inset, style, name, formProps,
         } = this.props;
 
-        if (!didMount) {
+        if (!didMount && render) {
             return null;
         }
 

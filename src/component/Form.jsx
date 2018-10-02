@@ -79,7 +79,6 @@ class Form extends Component {
     }
 
     componentDidMount() {
-        console.log('=====>>>>form mount', this.props.keys);
         const {
             validateConfig, map, value, core,
         } = this.props;
@@ -109,7 +108,7 @@ class Form extends Component {
         }
 
         // 强制渲染一次
-        // this.forceUpdate();
+        this.forceUpdate();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -133,7 +132,6 @@ class Form extends Component {
 
     // 核心变化时，通知jsx属性绑定的onChange
     onChange = (val, fireKey) => {
-        console.log('========>>>>>>form change', val);
         this.props.onChange(val, fireKey, this.core);
     }
 
@@ -158,8 +156,6 @@ class Form extends Component {
         const contextValue = {
             form: this.core,
         };
-
-        console.log('[Form render]*****************', this.props.keys);
 
         return (
             <IfContext.Provider value={null}>

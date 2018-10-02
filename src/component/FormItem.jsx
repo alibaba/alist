@@ -62,7 +62,6 @@ class BaseFormItem extends React.Component {
     componentDidMount() { // 绑定set事件就会执行更新 TODO：优化渲染
         this.form.on(ANY_CHANGE, this.update);
         const { childForm } = this.core;
-        console.log('===>>>>>', this.core, this.name);
         if (childForm && !childForm.disabledSyncChildForm) {
             this.form.setValueSilent(this.core.name, childForm.getAll('value'));
             this.form.setProps(this.core.name, childForm.getAll('props'));
@@ -77,7 +76,7 @@ class BaseFormItem extends React.Component {
             });
         }
         this.didMount = true;
-        // this.forceUpdate();
+        this.forceUpdate();
     }
 
     componentWillUnmount() { // 解绑
@@ -265,7 +264,6 @@ class BaseFormItem extends React.Component {
             status: propStatus,
             error: propError,
         } = itemProps;
-        console.log('[item render]**************', name);
         const restItemProps = { ...itemProps, id: this.id };
         delete restItemProps.style;
         restItemProps.form = this.form;
