@@ -106,6 +106,8 @@ describe('component/form basic function', () => {
             </FormItem>
         </Form>);
         styleForm.mount();
+        
+        console.log('ssss>>>>', styleForm.find('FormItem[name="username"]'));
         expect(styleForm.find('FormItem[name="username"]').prop('style')).toEqual({ marginBottom: 16 });
     });
 
@@ -270,21 +272,21 @@ describe('component/FormItem 嵌套', () => {
             </If>
         </Form>);
         expect(form.find('Input[name="username"]').prop('value')).toEqual(null);
-        expect(form.find('Item[name="firstLayer"]').length).toEqual(0);
+        expect(form.find('BaseItem[name="firstLayer"]').length).toEqual(0);
 
         formcore.setValue({
             username: 'bobby',
         });
         form.mount();
-        expect(form.find('Item[name="firstLayer"]').length).toEqual(1);
-        expect(form.find('Item[name="firstLayer"] div#hellobobby').prop('children')).toEqual('hello bobby!');
-        expect(form.find('Item[name="finalMaze"]').length).toEqual(0);
+        expect(form.find('BaseItem[name="firstLayer"]').length).toEqual(1);
+        expect(form.find('BaseItem[name="firstLayer"] div#hellobobby').prop('children')).toEqual('hello bobby!');
+        expect(form.find('BaseItem[name="finalMaze"]').length).toEqual(0);
         formcore.setValue({
             age: 23,
         });
         form.mount();
-        expect(form.find('Item[name="finalMaze"]').length).toEqual(1);
-        expect(form.find('Item[name="finalMaze"] div').prop('children')).toEqual('Congratulation! You\'ve solved the last maze!');
+        expect(form.find('BaseItem[name="finalMaze"]').length).toEqual(1);
+        expect(form.find('BaseItem[name="finalMaze"] div').prop('children')).toEqual('Congratulation! You\'ve solved the last maze!');
     });
 });
 
@@ -367,8 +369,8 @@ describe('component/form value', () => {
             <Item name="username"><Input /></Item>
             <Item name="password"><Input /></Item>
         </Form>);
-        expect(form.find('Item[name="username"] Input').prop('value')).toEqual(defaultValue.username);
-        expect(form.find('Item[name="password"] Input').prop('value')).toEqual(defaultValue.password);
+        expect(form.find('BaseItem[name="username"] Input').prop('value')).toEqual(defaultValue.username);
+        expect(form.find('BaseItem[name="password"] Input').prop('value')).toEqual(defaultValue.password);
     });
     it('基础的-调用setValue', () => {
         const onChange = sinon.spy();
@@ -385,14 +387,14 @@ describe('component/form value', () => {
             <Item name="username"><Input /></Item>
             <Item name="password"><Input /></Item>
         </Form>);
-        expect(form.find('Item[name="username"] Input').prop('value')).toEqual(defaultValue.username);
-        expect(form.find('Item[name="password"] Input').prop('value')).toEqual(defaultValue.password);
+        expect(form.find('BaseItem[name="username"] Input').prop('value')).toEqual(defaultValue.username);
+        expect(form.find('BaseItem[name="password"] Input').prop('value')).toEqual(defaultValue.password);
         expect(onChange.notCalled).toEqual(true);
 
         formcore.setValue(newValue);
         form.mount();
-        expect(form.find('Item[name="username"] Input').prop('value')).toEqual(newValue.username);
-        expect(form.find('Item[name="password"] Input').prop('value')).toEqual(newValue.password);
+        expect(form.find('BaseItem[name="username"] Input').prop('value')).toEqual(newValue.username);
+        expect(form.find('BaseItem[name="password"] Input').prop('value')).toEqual(newValue.password);
         expect(onChange.calledOnce).toEqual(true);
     });
     it('基础的-从上层调用setValue', () => {
@@ -425,14 +427,14 @@ describe('component/form value', () => {
             </Item>
         </Form>);
 
-        expect(form.find('Item[name="user"] Item[name="username"] Input').prop('value')).toEqual(defaultValue.user.username);
-        expect(form.find('Item[name="user"] Item[name="password"] Input').prop('value')).toEqual(defaultValue.user.password);
+        expect(form.find('BaseItem[name="user"] Item[name="username"] Input').prop('value')).toEqual(defaultValue.user.username);
+        expect(form.find('BaseItem[name="user"] Item[name="password"] Input').prop('value')).toEqual(defaultValue.user.password);
         expect(onChange.notCalled).toEqual(true);
 
         formcore.setValue(newValue);
         form.mount();
-        expect(form.find('Item[name="user"] Item[name="username"] Input').prop('value')).toEqual(newValue.user.username);
-        expect(form.find('Item[name="user"] Item[name="password"] Input').prop('value')).toEqual(newValue.user.password);
+        expect(form.find('BaseItem[name="user"] Item[name="username"] Input').prop('value')).toEqual(newValue.user.username);
+        expect(form.find('BaseItem[name="user"] Item[name="password"] Input').prop('value')).toEqual(newValue.user.password);
         expect(onChange.calledOnce).toEqual(true);
     });
 });
@@ -456,10 +458,10 @@ describe('component/form if', () => {
                 <Item name="gender"><Input /></Item>
             </If>
         </Form>);
-        expect(form.find('Item[name="gender"] Input').length).toEqual(0);
+        expect(form.find('BaseItem[name="gender"] Input').length).toEqual(0);
         formcore.setValue(newValue);
         form.mount();
-        expect(form.find('Item[name="gender"] Input').prop('value')).toEqual(newValue.gender);
+        expect(form.find('BaseItem[name="gender"] Input').prop('value')).toEqual(newValue.gender);
     });
     it('IF-单层if-setvalue-设置为不支持if展示', () => {
         const defaultValue = {
@@ -479,10 +481,10 @@ describe('component/form if', () => {
                 <Item name="gender"><Input /></Item>
             </If>
         </Form>);
-        expect(form.find('Item[name="gender"] Input').prop('value')).toEqual(defaultValue.gender);
+        expect(form.find('BaseItem[name="gender"] Input').prop('value')).toEqual(defaultValue.gender);
         formcore.setValue(newValue);
         form.mount();
-        expect(form.find('Item[name="gender"] Input').length).toEqual(0);
+        expect(form.find('BaseItem[name="gender"] Input').length).toEqual(0);
     });
     it('IF-嵌套if', () => {
         const defaultValue = {
@@ -500,14 +502,14 @@ describe('component/form if', () => {
                 </If>
             </If>
         </Form>);
-        expect(form.find('Item[name="gender"] Input').length).toEqual(0);
+        expect(form.find('BaseItem[name="gender"] Input').length).toEqual(0);
         expect(form.find('#success').length).toEqual(0);
         formcore.setValue({
             username: 'bojoy',
             password: 'nopass',
         });
         form.mount();
-        expect(form.find('Item[name="gender"] Input').length).toEqual(1);
+        expect(form.find('BaseItem[name="gender"] Input').length).toEqual(1);
         expect(form.find('#success').length).toEqual(0);
 
         formcore.setValue({
@@ -515,7 +517,7 @@ describe('component/form if', () => {
             password: 'password',
         });
         form.mount();
-        expect(form.find('Item[name="gender"] Input').length).toEqual(0);
+        expect(form.find('BaseItem[name="gender"] Input').length).toEqual(0);
         expect(form.find('#success').length).toEqual(0);
 
         formcore.setValue({
@@ -523,7 +525,7 @@ describe('component/form if', () => {
             password: 'password',
         });
         form.mount();
-        expect(form.find('Item[name="gender"] Input').length).toEqual(1);
+        expect(form.find('BaseItem[name="gender"] Input').length).toEqual(1);
         expect(form.find('#success').length).toEqual(1);
     });
     it('IF-if内嵌套form', () => {
@@ -544,12 +546,12 @@ describe('component/form if', () => {
                 </Item>
             </If>
         </Form>);
-        expect(form.find('Item[name="user"] Input[name="username"]').prop('value')).toEqual(defaultValue.user.username);
+        expect(form.find('BaseItem[name="user"] Input[name="username"]').prop('value')).toEqual(defaultValue.user.username);
         formcore.setValue({
             age: 19,
         });
         form.mount();
-        expect(form.find('Item[name="user"]').length).toEqual(0);
+        expect(form.find('BaseItem[name="user"]').length).toEqual(0);
         formcore.setValue({
             age: 14,
             user: {
@@ -557,7 +559,7 @@ describe('component/form if', () => {
             },
         });
         form.mount();
-        expect(form.find('Item[name="user"] Input[name="username"]').prop('value')).toEqual('hello');
+        expect(form.find('BaseItem[name="user"] Input[name="username"]').prop('value')).toEqual('hello');
     });
     it('IF-item内为form,form内有if', () => {
         const defaultValue = {
@@ -580,12 +582,12 @@ describe('component/form if', () => {
                 </Item>
             </If>
         </Form>);
-        expect(form.find('Item[name="user"] Input[name="username"]').prop('value')).toEqual(defaultValue.user.username);
+        expect(form.find('BaseItem[name="user"] Input[name="username"]').prop('value')).toEqual(defaultValue.user.username);
         formcore.setValue({
             age: 19,
         });
         form.mount();
-        expect(form.find('Item[name="user"]').length).toEqual(0);
+        expect(form.find('BaseItem[name="user"]').length).toEqual(0);
         formcore.setValue({
             age: 14,
             user: {
@@ -593,7 +595,7 @@ describe('component/form if', () => {
             },
         });
         form.mount();
-        expect(form.find('Item[name="user"] Input[name="username"]').prop('value')).toEqual('hello');
+        expect(form.find('BaseItem[name="user"] Input[name="username"]').prop('value')).toEqual('hello');
         formcore.setValue({
             age: 14,
             user: {
@@ -602,8 +604,8 @@ describe('component/form if', () => {
             },
         });
         form.mount();
-        expect(form.find('Item[name="user"] Input[name="username"]').prop('value')).toEqual('bojoy');
-        expect(form.find('Item[name="user"] Input[name="gender"]').prop('value')).toEqual('male');
+        expect(form.find('BaseItem[name="user"] Input[name="username"]').prop('value')).toEqual('bojoy');
+        expect(form.find('BaseItem[name="user"] Input[name="gender"]').prop('value')).toEqual('male');
     });
     it('IF-item内为form,form内有嵌套的if', () => {
         const defaultValue = {
@@ -629,12 +631,12 @@ describe('component/form if', () => {
                 </Item>
             </If>
         </Form>);
-        expect(form.find('Item[name="user"] Input[name="username"]').prop('value')).toEqual(defaultValue.user.username);
+        expect(form.find('FormItem[name="user"] Input[name="username"]').prop('value')).toEqual(defaultValue.user.username);
         formcore.setValue({
             age: 19,
         });
         form.mount();
-        expect(form.find('Item[name="user"]').length).toEqual(0);
+        expect(form.find('FormItem[name="user"]').length).toEqual(0);
         formcore.setValue({
             age: 14,
             user: {
@@ -642,7 +644,7 @@ describe('component/form if', () => {
             },
         });
         form.mount();
-        expect(form.find('Item[name="user"] Input[name="username"]').prop('value')).toEqual('hello');
+        expect(form.find('FormItem[name="user"] Input[name="username"]').prop('value')).toEqual('hello');
         formcore.setValue({
             age: 14,
             user: {
@@ -651,9 +653,9 @@ describe('component/form if', () => {
             },
         });
         form.mount();
-        expect(form.find('Item[name="user"] Input[name="username"]').prop('value')).toEqual('bojoy');
-        expect(form.find('Item[name="user"] Input[name="gender"]').prop('value')).toEqual('male');
-        expect(form.find('Item[name="user"] #success').length).toEqual(0);
+        expect(form.find('FormItem[name="user"] Input[name="username"]').prop('value')).toEqual('bojoy');
+        expect(form.find('FormItem[name="user"] Input[name="gender"]').prop('value')).toEqual('male');
+        expect(form.find('FormItem[name="user"] #success').length).toEqual(0);
         formcore.setValue({
             age: 14,
             user: {
@@ -662,9 +664,9 @@ describe('component/form if', () => {
             },
         });
         form.mount();
-        expect(form.find('Item[name="user"] Input[name="username"]').prop('value')).toEqual('bojoy');
-        expect(form.find('Item[name="user"] Input[name="gender"]').prop('value')).toEqual('female');
-        expect(form.find('Item[name="user"] #success').length).toEqual(1);
+        expect(form.find('BaseItem[name="user"] Input[name="username"]').prop('value')).toEqual('bojoy');
+        expect(form.find('BaseItem[name="user"] Input[name="gender"]').prop('value')).toEqual('female');
+        expect(form.find('BaseItem[name="user"] #success').length).toEqual(1);
     });
 
     it('IF-item内为Item嵌套，form,form内有嵌套的if item嵌套', () => {
@@ -701,7 +703,7 @@ describe('component/form if', () => {
             </If>
         </Form>);
         expect(form.find('Input[name="username"]').prop('value')).toEqual(defaultValue.username);
-        expect(form.find('Item[name="deepForm"]').length).toEqual(0);
+        expect(form.find('FormItem[name="deepForm"]').length).toEqual(0);
         formcore.setValue({
             deep: 'abcd',
             deepForm: {
@@ -709,16 +711,16 @@ describe('component/form if', () => {
             },
         });
         form.mount();
-        expect(form.find('Item[name="deepForm"]').length).toEqual(1);
-        expect(form.find('Item[name="deepForm"] Input[name="nif"]').prop('value')).toEqual('hello');
-        expect(form.find('Item[name="nifDeep"]').length).toEqual(0);
+        expect(form.find('FormItem[name="deepForm"]').length).toEqual(1);
+        expect(form.find('FormItem[name="deepForm"] Input[name="nif"]').prop('value')).toEqual('hello');
+        expect(form.find('FormItem[name="nifDeep"]').length).toEqual(0);
         formcore.setValue({
             deepForm: {
                 nif: 100,
             },
         });
         form.mount();
-        expect(form.find('Item[name="deepForm"] Item[name="nifDeep"]').length).toEqual(1);
+        expect(form.find('FormItem[name="deepForm"] BaseItem[name="nifDeep"]').length).toEqual(1);
     });
 });
 
@@ -734,24 +736,24 @@ describe('component/form status', () => {
             <Item name="username"><Input /></Item>
             <Item name="password"><Input /></Item>
         </Form>);
-        expect(form.find('Item[name="username"] Input').prop('status')).toEqual('edit');
-        expect(form.find('Item[name="password"] Input').prop('status')).toEqual('edit');
+        expect(form.find('BaseItem[name="username"] Input').prop('status')).toEqual('edit');
+        expect(form.find('BaseItem[name="password"] Input').prop('status')).toEqual('edit');
         formcore.setGlobalStatus('preview');
         form.mount();
-        expect(form.find('Item[name="username"] Input').prop('status')).toEqual('preview');
-        expect(form.find('Item[name="password"] Input').prop('status')).toEqual('preview');
+        expect(form.find('BaseItem[name="username"] Input').prop('status')).toEqual('preview');
+        expect(form.find('BaseItem[name="password"] Input').prop('status')).toEqual('preview');
         formcore.setStatus({
             username: 'edit',
             password: 'preview',
         });
         form.mount();
-        expect(form.find('Item[name="username"] Input').prop('status')).toEqual('edit');
-        expect(form.find('Item[name="password"] Input').prop('status')).toEqual('preview');
+        expect(form.find('BaseItem[name="username"] Input').prop('status')).toEqual('edit');
+        expect(form.find('BaseItem[name="password"] Input').prop('status')).toEqual('preview');
         formcore.setItemStatus('password', 'disabled');
         form.mount();
-        expect(form.find('Item[name="username"] Input').prop('status')).toEqual('edit');
-        expect(form.find('Item[name="password"] Input').prop('status')).toEqual('disabled');
-        expect(form.find('Item[name="password"] Input').prop('disabled')).toEqual(true);
+        expect(form.find('BaseItem[name="username"] Input').prop('status')).toEqual('edit');
+        expect(form.find('BaseItem[name="password"] Input').prop('status')).toEqual('disabled');
+        expect(form.find('BaseItem[name="password"] Input').prop('disabled')).toEqual(true);
     });
     it('default status', () => {
         const defaultValue = {
@@ -779,14 +781,14 @@ describe('component/form status', () => {
                 <Item name="password"><Input /></Item>
             </If>
         </Form>);
-        expect(form.find('Item[name="username"] Input').prop('status')).toEqual('edit');
-        expect(form.find('Item[name="password"] Input').length).toEqual(0);
+        expect(form.find('BaseItem[name="username"] Input').prop('status')).toEqual('edit');
+        expect(form.find('BaseItem[name="password"] Input').length).toEqual(0);
 
         formcore.setGlobalStatus('preview');
         formcore.setValue('username', 'bojoy');
         form.mount();
-        expect(form.find('Item[name="username"] Input').prop('status')).toEqual('preview');
-        expect(form.find('Item[name="password"] Input').prop('status')).toEqual('preview');
+        expect(form.find('BaseItem[name="username"] Input').prop('status')).toEqual('preview');
+        expect(form.find('BaseItem[name="password"] Input').prop('status')).toEqual('preview');
     });
     it('status切换 form嵌套', () => {
         const defaultValue = {
@@ -811,14 +813,14 @@ describe('component/form status', () => {
             </Item>
         </Form>);
 
-        expect(form.find('Item[name="username"] Input').prop('status')).toEqual('edit');
-        expect(form.find('Item[name="password"] Input').prop('status')).toEqual('edit');
+        expect(form.find('BaseItem[name="username"] Input').prop('status')).toEqual('edit');
+        expect(form.find('BaseItem[name="password"] Input').prop('status')).toEqual('edit');
         formcore.setGlobalStatus('preview');
         form.mount();
 
-        expect(form.find('Item[name="username"] Input').prop('status')).toEqual('preview');
-        expect(form.find('Item[name="password"] Input').prop('status')).toEqual('preview');
-        expect(form.find('Item[name="user"]').children(Form).prop('status')).toEqual({
+        expect(form.find('BaseItem[name="username"] Input').prop('status')).toEqual('preview');
+        expect(form.find('BaseItem[name="password"] Input').prop('status')).toEqual('preview');
+        expect(form.find('BaseItem[name="user"]').children(Form).prop('status')).toEqual({
             username: 'preview',
             password: 'preview',
         });
@@ -847,17 +849,17 @@ describe('component/form status', () => {
             </Item>
         </Form>);
 
-        expect(form.find('Item[name="username"] Input').prop('status')).toEqual('edit');
-        expect(form.find('Item[name="password"] Input').prop('status')).toEqual('edit');
+        expect(form.find('BaseItem[name="username"] Input').prop('status')).toEqual('edit');
+        expect(form.find('BaseItem[name="password"] Input').prop('status')).toEqual('edit');
 
         formcore.setItemValue('username', 'bojoy');
         form.mount();
         console.log('====', formcore.getStatus());
-        expect(form.find('Item[name="password"] Input').prop('status')).toEqual('preview');
+        expect(form.find('BaseItem[name="password"] Input').prop('status')).toEqual('preview');
 
         formcore.setItemValue('username', 'username');
         form.mount();
-        expect(form.find('Item[name="password"] Input').prop('status')).toEqual('disabled');
+        expect(form.find('BaseItem[name="password"] Input').prop('status')).toEqual('disabled');
     });
 });
 describe('component/form render', () => {

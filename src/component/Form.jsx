@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import deepEqual from 'deep-equal';
 import FormCore from '../core/form';
 import { STATUS_ENUMS, CHANGE, FOCUS, BLUR, INITIALIZED } from '../static';
+import FormContext from '../context/form';
+import IfContext from '../context/if';
+import ItemContext from '../context/item';
 
 const noop = () => {};
 const Component = React.PureComponent;
@@ -28,14 +31,7 @@ class Form extends Component {
         props: PropTypes.object,
         Com: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     }
-    static contextTypes = {
-        item: PropTypes.object,
-        ifCore: PropTypes.object,
-    };
-    static childContextTypes = {
-        form: PropTypes.object,
-        ifCore: PropTypes.object,
-    };
+
     static defaultProps = {
         onChange: noop,
         onFocus: noop,
@@ -53,9 +49,9 @@ class Form extends Component {
         Com: 'div',
     };
 
-    constructor(props, context) {
-        super(props, context);
-        const { item } = context;
+    constructor(props) {
+        super(props);
+        const { item } = props;
 
         // 初始化core
         if (props.core) {
@@ -72,19 +68,18 @@ class Form extends Component {
         this.core.on(CHANGE, this.onChange);
         this.core.on(FOCUS, this.props.onFocus);
         this.core.on(BLUR, this.props.onBlur);
+
         // 嵌套Form
         if (item) {
             this.item = item;
             this.core.parent = item;
         }
+
         this.core.top = this.getTopForm();
     }
 
-    getChildContext() {
-        // 传递form
-        return { form: this.core, ifCore: null };
-    }
     componentDidMount() {
+        console.log('=====>>>>form mount', this.props.keys);
         const {
             validateConfig, map, value, core,
         } = this.props;
@@ -114,7 +109,7 @@ class Form extends Component {
         }
 
         // 强制渲染一次
-        this.forceUpdate();
+        // this.forceUpdate();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -138,6 +133,7 @@ class Form extends Component {
 
     // 核心变化时，通知jsx属性绑定的onChange
     onChange = (val, fireKey) => {
+        console.log('========>>>>>>form change', val);
         this.props.onChange(val, fireKey, this.core);
     }
 
@@ -159,10 +155,29 @@ class Form extends Component {
         const {
             Com, full, style = {}, children, className = '', direction = 'vertical',
         } = this.props;
-        return <Com style={style} className={`no-form no-form-${direction} ${className} no-form-${full ? 'full' : 'auto'}`}>{children}</Com>;
+        const contextValue = {
+            form: this.core,
+        };
+
+        console.log('[Form render]*****************', this.props.keys);
+
+        return (
+            <IfContext.Provider value={null}>
+                <FormContext.Provider value={contextValue}>
+                    <Com style={style} className={`no-form no-form-${direction} ${className} no-form-${full ? 'full' : 'auto'}`}>{children}</Com>
+                </FormContext.Provider>
+            </IfContext.Provider>
+        );
     }
 }
 
-Form.displayName = 'NoForm';
 
-export default Form;
+const ConnectForm = props => (<ItemContext.Consumer>
+    {(upperItem) => {
+        const { item } = upperItem || {};
+        return (<Form {...props} item={item} />);
+    }}
+</ItemContext.Consumer>);
+
+ConnectForm.displayName = 'NoForm';
+export default ConnectForm;
