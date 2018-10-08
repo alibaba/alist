@@ -149,6 +149,12 @@ export default function SelectRepeaterHOC(Source, Com) {
             }
         }
 
+        updateRepeater = (value) => {
+            // 强制刷新repeater，否则datasource内的内容不会刷新
+            this.core.setValue('value', value);
+            this.repeater.current.forceUpdate();
+        }
+
         renderTrigger = (_, { values }) => {
             const {
                 selectMode, isSelectDisabled, asyncHandler, selectKey,
@@ -194,12 +200,10 @@ export default function SelectRepeaterHOC(Source, Com) {
                         }
 
                         if (canSyncSelect) {
-                            this.core.setValue('value', lastVal);
-                            this.repeater.current.forceUpdate(); // 强制刷新repeater，否则datasource内的内容不会刷新
+                            this.updateRepeater(lastVal);
                         }
                     } else {
-                        this.core.setValue('value', lastVal);
-                        this.repeater.current.forceUpdate(); // 强制刷新repeater，否则datasource内的内容不会刷新
+                        this.updateRepeater(lastVal);
                     }
                 }}
             />);

@@ -283,11 +283,12 @@ export default function CreateRepeater(bindSource, type, source) {
         }
 
         doAdd = async (core) => {
+            const { repeaterCore } = this;
             let success = true;
-            const addCore = (core instanceof FormCore) ? core : (this.repeaterCore.generateCore(core));
-            success = await this.repeaterCore.add(addCore);
+            const addCore = (core instanceof FormCore) ? core : repeaterCore.generateCore(core);
+            success = await repeaterCore.add(addCore);
             if (success) {
-                this.sync({ type: 'add', index: this.repeaterCore.formList.length - 1 });
+                this.sync({ type: 'add', index: repeaterCore.formList.length - 1 });
             }
 
             return success;
