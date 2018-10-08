@@ -1,13 +1,13 @@
-import CreateRepeater from './createRepeater';
-import Repeater from './components/biz/Repeater';
-import SelectRepeater from './components/biz/SelectRepeater';
-import createActionButton from './components/core/ActionButton';
+import factory from './factory';
+import Repeater from './Repeater';
+import SelectRepeater from './SelectRepeater';
+import ActionButton from './ActionButton';
 
 export default function wrapper(source) {
     return {
-        TableRepeater: CreateRepeater(Repeater, 'table', source),
-        InlineRepeater: CreateRepeater(Repeater, 'inline', source),
+        TableRepeater: factory(Repeater, 'table', source),
+        InlineRepeater: factory(Repeater, 'inline', source),
         Selectify: SelectRepeater.bind(null, source),
-        ActionButton: createActionButton(source),
+        ActionButton,
     };
 }

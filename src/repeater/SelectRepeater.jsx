@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Form, { FormItem, Item, FormCore } from '../../../';
+import Form, { FormItem, Item, FormCore } from '../';
 
 export default function SelectRepeaterHOC(Source, Com) {
     const { Checkbox, Radio } = Source;
@@ -28,16 +28,13 @@ export default function SelectRepeaterHOC(Source, Com) {
             selectKey: PropTypes.string,
         };
 
-        static contextTypes = {
-            item: PropTypes.object,
-        };
-
-        constructor(props, context) {
-            super(props, context);
+        constructor(props) {
+            super(props);
             const {
                 selectMode,
                 value,
                 selectFormConfig,
+                item,
             } = props;
 
             const { dataSource, value: innerVal } = value || {};
@@ -56,15 +53,17 @@ export default function SelectRepeaterHOC(Source, Com) {
                 this.TriggerCom = Checkbox;
             }
 
-            if (context.item) {
-                this.item = context.item;
+            this.repeater = React.createRef();
+            if (item) {
+                this.item = item;
             }
         }
 
         componentDidMount = () => {
             const { onMount } = this.props;
+
             if (onMount) {
-                onMount(this.repeater);
+                onMount(this.repeater.current);
             }
         }
 
@@ -110,6 +109,20 @@ export default function SelectRepeaterHOC(Source, Com) {
             });
         }
 
+        getSuperFormProps = (core) => {
+            let formProps = {};
+            if (core.form && core.form.jsx.props) {
+                const {
+                    defaultMinWidth, full, inline, inset, layout, colon,
+                } = core.form.jsx.props;
+                formProps = {
+                    defaultMinWidth, full, inline, inset, layout, colon,
+                };
+            }
+
+            return formProps;
+        }
+
         syncDeletedValues = (values, event) => {
             const { selectKey } = this.props;
             const { dataSource = [], value = [] } = values || {};
@@ -134,6 +147,12 @@ export default function SelectRepeaterHOC(Source, Com) {
             } else {
                 onChange(values, fireKeys, ctx);
             }
+        }
+
+        updateRepeater = (value) => {
+            // 强制刷新repeater，否则datasource内的内容不会刷新
+            this.core.setValue('value', value);
+            this.repeater.current.forceUpdate();
         }
 
         renderTrigger = (_, { values }) => {
@@ -181,12 +200,10 @@ export default function SelectRepeaterHOC(Source, Com) {
                         }
 
                         if (canSyncSelect) {
-                            this.core.setValue('value', lastVal);
-                            this.repeater.forceUpdate(); // 强制刷新repeater，否则datasource内的内容不会刷新
+                            this.updateRepeater(lastVal);
                         }
                     } else {
-                        this.core.setValue('value', lastVal);
-                        this.repeater.forceUpdate(); // 强制刷新repeater，否则datasource内的内容不会刷新
+                        this.updateRepeater(lastVal);
                     }
                 }}
             />);
@@ -215,12 +232,12 @@ export default function SelectRepeaterHOC(Source, Com) {
 
             let inheritProps = {};
             if (this.item) {
-                inheritProps = this.item.getSuperFormProps();
+                inheritProps = this.getSuperFormProps(this.item);
             }
 
             return (<Form {...inheritProps} core={this.core} onChange={this.handleChange}>
                 <Item name="dataSource">
-                    <Com {...otherprops} ref={(rp) => { this.repeater = rp; }}>
+                    <Com {...otherprops} ref={this.repeater}>
                         {this.renderSelectTrigger()}
                         {children}
                     </Com>

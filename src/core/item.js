@@ -10,6 +10,7 @@ function isFunction(func) {
 
 class Item {
     constructor(option) {
+        if (!option) return; // context的机制，这里不做真实的操作
         this.option = option;
         this.initWith(option);
         this.on(ANY_CHANGE, () => {
@@ -107,6 +108,11 @@ class Item {
         this.initWith({ ...this, ...option });
     }
 
+    bindForm = (childForm) => {
+        // console.log('item inner exec bindForm ...');
+        this.childForm = childForm;
+    }
+
     // 通用组件层，目前主要用于层级校验
     // 需要commonField实现validate
     addSubField(subField) {
@@ -118,6 +124,7 @@ class Item {
         const {
             form, on, emit, removeListener,
         } = option;
+
         this.form = form;
         this.on = on;
         this.emit = emit;
@@ -126,27 +133,25 @@ class Item {
         const {
             id, interceptor, name, value, props, error,
             status, when = null, validateConfig, parentIf,
+            func_status, func_props, jsx_status,
         } = option;
 
         this.name = name;
         this.value = value;
         this.props = props;
+        this.status = status;
         this.when = when;
         this.parentIf = parentIf;
         this.error = error;
-        this.status = status;
         this.validateConfig = validateConfig;
         this.interceptor = interceptor;
         this.subField = null;
         this.id = id || `__noform__item__${genId()}`;
 
-        const {
-            jsx_status, func_props = null, func_status = null,
-        } = option;
         this.func_props = func_props;
         this.func_status = func_status;
-
         this.jsx_status = jsx_status;
+
         if (validateConfig) {
             this.jsxValidate = true;
         }
@@ -206,18 +211,29 @@ class Item {
 
     consistStatus(value) {
         const {
-            form, jsx_status, func_status, when,
+            form, func_status, when, jsx_status,
         } = this;
+
+        let syncSetting = true;
         let statusResult = form.globalStatus;
-        if (jsx_status) {
-            if (isFunction(func_status)) { // 可能为promise
+
+        if (jsx_status) { // 可能为promise
+            if (isFunction(func_status)) {
                 statusResult = func_status(value, form);
-            } else if (STATUS_ENUMS.has(jsx_status)) { // 写死静态状态
+                if (isPromise(statusResult)) {
+                    syncSetting = false;
+                    statusResult.then((dynamicResult) => {
+                        if (dynamicResult && STATUS_ENUMS.has(dynamicResult) && when === null) {
+                            this.set('status', dynamicResult);
+                        }
+                    });
+                }
+            } else if (jsx_status && STATUS_ENUMS.has(jsx_status)) { // 写死JSX状态
                 statusResult = jsx_status;
             }
 
-            if (statusResult && STATUS_ENUMS.has(statusResult)) {
-                if (when === null) this.set('status', statusResult);
+            if (syncSetting && statusResult && STATUS_ENUMS.has(statusResult) && when === null) {
+                this.set('status', statusResult);
             }
         }
 
@@ -230,7 +246,13 @@ class Item {
             const props = form.getAll('props', this.name);
             const propsResult = func_props(props, form);
 
-            this.set('props', propsResult);
+            if (isPromise(propsResult)) {
+                propsResult.then((dynamicPropResult) => {
+                    this.set('props', dynamicPropResult);
+                });
+            } else {
+                this.set('props', propsResult);
+            }
         }
     }
 

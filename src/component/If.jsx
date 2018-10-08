@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ANY_CHANGE } from '../static';
+import FormContext from '../context/form';
+import IfContext from '../context/if';
 
 const Component = React.PureComponent;
 class If extends Component {
@@ -12,14 +14,7 @@ class If extends Component {
         name: PropTypes.any,
         Com: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     }
-    static contextTypes = {
-        form: PropTypes.object,
-        ifCore: PropTypes.object,
-    };
-    static childContextTypes = {
-        ifCore: PropTypes.object,
-        form: PropTypes.object,
-    };
+
     static defaultProps = {
         when: true,
         children: null,
@@ -27,18 +22,17 @@ class If extends Component {
         className: '',
         Com: 'span',
     };
-    constructor(props, context) {
-        super(props, context);
-        const { when } = props;
-        const { form, ifCore } = context;
+    constructor(props) {
+        super(props);
+        const {
+            when, form, ifCore, name,
+        } = props;
         this.form = form;
-        this.core = this.form.addField({ when, name: props.name });
+        this.core = form.addField({ when, name });
         this.core.jsx = this;
         this.core.parentIf = ifCore;
     }
-    getChildContext() {
-        return { form: this.form, ifCore: this.core };
-    }
+
     componentDidMount() {
         this.didMount = true;
         this.forceUpdate();
@@ -68,10 +62,23 @@ class If extends Component {
 
         const ftcls = `${className || ''} no-form-item`;
 
-        return <Com {...{ style, className: ftcls }}>{children}</Com>;
+        const contextValue = {
+            if: this.core,
+        };
+
+        return (<IfContext.Provider value={contextValue}>
+            <Com {...{ style, className: ftcls }}>{children}</Com>
+        </IfContext.Provider>);
     }
 }
 
-If.displayName = 'If';
+const ConnectIf = props => (<FormContext.Consumer>
+    {(formContext) => {
+        const { form } = formContext;
+        return <If {...props} form={form} />;
+    }}
+</FormContext.Consumer>);
 
-export default If;
+ConnectIf.displayName = 'If';
+
+export default ConnectIf;
