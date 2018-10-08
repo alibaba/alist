@@ -4,32 +4,25 @@ import deepEqual from 'deep-equal';
 import RepeaterCore from './repeaterCore';
 import localeMap from './locale';
 import Form, { FormCore } from '..';
+import ItemContext from '../context/item';
+import RepeaterContext from '../context/repeater';
 
-const noop = () => {};
 const isObject = obj => Object.prototype.toString.call(obj) === '[object Object]';
 const assignItem = (obj) => {
     if (!obj) return obj;
-    if (isObject(obj)) {
-        return Object.assign({}, obj);
-    }
-    return obj;
+    return (isObject(obj)) ? Object.assign({}, obj) : obj;
 };
 
 const assignListItem = (arr) => {
     if (!arr) return arr;
-    // const arrft = [].concat(arr);
-    if (Array.isArray(arr)) {
-        return arr.map(item => assignItem(item));
-    }
-
-    return arr;
+    return (Array.isArray(arr)) ? arr.map(item => assignItem(item)) : arr;
 };
 
 export default function CreateRepeater(bindSource, type, source) {
-    const { Container, RowRender } = bindSource(type, source);
-    const { Input = noop, Dialog } = source;
+    const Repeater = bindSource(type, source);
+    const { Dialog } = source;
 
-    return class OtRepeater extends Component {
+    class InnerRepeater extends Component {
         static propTypes = {
             view: PropTypes.any,
             core: PropTypes.any,
@@ -54,22 +47,17 @@ export default function CreateRepeater(bindSource, type, source) {
             children: PropTypes.any,
         }
 
-        static contextTypes = {
-            item: PropTypes.object,
-        };
-
         static defaultProps = {
             onChange: () => {},
             status: 'edit',
             locale: 'en', // en | zh
         };
 
-        constructor(props, context) {
-            super(props, context);
+        constructor(props) {
+            super(props);
             const {
-                value, status, formConfig, asyncHandler, core,
+                value, status, formConfig, asyncHandler, core, item,
             } = props;
-            const { item } = context;
             this.value = value || [];
             this.status = status;
             this.formConfig = formConfig || {};
@@ -83,10 +71,10 @@ export default function CreateRepeater(bindSource, type, source) {
             });
 
             this.superFormProps = {};
-            if (item && item.core) {
-                this.contextItem = item.core;
+            if (item) {
+                this.contextItem = item;
                 this.contextItem.addSubField(this.repeaterCore);
-                this.superFormProps = this.getSuperFormProps(item.core);
+                this.superFormProps = this.getSuperFormProps(item);
             }
         }
 
@@ -132,10 +120,8 @@ export default function CreateRepeater(bindSource, type, source) {
             // 这种情况主要的值还是this.props.value，所以这里需要进行处理
             const value = [];
             const thisVal = this.value;
-            // i是thisVal的游标
-            // j是val的游标
-            let i = 0;
-            let j = 0;
+            let i = 0; // i是thisVal的游标
+            let j = 0; // j是val的游标
             this.getValue().forEach((item) => {
                 // $idx是值在this.props.value中的下标
                 if ((i < thisVal.length && item.$idx < thisVal[i].$idx) ||
@@ -146,8 +132,7 @@ export default function CreateRepeater(bindSource, type, source) {
                         value.push(val[j]);
                         j += 1;
                     }
-                    // 项被删除
-                    i += 1;
+                    i += 1; // 项被删除
                 }
             });
             // 新增的项
@@ -180,11 +165,7 @@ export default function CreateRepeater(bindSource, type, source) {
             const { okText, cancelText } = this.getText();
             const { custom } = dialogConfig || {};
             const { type: dialogType, content } = props;
-
-            let rewriteProps = {};
-            if (custom) {
-                rewriteProps = custom(core, dialogType, props);
-            }
+            const rewriteProps = custom ? custom(core, dialogType, props) : {};
 
             return {
                 ...props,
@@ -215,7 +196,11 @@ export default function CreateRepeater(bindSource, type, source) {
             const textMap = {};
 
             Object.keys(map).forEach((key) => {
-                textMap[key] = ((key in this.props) && this.props[key]) ? this.props[key] : map[key];
+                if ((key in this.props) && this.props[key]) {
+                    textMap[key] = this.props[key];
+                } else {
+                    textMap[key] = map[key];
+                }
             });
 
             return textMap;
@@ -299,12 +284,8 @@ export default function CreateRepeater(bindSource, type, source) {
 
         doAdd = async (core) => {
             let success = true;
-            if (core instanceof FormCore) {
-                success = await this.repeaterCore.add(core);
-            } else {
-                success = await this.repeaterCore.add(this.repeaterCore.generateCore(core));
-            }
-
+            const addCore = (core instanceof FormCore) ? core : (this.repeaterCore.generateCore(core));
+            success = await this.repeaterCore.add(addCore);
             if (success) {
                 this.sync({ type: 'add', index: this.repeaterCore.formList.length - 1 });
             }
@@ -314,7 +295,6 @@ export default function CreateRepeater(bindSource, type, source) {
 
         doMultipleInline = async () => {
             const canSync = await this.repeaterCore.addMultipleInline();
-
             if (canSync) {
                 this.sync({ type: 'add', multiple: true, index: this.repeaterCore.formList.length - 1 });
             }
@@ -415,83 +395,45 @@ export default function CreateRepeater(bindSource, type, source) {
         }
 
         render() {
-            const { repeaterCore, handleSearch, superFormProps } = this;
-            const {
-                style = {}, className, children, filter, view,
-                filterElement, status,
-            } = this.props;
-
-            const { formList } = repeaterCore;
-
-            const itemsConfig = React.Children.map(children, child => ({
-                name: child.props.name,
-                label: child.props.label,
-                prefix: child.props.prefix,
-                suffix: child.props.suffix,
-                multiple: child.props.multiple,
-                renderCell: child.props.renderCell,
-                style: child.props.style,
-                className: child.props.className,
-            })).filter(item => (item.name || item.multiple || item.renderCell));
-
-            let searchEle = null;
-            if (filter) {
-                if (typeof filterElement === 'function') {
-                    searchEle = filterElement(handleSearch);
-                } else if (React.isValidElement(filterElement)) {
-                    searchEle = filterElement;
-                } else {
-                    searchEle = <Input className="repeater-search" onChange={handleSearch} />;
-                }
-            }
-
-            const rowList = formList.map((core, rowIndex) => {
-                const val = core.getValues();
-                const { id } = core;
-                const itemProps = {
-                    id,
-                    val,
-                    core,
-                    formProps: superFormProps,
-                    rowIndex,
-                    status,
-                    jsxProps: this.props,
-                };
-                return <RowRender key={id} className="table-repeater-row" {...itemProps} />;
-            });
-
-            let customView = view; // 自定义视图
-            if (typeof view === 'function') {
-                customView = view(formList, this);
-            }
+            // createRepeater 有几个作用:
+            // 1. 传递外部的source，如antd，ice，next等
+            // 2. 作为repeaterCore数据源的处理中间层(ui-data)
+            // 3. 提供中间层的方法（实际渲染请参考Repeater.jsx)
+            const contextValue = {
+                repeater: {
+                    doAddDialog: this.doAddDialog,
+                    doAddInline: this.doAddInline,
+                    doMultipleInline: this.doMultipleInline,
+                    doUpdateDialog: this.doUpdateDialog,
+                    doUpdateInline: this.doUpdateInline,
+                    doSave: this.doSave,
+                    doCancel: this.doCancel,
+                    doDelete: this.doDelete,
+                    repeaterCore: this.repeaterCore,
+                    getText: this.getText,
+                    type,
+                    handleSearch: this.handleSearch,
+                },
+            };
 
             return (
-                <div>
-                    <Container
-                        searchEle={searchEle}
-                        className={`table-repeater-wrapper ${className || ''}`}
-                        style={style}
-                        jsxProps={this.props}
-                        itemsConfig={itemsConfig}
-                        repeaterCore={repeaterCore}
-                        formProps={this.superFormProps}
-                        getText={this.getText}
-                        doAdd={this.doAdd}
-                        doAddDialog={this.doAddDialog}
-                        doUpdateDialog={this.doUpdateDialog}
-                        doUpdate={this.doUpdate}
-                        doDelete={this.doDelete}
-                        doSave={this.doSave}
-                        doCancel={this.doCancel}
-                        doAddInline={this.doAddInline}
-                        doMultipleInline={this.doMultipleInline}
-                        doUpdateInline={this.doUpdateInline}
-                        status={status}
-                    >
-                        {view ? customView : rowList}
-                    </Container>
-                </div>
+                <RepeaterContext.Provider value={contextValue}>
+                    <Repeater
+                        {...this.props}
+                        {...contextValue.repeater}
+                    />
+                </RepeaterContext.Provider>
             );
         }
-    };
+    }
+
+    const OtRepeater = React.forwardRef((props, ref) => (<ItemContext.Consumer>
+        {(itemContext) => {
+            const { item } = itemContext;
+            return <InnerRepeater ref={ref} {...props} item={item} />;
+        }}
+    </ItemContext.Consumer>));
+
+    OtRepeater.displayName = 'OtRepeater';
+    return OtRepeater;
 }

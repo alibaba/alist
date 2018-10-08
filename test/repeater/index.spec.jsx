@@ -53,8 +53,7 @@ describe('Repeater', () => {
         formCore.setValue('repeat', [{}]);
     });
     it('should add', async () => {
-        // console.log(form.find(TableRepeater).instance().doAdd);
-        await form.find(TableRepeater).instance().doAdd(testValues);
+        await form.find(TableRepeater).find('InnerRepeater').instance().doAdd(testValues);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
     });
     it('max length', async () => {
@@ -66,7 +65,7 @@ describe('Repeater', () => {
             </Item>
         </Form>);
         expect(form.find('button.repeater-add').length).toEqual(1);
-        await form.find(TableRepeater).instance().doAdd(testValues);
+        await form.find(TableRepeater).find('InnerRepeater').instance().doAdd(testValues);
         form.mount();
         expect(form.find('button.repeater-add').length).toEqual(0);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
@@ -121,15 +120,15 @@ describe('Repeater', () => {
         expect(validateCore.getValue('repeat').length).toEqual(1);
     });
     it('should update', async () => {
-        await form.find(TableRepeater).instance().doAdd(testValues);
+        await form.find(TableRepeater).find('InnerRepeater').instance().doAdd(testValues);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
 
-        const core = form.find(TableRepeater).instance().repeaterCore.formList[0];
+        const core = form.find(TableRepeater).find('InnerRepeater').instance().repeaterCore.formList[0];
         core.setValueSilent({
             ...testValues,
             drawerName: 'xxxxx',
         });
-        await form.find(TableRepeater).instance().doUpdate(core, core.id);
+        await form.find(TableRepeater).find('InnerRepeater').instance().doUpdate(core, core.id);
 
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([{
             ...testValues,
@@ -137,12 +136,12 @@ describe('Repeater', () => {
         }]));
     });
     it('should delete', async () => {
-        await form.find(TableRepeater).instance().doAdd(testValues);
+        await form.find(TableRepeater).find('InnerRepeater').instance().doAdd(testValues);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
 
-        const core = form.find(TableRepeater).instance().repeaterCore.formList[0];
+        const core = form.find(TableRepeater).find('InnerRepeater').instance().repeaterCore.formList[0];
         const { id } = core;
-        await form.find(TableRepeater).instance().doDelete(core, id);
+        await form.find(TableRepeater).find('InnerRepeater').instance().doDelete(core, id);
         expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn').length).toEqual(2);
         ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn')[0]);
 
@@ -164,7 +163,7 @@ describe('Repeater', () => {
     });
 
     it('should update by click update', async () => {
-        await form.find(TableRepeater).instance().doAdd(testValues);
+        await form.find(TableRepeater).find('InnerRepeater').instance().doAdd(testValues);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
         expect(formCore.getValue('repeat').length).toEqual(1);
         expect(document.querySelectorAll('.ant-modal-body .ant-btn').length).toEqual(0);
@@ -189,7 +188,7 @@ describe('Repeater', () => {
     });
 
     it('should delete by click delete', async () => {
-        await form.find(TableRepeater).instance().doAdd({
+        await form.find(TableRepeater).find('InnerRepeater').instance().doAdd({
             drawerName: '开票人',
             taxpayerNumber: '税号',
             branchName: '子公司',
@@ -222,7 +221,7 @@ describe('Repeater', () => {
             </Item>
         </Form>);
 
-        await form.find(TableRepeater).instance().doAdd({
+        await form.find(TableRepeater).find('InnerRepeater').instance().doAdd({
             drawerName: '开票人',
         });
         form.mount();
@@ -253,10 +252,10 @@ describe('Repeater', () => {
             { drawerName: '销售' },
         ];
 
-        await form.find(TableRepeater).instance().doAdd(valuesArr[0]);
-        await form.find(TableRepeater).instance().doAdd(valuesArr[1]);
-        await form.find(TableRepeater).instance().doAdd(valuesArr[2]);
-        await form.find(TableRepeater).instance().doAdd(valuesArr[3]);
+        await form.find(TableRepeater).find('InnerRepeater').instance().doAdd(valuesArr[0]);
+        await form.find(TableRepeater).find('InnerRepeater').instance().doAdd(valuesArr[1]);
+        await form.find(TableRepeater).find('InnerRepeater').instance().doAdd(valuesArr[2]);
+        await form.find(TableRepeater).find('InnerRepeater').instance().doAdd(valuesArr[3]);
         form.mount();
 
         expect(form.find('tr.table-repeater-row').at(0).find('.repeater-table-cell-wrapper .repeater-table-cell-wrapper-inner-content div').prop('children')).toEqual(1);
@@ -277,10 +276,10 @@ describe('Repeater', () => {
             { drawerName: '销售' },
         ];
 
-        await form.find(TableRepeater).instance().doAdd(valuesArr[0]);
-        await form.find(TableRepeater).instance().doAdd(valuesArr[1]);
-        await form.find(TableRepeater).instance().doAdd(valuesArr[2]);
-        await form.find(TableRepeater).instance().doAdd(valuesArr[3]);
+        await form.find(TableRepeater).find('InnerRepeater').instance().doAdd(valuesArr[0]);
+        await form.find(TableRepeater).find('InnerRepeater').instance().doAdd(valuesArr[1]);
+        await form.find(TableRepeater).find('InnerRepeater').instance().doAdd(valuesArr[2]);
+        await form.find(TableRepeater).find('InnerRepeater').instance().doAdd(valuesArr[3]);
         form.mount();
 
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify(valuesArr));

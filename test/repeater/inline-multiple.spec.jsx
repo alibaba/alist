@@ -48,21 +48,21 @@ describe('Inline multiple Repeater', () => {
         formCore.setValue('repeat', [{}]);
     });
     it('should add', async () => {
-        // console.log(form.find(InlineRepeater).instance().doAdd);
-        await form.find(InlineRepeater).instance().doAdd(testValues);
+        // console.log(form.find(InlineRepeater).find('InnerRepeater').instance().doAdd);
+        await form.find(InlineRepeater).find('InnerRepeater').instance().doAdd(testValues);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
     });
     it('should update', async () => {
-        // console.log(form.find(InlineRepeater).instance().doAdd);
-        await form.find(InlineRepeater).instance().doAdd(testValues);
+        // console.log(form.find(InlineRepeater).find('InnerRepeater').instance().doAdd);
+        await form.find(InlineRepeater).find('InnerRepeater').instance().doAdd(testValues);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
 
-        const core = form.find(InlineRepeater).instance().repeaterCore.formList[0];
+        const core = form.find(InlineRepeater).find('InnerRepeater').instance().repeaterCore.formList[0];
         core.setValueSilent({
             ...testValues,
             drawerName: 'xxxxx',
         });
-        await form.find(InlineRepeater).instance().doUpdate(core, core.id);
+        await form.find(InlineRepeater).find('InnerRepeater').instance().doUpdate(core, core.id);
 
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([{
             ...testValues,
@@ -70,12 +70,12 @@ describe('Inline multiple Repeater', () => {
         }]));
     });
     it('should delete', async () => {
-        await form.find(InlineRepeater).instance().doAdd(testValues);
+        await form.find(InlineRepeater).find('InnerRepeater').instance().doAdd(testValues);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([testValues]));
 
-        const core = form.find(InlineRepeater).instance().repeaterCore.formList[0];
+        const core = form.find(InlineRepeater).find('InnerRepeater').instance().repeaterCore.formList[0];
         const { id } = core;
-        await form.find(InlineRepeater).instance().doDelete(core, id);
+        await form.find(InlineRepeater).find('InnerRepeater').instance().doDelete(core, id);
         expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn').length).toEqual(2);
         ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn')[0]);
 
@@ -96,13 +96,13 @@ describe('Inline multiple Repeater', () => {
     it('should update by click update button', async () => {
         expect(formCore.getValue('repeat')).toEqual(null);
         expect(form.find('button.repeater-delete').length).toEqual(0);
-        await form.find(InlineRepeater).instance().doAdd(testValues);
-        await form.find(InlineRepeater).instance().doAdd(testValues);
+        await form.find(InlineRepeater).find('InnerRepeater').instance().doAdd(testValues);
+        await form.find(InlineRepeater).find('InnerRepeater').instance().doAdd(testValues);
         form.mount();
 
         expect(form.find('button.repeater-delete').length).toEqual(2);
         expect(formCore.getValue('repeat')).toEqual([testValues, testValues]);
-        ReactTestUtils.Simulate.change(form.find('Item[name="drawerName"] Input').at(1).getDOMNode(), {
+        ReactTestUtils.Simulate.change(form.find('FormItem[name="drawerName"] Input').at(1).getDOMNode(), {
             target: {
                 value: 'hello world',
             },
@@ -167,7 +167,7 @@ describe('Inline multiple Repeater', () => {
     });
 
     it('should delete by click delete', async () => {
-        await form.find(InlineRepeater).instance().doAdd({
+        await form.find(InlineRepeater).find('InnerRepeater').instance().doAdd({
             drawerName: '开票人'
         });
         form.mount();
@@ -194,10 +194,10 @@ describe('Inline multiple Repeater', () => {
             { drawerName: '销售' },
         ];
 
-        await form.find(InlineRepeater).instance().doAdd(valuesArr[0]);
-        await form.find(InlineRepeater).instance().doAdd(valuesArr[1]);
-        await form.find(InlineRepeater).instance().doAdd(valuesArr[2]);
-        await form.find(InlineRepeater).instance().doAdd(valuesArr[3]);
+        await form.find(InlineRepeater).find('InnerRepeater').instance().doAdd(valuesArr[0]);
+        await form.find(InlineRepeater).find('InnerRepeater').instance().doAdd(valuesArr[1]);
+        await form.find(InlineRepeater).find('InnerRepeater').instance().doAdd(valuesArr[2]);
+        await form.find(InlineRepeater).find('InnerRepeater').instance().doAdd(valuesArr[3]);
         form.mount();
 
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify(valuesArr));

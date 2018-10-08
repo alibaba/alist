@@ -32,6 +32,10 @@ function filter(value, key){
     return value.filter(item => item.drawerName.startsWith(key))
 }
 
+function filterX(value, key){
+    return value.filter(item => item.threshold.startsWith(key))
+}
+
 function filterUsername(value, key){
     return value.filter(item => item.username.startsWith(key))
 }
@@ -85,8 +89,9 @@ const formCore = new FormCore({
         };
 
         formCore.setProps({
-            selectRepeaterInlinemultiple: vprops,
-            deepselect: vprops,
+            rulesx: vprops,
+            // selectRepeaterInlinemultiple: vprops,
+            // deepselect: vprops,
         });
     },
     // values: {
@@ -491,19 +496,19 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
         </InlineRepeater>
     </FormItem> */}
 
-    <FormItem name="rulesx">
-        <InlineRepeater multiple {...extraProps} formConfig={formConfig}>
+    {/* <FormItem name="rulesx">
+        <InlineRepeater multiple {...extraProps} formConfig={formConfig} filter={filterX}>
             <FormItem prefix="满" suffix="元" label="threshold" name="threshold"><Input style={{ width: '100px' }}/></FormItem>
             <FormItem defaultMinWidth prefix="减" suffix="元" label="price" name="price"><Input style={{ width: '100px' }} /></FormItem>
         </InlineRepeater>
-    </FormItem>
+    </FormItem> */}
 
 
     {/* <FormItem name="fuzz">
         <CustomEle />
     </FormItem> */}
 
-    {/* <FormItem name="irn">
+    <FormItem name="irn">
         <InlineRepeater multiple asyncHandler={inlineAsyncHandler} filter={filter} formConfig={formConfig} addPosition="bottom">
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem label="multi" multiple required>
@@ -514,7 +519,7 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
             </FormItem>
             <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
         </InlineRepeater>
-    </FormItem> */}
+    </FormItem>
 
 {/*     
     <If when={(values) => {
