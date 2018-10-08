@@ -38,19 +38,30 @@ function Select(props){
 }
 let children = [
 (() => {
-    const defaultValue = {
-        username: 'username',
-        password: 'password'
-    }
     let formcore
-    return <Form keys="root" style={{ marginBottom: 12 }} onMount={core => formcore = core} value={defaultValue} layout={{label: 5, control: 19}} full>
-        <Item name="user">
+    return <Form keys="root" style={{ marginBottom: 12 }} onMount={core => formcore = core} layout={{label: 5, control: 19}} full>
+        <FormItem label="user" name="user">
             <Form keys="inner">
-                <Item name="userName"><Input /></Item>
+                <FormItem label="userName" name="userName"><Input /></FormItem>
             </Form>
-        </Item>
+        </FormItem>
+        <FormItem label="age" name="age"><Input /></FormItem>
     </Form>
 })(),
+// (() => {
+//     const defaultValue = {
+//         username: 'username',
+//         password: 'password'
+//     }
+//     let formcore
+//     return <Form keys="root" style={{ marginBottom: 12 }} onMount={core => formcore = core} value={defaultValue} layout={{label: 5, control: 19}} full>
+//         <Item name="user">
+//             <Form keys="inner">
+//                 <Item name="userName"><Input /></Item>
+//             </Form>
+//         </Item>
+//     </Form>
+// })(),
 // (() => {
 //     const defaultValue = {
 //         username: 'username',

@@ -132,11 +132,7 @@ class BaseFormItem extends React.Component {
     }
 
     getBaseProps = () => {
-        const {
-            children, render,
-            inset, style,
-        } = this.props;
-
+        const { children, render, inset } = this.props;
         const { form } = this;
         const { name } = this.core;
 
@@ -158,7 +154,6 @@ class BaseFormItem extends React.Component {
             props: form.getItemProps(name),
             error: form.getItemError(name),
             inset,
-            style,
             name,
             formProps,
         };
@@ -264,10 +259,6 @@ class BaseFormItem extends React.Component {
             status: propStatus,
             error: propError,
         } = itemProps;
-        const restItemProps = { ...itemProps, id: this.id };
-        delete restItemProps.style;
-        restItemProps.form = this.form;
-        restItemProps.ifCore = this.ifCore;
 
         const { className = '' } = itemProps;
         const props = this.form.getItemProps(name) || {}; // 动态props
