@@ -64,10 +64,10 @@ class PageDemo extends React.Component {
 
 	    return (
 	      <Form core={this.core} layout={{ label: 8, control: 16 }}>
-	          <FormItem label="input" name="input"><Input /></FormItem>
-              <FormItem label="AutoComplete" name="AutoComplete"><AutoComplete options={dataSource} /></FormItem>
-              <FormItem label="TextArea" name="TextArea"><TextArea /></FormItem>
-	          <FormItem label="select" name="select"><Select options={dataSource} /></FormItem>
+	          <FormItem label="input" name="input"><Input placeholder="input holder" /></FormItem>
+              <FormItem label="AutoComplete" name="AutoComplete"><AutoComplete placeholder="auto holder" options={dataSource} /></FormItem>
+              <FormItem label="TextArea" name="TextArea"><TextArea placeholder="text holder"/></FormItem>
+	          <FormItem label="select" name="select"><Select placeholder="select holder" options={dataSource} /></FormItem>
 	          <FormItem label="Checkbox" name="Checkbox"><Checkbox >选中</Checkbox></FormItem>
 	          <FormItem label="Radio" name="Radio"><Radio >选中</Radio></FormItem>
 	          <FormItem label="Switch" name="Switch"><Switch /></FormItem>
@@ -75,15 +75,15 @@ class PageDemo extends React.Component {
 	          <FormItem label="RadioGroup" name="RadioGroup"><RadioGroup options={dataSource} /></FormItem>
 	          <FormItem label="Slider" name="Slider"><Slider /></FormItem>
 	          <FormItem label="Rate" name="Rate"><Rate /></FormItem>
-            <FormItem label="DatePicker" name="DatePicker"><DatePicker /></FormItem>
-            <FormItem label="RangePicker" name="RangePicker"><DatePicker.RangePicker /></FormItem>
+            <FormItem label="DatePicker" name="DatePicker"><DatePicker placeholder="date holder"/></FormItem>
+            <FormItem label="RangePicker" name="RangePicker"><DatePicker.RangePicker placeholder={["start", "end"]}/></FormItem>
 
-            <FormItem label="MonthPicker" name="MonthPicker"><DatePicker.MonthPicker /></FormItem>
-            <FormItem label="WeekPicker" name="WeekPicker"><DatePicker.WeekPicker /></FormItem>
-	          <FormItem label="TimePicker" name="TimePicker"><TimePicker /></FormItem>
-	          <FormItem label="InputNumber" name="InputNumber"><InputNumber /></FormItem>
-	          <FormItem label="Cascader" name="Cascader"><Cascader options={dataSource} /></FormItem>
-	          <FormItem label="TreeSelect" name="TreeSelect"><TreeSelect treeData={dataSource} /></FormItem>
+            <FormItem label="MonthPicker" name="MonthPicker"><DatePicker.MonthPicker placeholder="month holder"/></FormItem>
+            <FormItem label="WeekPicker" name="WeekPicker"><DatePicker.WeekPicker placeholder="week holder"/></FormItem>
+	          <FormItem label="TimePicker" name="TimePicker"><TimePicker placeholder="time holder"/></FormItem>
+	          <FormItem label="InputNumber" name="InputNumber"><InputNumber placeholder="number holder"/></FormItem>
+	          <FormItem label="Cascader" name="Cascader"><Cascader placeholder="cascader holder" options={dataSource} /></FormItem>
+	          <FormItem label="TreeSelect" name="TreeSelect"><TreeSelect placeholder="tree holder" treeData={dataSource} /></FormItem>
 	          <FormItem label="Upload" name="Upload" value={fileList}>
                 <Upload >
                   <Button>

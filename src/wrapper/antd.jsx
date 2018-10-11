@@ -95,7 +95,7 @@ class WrapperClass {
             });
         }
 
-        const valueProps = getValueProps(props);
+        const valueProps = getValueProps(props, { defaultValue: undefined });
 
         if (status === 'preview') return <this.Antd.Select placeholder="" {...otherProps} disabled className={`${className || ''} ${prefix}-preview-select`} value={formatValue(value)} />;
         return <this.Antd.Select {...otherProps} {...opts} {...valueProps} {...insetify(props)} />;

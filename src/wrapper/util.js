@@ -14,9 +14,8 @@ function formatArray(value) {
 function moment2value(value, format) {
     if (value && value._isAMomentObject) {
         return value.format(format);
-    } else {
-        return null;
     }
+    return null;
 }
 
 function formatNumber(value) {
@@ -45,7 +44,8 @@ function getCleanProps(props) {
 
 function getValueProps(props, opts = {}) {
     const valueProps = {};
-    const { keyname = 'value', defaultValue = '', format = noop } = opts;
+    const { keyname = 'value', format = noop } = opts;
+    const defaultValue = 'defaultValue' in opts ? opts.defaultValue : '';
     if ('value' in props) {
         const propVal = props.value;
         if ([null, undefined].indexOf(propVal) !== -1) {
@@ -60,9 +60,9 @@ function getValueProps(props, opts = {}) {
 
 function formatDate(value) {
     if (value === null || value === undefined) return '';
-    if (Next && Next.moment) {
-        return Next.moment(value).format('YYYY-MM-DD');
-    }
+    // if (Next && Next.moment) {
+    //     return Next.moment(value).format('YYYY-MM-DD');
+    // }
     return value;
 }
 
