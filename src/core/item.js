@@ -277,7 +277,7 @@ class Item {
         return this.form[type][this.name];
     }
 
-    async set(type, value) {
+    async set(type, value, escape = false) {
         let ftValue = value;
 
         // interceptor一般为function, 在类型为value时处理
@@ -296,6 +296,7 @@ class Item {
         }
         this.form[type][this.name] = ftValue;
         this[type] = ftValue;
+        this.form.escape[this.name] = escape;
 
         this.emit(BASIC_EVENT[type], this.name, ftValue);
         this.emit(ANY_CHANGE, type, this.name, ftValue);

@@ -110,7 +110,7 @@ class BaseFormItem extends React.Component {
         this.form.currentCore = this.core;
         this.form.currentEventOpts = opts;
         this.form.currentEventType = 'manual';
-        this.core.set('value', val);
+        this.core.set('value', val, escape);
         Promise.resolve().then(() => {
             this.form.currentCore = null;
             this.form.currentEventOpts = null;

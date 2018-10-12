@@ -33,6 +33,7 @@ class Form {
         this.error = {};
         this.public = {}; // 公共属性，由最顶层form维护
 
+        this.escape = {}; // 用于避免嵌套form的filter逻辑的map
         this.interceptor = interceptor || {}; // 拦截器
         this.validateConfig = validateConfig;
 
@@ -417,9 +418,13 @@ class Form {
             return obj;
         }
 
+        // filter的原意是去除隐藏 和 匿名字段的值，但是和之前处理嵌套Form的逻辑有冲突（实际上遍历key处理实际上意义不大）
+        // TODO: 单测衡量一下去除filter处理对象的逻辑，解决后升y位
         const ret = {};
         Object.keys(obj).forEach((key) => {
-            if (key.indexOf('__anonymouse__') !== 0 && this.get('status', key) !== 'hidden') {
+            if (this.escape[key]) {
+                ret[key] = obj[key];
+            } else if (key.indexOf('__anonymouse__') !== 0 && this.get('status', key) !== 'hidden') {
                 ret[key] = this.filter(obj[key]);
             }
         });
