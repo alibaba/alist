@@ -30,68 +30,68 @@ const innerValidateConfig = {
     }
 };
 
-class SubItem extends React.Component {
-    static contextTypes = {
-        item: React.PropTypes.object,
-    };
+// class SubItem extends React.Component {
+//     static contextTypes = {
+//         item: React.PropTypes.object,
+//     };
 
-    constructor(props, context) {
-        super(props, context);
-        const aSource = [{ label: 'a', value: 'a' }];
-        const bSource = [{ label: 'b', value: 'b' }];
+//     constructor(props, context) {
+//         super(props, context);
+//         const aSource = [{ label: 'a', value: 'a' }];
+//         const bSource = [{ label: 'b', value: 'b' }];
 
-        if (context.item) {
-            context.item.core.addSubField(this);
-        }
+//         if (context.item) {
+//             context.item.core.addSubField(this);
+//         }
 
-        this.core = new FormCore({
-            validateConfig: innerValidateConfig,
-            autoValidate: true,
-            onChange: (firekey, values, ctx) => {
-                const { first } = values;
-                if (first && first.length > 3) {
-                    ctx.setValue('second', 'b');
-                    ctx.setItemProps('second', { options: bSource });
-                } else {
-                    ctx.setValue('second', 'a');
-                    ctx.setItemProps('second', { options: aSource });
-                }
-            }
-        });
-    }
+//         this.core = new FormCore({
+//             validateConfig: innerValidateConfig,
+//             autoValidate: true,
+//             onChange: (firekey, values, ctx) => {
+//                 const { first } = values;
+//                 if (first && first.length > 3) {
+//                     ctx.setValue('second', 'b');
+//                     ctx.setItemProps('second', { options: bSource });
+//                 } else {
+//                     ctx.setValue('second', 'a');
+//                     ctx.setItemProps('second', { options: aSource });
+//                 }
+//             }
+//         });
+//     }
 
-    // promise
-    validate = async () => {
-        const err = await this.core.validate();
-        const msg = Object.keys(err || {}).map((key) => err[key]).filter(item => !!item)[0];
-        return msg;
-    }
+//     // promise
+//     validate = async () => {
+//         const err = await this.core.validate();
+//         const msg = Object.keys(err || {}).map((key) => err[key]).filter(item => !!item)[0];
+//         return msg;
+//     }
 
-    // plain
-    // validate = () => {
-    //     const { first } = this.core.getValues();
-    //     if (first && first.length > 3) {
-    //         return null;
-    //     } else {
-    //         return 'inner error';
-    //     }
-    // }
+//     // plain
+//     // validate = () => {
+//     //     const { first } = this.core.getValues();
+//     //     if (first && first.length > 3) {
+//     //         return null;
+//     //     } else {
+//     //         return 'inner error';
+//     //     }
+//     // }
 
-    componentWillReceiveProps(nextProps) {
-        if ('value' in nextProps) { // 受控
-            const { value } = nextProps;
-            this.core.setValues(value);
-        }
-    }
+//     componentWillReceiveProps(nextProps) {
+//         if ('value' in nextProps) { // 受控
+//             const { value } = nextProps;
+//             this.core.setValues(value);
+//         }
+//     }
 
-    render() {
-        const { onChange } = this.props;
-        return <Form core={this.core} onChange={onChange}>
-            <FormItem name="first"><Input /></FormItem>
-            <FormItem name="second"><Select /></FormItem>
-        </Form>
-    }
-}
+//     render() {
+//         const { onChange } = this.props;
+//         return <Form core={this.core} onChange={onChange}>
+//             <FormItem name="first"><Input /></FormItem>
+//             <FormItem name="second"><Select /></FormItem>
+//         </Form>
+//     }
+// }
 
 class App extends React.Component {
     constructor(props) {
@@ -179,11 +179,16 @@ class App extends React.Component {
 
         return <Form core={this.core} onChange={onChange}>
             {/* <FormItem name="sub"><SubItem /></FormItem> */}
-            <FormItem name="rrr" errorRender={this.errorRender}>
+            {/* <FormItem name="rrr" errorRender={this.errorRender}>
                 <InlineRepeater multiple onMount={this.onMultipleChangeonMultipleChange} onMultipleChange={this.onMultipleChange} formConfig={formConfig} addPosition="bottom">
                     <FormItem label="username" name="username"><Input /></FormItem>
                 </InlineRepeater>
-            </FormItem>
+            </FormItem> */}
+            <FormItem label="InlineRepeater" name="inlineRepeaterx">
+        <InlineRepeater >
+            <FormItem label="username" name="username"><Input style={{ width: '100px' }} /></FormItem>
+        </InlineRepeater>
+    </FormItem>
             {/* <Item render={(values) => {
                 const str = JSON.stringify((values || {}), 4);
                 return <div>{str}</div>

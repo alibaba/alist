@@ -97,6 +97,8 @@ export default function CreateRepeater(bindSource, type, source) {
             if (!filter || !this.key) {
                 this.value = assignListItem(nextProps.value || []);
                 this.repeaterCore.updateValue(this.value, manualEvent, this.handleCoreUpdate);
+                console.log('===========>>>>>>>nofilter willreceive update');
+                debugger;
                 this.forceUpdate();
                 this.manualEvent = {};
                 return;
@@ -108,6 +110,8 @@ export default function CreateRepeater(bindSource, type, source) {
 
                 this.repeaterCore.updateValue(this.value, manualEvent, this.handleCoreUpdate);
                 this.manualEvent = {};
+
+                console.log('===========>>>>>>>value update willreceive update');
                 this.forceUpdate();
             }
         }
@@ -141,6 +145,7 @@ export default function CreateRepeater(bindSource, type, source) {
                 i += 1;
             }
 
+            console.log('onCHANGE...value', value, opts);
             this.props.onChange(value, opts);
         }
 
@@ -303,10 +308,13 @@ export default function CreateRepeater(bindSource, type, source) {
         }
 
         doAddInline = async () => {
+            console.log('forcerender.... action launch');
             const canSync = await this.repeaterCore.addInline();
             if (canSync) {
                 this.sync({ type: 'add', inline: true, index: this.repeaterCore.formList.length - 1 });
             }
+            console.log('forcerender.... action', canSync);
+
             this.forceUpdate();
         }
 

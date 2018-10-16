@@ -3,6 +3,7 @@ import Form from '../component/Form';
 import TableCom from './TableCom';
 import ActionButton from './ActionButton';
 import RowContext from '../context/repeaterRow';
+import { isValidStatus } from '../util/is';
 
 export default function bind(type, source) {
     const { Input } = source;
@@ -22,9 +23,24 @@ export default function bind(type, source) {
                 multiple: child.props.multiple,
                 renderCell: child.props.renderCell,
                 style: child.props.style,
+                status: child.props.status,
                 className: child.props.className,
             })).filter(item => (item.name || item.multiple || item.renderCell));
             return itemsConfig;
+        }
+
+        hasOperBtn = () => {
+            const {
+                multiple = false,
+                hasDelete = true,
+                hasUpdate = true,
+            } = this.props;
+
+            const isInlineMode = !multiple && !isTable;
+            const isSyncmode = !isTable && multiple;
+            const updateBtn = isSyncmode ? false : hasUpdate;
+
+            return (updateBtn || hasDelete || isInlineMode);
         }
 
         renderFilter = () => {
@@ -62,6 +78,7 @@ export default function bind(type, source) {
 
 
             const { formList } = repeaterCore;
+            console.log('====>>>>formList Length:', formList.length);
             const rowList = formList.map((core, index) => {
                 const values = core.getValues();
                 const { id } = core;
@@ -96,41 +113,38 @@ export default function bind(type, source) {
                         });
                     }
 
-                    let innerItem = null;
-                    const innerValElement = customRender || values[conf.name];
-                    let valElement = (<div className="repeater-table-cell-wrapper-inner">
-                        {conf.prefix ? <span className="repeater-table-cell-wrapper-inner-prefix">{conf.prefix}</span> : null}
-                        <span className="repeater-table-cell-wrapper-inner-content">{innerValElement}</span>
-                        {conf.suffix ? <span className="repeater-table-cell-wrapper-inner-suffix">{conf.suffix}</span> : null}
-                    </div>);
+                    const childElement = childMap[`${conf.label}${conf.name}`];
+                    let innerValElement = null;
+                    if (customRender) {
+                        innerValElement = customRender;
+                    } else if (React.isValidElement(childElement)) {
+                        const validItemStatus = isValidStatus(conf.status);
+                        const globalStatus = (focusMode && status !== 'preview') ? status : 'preview';
+                        const itemStatus = validItemStatus ? conf.status : globalStatus;
 
-                    if (!customRender && focusMode && status !== 'preview') {
-                        const childElement = childMap[`${conf.label}${conf.name}`];
-                        if (React.isValidElement(childElement)) {
-                            valElement = React.cloneElement(childElement, { status });
-                        } else {
-                            valElement = childElement;
-                        }
+                        innerValElement = React.cloneElement(childElement, { status: itemStatus });
+                    } else {
+                        innerValElement = childElement;
                     }
-
-                    innerItem = (<div className={`${cellCls} ${cls}`}>
-                        {valElement}
-                    </div>);
-
-
                     return (<td style={style} key={`${conf.label}${conf.name}`}>
-                        {innerItem}
+                        <div className={`${cellCls} ${cls}`}>
+                            {innerValElement}
+                        </div>
                     </td>);
                 });
 
-                const operEle = (<td>
-                    {editable ? <div className={cellCls}>
-                        {saveBtn}
-                        {cancelBtn}
-                        {updateBtn}
-                        {deleteBtn}
-                    </div> : null}
-                </td>);
+                const hasOperBtn = this.hasOperBtn();
+                let operEle = null;
+                if (hasOperBtn) {
+                    operEle = (<td>
+                        {editable ? <div className={cellCls}>
+                            {saveBtn}
+                            {cancelBtn}
+                            {updateBtn}
+                            {deleteBtn}
+                        </div> : null}
+                    </td>);
+                }
 
                 const rowContextValue = { core, id };
                 return (<RowContext.Provider value={rowContextValue} key={id}>
@@ -187,7 +201,8 @@ export default function bind(type, source) {
             });
 
             // 如果当前状态为编辑状态，展示操作栏位
-            if (editable) {
+            const hasOperBtn = this.hasOperBtn();
+            if (editable && hasOperBtn) {
                 header.push(<th className={`repeater-table-header-node ${operateClassName}`} key="last">
                     <div className={cellCls}>{operateText}</div>
                 </th>);

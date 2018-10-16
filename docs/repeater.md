@@ -19,7 +19,7 @@ import dialogWrapper from '../src/dialog/antd';
 // import "antd/dist/antd.css";
 import "./repeater.scss";
 
-const { Modal, Button, Input, Checkbox, Radio }  = wrapper(Antd);
+const { Modal, Button, Input, Checkbox, Radio, Switch }  = wrapper(Antd);
 const Dialog = dialogWrapper(Antd)
 const { TableRepeater, InlineRepeater, Selectify, ActionButton } = repeater({ Dialog, Button, Input, Checkbox, Radio });
 const { Group: RadioGroup } = Radio;
@@ -83,7 +83,7 @@ const formCore = new FormCore({
         ]
     },
     onChange: (fireKeys, values) => {
-        console.log('====>', fireKeys, values);
+        console.log('[top onchange]', fireKeys, values);
         const vprops = {
             locale: values.locale
         };
@@ -99,9 +99,9 @@ const formCore = new FormCore({
     // }
 });
 
-formCore.setValues({
-    rules: [{ price: '', threshold: '' }]
-});
+// formCore.setValues({
+//     rules: [{ price: '', threshold: '' }]
+// });
 
 window.formCore = formCore;
 const validateConfig = {
@@ -115,7 +115,7 @@ const formConfig = {
         // console.log('====>', fireKeys, values);
     },
     values: {
-        drawerName: 'box',
+        // drawerName: 'box',
     }
 };
 
@@ -417,7 +417,7 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
     </Item> */}
 
     {/* <FormItem label="inlineRepeat" name="inlineRepeat">
-        <InlineRepeater filter={filter} formConfig={formConfig} addPosition="bottom">
+        <InlineRepeater formConfig={formConfig} addPosition="bottom">
             <FormItem required label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem required label="税号" name="taxpayerNumber"><Input /></FormItem>
             <FormItem required label="子公司" name="branchName"><Input /></FormItem>
@@ -441,6 +441,15 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
 
     <br/>
     <hr/>
+
+    {/* <FormItem name="deep2">
+        <SelectRepeater formConfig={formConfig}>
+            <FormItem label="isCheck" name="isCheck" status="preview"><Switch /></FormItem>
+            <FormItem label="isCheckText" name="isCheckText"><Switch checkedChildren="开" unCheckedChildren="关" /></FormItem>
+            <FormItem label="drawerName" name="drawerName"><Input /></FormItem>
+            <FormItem label="age" name="age"><Input /></FormItem>
+        </SelectRepeater>        
+    </FormItem> */}
 
     {/* <FormItem name="deep2">
         <SelectRepeater selectMode="multiple" asyncHandler={asyncHandler} formConfig={formConfig}>
@@ -496,9 +505,19 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
         </InlineRepeater>
     </FormItem> */}
 
+    <FormItem label="InlineRepeater" name="inlineRepeaterx">
+        <InlineRepeater >
+            <FormItem label="username" name="username"><Input style={{ width: '100px' }} /></FormItem>
+        </InlineRepeater>
+    </FormItem>
+
     {/* <FormItem name="rulesx">
-        <InlineRepeater multiple {...extraProps} formConfig={formConfig} filter={filterX}>
-            <FormItem prefix="满" suffix="元" label="threshold" name="threshold"><Input style={{ width: '100px' }}/></FormItem>
+        <InlineRepeater multiple {...extraProps} formConfig={formConfig} filter={filterX} hasDelete>
+            <FormItem defaultMinWidth={false} label="isCheckText" name="isCheckText"><Switch checkedChildren="开" unCheckedChildren="关" /></FormItem>
+            <FormItem defaultMinWidth={false} label="isRadio" name="isRadio"><Radio>选中</Radio></FormItem>
+            <FormItem defaultMinWidth={false} label="isCheckbox" name="isCheckbox"><Checkbox>选中</Checkbox></FormItem>
+            <FormItem prefix="满" suffix="元" label="threshold" name="threshold123"><Input style={{ width: '100px' }}/></FormItem>
+            <FormItem prefix="满" suffix="元" status="preview" label="threshold" name="threshold"><Input style={{ width: '100px' }}/></FormItem>
             <FormItem defaultMinWidth prefix="减" suffix="元" label="price" name="price"><Input style={{ width: '100px' }} /></FormItem>
         </InlineRepeater>
     </FormItem> */}
@@ -508,7 +527,7 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
         <CustomEle />
     </FormItem> */}
 
-    <FormItem name="irn">
+    {/* <FormItem name="irn">
         <InlineRepeater multiple asyncHandler={inlineAsyncHandler} filter={filter} formConfig={formConfig} addPosition="bottom">
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem label="multi" multiple required>
@@ -519,7 +538,7 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
             </FormItem>
             <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
         </InlineRepeater>
-    </FormItem>
+    </FormItem> */}
 
 {/*     
     <If when={(values) => {
