@@ -97,7 +97,7 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         window.core = this.core = new FormCore({
-            autoValidate: true,
+            // autoValidate: true,
             validateConfig: {
                 sub: {
                     validator: (rule, value, callback) => {
@@ -165,9 +165,9 @@ class App extends React.Component {
                 // ]
                 username: () => {
                     return [
-                        { validator: async (values) => {
-                            if (values.username) {
-                                return null;
+                        { validator: async (rule, value, callback) => {
+                            if (value) {
+                                callback([]);
                             } else {
                                 throw new Error('abc');
                             }                        
@@ -185,9 +185,9 @@ class App extends React.Component {
                 </InlineRepeater>
             </FormItem> */}
             <FormItem label="InlineRepeater" name="inlineRepeaterx">
-        <InlineRepeater >
-            <FormItem label="username" name="username"><Input style={{ width: '100px' }} /></FormItem>
-        </InlineRepeater>
+            <InlineRepeater formConfig={formConfig}>
+                <FormItem label="username" name="username"><Input style={{ width: '100px' }} /></FormItem>
+            </InlineRepeater>
     </FormItem>
             {/* <Item render={(values) => {
                 const str = JSON.stringify((values || {}), 4);

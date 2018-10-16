@@ -96,24 +96,15 @@ export default function CreateRepeater(bindSource, type, source) {
             // 没有过滤函数或者没有关键字
             if (!filter || !this.key) {
                 this.value = assignListItem(nextProps.value || []);
-                this.repeaterCore.updateValue(this.value, manualEvent, this.handleCoreUpdate);
                 console.log('===========>>>>>>>nofilter willreceive update');
-                debugger;
-                this.forceUpdate();
-                this.manualEvent = {};
-                return;
-            }
-
-            if (nextProps.value !== this.props.value) {
+            } else if (nextProps.value !== this.props.value) {
                 const filteredValue = await this.handleFilter(nextProps.value, this.key);
                 this.value = assignListItem(filteredValue);
-
-                this.repeaterCore.updateValue(this.value, manualEvent, this.handleCoreUpdate);
-                this.manualEvent = {};
-
-                console.log('===========>>>>>>>value update willreceive update');
-                this.forceUpdate();
             }
+
+            this.repeaterCore.updateValue(this.value, manualEvent, this.handleCoreUpdate);
+            this.forceUpdate();
+            this.manualEvent = {};
         }
 
         onChange = (val, opts) => {
