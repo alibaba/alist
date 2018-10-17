@@ -21,27 +21,33 @@ class BaseItem extends React.Component {
     }
 
     update = (type, name, value, silent = false) => {
-        if (this.didMount && this.name === name && !silent) {
+        if (['value', 'props'].indexOf(type) !== -1 &&
+            this.didMount && this.name === name && !silent) {
             this.forceUpdate();
         }
     }
     render() {
         const {
             children, render, didMount,
-            value, form, status, props, error,
-            onChange, onBlur, onFocus,
-            inset, style, name, formProps,
+            form, onChange, onBlur, onFocus,
+            name, formProps, inset,
         } = this.props;
 
-        if (!didMount && render) {
-            return null;
-        }
-
         if (render) {
+            if (!didMount) {
+                return null;
+            }
             const values = form.getValue();
             return render(values, form);
         }
 
+        const itemProps = {
+            value: form.getItemValue(name),
+            status: form.getItemStatus(name),
+            error: form.getItemError(name),
+        };
+
+        const { status } = itemProps;
         if (didMount && status === 'hidden') {
             return null;
         }
@@ -51,48 +57,32 @@ class BaseItem extends React.Component {
         }
 
         let component = null;
-        if (this.props.children === null) {
+        if (children === null) {
             return null;
         }
 
+        const props = form.getItemProps(name);
         const {
-            className,
-            label,
-            top,
-            prefix,
-            suffix,
-            help,
+            className, label,
+            top, prefix, suffix, help,
             validateConfig,
-            full,
-            layout,
+            full, layout,
             when,
             ...others
         } = props || {};
 
         component = React.Children.only(this.props.children);
-        let disabled = false;
-
-        if (status === 'disabled') {
-            disabled = true;
-        }
-
         const cloneProps = {
             ...formProps,
             inset,
-            disabled,
+            disabled: status === 'disabled',
             name,
-            value,
-            error,
-            status,
+            ...itemProps,
             onChange,
             onBlur,
             onFocus,
             ...others,
         };
-
-        if (style) {
-            cloneProps.style = Object.assign({}, cloneProps.style || {}, style);
-        }
 
         if (component && component.type && component.type.displayName === 'If') {
             delete cloneProps.name;

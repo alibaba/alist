@@ -91,7 +91,7 @@ describe('Inline Multiple Selectify Repeater', () => {
         await sleep(500);
         validateForm.mount();
         expect(validateCore.getValue('repeat').dataSource).toEqual([{}]);
-        expect(validateForm.find('.no-form-item-error').length).toEqual(1);
+        expect(validateForm.find('span.no-form-item-error').length).toEqual(1);
         ReactTestUtils.Simulate.change(validateForm.find('.inline-repeater-focus input[name="drawerName"]').getDOMNode(), {
             target: {
                 value: 'hello world',
@@ -103,7 +103,7 @@ describe('Inline Multiple Selectify Repeater', () => {
         ReactTestUtils.Simulate.click(validateForm.find('button.repeater-add').getDOMNode());
         await sleep(500);
         validateForm.mount();
-        expect(validateForm.find('.no-form-item-error').length).toEqual(0);
+        expect(validateForm.find('span.no-form-item-error').length).toEqual(0);
         expect(validateCore.getValue('repeat').dataSource.length).toEqual(2);
     });
 
@@ -314,7 +314,7 @@ describe('Inline Multiple Selectify Repeater', () => {
 
         expect(form.find(Form).children('.table-repeater-row').length).toEqual(1);
         expect(form.find(Form).children('.table-repeater-row').at(0).find(Radio).length).toEqual(1);
-        expect(form.find(Form).children('.table-repeater-row').find('.repeater-table-cell-wrapper').at(1).find('.repeater-table-cell-wrapper-inner-content').prop('children')).toEqual('客户');
+        expect(form.find(Form).children('.table-repeater-row').find('.repeater-table-cell-wrapper').at(1).find('.no-form-item-content-elem').render().text()).toEqual('客户');
 
         ReactTestUtils.Simulate.change(form.find('Input.repeater-search').getDOMNode(), {
             target: { value: '' },

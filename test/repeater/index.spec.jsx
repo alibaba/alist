@@ -20,6 +20,10 @@ function sleep(timer) {
     });
 }
 
+const commonEmpty = {
+    taxpayerNumber: null, branchName: null, checkResultName: null, denyReason: null, creatorName: null,
+};
+
 const testValues = {
     drawerName: '开票人',
     taxpayerNumber: '税号',
@@ -107,7 +111,7 @@ describe('Repeater', () => {
         expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn').length).toEqual(2);
         ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn')[0]);
         await sleep(500);
-        expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .no-form-item-error').length).toEqual(1);
+        expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content span.no-form-item-error').length).toEqual(1);
         expect(validateCore.getValue('repeat')).toEqual(null);
         ReactTestUtils.Simulate.change(document.querySelectorAll('.ant-modal-body input[name="drawerName"]')[0], {
             target: {
@@ -257,11 +261,18 @@ describe('Repeater', () => {
         await form.find(TableRepeater).find('InnerRepeater').instance().doAdd(valuesArr[2]);
         await form.find(TableRepeater).find('InnerRepeater').instance().doAdd(valuesArr[3]);
         form.mount();
+        console.log('***++++****', form.find('tr.table-repeater-row').at(0).find('.repeater-table-cell-wrapper div').debug());
 
-        expect(form.find('tr.table-repeater-row').at(0).find('.repeater-table-cell-wrapper .repeater-table-cell-wrapper-inner-content div').prop('children')).toEqual(1);
-        expect(form.find('tr.table-repeater-row').at(1).find('.repeater-table-cell-wrapper .repeater-table-cell-wrapper-inner-content div').prop('children')).toEqual(2);
-        expect(form.find('tr.table-repeater-row').at(2).find('.repeater-table-cell-wrapper .repeater-table-cell-wrapper-inner-content div').prop('children')).toEqual(3);
-        expect(form.find('tr.table-repeater-row').at(3).find('.repeater-table-cell-wrapper .repeater-table-cell-wrapper-inner-content div').prop('children')).toEqual(4);
+        expect(form.find('tr.table-repeater-row').at(0).find('.repeater-table-cell-wrapper div').at(0).prop('children')).toEqual(1);
+        expect(form.find('tr.table-repeater-row').at(1).find('.repeater-table-cell-wrapper div').at(0).prop('children')).toEqual(2);
+        expect(form.find('tr.table-repeater-row').at(2).find('.repeater-table-cell-wrapper div').at(0).prop('children')).toEqual(3);
+        expect(form.find('tr.table-repeater-row').at(3).find('.repeater-table-cell-wrapper div').at(0).prop('children')).toEqual(4);
+
+        // expect(form.find(Form).children('.table-repeater-row').at(0).find('.repeater-table-cell-wrapper .no-form-item-content-elem').at(0).render().text()).toEqual(1);
+        // expect(form.find(Form).children('.table-repeater-row').at(1).find('.repeater-table-cell-wrapper .no-form-item-content-elem').at(0).render().text()).toEqual(2);
+        // expect(form.find(Form).children('.table-repeater-row').at(2).find('.repeater-table-cell-wrapper .no-form-item-content-elem').at(0).render().text()).toEqual(3);
+        // expect(form.find(Form).children('.table-repeater-row').at(3).find('.repeater-table-cell-wrapper .no-form-item-content-elem').at(0).render().text()).toEqual(4);
+
 
         form.find('button.repeater-update').at(0).simulate('click');
         await sleep(500);
@@ -270,10 +281,10 @@ describe('Repeater', () => {
 
     it('filter works', async () => {
         const valuesArr = [
-            { drawerName: '开票人' },
-            { drawerName: '客户' },
-            { drawerName: '拍档' },
-            { drawerName: '销售' },
+            { drawerName: '开票人', ...commonEmpty },
+            { drawerName: '客户', ...commonEmpty },
+            { drawerName: '拍档', ...commonEmpty },
+            { drawerName: '销售', ...commonEmpty },
         ];
 
         await form.find(TableRepeater).find('InnerRepeater').instance().doAdd(valuesArr[0]);
@@ -299,7 +310,8 @@ describe('Repeater', () => {
         form.mount();
 
         expect(form.find('tr.table-repeater-row').length).toEqual(1);
-        expect(form.find('tr.table-repeater-row .repeater-table-cell-wrapper').at(0).find('.repeater-table-cell-wrapper-inner-content').prop('children')).toEqual('客户');
+        expect(form.find(Form).children('.table-repeater-row').find('.repeater-table-cell-wrapper .no-form-item-content-elem').at(0).render().text()).toEqual('客户');
+
 
         ReactTestUtils.Simulate.change(form.find('Input.repeater-search').getDOMNode(), {
             target: { value: '' },

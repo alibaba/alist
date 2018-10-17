@@ -8,6 +8,12 @@ import Form, { FormItem, Item, If } from '../../src';
 // status: edit, preview, hidden
 const { Select } = wrapper(Antd);
 
+function sleep(timer) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, timer);
+    });
+}
+
 function Input(props) {
     let {
         value, status, error, ...othersProps
@@ -111,27 +117,28 @@ describe('component/form basic function', () => {
         expect(styleForm.find('FormItem[name="username"]').prop('style')).toEqual({ marginBottom: 16 });
     });
 
-    it('FormItem should support full props', () => {
-        expect(form.find('FormItem[name="username"] .no-form-full').length).toEqual(0);
+    it('FormItem should support full props', async () => {
+        expect(form.find('FormItem[name="username"] BaseFormItem').instance().fullElement.current.className.trim()).toEqual('no-form-item-content');
         formcore.setProps({
             username: {
                 full: true,
             },
         });
-        form.mount();
-        expect(form.find('FormItem[name="username"] .no-form-full').length).toEqual(1);
+        await sleep(500);
+        form.mount();        
+        expect(form.find('FormItem[name="username"] BaseFormItem').instance().fullElement.current.className).toEqual('no-form-item-content no-form-full');
     });
 
     it('should support label', () => {
-        expect(form.find('FormItem[name="username"] .no-form-item-label').render().text()).toEqual('username');
-        expect(form.find('FormItem[name="age"] .no-form-item-label').render().text()).toEqual('age');
-        expect(form.find('FormItem[name="gender"] .no-form-item-label').render().text()).toEqual('gender');
+        expect(form.find('FormItem[name="username"] span.no-form-item-label').render().text()).toEqual('username');
+        expect(form.find('FormItem[name="age"] span.no-form-item-label').render().text()).toEqual('age');
+        expect(form.find('FormItem[name="gender"] span.no-form-item-label').render().text()).toEqual('gender');
     });
     it('should support props', () => {
-        expect(form.find('FormItem[name="age"] .no-form-item-top').text()).toEqual('age top');
-        expect(form.find('FormItem[name="age"] .no-form-item-content-prefix').text()).toEqual('age prefix');
-        expect(form.find('FormItem[name="age"] .no-form-item-content-suffix').text()).toEqual('age suffix');
-        expect(form.find('FormItem[name="age"] .no-form-item-help').text()).toEqual('age help');
+        expect(form.find('FormItem[name="age"] span.no-form-item-top').text()).toEqual('age top');
+        expect(form.find('FormItem[name="age"] span.no-form-item-content-prefix').text()).toEqual('age prefix');
+        expect(form.find('FormItem[name="age"] span.no-form-item-content-suffix').text()).toEqual('age suffix');
+        expect(form.find('FormItem[name="age"] span.no-form-item-help').text()).toEqual('age help');
     });
 
     it('should work with default value', () => {

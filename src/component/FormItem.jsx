@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import BaseItem from './BaseItem';
-import { ANY_CHANGE, EDIT, HIDDEN, FOCUS, BLUR } from '../static';
+import { ANY_CHANGE, EDIT, HIDDEN, FOCUS, BLUR, STATUS_ENUMS } from '../static';
 import genId from '../util/random';
 import { isObject, isFunction } from '../util/is';
 import FormContext from '../context/form';
@@ -53,6 +53,11 @@ class BaseFormItem extends React.Component {
         this.core.jsx = this;
         this.core.getSuperFormProps = this.getSuperFormProps.bind(this);
 
+        // 引用，提升渲染性能，避免重复渲染子类
+        this.wrapperElement = React.createRef();
+        this.labelElement = React.createRef();
+        this.fullElement = React.createRef();
+
         this.ifCore = ifCore;
         this.id = `__noform__item__${genId()}`;
         if (props.name) {
@@ -78,6 +83,25 @@ class BaseFormItem extends React.Component {
         }
         this.didMount = true;
         this.forceUpdate();
+    }
+
+    componentWillReceiveProps = (nextProps) => {
+        const { jsx_status, func_status } = this.core;
+        const { status } = nextProps;
+        let needConsist = false;
+        if (typeof status === 'function' && func_status !== status) {
+            this.core.func_status = status;
+            needConsist = true;
+        } else if (STATUS_ENUMS.has(status) && status !== jsx_status) {
+            this.core.jsx_status = status;
+            needConsist = true;
+        }
+
+        if (needConsist) {
+            const value = this.form.getAll('value');
+            const silent = true;
+            this.core.consistStatus(value, silent);
+        }
     }
 
     componentWillUnmount() { // 解绑
@@ -132,33 +156,18 @@ class BaseFormItem extends React.Component {
         }
     }
 
-    getBaseProps = () => {
-        const { children, render, inset } = this.props;
-        const { form } = this;
-        const { name } = this.core;
-
-        let formProps = {};
-        if (this.predictChildForm) {
-            formProps = this.getSuperFormProps();
-        }
-
-        return {
-            children,
-            render,
-            didMount: this.didMount,
-            form: this.form,
-            onChange: this.onChange,
-            onBlur: this.onBlur,
-            onFocus: this.onFocus,
-            value: form.getItemValue(name),
-            status: form.getItemStatus(name),
-            props: form.getItemProps(name),
-            error: form.getItemError(name),
-            inset,
-            name,
-            formProps,
-        };
-    }
+    getBaseProps = () => ({
+        children: this.props.children,
+        render: this.props.render,
+        didMount: this.didMount,
+        form: this.form,
+        onChange: this.onChange,
+        onBlur: this.onBlur,
+        onFocus: this.onFocus,
+        inset: this.props.inset,
+        name: this.core.name,
+        formProps: this.predictChildForm ? this.getSuperFormProps() : {},
+    })
 
     getSuperFormProps = () => {
         let formProps = {};
@@ -172,6 +181,68 @@ class BaseFormItem extends React.Component {
         }
 
         return formProps;
+    }
+
+    getWrapperClassName = () => {
+        const { name, error: propError } = this.props;
+        const inset = this.props.inset || this.form.jsx.props.inset;
+        let error = this.form.getItemError(name); // 动态error
+        if (!name) {
+            error = propError;
+        }
+
+        // 处理错误信息
+        let hasMainError = !!error;
+        let hasSubError = false;
+        if (isObject(error)) { // 对象的情况
+            hasMainError = error.main;
+            hasSubError = error.sub;
+        }
+
+        const insetCls = inset ? `${formItemPrefix}-item-inset` : '';
+        const errCls = hasMainError ? `${formItemPrefix}-item-has-error` : '';
+        const subErrCls = hasSubError ? `${formItemPrefix}-item-has-sub-error` : '';
+        return `${insetCls} ${errCls} ${subErrCls}`;
+    }
+
+    getLabelClassName = () => {
+        const { name, status: propStatus } = this.props;
+        const props = this.form.getItemProps(name) || {}; // 动态props
+        const status = name ? this.form.getItemStatus(name) : propStatus; // 动态status
+        const { layout = {} } = {
+            ...this.form.jsx.props,
+            ...this.props,
+        };
+
+        // 保留item关键字属性
+        const { required } = { ...this.props, ...props };
+
+        let requiredCls = '';
+        if (required && (status === EDIT || `${name}` === '')) {
+            requiredCls = ' required';
+        }
+        return `${formItemPrefix}-item-label ${requiredCls} ${layout.label ? `col-${layout.label}` : ''}`;
+    }
+
+    getFullClassName = () => {
+        const { name } = this.props;
+        const props = this.form.getItemProps(name) || {}; // 动态props
+
+        // 保留item关键字属性
+        const { full: coreFull } = { ...this.props, ...props };
+
+        // 处理布局
+        const { inset = false, full: jsxFull } = {
+            ...this.form.jsx.props,
+            ...this.props,
+        };
+
+        const full = jsxFull || coreFull || inset;
+
+        if (name === 'age') {
+            
+        }
+        return `${formItemPrefix}-item-content ${full ? `${formItemPrefix}-full` : ''}`;
     }
 
     initialCore = (props) => {
@@ -245,60 +316,43 @@ class BaseFormItem extends React.Component {
 
     update = (type, name, value, silent = false) => {
         // value, props, error, status
-        if (type === 'status' &&
-            this.didMount && (this.props.render || this.core.name === name) && !silent) {
-            this.forceUpdate();
+        const canUpdate = this.didMount &&
+            (this.props.render || this.core.name === name) && !silent;
+        if (canUpdate) {
+            switch (type) {
+            case 'status':
+                this.forceUpdate(); break;
+            case 'error':
+                this.wrapperElement.current.className = this.getWrapperClassName(); break;
+            case 'props':
+                this.fullElement.current.className = this.getFullClassName();
+                this.labelElement.current.className = this.getLabelClassName();
+                break;
+            case 'value':
+                if (this.props.render && canUpdate) {
+                    this.forceUpdate();
+                }
+                break;
+            default: break;
+            }
         }
     }
 
     render() {
         const { noLayout, children, ...itemProps } = this.props;
         const {
-            name, style = {},
-            status: propStatus,
-            error: propError,
+            errorRender, className = '', name, style = {}, status: propStatus,
         } = itemProps;
+        const status = name ? this.form.getItemStatus(name) : propStatus; // 动态status
 
-        const { className = '' } = itemProps;
-        const props = this.form.getItemProps(name) || {}; // 动态props
-        let status = this.form.getItemStatus(name); // 动态status
-        let error = this.form.getItemError(name); // 动态error
-        if (!name) {
-            status = propStatus;
-            error = propError;
-        }
-
-        // 保留item关键字属性
-        const {
-            errorRender, required, full: coreFull,
-        } = { ...this.props, ...props };
-
-        let errInfo = error;
-        let hasError = !!errInfo;
-        let hasMainError = !!errInfo;
-        let hasSubError = false;
-        if (isObject(error)) { // 对象的情况
-            errInfo = error.__error || error.main;
-            hasMainError = error.main;
-            hasSubError = error.sub;
-            hasError = hasMainError || hasSubError;
-        }
-
-        if (errorRender) {
-            errInfo = errorRender(errInfo, error);
-        }
-
+        // 状态隐藏
         if (status === HIDDEN) {
             return null;
         }
 
-        let requiredCls = '';
-        if (required && (status === EDIT || `${name}` === '')) {
-            requiredCls = ' required';
-        }
         // 处理布局
         const {
-            inline = false, inset = false, colon, layout = {}, full: jsxFull,
+            inline = false, inset = false, colon, layout = {},
             defaultMinWidth = true,
         } = {
             ...this.form.jsx.props,
@@ -306,10 +360,6 @@ class BaseFormItem extends React.Component {
         };
 
         const defaultMinCls = defaultMinWidth ? `${formItemPrefix}-item-default-width` : `${formItemPrefix}-item-no-default-width`;
-        const full = jsxFull || coreFull || inset;
-        const errCls = hasMainError ? `${formItemPrefix}-item-has-error` : '';
-        const subErrCls = hasSubError ? `${formItemPrefix}-item-has-sub-error` : '';
-        const insetCls = inset ? `${formItemPrefix}-item-inset` : '';
         const layoutCls = (layout.label && layout.control) ? `${formItemPrefix}-item-has-layout` : '';
         const colonCls = colon ? '' : `${formItemPrefix}-item-no-colon`;
         const inlineCls = inline ? `${formItemPrefix}-item-inline` : '';
@@ -323,8 +373,7 @@ class BaseFormItem extends React.Component {
             return baseElement;
         }
 
-        // 以下组件的渲染不与formItem公用，避免重复渲染
-        // label, top, suffix, prefix, help, required, full
+        // 以下组件的渲染不与formItem公用，避免重复渲染(label, top, suffix, prefix, help, required, full)
         // error比较特殊, 需要考虑自定义errorRender
         const sectionValue = { form: this.form, ...itemProps, core: this.core };
         const labelElement = <Section type="props" field="label" {...sectionValue} pure />;
@@ -334,14 +383,18 @@ class BaseFormItem extends React.Component {
         const helpElement = <Section type="props" field="help" className={`${formItemPrefix}-item-help`} {...sectionValue} />;
         const errElement = <Section type="error" className={`${formItemPrefix}-item-error`} {...sectionValue} errorRender={errorRender} />;
 
-        // todo: dom元素直接修改error cls
+        // 避免重复渲染
+        const wrapperCls = this.getWrapperClassName();
+        const labelCls = this.getLabelClassName();
+        const fullCls = this.getFullClassName();
+
         return (
             <div id={this.id} name={`form-item-${name}`} className={`${formItemPrefix}-item ${className} ${layoutCls} ${colonCls} ${inlineCls} ${defaultMinCls}`} style={style}>
-                <div className={`${insetCls} ${errCls} ${subErrCls}`}>
-                    <span className={`${formItemPrefix}-item-label ${requiredCls} ${layout.label ? `col-${layout.label}` : ''}`} >{labelElement}</span>
+                <div className={wrapperCls} ref={this.wrapperElement}>
+                    <span className={labelCls} ref={this.labelElement}>{labelElement}</span>
                     <span className={`${formItemPrefix}-item-control ${layout.control ? `col-${layout.control}` : ''}`} >
                         {topElement}
-                        <span className={`${formItemPrefix}-item-content ${full ? `${formItemPrefix}-full` : ''}`}>
+                        <span className={fullCls} ref={this.fullElement}>
                             {prefixElement}
                             <span className={`${formItemPrefix}-item-content-elem is-${status}`}>
                                 {baseElement}

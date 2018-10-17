@@ -78,7 +78,6 @@ export default function bind(type, source) {
 
 
             const { formList } = repeaterCore;
-            console.log('====>>>>formList Length:', formList.length);
             const rowList = formList.map((core, index) => {
                 const values = core.getValues();
                 const { id } = core;

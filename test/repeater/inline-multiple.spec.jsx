@@ -20,6 +20,10 @@ function sleep(timer) {
     });
 }
 
+const commonEmpty = {
+    taxpayerNumber: null, branchName: null, checkResultName: null, denyReason: null, creatorName: null,
+};
+
 const testValues = {
     drawerName: '开票人',
     taxpayerNumber: '税号',
@@ -150,7 +154,7 @@ describe('Inline multiple Repeater', () => {
         await sleep(500);
         validateForm.mount();
         expect(validateCore.getValue('repeat')).toEqual([{}]);
-        expect(validateForm.find('.no-form-item-error').length).toEqual(1);
+        expect(validateForm.find('span.no-form-item-error').length).toEqual(1);
         ReactTestUtils.Simulate.change(validateForm.find('.inline-repeater-focus input[name="drawerName"]').getDOMNode(), {
             target: {
                 value: 'hello world',
@@ -162,7 +166,7 @@ describe('Inline multiple Repeater', () => {
         ReactTestUtils.Simulate.click(validateForm.find('button.repeater-add').getDOMNode());
         await sleep(500);
         validateForm.mount();
-        expect(validateForm.find('.no-form-item-error').length).toEqual(0);
+        expect(validateForm.find('span.no-form-item-error').length).toEqual(0);
         expect(validateCore.getValue('repeat').length).toEqual(2);
     });
 
@@ -188,10 +192,10 @@ describe('Inline multiple Repeater', () => {
 
     it('filter works', async () => {
         const valuesArr = [
-            { drawerName: '开票人' },
-            { drawerName: '客户' },
-            { drawerName: '拍档' },
-            { drawerName: '销售' },
+            { drawerName: '开票人', ...commonEmpty },
+            { drawerName: '客户', ...commonEmpty },
+            { drawerName: '拍档', ...commonEmpty },
+            { drawerName: '销售', ...commonEmpty },
         ];
 
         await form.find(InlineRepeater).find('InnerRepeater').instance().doAdd(valuesArr[0]);
@@ -218,7 +222,7 @@ describe('Inline multiple Repeater', () => {
         form.mount();
 
         expect(form.find(Form).children('.table-repeater-row').length).toEqual(1);
-        expect(form.find(Form).children('.table-repeater-row').find('.repeater-table-cell-wrapper .repeater-table-cell-wrapper-inner-content').at(0).prop('children')).toEqual('客户');
+        expect(form.find(Form).children('.table-repeater-row').find('.repeater-table-cell-wrapper .no-form-item-content-elem').at(0).render().text()).toEqual('客户');
 
         ReactTestUtils.Simulate.change(form.find('Input.repeater-search').getDOMNode(), {
             target: { value: '' },

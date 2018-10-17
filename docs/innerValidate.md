@@ -163,19 +163,22 @@ class App extends React.Component {
                 //         }                        
                 //     }}
                 // ]
-                username: () => {
-                    return [
-                        { validator: async (rule, value, callback) => {
-                            if (value) {
-                                callback([]);
-                            } else {
-                                throw new Error('abc');
-                            }                        
-                        }}
-                    ]
-                }
+                // username: () => {
+                //     return [
+                //         { validator: async (rule, value, callback) => {
+                //             if (value) {
+                //                 callback([]);
+                //             } else {
+                //                 throw new Error('abc');
+                //             }                        
+                //         }}
+                //     ]
+                // }
+                drawerName: { type: 'string', required: true },
             }
         };
+
+
 
         return <Form core={this.core} onChange={onChange}>
             {/* <FormItem name="sub"><SubItem /></FormItem> */}
@@ -184,14 +187,34 @@ class App extends React.Component {
                     <FormItem label="username" name="username"><Input /></FormItem>
                 </InlineRepeater>
             </FormItem> */}
-            <FormItem label="username" name="username">
+            <Item name="repeat">
+                <InlineRepeater formConfig={formConfig}>
+                    <FormItem label="开票人" name="drawerName"><Input /></FormItem>
+                    <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
+                    <FormItem label="子公司" name="branchName"><Input /></FormItem>
+                    <FormItem label="核查结果" name="checkResultName"><Input /></FormItem>
+                    <FormItem label="拒绝原因" name="denyReason"><Input /></FormItem>
+                    <FormItem label="创建人" name="creatorName"><Input /></FormItem>
+                </InlineRepeater>
+            </Item>
+            {/* <FormItem label="company" name="company">
                 <Input />
-            </FormItem>
-            <FormItem label="InlineRepeater" name="inlineRepeaterx">
+            </FormItem> */}
+            {/* <FormItem label="username" name="username" top="username top" help="user help">
+                <Input />
+            </FormItem> */}
+            {/* <Item name="username"><Input /></Item>
+            <Item render={(...args) => {
+                const value = args[0];
+                return <div id={value.username} />;
+            }} */}
+            />
+            {/* <FormItem label="InlineRepeater" name="inlineRepeaterx">
                 <InlineRepeater formConfig={formConfig}>
                     <FormItem label="username" name="username"><Input style={{ width: '100px' }} /></FormItem>
+                    <FormItem label="age" name="age"><Input style={{ width: '100px' }} /></FormItem>
                 </InlineRepeater>
-            </FormItem>
+            </FormItem> */}
             {/* <Item render={(values) => {
                 const str = JSON.stringify((values || {}), 4);
                 return <div>{str}</div>

@@ -22,6 +22,10 @@ function sleep(timer) {
     });
 }
 
+const commonEmpty = {
+    taxpayerNumber: null, branchName: null, checkResultName: null, denyReason: null, creatorName: null,
+};
+
 const testValues = {
     drawerName: '开票人',
     taxpayerNumber: '税号',
@@ -106,7 +110,7 @@ describe('Selectify Repeater', () => {
         expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn').length).toEqual(2);
         ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn')[0]);
         await sleep(500);
-        expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .no-form-item-error').length).toEqual(1);
+        expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content span.no-form-item-error').length).toEqual(1);
         expect(validateCore.getValue('repeat')).toEqual(emptyObjValues);
         ReactTestUtils.Simulate.change(document.querySelectorAll('.ant-modal-body input[name="drawerName"]')[0], {
             target: {
@@ -251,10 +255,10 @@ describe('Selectify Repeater', () => {
         </Form>);
 
         const valuesArr = [
-            { drawerName: '开票人', id: 0 },
-            { drawerName: '客户', id: 1 },
-            { drawerName: '拍档', id: 2 },
-            { drawerName: '销售', id: 3 },
+            { drawerName: '开票人', id: 0, ...commonEmpty },
+            { drawerName: '客户', id: 1, ...commonEmpty },
+            { drawerName: '拍档', id: 2, ...commonEmpty },
+            { drawerName: '销售', id: 3, ...commonEmpty },
         ];
 
         await form.find(TableRepeater).find('InnerRepeater').instance().doAdd(valuesArr[0]);
@@ -303,10 +307,10 @@ describe('Selectify Repeater', () => {
 
     it('select works(single)', async () => {
         const valuesArr = [
-            { drawerName: '开票人' },
-            { drawerName: '客户' },
-            { drawerName: '拍档' },
-            { drawerName: '销售' },
+            { drawerName: '开票人', ...commonEmpty },
+            { drawerName: '客户', ...commonEmpty },
+            { drawerName: '拍档', ...commonEmpty },
+            { drawerName: '销售', ...commonEmpty },
         ];
 
         await form.find(TableRepeater).find('InnerRepeater').instance().doAdd(valuesArr[0]);
@@ -341,10 +345,10 @@ describe('Selectify Repeater', () => {
 
     it('filter works', async () => {
         const valuesArr = [
-            { drawerName: '开票人' },
-            { drawerName: '客户' },
-            { drawerName: '拍档' },
-            { drawerName: '销售' },
+            { drawerName: '开票人', ...commonEmpty },
+            { drawerName: '客户', ...commonEmpty },
+            { drawerName: '拍档', ...commonEmpty },
+            { drawerName: '销售', ...commonEmpty },
         ];
 
         await form.find(TableRepeater).find('InnerRepeater').instance().doAdd(valuesArr[0]);
@@ -374,7 +378,7 @@ describe('Selectify Repeater', () => {
 
         expect(form.find('tr.table-repeater-row').length).toEqual(1);
         expect(form.find('tr.table-repeater-row .repeater-table-cell-wrapper').at(0).find(Radio).length).toEqual(1);
-        expect(form.find('tr.table-repeater-row .repeater-table-cell-wrapper').at(1).find('.repeater-table-cell-wrapper-inner-content').prop('children')).toEqual('客户');
+        expect(form.find(Form).children('.table-repeater-row').find('.repeater-table-cell-wrapper').at(1).find('.no-form-item-content-elem').render().text()).toEqual('客户');
 
         ReactTestUtils.Simulate.change(form.find('Input.repeater-search').getDOMNode(), {
             target: { value: '' },

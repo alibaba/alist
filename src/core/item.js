@@ -209,13 +209,14 @@ class Item {
         return whenResult;
     }
 
-    consistStatus(value) {
+    consistStatus(value, silent = false) {
         const {
             form, func_status, when, jsx_status,
         } = this;
 
         let syncSetting = true;
         let statusResult = form.globalStatus;
+        const escape = false;
 
         if (jsx_status) { // 可能为promise
             if (isFunction(func_status)) {
@@ -224,7 +225,7 @@ class Item {
                     syncSetting = false;
                     statusResult.then((dynamicResult) => {
                         if (dynamicResult && STATUS_ENUMS.has(dynamicResult) && when === null) {
-                            this.set('status', dynamicResult);
+                            this.set('status', dynamicResult, escape, silent);
                         }
                     });
                 }
@@ -233,7 +234,7 @@ class Item {
             }
 
             if (syncSetting && statusResult && STATUS_ENUMS.has(statusResult) && when === null) {
-                this.set('status', statusResult);
+                this.set('status', statusResult, escape, silent);
             }
         }
 
@@ -277,7 +278,7 @@ class Item {
         return this.form[type][this.name];
     }
 
-    async set(type, value, escape = false) {
+    async set(type, value, escape = false, silent = false) {
         let ftValue = value;
 
         // interceptor一般为function, 在类型为value时处理
@@ -298,8 +299,10 @@ class Item {
         this[type] = ftValue;
         this.form.escape[this.name] = escape;
 
-        this.emit(BASIC_EVENT[type], this.name, ftValue);
-        this.emit(ANY_CHANGE, type, this.name, ftValue);
+        if (!silent) {
+            this.emit(BASIC_EVENT[type], this.name, ftValue);
+            this.emit(ANY_CHANGE, type, this.name, ftValue);
+        }     
         return true;
     }
 }

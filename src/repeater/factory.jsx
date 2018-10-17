@@ -96,7 +96,6 @@ export default function CreateRepeater(bindSource, type, source) {
             // 没有过滤函数或者没有关键字
             if (!filter || !this.key) {
                 this.value = assignListItem(nextProps.value || []);
-                console.log('===========>>>>>>>nofilter willreceive update');
             } else if (nextProps.value !== this.props.value) {
                 const filteredValue = await this.handleFilter(nextProps.value, this.key);
                 this.value = assignListItem(filteredValue);
@@ -136,7 +135,6 @@ export default function CreateRepeater(bindSource, type, source) {
                 i += 1;
             }
 
-            console.log('onCHANGE...value', value, opts);
             this.props.onChange(value, opts);
         }
 
@@ -299,12 +297,10 @@ export default function CreateRepeater(bindSource, type, source) {
         }
 
         doAddInline = async () => {
-            console.log('forcerender.... action launch');
             const canSync = await this.repeaterCore.addInline();
             if (canSync) {
                 this.sync({ type: 'add', inline: true, index: this.repeaterCore.formList.length - 1 });
             }
-            console.log('forcerender.... action', canSync);
 
             this.forceUpdate();
         }
