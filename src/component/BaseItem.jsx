@@ -1,6 +1,30 @@
 import React from 'react';
+import { ANY_CHANGE } from '../static';
 
 class BaseItem extends React.Component {
+    constructor(props) {
+        super(props);
+
+        const { form, name } = props;
+        this.form = form;
+        this.name = name;
+    }
+
+    componentDidMount() {
+        this.form.on(ANY_CHANGE, this.update);
+        this.didMount = true;
+    }
+
+    componentWillUnmount() { // 解绑
+        this.form.removeListener(ANY_CHANGE, this.update);
+        this.didMount = false;
+    }
+
+    update = (type, name, value, silent = false) => {
+        if (this.didMount && this.name === name && !silent) {
+            this.forceUpdate();
+        }
+    }
     render() {
         const {
             children, render, didMount,

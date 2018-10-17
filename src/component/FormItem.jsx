@@ -7,6 +7,7 @@ import { isObject, isFunction } from '../util/is';
 import FormContext from '../context/form';
 import IfContext from '../context/if';
 import ItemContext from '../context/item';
+import Section from './Section';
 
 const formItemPrefix = 'no-form';
 const noop = () => { };
@@ -243,11 +244,9 @@ class BaseFormItem extends React.Component {
     }
 
     update = (type, name, value, silent = false) => {
-        if (this.props.noLayout && type === 'error') {
-            return;
-        }
-
-        if (this.didMount && (this.props.render || this.core.name === name) && !silent) {
+        // value, props, error, status
+        if (type === 'status' &&
+            this.didMount && (this.props.render || this.core.name === name) && !silent) {
             this.forceUpdate();
         }
     }
@@ -271,7 +270,7 @@ class BaseFormItem extends React.Component {
 
         // 保留item关键字属性
         const {
-            errorRender, label, top, suffix, prefix, help, required, full: coreFull,
+            errorRender, required, full: coreFull,
         } = { ...this.props, ...props };
 
         let errInfo = error;
@@ -324,24 +323,36 @@ class BaseFormItem extends React.Component {
             return baseElement;
         }
 
+        // 以下组件的渲染不与formItem公用，避免重复渲染
+        // label, top, suffix, prefix, help, required, full
+        // error比较特殊, 需要考虑自定义errorRender
+        const sectionValue = { form: this.form, ...itemProps, core: this.core };
+        const labelElement = <Section type="props" field="label" {...sectionValue} pure />;
+        const prefixElement = <Section type="props" field="prefix" className={`${formItemPrefix}-item-content-prefix`} {...sectionValue} />;
+        const suffixElement = <Section type="props" field="suffix" className={`${formItemPrefix}-item-content-suffix`} {...sectionValue} />;
+        const topElement = <Section type="props" field="top" className={`${formItemPrefix}-item-top`} {...sectionValue} />;
+        const helpElement = <Section type="props" field="help" className={`${formItemPrefix}-item-help`} {...sectionValue} />;
+        const errElement = <Section type="error" className={`${formItemPrefix}-item-error`} {...sectionValue} errorRender={errorRender} />;
+
+        // todo: dom元素直接修改error cls
         return (
             <div id={this.id} name={`form-item-${name}`} className={`${formItemPrefix}-item ${className} ${layoutCls} ${colonCls} ${inlineCls} ${defaultMinCls}`} style={style}>
                 <div className={`${insetCls} ${errCls} ${subErrCls}`}>
-                    <span className={`${formItemPrefix}-item-label ${requiredCls} ${layout.label ? `col-${layout.label}` : ''}`} >{label}</span>
+                    <span className={`${formItemPrefix}-item-label ${requiredCls} ${layout.label ? `col-${layout.label}` : ''}`} >{labelElement}</span>
                     <span className={`${formItemPrefix}-item-control ${layout.control ? `col-${layout.control}` : ''}`} >
-                        { top ? <span className={`${formItemPrefix}-item-top`}>{top}</span> : null }
+                        {topElement}
                         <span className={`${formItemPrefix}-item-content ${full ? `${formItemPrefix}-full` : ''}`}>
-                            { prefix ? <span className={`${formItemPrefix}-item-content-prefix`}>{prefix}</span> : null }
+                            {prefixElement}
                             <span className={`${formItemPrefix}-item-content-elem is-${status}`}>
                                 {baseElement}
                             </span>
-                            { suffix ? <span className={`${formItemPrefix}-item-content-suffix`}>{suffix}</span> : null }
+                            {suffixElement}
                         </span>
-                        { help ? <span className={`${formItemPrefix}-item-help`}>{help}</span> : null }
-                        { (!inset && hasError) ? <span className={`${formItemPrefix}-item-error`}>{errInfo}</span> : null }
+                        {helpElement}
+                        { !inset ? errElement : null }
                     </span>
                 </div>
-                { (inset && hasError) ? <span className={`${formItemPrefix}-item-error`}>{errInfo}</span> : null }
+                { inset ? errElement : null }
             </div>
         );
     }

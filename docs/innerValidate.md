@@ -184,11 +184,14 @@ class App extends React.Component {
                     <FormItem label="username" name="username"><Input /></FormItem>
                 </InlineRepeater>
             </FormItem> */}
+            <FormItem label="username" name="username">
+                <Input />
+            </FormItem>
             <FormItem label="InlineRepeater" name="inlineRepeaterx">
-            <InlineRepeater formConfig={formConfig}>
-                <FormItem label="username" name="username"><Input style={{ width: '100px' }} /></FormItem>
-            </InlineRepeater>
-    </FormItem>
+                <InlineRepeater formConfig={formConfig}>
+                    <FormItem label="username" name="username"><Input style={{ width: '100px' }} /></FormItem>
+                </InlineRepeater>
+            </FormItem>
             {/* <Item render={(values) => {
                 const str = JSON.stringify((values || {}), 4);
                 return <div>{str}</div>
