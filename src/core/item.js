@@ -71,6 +71,8 @@ class Item {
                     walked = true;
                     resolve(errors);
                 });
+            }).catch(() => {
+                // do nothing...
             });
         } else {
             walked = true;
