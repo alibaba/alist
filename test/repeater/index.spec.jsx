@@ -108,17 +108,17 @@ describe('Repeater', () => {
         validateForm.find('button.repeater-add').simulate('click');
         await sleep(500);
         validateForm.mount();
-        expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn').length).toEqual(2);
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn')[0]);
+        expect(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .ant-btn').length).toEqual(2);
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .ant-btn')[0]);
         await sleep(500);
-        expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content span.no-form-item-error').length).toEqual(1);
+        expect(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content span.no-form-item-error').length).toEqual(1);
         expect(validateCore.getValue('repeat')).toEqual(null);
         ReactTestUtils.Simulate.change(document.querySelectorAll('.ant-modal-body input[name="drawerName"]')[0], {
             target: {
                 value: 'hello world',
             },
         });
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn')[0]);
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .ant-btn')[0]);
 
         await sleep(500);
         expect(validateCore.getValue('repeat').length).toEqual(1);
@@ -146,8 +146,8 @@ describe('Repeater', () => {
         const core = form.find(TableRepeater).find('InnerRepeater').instance().repeaterCore.formList[0];
         const { id } = core;
         await form.find(TableRepeater).find('InnerRepeater').instance().doDelete(core, id);
-        expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn').length).toEqual(2);
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn')[0]);
+        expect(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .ant-btn').length).toEqual(2);
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .ant-btn')[0]);
 
         await sleep(500);
 
@@ -156,11 +156,11 @@ describe('Repeater', () => {
 
     it('should add by click add button', async () => {
         expect(formCore.getValue('repeat')).toEqual(null);
-        expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn').length).toEqual(0);
+        expect(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .ant-btn').length).toEqual(0);
         form.find('button.repeater-add').simulate('click');
         await sleep(500);
-        expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn').length).toEqual(2);
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn')[0]);
+        expect(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .ant-btn').length).toEqual(2);
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .ant-btn')[0]);
 
         await sleep(500);
         expect(formCore.getValue('repeat').length).toEqual(1);
@@ -176,14 +176,14 @@ describe('Repeater', () => {
         form.find('button.repeater-update').simulate('click');
 
         await sleep(500);
-        expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn').length).toEqual(2);
+        expect(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .ant-btn').length).toEqual(2);
         ReactTestUtils.Simulate.change(document.querySelectorAll('.ant-modal-body input[name="drawerName"]')[0], {
             target: {
                 value: 'hello world',
             },
         });
 
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn')[0]);
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .ant-btn')[0]);
         await sleep(500);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([{
             ...testValues,
@@ -206,8 +206,8 @@ describe('Repeater', () => {
         await sleep(500);
         form.mount();
 
-        expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn').length).toEqual(2);
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn')[0]);
+        expect(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .ant-btn').length).toEqual(2);
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .ant-btn')[0]);
 
         await sleep(500);
 
@@ -261,7 +261,6 @@ describe('Repeater', () => {
         await form.find(TableRepeater).find('InnerRepeater').instance().doAdd(valuesArr[2]);
         await form.find(TableRepeater).find('InnerRepeater').instance().doAdd(valuesArr[3]);
         form.mount();
-        console.log('***++++****', form.find('tr.table-repeater-row').at(0).find('.repeater-table-cell-wrapper div').debug());
 
         expect(form.find('tr.table-repeater-row').at(0).find('.repeater-table-cell-wrapper div').at(0).prop('children')).toEqual(1);
         expect(form.find('tr.table-repeater-row').at(1).find('.repeater-table-cell-wrapper div').at(0).prop('children')).toEqual(2);
@@ -276,7 +275,7 @@ describe('Repeater', () => {
 
         form.find('button.repeater-update').at(0).simulate('click');
         await sleep(500);
-        expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .no-form-item-label').length).toEqual(1);
+        expect(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .no-form-item-label').length).toEqual(1);
     });
 
     it('filter works', async () => {

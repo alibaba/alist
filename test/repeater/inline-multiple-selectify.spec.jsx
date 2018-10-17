@@ -140,8 +140,8 @@ describe('Inline Multiple Selectify Repeater', () => {
         const core = form.find(InlineRepeater).find('InnerRepeater').instance().repeaterCore.formList[0];
         const { id } = core;
         await form.find(InlineRepeater).find('InnerRepeater').instance().doDelete(core, id);
-        expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn').length).toEqual(2);
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn')[0]);
+        expect(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .ant-btn').length).toEqual(2);
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .ant-btn')[0]);
 
         await sleep(500);
 
@@ -168,8 +168,8 @@ describe('Inline Multiple Selectify Repeater', () => {
         await sleep(500);
         form.mount();
 
-        expect(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn').length).toEqual(2);
-        ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-confirm-content .ant-btn')[0]);
+        expect(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .ant-btn').length).toEqual(2);
+        ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .ant-btn')[0]);
 
         await sleep(500);
 
