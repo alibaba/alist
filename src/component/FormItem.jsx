@@ -323,10 +323,15 @@ class BaseFormItem extends React.Component {
             case 'status':
                 this.forceUpdate(); break;
             case 'error':
-                this.wrapperElement.current.className = this.getWrapperClassName(); break;
+                if (this.wrapperElement.current) {
+                    this.wrapperElement.current.className = this.getWrapperClassName();
+                }
+                break;
             case 'props':
-                this.fullElement.current.className = this.getFullClassName();
-                this.labelElement.current.className = this.getLabelClassName();
+                if (this.fullElement.current) {
+                    this.fullElement.current.className = this.getFullClassName();
+                    this.labelElement.current.className = this.getLabelClassName();
+                }                
                 break;
             case 'value':
                 if (this.props.render && canUpdate) {

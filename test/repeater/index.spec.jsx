@@ -261,7 +261,6 @@ describe('Repeater', () => {
         await form.find(TableRepeater).find('InnerRepeater').instance().doAdd(valuesArr[2]);
         await form.find(TableRepeater).find('InnerRepeater').instance().doAdd(valuesArr[3]);
         form.mount();
-        console.log('***++++****', form.find('tr.table-repeater-row').at(0).find('.repeater-table-cell-wrapper div').debug());
 
         expect(form.find('tr.table-repeater-row').at(0).find('.repeater-table-cell-wrapper div').at(0).prop('children')).toEqual(1);
         expect(form.find('tr.table-repeater-row').at(1).find('.repeater-table-cell-wrapper div').at(0).prop('children')).toEqual(2);
