@@ -405,7 +405,7 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
        </InlineRepeater>      
     </FormItem> */}
     
-    <Item name="tableRepeat" >
+    {/* <Item name="tableRepeat" >
         <TableRepeater formConfig={formConfig}>
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
@@ -414,7 +414,7 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
             <FormItem label="拒绝原因" name="denyReason"><Input /></FormItem>
             <FormItem label="创建人" name="creatorName"><Input /></FormItem>
         </TableRepeater>
-    </Item>
+    </Item> */}
 
     {/* <FormItem label="inlineRepeat" name="inlineRepeat">
         <InlineRepeater formConfig={formConfig} addPosition="bottom">
@@ -505,11 +505,12 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
         </InlineRepeater>
     </FormItem> */}
 
-    {/* <FormItem label="InlineRepeater" name="inlineRepeaterx">
+    <FormItem label="InlineRepeater" name="inlineRepeaterx">
         <InlineRepeater >
-            <FormItem label="username" name="username"><Input style={{ width: '100px' }} /></FormItem>
+            <FormItem defaultMinWidth={false} label="username" name="username"><Input style={{ width: '100px' }} /></FormItem>
+            <FormItem defaultMinWidth={false} label="开关" name="isOpen"><Switch checkedChildren="开" unCheckedChildren="关" /></FormItem>
         </InlineRepeater>
-    </FormItem> */}
+    </FormItem>
 
     {/* <FormItem name="rulesx">
         <InlineRepeater multiple {...extraProps} formConfig={formConfig} filter={filterX} hasDelete>
