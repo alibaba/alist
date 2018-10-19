@@ -157,11 +157,12 @@ export default function CreateRepeater(bindSource, type, source) {
         getDialogConfig = (core, props) => {
             const { dialogConfig } = this.props;
             const { okText, cancelText } = this.getText();
-            const { custom } = dialogConfig || {};
+            const { custom, ...otherDialogProps } = dialogConfig || {};
             const { type: dialogType, content } = props;
             const rewriteProps = custom ? custom(core, dialogType, props) : {};
 
             return {
+                ...otherDialogProps,
                 ...props,
                 okText,
                 cancelText,

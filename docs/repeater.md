@@ -134,20 +134,21 @@ const fuzzCore = new FormCore();
 window.deepCore = deepCore;
 
 const dialogConfig = {
-    full: true,
-    layout: { label: 10, control: 14 },
-    custom: (core, type) => {
-        let title = '';
-        if (type === 'add') {
-            title = '增加xxx';
-        } else if (type === 'update') {
-            title = '修改xxx';
-        }
+    // full: true,
+    // layout: { label: 10, control: 14 },
+    // custom: (core, type) => {
+    //     let title = '';
+    //     if (type === 'add') {
+    //         title = '增加xxx';
+    //     } else if (type === 'update') {
+    //         title = '修改xxx';
+    //     }
 
-        return {
-            title
-        }
-    }
+    //     return {
+    //         title
+    //     }
+    // }
+    width: 940
 };
 
 const easyAdd = (values) => {
@@ -405,8 +406,8 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
        </InlineRepeater>      
     </FormItem> */}
     
-    {/* <Item name="tableRepeat" >
-        <TableRepeater formConfig={formConfig}>
+    <Item name="tableRepeat" >
+        <TableRepeater formConfig={formConfig} dialogConfig={dialogConfig}>
             <FormItem label="开票人" name="drawerName"><Input /></FormItem>
             <FormItem label="税号" name="taxpayerNumber"><Input /></FormItem>
             <FormItem label="子公司" name="branchName"><Input /></FormItem>
@@ -414,7 +415,7 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
             <FormItem label="拒绝原因" name="denyReason"><Input /></FormItem>
             <FormItem label="创建人" name="creatorName"><Input /></FormItem>
         </TableRepeater>
-    </Item> */}
+    </Item>
 
     {/* <FormItem label="inlineRepeat" name="inlineRepeat">
         <InlineRepeater formConfig={formConfig} addPosition="bottom">
@@ -505,12 +506,12 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
         </InlineRepeater>
     </FormItem> */}
 
-    <FormItem label="InlineRepeater" name="inlineRepeaterx">
+    {/* <FormItem label="InlineRepeater" name="inlineRepeaterx">
         <InlineRepeater >
             <FormItem defaultMinWidth={false} label="username" name="username"><Input style={{ width: '100px' }} /></FormItem>
             <FormItem defaultMinWidth={false} label="开关" name="isOpen"><Switch checkedChildren="开" unCheckedChildren="关" /></FormItem>
         </InlineRepeater>
-    </FormItem>
+    </FormItem> */}
 
     {/* <FormItem name="rulesx">
         <InlineRepeater multiple {...extraProps} formConfig={formConfig} filter={filterX} hasDelete>
