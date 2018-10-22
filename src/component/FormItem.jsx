@@ -59,7 +59,8 @@ class BaseFormItem extends React.Component {
         this.fullElement = React.createRef();
 
         this.ifCore = ifCore;
-        this.id = `__noform__item__${genId()}`;
+        this.id = this.core.id || `__noform__item__${genId()}`;
+
         if (props.name) {
             this.name = props.name;
         }

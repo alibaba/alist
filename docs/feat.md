@@ -85,31 +85,31 @@ let children = [
 
 
     const validateConfig = {
-        // username: {type: "string", required: true},
-        username: {
-            validator: async (rule, v, callback) => {
-                // console.log('vusername:', v);
-                // return new Promise((resolve, reject) => {
-                //     setTimeout(() => {
-                //         reject((['eeee', 'ddd']))
-                //     }, 1000);
-                // });
+        username: {type: "string", required: true},
+        // username: {
+        //     validator: async (rule, v, callback) => {
+        //         // console.log('vusername:', v);
+        //         // return new Promise((resolve, reject) => {
+        //         //     setTimeout(() => {
+        //         //         reject((['eeee', 'ddd']))
+        //         //     }, 1000);
+        //         // });
 
-                await sleep(1000);
-                console.log('throwing....cc');
-                throw new Error('eee');
-            }
-        },
-        age: (values, ctx) => {
-            // const { username } = ctx.getValues();
-            const { username } = values;
-            if (username === 'r') {
-                return {type: "string", required: true};
-            } else {
-                return null;
-            }
+        //         await sleep(1000);
+        //         console.log('throwing....cc');
+        //         throw new Error('eee');
+        //     }
+        // },
+        // age: (values, ctx) => {
+        //     // const { username } = ctx.getValues();
+        //     const { username } = values;
+        //     if (username === 'r') {
+        //         return {type: "string", required: true};
+        //     } else {
+        //         return null;
+        //     }
             
-        }
+        // }
     }
 
     let formcore = new FormCore({
@@ -119,24 +119,25 @@ let children = [
 
     const judge = async () => {
         const result = await formcore.validate();
+        formcore.scrollToError();
         console.log(result, 'jdjdjdjd');
     };
 
     return <Form core={formcore} colon={false} style={{ marginBottom: 12 }} layout={{label: 5, control: 19}} full>
         <h3>Validate errors</h3>
         <div className="demo-form">
-            <FormItem required label="usernmae" name="username"><Input /></FormItem>
+            <FormItem required label="username" name="username"><Input /></FormItem>
             {/* <FormItem required label="errorJudge" render={(values, ctx) => {
                 const { error } = ctx;
                 console.log('error', error, ctx);
                 return null;
             }}/> */}
-            <Item render={(values) => {
+            {/* <Item render={(values) => {
                 const { username = '', isShow } = values || {};
                 return <div>
                     <FormItem label={`${username}_age`} name="age"><Input /></FormItem>
                 </div>
-            }} />
+            }} /> */}
         </div>
         <br/><br/>
         <button onClick={() => console.log(formcore.getValue())}> console value </button>
