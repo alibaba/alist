@@ -239,10 +239,6 @@ class BaseFormItem extends React.Component {
         };
 
         const full = jsxFull || coreFull || inset;
-
-        if (name === 'age') {
-            
-        }
         return `${formItemPrefix}-item-content ${full ? `${formItemPrefix}-full` : ''}`;
     }
 

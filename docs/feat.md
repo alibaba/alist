@@ -86,6 +86,7 @@ let children = [
 
     const validateConfig = {
         username: {type: "string", required: true},
+        hidden: {type: "string", required: true},
         // username: {
         //     validator: async (rule, v, callback) => {
         //         // console.log('vusername:', v);
@@ -126,7 +127,38 @@ let children = [
     return <Form core={formcore} colon={false} style={{ marginBottom: 12 }} layout={{label: 5, control: 19}} full>
         <h3>Validate errors</h3>
         <div className="demo-form">
-            <FormItem required label="username" name="username"><Input /></FormItem>
+            {/* <FormItem required label="username" name="username"><Input /></FormItem>
+            <If when={({ username }) => {
+                return username === 'bobby';
+            }}>
+                <FormItem required label="hidden" name="hidden"><Input /></FormItem>
+            </If> */}
+            <FormItem label="username" name="username"><Input /></FormItem>
+            <If when={values => values.username === 'bobby'}>
+                <FormItem label="" style={{ margin: '12px 0' }} name="wrapper">
+                    <div>
+                        hello bobby!
+                        <FormItem label="" name="deep">
+                            <Input />
+                        </FormItem>
+
+                        <If when={values => values.deep === 'abcd'}>
+                            <FormItem label="" name="deepForm">
+                                <Form layout={{ label: 5, control: 19 }} full>
+                                    <FormItem label="nif" name="nif"><Input /></FormItem>
+                                    <FormItem label="dif" name="dif">
+                                        <If when={values => values.nif === 100}>
+                                            <FormItem label="nifDeep" name="nifDeep">
+                                                <div>nif 100!!!</div>
+                                            </FormItem>
+                                        </If>
+                                    </FormItem>
+                                </Form>
+                            </FormItem>
+                        </If>
+                    </div>
+                </FormItem>
+            </If>
             {/* <FormItem required label="errorJudge" render={(values, ctx) => {
                 const { error } = ctx;
                 console.log('error', error, ctx);

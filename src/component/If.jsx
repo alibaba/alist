@@ -56,15 +56,17 @@ class If extends Component {
             children, style, className, Com,
         } = this.props;
         // REACT15,REACT16
-        if (React.isValidElement(children)) {
-            return React.Children.only(children);
-        }
-
         const ftcls = `${className || ''} no-form-item`;
 
         const contextValue = {
             if: this.core,
         };
+        if (React.isValidElement(children)) {
+            const child = React.Children.only(children);
+            return (<IfContext.Provider value={contextValue}>
+                {child}
+            </IfContext.Provider>);
+        }
 
         return (<IfContext.Provider value={contextValue}>
             <Com {...{ style, className: ftcls }}>{children}</Com>
