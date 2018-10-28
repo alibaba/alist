@@ -175,7 +175,7 @@ class RepeaterCore {
             const index = this.formList.length - 1 < 0 ? 0 : this.formList.length - 1;
             let result = true;
             try {
-                result = await this.asyncHandler.add(tmp.getValues(), index);
+                result = await this.asyncHandler.add(tmp.getValues(), tmp, index);
             } catch (e) {
                 result = false;
             }
@@ -210,7 +210,7 @@ class RepeaterCore {
         cb(index);
 
         if (this.asyncHandler.update) {
-            this.asyncHandler.update(keys, v, index);
+            this.asyncHandler.update(v, ctx, index, keys);
         }
     }
 
@@ -227,7 +227,7 @@ class RepeaterCore {
             const index = this.formList.length - 1 < 0 ? 0 : this.formList.length - 1;
             let result = true;
             try {
-                result = await this.asyncHandler.add(tmp.getValues(), index);
+                result = await this.asyncHandler.add(tmp.getValues(), tmp, index);
             } catch (e) {
                 result = false;
             }
@@ -269,7 +269,7 @@ class RepeaterCore {
             const index = this.formList.findIndex(rp => rp.id === id);
             let result = true;
             try {
-                result = await this.asyncHandler.update(currentValues, index);
+                result = await this.asyncHandler.update(currentValues, lastCore, index);
             } catch (e) {
                 result = false;
             }
@@ -318,7 +318,7 @@ class RepeaterCore {
                 const index = this.formList.findIndex(rp => rp.id === id);
                 let result = true;
                 try {
-                    result = await this.asyncHandler.save(lastCore.getValues(), index);
+                    result = await this.asyncHandler.save(lastCore.getValues(), lastCore, index);
                 } catch (e) {
                     result = false;
                 }
@@ -405,7 +405,7 @@ class RepeaterCore {
             const index = this.formList.length - 1 < 0 ? 0 : this.formList.length - 1;
             let result = true;
             try {
-                result = await this.asyncHandler.add(core.getValues(), index);
+                result = await this.asyncHandler.add(core.getValues(), core, index);
             } catch (e) {
                 result = false;
             }
@@ -442,7 +442,7 @@ class RepeaterCore {
             const lastValues = lastCore.getValues();
             let result = true;
             try {
-                result = await this.asyncHandler.remove(lastValues, index);
+                result = await this.asyncHandler.remove(lastValues, lastCore, index);
             } catch (e) {
                 result = false;
             }
@@ -475,7 +475,7 @@ class RepeaterCore {
             const index = this.formList.findIndex(rp => rp.id === id);
             let result = true;
             try {
-                result = await this.asyncHandler.update(currentValues, index);
+                result = await this.asyncHandler.update(currentValues, currentCore, index);
             } catch (e) {
                 result = false;
             }

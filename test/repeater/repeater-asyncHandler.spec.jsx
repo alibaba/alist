@@ -29,7 +29,8 @@ describe('RepeaterCore asyncHandler', () => {
         // args match
         const idx = getIdx(repeaterCore);
         expect(fnHook.mock.calls[lastCount][0]).toEqual(repeaterCore.formList[idx].getValues());
-        expect(fnHook.mock.calls[lastCount][1]).toEqual(idx);
+        expect(fnHook.mock.calls[lastCount][1]).toEqual(repeaterCore.formList[idx]);
+        expect(fnHook.mock.calls[lastCount][2]).toEqual(idx);
     });
 
     it('asyncHandler add', async () => {
@@ -40,7 +41,8 @@ describe('RepeaterCore asyncHandler', () => {
         expect(fnHook.mock.calls.length).toBe(lastCount + 1);
         // args match
         expect(fnHook.mock.calls[lastCount][0]).toEqual(newForm.getValues());
-        expect(fnHook.mock.calls[lastCount][1]).toEqual(getIdx(repeaterCore));
+        expect(fnHook.mock.calls[lastCount][1]).toEqual(newForm);
+        expect(fnHook.mock.calls[lastCount][2]).toEqual(getIdx(repeaterCore));
     });
 
     it('asyncHandler addMultipleInline', async () => {
@@ -51,7 +53,8 @@ describe('RepeaterCore asyncHandler', () => {
         // args match
         const idx = getIdx(repeaterCore);
         expect(fnHook.mock.calls[lastCount][0]).toEqual(repeaterCore.formList[idx].getValues());
-        expect(fnHook.mock.calls[lastCount][1]).toEqual(idx);
+        expect(fnHook.mock.calls[lastCount][1]).toEqual(repeaterCore.formList[idx]);
+        expect(fnHook.mock.calls[lastCount][2]).toEqual(idx);
     });
 
     it('asyncHandler updateMultiple', async () => {
@@ -59,12 +62,13 @@ describe('RepeaterCore asyncHandler', () => {
         const lastCount = fnHook.mock.calls.length;
         const newForm = new FormCore();
         await repeaterCore.add(newForm);
-        repeaterCore.updateMultiple(noop)('a', 'b', { id: newForm.id });
+        repeaterCore.updateMultiple(noop)('mockValues', 'fakeKeys', { id: newForm.id });
         expect(fnHook.mock.calls.length).toBe(lastCount + 1);
         // args match
-        expect(fnHook.mock.calls[lastCount][0]).toEqual('b');
-        expect(fnHook.mock.calls[lastCount][1]).toEqual('a');
+        expect(fnHook.mock.calls[lastCount][0]).toEqual('mockValues');
+        expect(fnHook.mock.calls[lastCount][1]).toEqual({ id: newForm.id });
         expect(fnHook.mock.calls[lastCount][2]).toEqual(0);
+        expect(fnHook.mock.calls[lastCount][3]).toEqual('fakeKeys');
     });
 
     it('asyncHandler update', async () => {
@@ -76,7 +80,8 @@ describe('RepeaterCore asyncHandler', () => {
         expect(fnHook.mock.calls.length).toBe(lastCount + 1);
         // args match
         expect(fnHook.mock.calls[lastCount][0]).toEqual(newForm.getValues());
-        expect(fnHook.mock.calls[lastCount][1]).toEqual(0);
+        expect(fnHook.mock.calls[lastCount][1]).toEqual(newForm);
+        expect(fnHook.mock.calls[lastCount][2]).toEqual(0);
     });
 
     it('asyncHandler updateInline', async () => {
@@ -88,7 +93,8 @@ describe('RepeaterCore asyncHandler', () => {
         expect(fnHook.mock.calls.length).toBe(lastCount + 1);
         // args match
         expect(fnHook.mock.calls[lastCount][0]).toEqual(newForm.getValues());
-        expect(fnHook.mock.calls[lastCount][1]).toEqual(0);
+        expect(fnHook.mock.calls[lastCount][1]).toEqual(newForm);
+        expect(fnHook.mock.calls[lastCount][2]).toEqual(0);
     });
 
     it('asyncHandler remove', async () => {
@@ -100,6 +106,7 @@ describe('RepeaterCore asyncHandler', () => {
         expect(fnHook.mock.calls.length).toBe(lastCount + 1);
         // args match
         expect(fnHook.mock.calls[lastCount][0]).toEqual(newForm.getValues());
-        expect(fnHook.mock.calls[lastCount][1]).toEqual(0);
+        expect(fnHook.mock.calls[lastCount][1]).toEqual(newForm);
+        expect(fnHook.mock.calls[lastCount][2]).toEqual(0);
     });
 });

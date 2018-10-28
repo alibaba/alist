@@ -1,7 +1,7 @@
 import React from 'react';
 
 const context = React.createContext({
-    core: {},
+    core: null,
     id: '',
 });
 

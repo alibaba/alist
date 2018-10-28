@@ -233,8 +233,9 @@ export default function bind(type, source) {
                 if (typeof view === 'function') {
                     const rowList = this.renderRowList();
                     viewElement = view(rowList, this);
+                } else {
+                    viewElement = view;
                 }
-                viewElement = view;
             }
             return viewElement;
         }
