@@ -115,8 +115,15 @@ let children = [
 
     let formcore = new FormCore({
         validateConfig,
-        autoValidate: true
+        autoValidate: true,
+        values: {
+            user: {
+                email: '456'
+            }
+        }
     });
+
+    window.formcore = formcore;
 
     const judge = async () => {
         const result = await formcore.validate();
@@ -133,8 +140,17 @@ let children = [
             }}>
                 <FormItem required label="hidden" name="hidden"><Input /></FormItem>
             </If> */}
-            <FormItem label="username" name="username"><Input /></FormItem>
-            <If when={values => values.username === 'bobby'}>
+            {/* <FormItem label="username" name="username"><Input /></FormItem> */}
+            <FormItem label="user" name="user">
+                <div className="lulu">
+                    <Form >
+                        <FormItem label="age" name="age"><Input /></FormItem>
+                        <FormItem label="email" name="email"><Input /></FormItem>
+                    </Form>
+                </div>                
+            </FormItem>
+            
+            {/* <If when={values => values.username === 'bobby'}>
                 <FormItem label="" style={{ margin: '12px 0' }} name="wrapper">
                     <div>
                         hello bobby!
@@ -158,7 +174,7 @@ let children = [
                         </If>
                     </div>
                 </FormItem>
-            </If>
+            </If> */}
             {/* <FormItem required label="errorJudge" render={(values, ctx) => {
                 const { error } = ctx;
                 console.log('error', error, ctx);

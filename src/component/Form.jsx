@@ -51,7 +51,7 @@ class Form extends Component {
 
     constructor(props) {
         super(props);
-        const { item } = props;
+        const { item, value, onChange } = props;
 
         // 初始化core
         if (props.core) {
@@ -64,6 +64,7 @@ class Form extends Component {
         }
 
         // 绑定事件和视图
+        this.didMount = false;
         this.core.jsx = this;
         this.core.on(CHANGE, this.onChange);
         this.core.on(FOCUS, this.props.onFocus);
@@ -73,6 +74,9 @@ class Form extends Component {
         if (item) {
             this.item = item;
             this.core.parent = item;
+            if (!this.item.predictChildForm) {
+                // this.core.value = this.item.value; // 补齐
+            }
         }
 
         this.core.top = this.getTopForm();
@@ -82,6 +86,8 @@ class Form extends Component {
         const {
             validateConfig, map, value, core,
         } = this.props;
+
+        this.didMount = true;
         this.props.onMount(this.core); // 返回core
         this.core.emit(INITIALIZED, this.core);
 
@@ -135,7 +141,7 @@ class Form extends Component {
         this.props.onChange(val, fireKey, this.core);
     }
 
-    getTopForm() {
+    getTopForm = () => {
         let top = this.core;
         let current = this.core;
         while (current.parent) {
@@ -148,6 +154,23 @@ class Form extends Component {
         return top;
     }
 
+    // 补齐跨越嵌套引起的属性丢失
+    getLeapNestProps = () => {
+        const result = {};
+        if (this.item) {
+            const {
+                predictChildForm, jsx, form, name,
+            } = this.item;
+
+            if (!predictChildForm) {
+                // if (jsx) result.onChange = jsx.onChange;
+                // if (form && name) result.value = form.getValue(name);
+            }
+        }
+
+        return result;
+    }
+
     render() {
         // 默认布局为垂直布局
         const {
@@ -157,17 +180,19 @@ class Form extends Component {
             form: this.core,
         };
 
+        const leapNestProps = this.getLeapNestProps();
+
         return (
             <IfContext.Provider value={null}>
                 <FormContext.Provider value={contextValue}>
-                    <Com style={style} className={`no-form no-form-${direction} ${className} no-form-${full ? 'full' : 'auto'}`}>{children}</Com>
+                    <Com style={style} className={`no-form no-form-${direction} ${className} no-form-${full ? 'full' : 'auto'}`} {...leapNestProps}>{children}</Com>
                 </FormContext.Provider>
             </IfContext.Provider>
         );
     }
 }
 
-
+// props是外部props，继承item时需要带上
 const ConnectForm = props => (<ItemContext.Consumer>
     {(upperItem) => {
         const { item } = upperItem || {};

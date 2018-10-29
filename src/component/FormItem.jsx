@@ -50,6 +50,7 @@ class BaseFormItem extends React.Component {
         this.form = form;
         this.predictChildForm = this.handlePredictForm(props);
         this.core = this.initialCore(props);
+        this.core.predictChildForm = this.predictChildForm;
         this.core.jsx = this;
         this.core.getSuperFormProps = this.getSuperFormProps.bind(this);
 
