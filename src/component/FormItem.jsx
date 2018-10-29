@@ -159,6 +159,7 @@ class BaseFormItem extends React.Component {
     }
 
     getBaseProps = () => ({
+        predictChildForm: this.predictChildForm,
         children: this.props.children,
         render: this.props.render,
         didMount: this.didMount,
@@ -177,6 +178,7 @@ class BaseFormItem extends React.Component {
             const {
                 defaultMinWidth, full, inline, inset, layout, colon,
             } = this.core.form.jsx.props;
+
             formProps = {
                 defaultMinWidth, full, inline, inset, layout, colon,
             };
@@ -355,13 +357,14 @@ class BaseFormItem extends React.Component {
 
         // 处理布局
         const {
-            inline = false, inset = false, colon, layout = {},
+            inline = false, inset = false, colon, layout: originLayout,
             defaultMinWidth = true,
         } = {
             ...this.form.jsx.props,
             ...itemProps,
         };
 
+        const layout = originLayout || {};
         const defaultMinCls = defaultMinWidth ? `${formItemPrefix}-item-default-width` : `${formItemPrefix}-item-no-default-width`;
         const layoutCls = (layout.label && layout.control) ? `${formItemPrefix}-item-has-layout` : '';
         const colonCls = colon ? '' : `${formItemPrefix}-item-no-colon`;

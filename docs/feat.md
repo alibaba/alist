@@ -142,12 +142,12 @@ let children = [
             </If> */}
             {/* <FormItem label="username" name="username"><Input /></FormItem> */}
             <FormItem label="user" name="user">
-                <div className="lulu">
-                    <Form >
+                
+                    <Form layout={false}>
                         <FormItem label="age" name="age"><Input /></FormItem>
                         <FormItem label="email" name="email"><Input /></FormItem>
                     </Form>
-                </div>                
+                
             </FormItem>
             
             {/* <If when={values => values.username === 'bobby'}>

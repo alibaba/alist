@@ -30,7 +30,7 @@ class BaseItem extends React.Component {
         const {
             children, render, didMount,
             form, onChange, onBlur, onFocus,
-            name, formProps, inset,
+            name, formProps, inset, predictChildForm,
         } = this.props;
 
         if (render) {
@@ -71,9 +71,14 @@ class BaseItem extends React.Component {
             ...others
         } = props || {};
 
+        let comboFormProps = { ...formProps };        
         component = React.Children.only(this.props.children);
+        if (predictChildForm) {
+            comboFormProps = { ...comboFormProps, ...component.props }
+        }
+
         const cloneProps = {
-            ...formProps,
+            ...comboFormProps,
             inset,
             disabled: status === 'disabled',
             name,
