@@ -70,7 +70,7 @@ function log() {
 
 }
 
-export default {
+export {
     formatValue,
     formatArray,
     formatNumber,

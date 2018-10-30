@@ -7,7 +7,7 @@ const isSingleItemSet = arg => (arg.length >= 3 && typeof arg[1] === 'string');
 const isFunction = func => typeof func === 'function';
 const isValidStatus = status => [EDIT, PREVIEW, DISABLED, HIDDEN].indexOf(status) !== -1;
 
-export default {
+export {
     isObject,
     isInvalidVal,
     isSingleItemSet,
