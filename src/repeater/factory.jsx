@@ -6,6 +6,7 @@ import localeMap from './locale';
 import Form, { FormCore } from '..';
 import ItemContext from '../context/item';
 import RepeaterContext from '../context/repeater';
+import SelectRepeaterContext from '../context/selectRepeater';
 
 const isObject = obj => Object.prototype.toString.call(obj) === '[object Object]';
 const assignItem = (obj) => {
@@ -86,7 +87,7 @@ export default function CreateRepeater(bindSource, type, source) {
         }
 
         async componentWillReceiveProps(nextProps) {
-            const { filter, asyncHandler } = this.props;
+            const { filter, asyncHandler, formConfig } = this.props;
             const manualEvent = this.genManualEvent();
 
             if (!deepEqual(asyncHandler, nextProps.asyncHandler)) {
@@ -101,6 +102,14 @@ export default function CreateRepeater(bindSource, type, source) {
                 this.value = assignListItem(filteredValue);
             }
 
+            let forceRegenerate = false;
+            if (!deepEqual(formConfig, nextProps.formConfig)) {
+                this.repeaterCore.updateFormConfig(nextProps.formConfig);
+                forceRegenerate = true;
+            }
+            
+            // 是否强制刷新所有core
+            manualEvent.forceRegenerate = forceRegenerate;
             this.repeaterCore.updateValue(this.value, manualEvent, this.handleCoreUpdate);
             this.forceUpdate();
             this.manualEvent = {};
@@ -155,10 +164,11 @@ export default function CreateRepeater(bindSource, type, source) {
         getValue = () => this.props.value || []
 
         getDialogConfig = (core, props) => {
-            const { dialogConfig } = this.props;
+            const { dialogConfig, selectRepeater } = this.props;
             const { okText, cancelText } = this.getText();
             const { custom, ...otherDialogProps } = dialogConfig || {};
             const { type: dialogType, content } = props;
+            core.selectRepeater = selectRepeater;
             const rewriteProps = custom ? custom(core, dialogType, props) : {};
 
             return {
@@ -427,7 +437,11 @@ export default function CreateRepeater(bindSource, type, source) {
     const OtRepeater = React.forwardRef((props, ref) => (<ItemContext.Consumer>
         {(itemContext) => {
             const { item } = itemContext;
-            return <InnerRepeater ref={ref} {...props} item={item} />;
+            return <SelectRepeaterContext.Consumer>
+                {( { selectRepeater }) => {
+                    return <InnerRepeater ref={ref} {...props} item={item} selectRepeater={selectRepeater} />;
+                }}
+            </SelectRepeaterContext.Consumer>
         }}
     </ItemContext.Consumer>));
 

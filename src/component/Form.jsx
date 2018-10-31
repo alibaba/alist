@@ -120,7 +120,11 @@ class Form extends Component {
     componentWillReceiveProps(nextProps) {
         // 根据属性来配置
         if (!deepEqual(nextProps.value, this.props.value)) {
-            this.core.setValueSilent(nextProps.value);
+            if ([null, undefined].indexOf(nextProps.value) !== -1) {
+                this.core.reset();
+            } else {
+                this.core.setValueSilent(nextProps.value);
+            }            
         }
         if (!deepEqual(nextProps.props, this.props.props)) {
             this.core.setProps(nextProps.props);

@@ -1,7 +1,7 @@
 import React from 'react';
 
 const context = React.createContext({
-    repeater: null,
+    selectRepeater: null,
 });
 
 export default context;

@@ -8,7 +8,7 @@ class RepeaterCore {
         } = props;
         this.formList = [];
         this.status = status || 'preview';
-        this.formProps = formConfig || {};
+        this.formConfig = formConfig || {};
         this.asyncHandler = asyncHandler || {};
 
         if (Array.isArray(value)) {
@@ -77,9 +77,8 @@ class RepeaterCore {
     }
 
     // 更新构建属性
-    updateProps = (props) => {
-        const formProps = props || {};
-        this.formProps = formProps;
+    updateFormConfig = (formConfig) => {
+        this.formConfig = formConfig || {};
     }
 
     setEditWhenFocus = () => {
@@ -94,7 +93,7 @@ class RepeaterCore {
 
 
     generateCore = (raw) => {
-        const { values: userValues } = this.formProps;
+        const { values: userValues } = this.formConfig;
         let values = {};
         if (raw) {
             values = { ...raw };
@@ -103,7 +102,8 @@ class RepeaterCore {
         }
 
         return new FormCore({
-            ...this.formProps,
+            ...this.formConfig,
+            repeater: this,
             values,
             globalStatus: this.status,
             disabledSyncChildForm: true,
@@ -513,11 +513,11 @@ class RepeaterCore {
     // 更新value
     updateValue = async (valueArr, event, cb = x => x) => {
         const {
-            type, index, multiple, inline, changeKeys,
+            type, index, multiple, inline, changeKeys, forceRegenerate,
         } = event || {};
 
         if (Array.isArray(valueArr)) {
-            if (!type) {
+            if (!type || forceRegenerate) {
                 this.formList = valueArr.map((values) => {
                     const formValues = values || {};
                     let core = this.generateCore(formValues);

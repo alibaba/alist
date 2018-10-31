@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Form, { FormItem, Item, FormCore } from '../';
+import SelectRepeaterContext from '../context/selectRepeater';
+
 
 export default function SelectRepeaterHOC(Source, Com) {
     const { Checkbox, Radio } = Source;
@@ -45,6 +47,7 @@ export default function SelectRepeaterHOC(Source, Com) {
                 },
                 ...selectFormConfig,
             });
+            this.core.jsx = this;
 
             this.TriggerCom = null;
             if (selectMode === 'single') {
@@ -235,13 +238,16 @@ export default function SelectRepeaterHOC(Source, Com) {
                 inheritProps = this.getSuperFormProps(this.item);
             }
 
+            const contextValue = { selectRepeater: this.core };
             return (<Form {...inheritProps} core={this.core} onChange={this.handleChange}>
-                <Item name="dataSource">
-                    <Com {...otherprops} ref={this.repeater}>
-                        {this.renderSelectTrigger()}
-                        {children}
-                    </Com>
-                </Item>
+                <SelectRepeaterContext.Provider value={contextValue}>
+                    <Item name="dataSource">
+                        <Com {...otherprops} ref={this.repeater}>
+                            {this.renderSelectTrigger()}
+                            {children}
+                        </Com>
+                    </Item>
+                </SelectRepeaterContext.Provider>
             </Form>);
         }
     };
