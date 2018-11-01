@@ -213,7 +213,7 @@ class BaseFormItem extends React.Component {
         const { name, status: propStatus } = this.props;
         const props = this.form.getItemProps(name) || {}; // 动态props
         const status = name ? this.form.getItemStatus(name) : propStatus; // 动态status
-        const { layout = {} } = {
+        const layoutProps = {
             ...this.form.jsx.props,
             ...this.props,
         };
@@ -225,6 +225,8 @@ class BaseFormItem extends React.Component {
         if (required && (status === EDIT || `${name}` === '')) {
             requiredCls = ' required';
         }
+
+        const layout = layoutProps.layout || {};
         return `${formItemPrefix}-item-label ${requiredCls} ${layout.label ? `col-${layout.label}` : ''}`;
     }
 
