@@ -16,6 +16,7 @@ class Form {
             initialized,
             autoValidate,
             disabledSyncChildForm,
+            exts,
         } = option || {};
 
         this.onChange = onChange || noop;
@@ -23,6 +24,7 @@ class Form {
         this.childrenMap = {};
         this.currentEventType = 'api';
         this.autoValidate = autoValidate || false;
+        this.exts = exts || {};
 
         this.globalStatus = globalStatus || 'edit';
 

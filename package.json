@@ -1,6 +1,6 @@
 {
   "name": "noform",
-  "version": "1.1.22",
+  "version": "1.1.23",
   "description": "开发者友好、快捷高效的表单框架。 ",
   "scripts": {
     "dev": "nobuilder dev",
@@ -34,7 +34,7 @@
     "async-validator": "^1.8.2",
     "deep-equal": "^1.0.1",
     "events": "2.x",
-    "moment": "^2.18.1",
+    "moment": "^2.18.1",    
     "prop-types": "15.x"
   },
   "peerDependencies": {

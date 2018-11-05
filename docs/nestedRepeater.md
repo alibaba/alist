@@ -55,7 +55,7 @@ const formConfig = {
         // console.log('repeater change', fireKeys, values);
     },
     initialized: (core) => {
-        core.setValues({ happy: true,  });
+        // core.setValues({ happy: true,  });
     }
 };
 
@@ -69,37 +69,37 @@ const formConfig2 = {
 window.formConfig = formConfig;
 window.formConfig2 = formConfig2;
 
-setTimeout(() => {
-    formCore.setItemProps('selectRepeater', {
-        happy: false,
-        usernameData: 'abcd',
-    });
+// setTimeout(() => {
+//     formCore.setItemProps('selectRepeater', {
+//         happy: false,
+//         usernameData: 'abcd',
+//     });
 
-    formCore.setItemProps('selectRepeater', {
-        formConfig: {
-            initialized: (core) => {
-                const { usernameData, happy} = formCore.getItemProps('selectRepeater');
-                core.setValues({ username: usernameData, happy });
-            }
-        }
-    })
-}, 300);
+//     formCore.setItemProps('selectRepeater', {
+//         formConfig: {
+//             initialized: (core) => {
+//                 const { usernameData, happy} = formCore.getItemProps('selectRepeater');
+//                 core.setValues({ username: usernameData, happy });
+//             }
+//         }
+//     })
+// }, 300);
 
 ReactDOM.render(<Form defaultMinWidth={false} core={formCore}>    
     <Item name="repeater" >
         <InlineRepeater multiple formConfig={formConfig} >
             <FormItem label="username" name="username"><Input /></FormItem>
-            
-            <FormItem label="hello" multiple>
+            <FormItem label="abcde" name="abcde"><Input /></FormItem>
+            {/* <FormItem label="hello" multiple>
                 <If when={({ happy }) => {
                     return !!happy;
                 } }>
                     <FormItem name="hello"><Input /></FormItem>
                 </If>
-            </FormItem>
+            </FormItem> */}
         </InlineRepeater>
     </Item>
-    <Item name="selectRepeater" >
+    {/* <Item name="selectRepeater" >
         <SelectRepeaterInline multiple formConfig={formConfig} >
             <FormItem label="username" name="username"><Input /></FormItem>
             <FormItem label="hello" multiple>
@@ -110,6 +110,6 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore}>
                 </If>
             </FormItem>
         </SelectRepeaterInline>
-    </Item>
+    </Item> */}
 </Form>, mountNode);
 ````
