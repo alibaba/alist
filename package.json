@@ -1,0 +1,35 @@
+{
+  "name": "no-doc",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "antd": "^3.10.8",
+    "axios": "^0.18.0",
+    "highlight.js": "^9.13.1",
+    "node-sass": "^4.10.0",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "^2.1.1"
+  },
+  "homepage": "https://alibaba.github.io/noform/",
+  "scripts": {
+    "gh": "gh-pages -d build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "proxy": "node ./proxy/proxy.js",
+    "ci": "npm run proxy && npm run build"
+  },
+  "eslintIgnore": ["src/model/doc.js"],
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "gh-pages": "^2.0.1"
+  }
+}

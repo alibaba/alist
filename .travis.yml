@@ -1,0 +1,23 @@
+#指定运行环境
+language: node_js
+#指定nodejs版本，可以指定多个
+node_js:
+  - 9
+  - 8
+addons:
+  chrome: stable
+
+#运行的脚本命令
+script:  
+  - npm run proxy
+  - npm run build
+  - npm run gh
+
+cache:
+  yarn: true
+  directories:
+    - node_modules
+
+on:
+  branch: 
+    - docs
