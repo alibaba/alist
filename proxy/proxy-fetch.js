@@ -13,7 +13,7 @@ class FetchProxy {
         const repo = namespaceSplit[1];
 
         // 获取一个仓库的目录结构
-        const fetchUrl = `${baseUrl}/repos/${user}/${repo}/toc`;
+        const fetchUrl = `${baseUrl}/repos/${user}/${repo}/toc`;        
 
         const options = {
             method: 'get',
@@ -22,11 +22,10 @@ class FetchProxy {
         }
 
         try {
-            const res = await axios(options);
+            const res = await axios(options);            
             const { data } = res.data;
 
             const result = await this.recordDocList(namespace, data);
-
             for (let i = 0; i < data.length; i++) {
                 const doc = data[i];
 
@@ -37,7 +36,7 @@ class FetchProxy {
             }
 
         } catch (e) {
-            // console.error(e);
+            console.error(e);
         }
 
         return new Promise(resolve => {
@@ -52,10 +51,11 @@ class FetchProxy {
             headers: config.headers,
         }
 
+        let data = {};
         try {
             const res = await axios(options);
-            const { data } = res.data;
-
+            const { data: resData } = res.data;
+            data = resData;
             const result = await this.recordDoc(data, namespace);
 
             return new Promise(resolve => {
@@ -100,8 +100,9 @@ class FetchProxy {
         const { repos } = config;
 
         for (let i = 0; i < repos.length; i++) {
+            console.log('');
+
             const result = await this.fetchDocList(repos[i].namespace);
-            console.log(result);
         }
 
         return new Promise(resolve => {
