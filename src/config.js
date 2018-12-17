@@ -23,7 +23,7 @@ const config = {
             namespace: 'https://www.yuque.com/nopage/nowrapper/wrapper',
         }
     ],
-    githubUrl: 'https://github.com/alibaba/noform',
+    githubUrl: 'https://github.com/alibaba/nopage',
 };
 
 config.repos.forEach((repo) => {

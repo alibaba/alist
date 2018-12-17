@@ -12,7 +12,7 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.1"
   },
-  "homepage": "https://alibaba.github.io/noform/",
+  "homepage": "./",
   "scripts": {
     "gh": "gh-pages -d build",
     "start": "react-scripts start",
