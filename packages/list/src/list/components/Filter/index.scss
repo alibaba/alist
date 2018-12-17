@@ -1,0 +1,83 @@
+.filter-wrapper {
+    display: flex;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    margin-bottom: 16px;
+
+    .filter-area {
+        background: #f8f8f8;
+        padding: 16px;
+        flex: 1;
+
+        .no-form-item-inset {
+            background: #fff;
+            display: flex;
+
+            .no-form-item-label {
+                background: #fff;
+                color: #b6bec7;
+                padding-right: 0;
+                font-size: 12px;
+            }
+
+            .no-form-item-content-elem {
+                display: flex;
+            }
+
+            .no-form-item-control {
+                flex: 1;
+            }
+        }
+
+        .filter-area-item > * {
+            width: 100%;
+        }
+    }
+
+    .filter-control {
+        border-left: 1px solid #e5e5e5;
+        box-sizing: border-box;
+        flex: initial;
+        min-width: 240px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+
+        .filter-control-query {
+            margin: 0;
+            height: 28px;
+            padding: 0;
+            width: 120px;
+            font-size: 14px;
+            line-height: 26px;
+            border-width: 1px;
+            outline: none;
+            position: relative;
+            display: inline-block;
+            font-style: normal;
+            font-family: inherit;
+            background: transparent;
+            cursor: pointer;
+            transition: all .3s ease-out;
+            box-shadow: none;
+            border-radius: 3px;
+            border-style: solid;
+            text-align: center;
+            border-style: solid;
+            background-color: #f7f8fa;
+            border-color: #c4c6cf;
+        }
+
+        .filter-control-clear {
+            background: none;
+            color: #06c;
+            font-size: 12px;
+            outline: none;
+            cursor: pointer;
+            margin-top: 10px;
+            border: none;
+        }
+    }
+}

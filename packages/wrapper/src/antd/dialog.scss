@@ -1,0 +1,15 @@
+@import "../common/dialog/index.scss";
+
+.dialog-form-wrapper .ant-modal-confirm-btns,
+.dialog-form-wrapper .ant-confirm-btns {
+    display: none;       
+}
+
+.dialog-form-wrapper .noform-dialog-custom-btns {
+    float: right;
+}
+
+.dialog-polifill-cancel {
+    float: right;
+    cursor: pointer;
+}

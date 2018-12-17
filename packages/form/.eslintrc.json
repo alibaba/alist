@@ -1,0 +1,29 @@
+{
+    "globals": {
+        "document": true,
+        "window": true
+    },
+    "env": {
+        "mocha": true,
+        "jest/globals": true
+    },
+    "extends": [
+        "airbnb"
+    ],
+    "parser": "babel-eslint",
+    "plugins": ["jest", "mocha"],
+    "rules": {
+        "indent": ["error", 4],
+        "react/jsx-indent": ["error", 4],
+        "react/prop-types": [1],
+        "react/forbid-prop-types": 0,
+        "no-underscore-dangle": 0,
+        "prefer-rest-params": 0,
+        "camelcase": 0,
+        "no-multi-assign": 0,
+        "no-param-reassign": 0,
+        "react/require-default-props": 0,
+        "react/jsx-indent-props": 0,
+        "react/jsx-closing-tag-location": 0
+    }
+}

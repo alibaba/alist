@@ -1,0 +1,37 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID=a2523639dd77101c51dbcea836bc29b3101b543b437b1c54097bd69964566ba3
+
+#指定运行环境
+language: node_js
+#指定nodejs版本，可以指定多个
+node_js:
+  - 9
+  - 8
+addons:
+  chrome: stable
+
+before_install:
+  - npm install -g nobuilder
+  
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build  
+
+#运行的脚本命令
+script:  
+  - npm run cov
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+
+cache:
+  yarn: true
+  directories:
+    - node_modules
+
+on:
+  branch: 
+    - master
+    - dev

@@ -1,0 +1,13 @@
+{
+    "code": 0,
+    "data": {
+        "currentPage": 1,
+        "dataList": [
+            { "id": "aa", "username": "aaa", "age": 10, "gender": "male", "country": "US", "registeredDate": "2017-05-20" },
+            { "id": "bb", "username": "bba", "age": 20, "gender": "female", "country": "CN", "registeredDate": "2017-05-20" }
+        ],
+        "pageSize": 10,
+        "total": 20,
+        "totalPage": 2
+    }
+}

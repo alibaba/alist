@@ -1,0 +1,64 @@
+{
+  "name": "noform",
+  "version": "1.1.45",
+  "description": "开发者友好、快捷高效的表单框架。 ",
+  "scripts": {
+    "dev": "nobuilder dev",
+    "test": "nobuilder test",
+    "cov": "nobuilder test --coverage",
+    "lib": "nobuilder lib",
+    "build": "nobuilder build",
+    "profile": "nobuilder profile",
+    "deploy": "npm run lib && npm run build",
+    "prepare": "npm run deploy"
+  },
+  "files": [
+    "src/",
+    "dist/",
+    "lib/",
+    "index.scss"
+  ],
+  "builder": {
+    "entry": [
+      "src/index.js",
+      "src/wrapper/next.jsx",
+      "src/wrapper/antd.jsx",
+      "src/dialog/next.jsx",
+      "src/dialog/antd.jsx",
+      "src/dialog/zent.jsx"
+    ]
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "@babel/runtime": "^7.1.2",
+    "async-validator": "^1.8.2",
+    "babel-runtime": "^6.26.0",
+    "deep-equal": "^1.0.1",
+    "events": "2.x",
+    "moment": "^2.18.1",    
+    "prop-types": "15.x"
+  },
+  "peerDependencies": {
+    "react": "16.x",
+    "react-dom": "16.x"
+  },
+  "devDependencies": {
+    "antd": "^3.5.2",
+    "babel-eslint": "^10.0.1",
+    "enzyme": "^3.7.0",
+    "enzyme-adapter-react-16": "^1.5.0",
+    "eslint": "^5.8.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-jest": "^21.26.2",
+    "eslint-plugin-mocha": "^5.2.0",
+    "eslint-plugin-react": "^7.11.1",
+    "jest": "^22.4.3",
+    "react": "16.x",
+    "react-dom": "16.x",
+    "simulate-event": "^1.4.0",
+    "sinon": "^7.1.0"
+  },
+  "keywords": [
+    "noform"
+  ]
+}
