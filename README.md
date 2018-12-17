@@ -26,19 +26,19 @@ You can visit [here](https://quirkyshop.github.io/noform-start-app/#/) for more 
 
 ### Best Practise
 
-[Best Practise integrate with Ant Design](https://alibaba.github.io/noform/#/nopage/noform/antd-best-pratise)
+[Best Practise integrate with Ant Design](https://alibaba.github.io/nopage/#/nopage/noform/antd-best-pratise)
 
-[Integrate with Ant Design Pro](https://alibaba.github.io/noform/#/nopage/noform/ant-design-pro-practise)
+[Integrate with Ant Design Pro](https://alibaba.github.io/nopage/#/nopage/noform/ant-design-pro-practise)
 
 
 # API和文档
 
-[Core API](https://alibaba.github.io/noform/#/nopage/noform/formcore-api)
-[中文文档](https://alibaba.github.io/noform/#/nopage/noform/brief-intro)
+[Core API](https://alibaba.github.io/nopage/#/nopage/noform/formcore-api)
+[中文文档](https://alibaba.github.io/nopage/#/nopage/noform/brief-intro)
 
 ### i18n
 
-[Repeater](https://alibaba.github.io/noform/#/nopage/noform/repeater-config) now support `Chinese(zh)` and `English(zh)`.
+[Repeater](https://alibaba.github.io/nopage/#/nopage/noform/repeater-config) now support `Chinese(zh)` and `English(zh)`.
 
 Since [react-intl](https://github.com/yahoo/react-intl) use `ISO639` and NoForm will follow this standard.
 
