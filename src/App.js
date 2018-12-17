@@ -1,7 +1,5 @@
 import React from "react";
-import { HashRouter as Router, Route, Redirect } from 'react-router-dom';
-
-import Nav from './components/Nav';
+import { Switch, HashRouter as Router, Route, Redirect } from 'react-router-dom';
 import Container from './components/Container';
 
 import config from './config';
@@ -11,10 +9,10 @@ class App extends React.Component{
         return (
             <Router>
                 <div>
-                    <Nav />
-
-                    {/* <Redirect path="/" to={{ pathname: `/${config.repos[0].namespace}` }} /> */}
-                    <Route path="/:user/:repo" component={Container} />
+                    <Switch>
+                        <Route path="/:user/:repo" component={Container} />
+                        <Redirect path="/" to={{ pathname: `/${config.repos[0].namespace}` }}/>
+                    </Switch>
                 </div>
             </Router>
         )

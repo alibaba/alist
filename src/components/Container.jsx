@@ -1,12 +1,16 @@
 import React from "react";
 import { Route } from 'react-router-dom';
-
+import Nav from './Nav';
 import SideBar from './SideBar';
 import Content from './Content';
 
 class App extends React.Component {
-    state = {
-        match: {}
+    constructor(props) {
+        super(props);
+        const { match } = props;
+        this.state = {
+            match
+        }
     }
 
     componentDidMount() {
@@ -28,9 +32,12 @@ class App extends React.Component {
         const { match } = this.state;
 
         return (
-            <div className="flex-container">
-                <SideBar match={match} />
-                <Route path={`/:user/:repo/:slug`} component={Content}/>
+            <div>
+                <Nav match={match} />      
+                <div className="flex-container">             
+                    <SideBar match={match} />
+                    <Route path={`/:user/:repo/:slug`} component={Content}/>
+                </div>
             </div>
         )
     }

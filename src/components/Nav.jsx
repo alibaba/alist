@@ -8,8 +8,17 @@ const logo = 'https://img.alicdn.com/tfs/TB1BaF2ueuSBuNjy1XcXXcYjFXa-275-191.svg
 
 class App extends React.Component {
 
-    state = {
-        current: '0',
+    constructor(props) {
+        super(props);
+
+        const { match } = props;
+        const { params } = match || {};
+        const { user, repo } = params || {};
+        const url = `${user}/${repo}`;
+        const current = config.repos.findIndex(item => item.namespace.indexOf(url) !== -1);
+        this.state = {
+            current: '' + (current < 0 ? 0 : current)
+        };
     }
 
     handleClick = (e) => {
