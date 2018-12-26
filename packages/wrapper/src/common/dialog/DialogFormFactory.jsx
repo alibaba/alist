@@ -54,7 +54,11 @@ class DialogForm {
 
         let footerElement = null;
         if (footer) {
-            footerElement = footer(this.hide, opts);
+            const footerOpts = Object.assign(opts || {});
+            footerOpts.ok = this.handleOk;
+            footerOpts.cancel = this.handleCancel;
+            if (this.dialogCore) footerOpts.ctx = this.dialogCore;
+            footerElement = footer(this.hide, footerOpts);
         } else {
             let styleProps = {};
             const alignCls = ['left', 'center', 'right'].indexOf(footerAlign) !== -1 ? `align-${footerAlign}` : '';

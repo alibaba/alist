@@ -115,6 +115,17 @@ class App extends React.Component {
                     <Select options={[]} />
                 </FormItem>
             </Form>,
+            footer: (hide, { ok, cancel, ctx }) => {
+                const getValues = () => {
+                    console.log('gv:', ctx.getValues());
+                };
+
+                return <div>
+                    <Button onClick={getValues}>getValues</Button>
+                    <Button onClick={ok}>ok</Button>
+                    <Button onClick={cancel}>cancel</Button>
+                </div>
+            },
             onOk: async (values, hide) => {
                 console.log('values', values);
                 await sleep(1000);
