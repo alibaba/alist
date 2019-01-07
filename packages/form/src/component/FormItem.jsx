@@ -39,7 +39,7 @@ class BaseFormItem extends React.Component {
         children: null,
         onBlur: noop,
         onFocus: noop,
-        listenKeys: []
+        listenKeys: [],
     }
 
     constructor(props) {
@@ -323,9 +323,9 @@ class BaseFormItem extends React.Component {
         if (render) {
             if (listenKeys.length === 0) {
                 return true;
-            } else {
+            } 
                 return listenKeys.indexOf(key) !== -1;
-            }
+            
         } else {
             return this.core.name === key;
         }
@@ -354,8 +354,8 @@ class BaseFormItem extends React.Component {
                 if (this.fullElement.current) {
                     this.fullElement.current.className = this.getFullClassName();
                     this.labelElement.current.className = this.getLabelClassName();
-                }     
-                
+                }
+
                 if (listenProps) {
                     this.forceUpdate();
                 }
@@ -418,13 +418,19 @@ class BaseFormItem extends React.Component {
         const errElement = <Section type="error" className={`${formItemPrefix}-item-error`} {...sectionValue} errorRender={errorRender} />;
 
         // 避免重复渲染
-        const wrapperCls = this.getWrapperClassName(); // no-form-item 
+        const wrapperCls = this.getWrapperClassName(); // no-form-item
         const labelCls = this.getLabelClassName(); // no-form-item-label
         const fullCls = this.getFullClassName(); // no-form-item-content
 
+        const idProps = {};
+        if (itemContext.item && itemContext.item.id &&
+            this.id !== itemContext.item.id) {
+            idProps.id = itemContext.item.id;
+        }
+
         return (
             <div id={this.id} name={`form-item-${name}`} className={`${formItemPrefix}-item ${className} ${layoutCls} ${colonCls} ${inlineCls} ${defaultMinCls}`} style={style}>
-                <div className={wrapperCls} ref={this.wrapperElement}>
+                <div {...idProps} className={wrapperCls} ref={this.wrapperElement}>
                     <span className={labelCls} ref={this.labelElement}>{labelElement}</span>
                     <span className={`${formItemPrefix}-item-control ${layout.control ? `col-${layout.control}` : ''}`} >
                         {topElement}

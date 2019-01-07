@@ -289,6 +289,15 @@ const validate = async () => {
 const App = () => {
     return <Form core={core}>
         <FormItem name="sub"><SubItem /></FormItem>            
+        <FormItem label="xx"><Input /></FormItem>  
+        <FormItem render={() => <div>123123123</div>}></FormItem>  
+
+        <FormItem name="user">
+            <Form >
+                <FormItem name="name"><Input /></FormItem>
+                <FormItem name="age"><Input /></FormItem>
+            </Form>
+        </FormItem>  
         <Button onClick={validate}>validate</Button>
     </Form>
 }
