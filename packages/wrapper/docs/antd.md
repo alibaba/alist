@@ -13,7 +13,7 @@ import Form, { Item, FormItem, FormCore } from 'noform';
 import { Input, Select, Checkbox, Radio, Switch, Slider, DatePicker, TimePicker,
     Rate, Cascader, TreeSelect, Upload, Button, InputNumber, AutoComplete, Dialog } from '../src/antd/index';
 import { TableRepeater } from '../src/antd/repeater';
-import { Alert, Icon, message } from 'antd';
+import { Alert, Icon, message, Row, Col, } from 'antd';
 import './antd.scss';
 
 const sleep = (mills) => new Promise(resolve => setTimeout(resolve, mills));
@@ -28,6 +28,11 @@ const Ff = () => {
     return <Form core={core} layout={{ label: 4, control: 20 }} defaultMinWidth={false} full>
         <FormItem full label="test" name="test"><Input /></FormItem>
     </Form>
+}
+
+
+const checkRowChange = (value) => {
+    console.log('row change...', value);
 }
 
 
@@ -174,7 +179,16 @@ class App extends React.Component {
                 </FormItem>
 
                 <FormItem label="input" name="input"><Input placeholder="abcdefg"/></FormItem>
-                <FormItem label="AutoComplete" name="AutoComplete"><AutoComplete options={dataSource} placeholder="abcdefg"/></FormItem>                
+                <FormItem label="AutoComplete" name="AutoComplete"><AutoComplete options={dataSource} placeholder="abcdefg"/></FormItem>         <CheckboxGroup style={{ width: '100%' }} onChange={checkRowChange}>
+                    <Row>
+                        <Col span={8}><CheckboxGroup.Item value="A">A</CheckboxGroup.Item></Col>
+                        <Col span={8}><CheckboxGroup.Item value="B">B</CheckboxGroup.Item></Col>
+                        <Col span={8}><CheckboxGroup.Item value="C">C</CheckboxGroup.Item></Col>
+                        <Col span={8}><CheckboxGroup.Item value="D">D</CheckboxGroup.Item></Col>
+                        <Col span={8}><CheckboxGroup.Item value="E">E</CheckboxGroup.Item></Col>
+                        <Col span={8}><CheckboxGroup.Item value="X">X</CheckboxGroup.Item></Col>
+                    </Row>
+                </CheckboxGroup>
                 <FormItem label="TextArea" name="TextArea"><TextArea placeholder="abcdefg"/></FormItem>
                 <FormItem label="select" name="select"><Select options={dataSource} placeholder="abcdefg"/></FormItem>
                 <FormItem label="Multi Select" name="select"><Select mode="multiple" options={dataSource} placeholder="abcdefg"/></FormItem>

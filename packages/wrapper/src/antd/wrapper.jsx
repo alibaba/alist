@@ -37,7 +37,7 @@ class WrapperClass {
 
     CheckboxGroup = (props) => {
         return CheckboxGroup(this.Antd.Checkbox.Group, props);
-
+        
     }
 
     RadioGroup = (props) => {
@@ -229,6 +229,8 @@ class WrapperClass {
             return ret;
         }, {});
 
+        this.CheckboxGroup.Item = this.Antd.Checkbox;
+        this.RadioGroup.Item = this.Antd.Radio;
         result.Checkbox.Group = this.CheckboxGroup;
         result.Radio.Group = this.RadioGroup;
         result.Input.TextArea = this.TextArea;
