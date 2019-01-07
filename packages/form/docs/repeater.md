@@ -375,6 +375,17 @@ const hasDelete = (values, index) => {
     return index > 0;
 };
 
+
+const renderOper = (btnList, core) => {
+    const showValue = () => {
+        console.log('showValue:', core.getValues());
+    }
+    return <div>
+        <a href="javascript:void(0)" onClick={showValue}>查看</a>
+        {btnList}
+    </div>
+};
+
 // const hasDelete = false;
 
 ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.log} value={defaultValue}>
@@ -449,14 +460,14 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
     <br/>
     <hr/>
 
-    {/* <FormItem name="deep2">
+    <FormItem name="deep2">
         <SelectRepeater formConfig={formConfig}>
             <FormItem label="isCheck" name="isCheck" status="preview"><Switch /></FormItem>
             <FormItem label="isCheckText" name="isCheckText"><Switch checkedChildren="开" unCheckedChildren="关" /></FormItem>
             <FormItem label="drawerName" name="drawerName"><Input /></FormItem>
             <FormItem label="age" name="age"><Input /></FormItem>
         </SelectRepeater>        
-    </FormItem> */}
+    </FormItem>
 
     {/* <FormItem name="deep2">
         <SelectRepeater selectMode="multiple" asyncHandler={asyncHandler} formConfig={formConfig}>
@@ -512,7 +523,7 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
         </InlineRepeater>
     </FormItem> */}
 
-    <FormItem defaultMinWidth={false} label="out" name="out"><Input style={{ width: '100px' }} /></FormItem>
+    {/* <FormItem defaultMinWidth={false} label="out" name="out"><Input style={{ width: '100px' }} /></FormItem> */}
     {/* <FormItem label="InlineRepeater" name="inlineRepeaterx">
         <InlineRepeater >
             <FormItem defaultMinWidth={false} label="username" name="username"><Input style={{ width: '100px' }} /></FormItem>
@@ -536,8 +547,8 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
         </FormItem>
     </If> */}
 
-    <FormItem label="InlineRepeater" name="inlineRepeaterx">
-        <InlineRepeater multiple top="hello" bottom="world" hasDelete={hasDelete}>
+    {/* <FormItem label="InlineRepeater" name="inlineRepeaterx">
+        <InlineRepeater multiple >
             <FormItem label="username" name="username"><Input /></FormItem>
             <FormItem label="开关" name="isOpen"><Switch checkedChildren="开" unCheckedChildren="关" /></FormItem>
              <FormItem label="价格" multiple>
@@ -550,6 +561,13 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
             </FormItem>
         </InlineRepeater>
     </FormItem> */}
+
+    <FormItem label="rpnested" name="rpnested">
+        <InlineRepeater multiple renderOper={renderOper}>
+            <FormItem label="username" name="username"><Input /></FormItem>
+            <FormItem label="age" name="age"><Input /></FormItem>
+        </InlineRepeater>
+    </FormItem>
 
     {/* <FormItem name="rulesy">
         <InlineRepeater {...extraProps} formConfig={formConfig} filter={filterX} hasDelete>

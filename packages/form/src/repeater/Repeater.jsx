@@ -6,7 +6,8 @@ import RowContext from '../context/repeaterRow';
 import { isValidStatus } from '../util/is';
 
 const isIf = item => (item && item.type && item.type.displayName === 'If');
-const getIfChild = item => (item && item.props && item.props.children) ? React.Children.only(item.props.children) : null;
+const getIfChild = item => ((item && item.props && item.props.children) ?
+    React.Children.only(item.props.children) : null);
 
 export default function bind(type, source) {
     const { Input } = source;
@@ -19,12 +20,13 @@ export default function bind(type, source) {
         getItemsConfig = (rowIndex) => {
             const { children, repeaterCore } = this.props;
             const { formList = [] } = repeaterCore || {};
-            const itemsConfig = React.Children.map(children, (childItem, index) => {
+            const itemsConfig = React.Children.map(children, (childItem) => {
                 // 非常脏的一段逻辑，而且inlineReater这种非受控组件不适用，需要花时间去重新梳理Repeater的通信方式和渲染方式
                 if (isIf(childItem)) {
                     let ifResult = null;
                     const { when, children: ifChild } = childItem.props || {};
-                    const missonList = rowIndex !== undefined ? [formList[rowIndex] || {}] : formList || [];
+                    const missonList = rowIndex !== undefined ?
+                        [formList[rowIndex] || {}] : formList || [];
                     if (typeof when === 'function') {
                         let canShow = false;
                         missonList.forEach((mItem, mIndex) => {
@@ -38,44 +40,49 @@ export default function bind(type, source) {
                             ifResult = React.Children.only(ifChild);
                         } else {
                             const { props: ifChildProps } = ifChild || {};
-                            const { children, ...otherIfProps } = ifChildProps || {};
+                            const { children: otherChild, ...otherIfProps } = ifChildProps || {};
                             ifResult = <div {...otherIfProps} />;
                         }
                     }
 
                     return ifResult;
-                } else {
-                    return childItem;
                 }
+                return childItem;
             })
-            .filter(item => item !== null)
-            .map(child => ({
-                name: child.props.name,
-                label: child.props.label,
-                prefix: child.props.prefix,
-                suffix: child.props.suffix,
-                multiple: child.props.multiple,
-                renderCell: child.props.renderCell,
-                style: child.props.style,
-                status: child.props.status,
-                className: child.props.className,
-            })).
-            filter(item => (item.name || item.multiple || item.renderCell));
+                .filter(item => item !== null)
+                .map(child => ({
+                    name: child.props.name,
+                    label: child.props.label,
+                    prefix: child.props.prefix,
+                    suffix: child.props.suffix,
+                    multiple: child.props.multiple,
+                    renderCell: child.props.renderCell,
+                    style: child.props.style,
+                    status: child.props.status,
+                    className: child.props.className,
+                }))
+                .filter(item => (item.name || item.multiple || item.renderCell));
 
             return itemsConfig;
         }
 
-        hasOperBtn = () => {            
+        hasOperBtn = () => {
             let failedDeleteCount = 0;
             let failedUpdateCount = 0;
-            const { multiple = false, repeaterCore,
-                hasUpdate: propUpdate, hasDelete: propDelete } = this.props;
+            const {
+                multiple = false, repeaterCore,
+                hasUpdate: propUpdate, hasDelete: propDelete,
+                renderOper
+            } = this.props;
+
+            if (renderOper && typeof renderOper === 'function') {
+                return true;
+            }
+
             const { formList } = repeaterCore;
             const rowLength = Array.isArray(formList) ? formList.length : 0;
-            const rowList = formList.map((core, index) => {
+            formList.forEach((core, index) => {
                 const values = core.getValues();
-                const { id } = core;
-
                 const localHasDelete = this.decideHasBtn('hasDelete', values, index);
                 const localHasUpdate = this.decideHasBtn('hasUpdate', values, index);
 
@@ -83,9 +90,9 @@ export default function bind(type, source) {
                 if (!localHasUpdate) failedUpdateCount += 1;
             });
 
-            const defaultDelete = typeof propDelete === 'boolean' ? propDelete :  true;
-            const defaultUpdate = typeof propUpdate === 'boolean' ? propUpdate :  true;
-            
+            const defaultDelete = typeof propDelete === 'boolean' ? propDelete : true;
+            const defaultUpdate = typeof propUpdate === 'boolean' ? propUpdate : true;
+
             const hasDelete = rowLength ? (failedDeleteCount < rowLength) : defaultDelete;
             const hasUpdate = rowLength ? (failedUpdateCount < rowLength) : defaultUpdate;
 
@@ -94,6 +101,18 @@ export default function bind(type, source) {
             const updateBtn = isSyncmode ? false : hasUpdate;
 
             return (updateBtn || hasDelete || isInlineMode);
+        }
+
+        decideHasBtn = (propsName, values, index) => {
+            const btnProps = this.props[propsName];
+            let result = true;
+            if (typeof btnProps === 'boolean') {
+                result = btnProps;
+            } else if (typeof btnProps === 'function') {
+                result = btnProps(values, index);
+            }
+
+            return result;
         }
 
         renderFilter = () => {
@@ -112,19 +131,7 @@ export default function bind(type, source) {
             return searchEle;
         }
 
-        decideHasBtn = (propsName, values, index) => {
-            const btnProps = this.props[propsName];
-            let result = true;
-            if (typeof btnProps === 'boolean') {
-                result = btnProps;
-            } else if (typeof btnProps === 'function') {
-                result = btnProps(values, index);
-            }
-
-            return result;
-        }
-
-        renderRowList = () => {            
+        renderRowList = () => {
             const {
                 multiple = false,
                 itemAlign = 'left',
@@ -133,6 +140,7 @@ export default function bind(type, source) {
                 repeaterCore,
                 formProps,
                 getText,
+                renderOper,
             } = this.props;
 
             const {
@@ -162,7 +170,7 @@ export default function bind(type, source) {
                 const childMap = {};
                 const childrenRefArr = ([].concat(children)).reduce((a, b) => [].concat(a, b), []);
                 childrenRefArr.forEach((childitem) => {
-                    let mrChild = childitem; 
+                    let mrChild = childitem;
                     if (isIf(childitem)) {
                         mrChild = getIfChild(childitem);
                     }
@@ -210,12 +218,17 @@ export default function bind(type, source) {
                 const hasOperBtn = this.hasOperBtn();
                 let operEle = null;
                 if (hasOperBtn) {
+                    const operBtnList = [saveBtn, cancelBtn, updateBtn, deleteBtn]
+                        .filter(btn => !!btn);
+                    let operContent = null;
+                    if (renderOper && typeof renderOper === 'function') {
+                        operContent = renderOper(operBtnList, core);
+                    } else {
+                        operContent = operBtnList;
+                    }
                     operEle = (<td>
                         {editable ? <div className={cellCls}>
-                            {saveBtn}
-                            {cancelBtn}
-                            {updateBtn}
-                            {deleteBtn}
+                            {operContent}
                         </div> : null}
                     </td>);
                 }
@@ -299,7 +312,7 @@ export default function bind(type, source) {
             if (top && typeof top === 'function') topElement = top();
             if (top && (React.isValidElement(top) || typeof top === 'string')) topElement = typeof top === 'string' ? <div>{top}</div> : top;
             if (bottom && typeof bottom === 'function') bottomElement = bottom();
-            if (bottom && React.isValidElement(bottom) || typeof bottom === 'string') bottomElement = typeof bottom === 'string' ? <div>{bottom}</div> : bottom;
+            if (bottom && (React.isValidElement(bottom) || typeof bottom === 'string')) bottomElement = typeof bottom === 'string' ? <div>{bottom}</div> : bottom;
 
             return (<div className={`table-repeater-wrapper ${className || ''}`} style={style}>
                 {topElement}

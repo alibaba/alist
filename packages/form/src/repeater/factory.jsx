@@ -111,7 +111,7 @@ export default function CreateRepeater(bindSource, type, source) {
                 this.repeaterCore.updateFormConfig(nextProps.formConfig);
                 forceRegenerate = true;
             }
-            
+
             // 是否强制刷新所有core
             manualEvent.forceRegenerate = forceRegenerate;
             this.repeaterCore.updateValue(this.value, manualEvent, this.handleCoreUpdate);

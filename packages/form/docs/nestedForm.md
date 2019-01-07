@@ -18,6 +18,7 @@ import "./antd.scss";
 const { Button, Input }  = wrapper(Antd);
 
 const core = new FormCore();
+window.core = core;
 const consoleValue = () => {
     console.log(core.getValues());
 }
@@ -31,7 +32,7 @@ const toggleStatus = () => {
 
 ReactDOM.render(
     <Form core={core} layout={{ label: 2, control: 22 }}>
-        <FormItem label="产品名" name="productName"><Input /></FormItem>
+        {/* <FormItem label="产品名" name="productName"><Input /></FormItem> */}
         <FormItem label="公司信息" name="company">
             <Form layout={false}>
                 <FormItem label="公司名" name="name"><Input /></FormItem>
@@ -45,13 +46,13 @@ ReactDOM.render(
                 </FormItem>
             </Form>
         </FormItem>
-        <FormItem label="产品参数" name="param"><Input /></FormItem>
-        <FormItem label="">
+        {/* <FormItem label="产品参数" name="param"><Input /></FormItem> */}
+        {/* <FormItem label="">
             <div>
                 <Button style={{marginRight: '8px' }} onClick={toggleStatus}>Toggle Status</Button>
                 <Button onClick={consoleValue}>Console Value</Button>
             </div>
-        </FormItem>
+        </FormItem> */}
     </Form>
 , mountNode);
 ````
