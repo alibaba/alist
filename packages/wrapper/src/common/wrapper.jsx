@@ -213,11 +213,14 @@ const SubDatePicker = (Com, subType, props, opts) => {
         status, className = '',
     } = props;
     const { onChange, valueProps = {},
+        onPanelChange,
         previewClass = '', previewProps = {},
         format, prefix } = opts;
 
     const otherProps = getCleanProps(props);
     const SubDatePicker = Com[subType];
+    const extProps = {};
+    if (onPanelChange) extProps.onPanelChange = onPanelChange;
 
     if (status === 'preview') {
         const { value } = valueProps;
@@ -235,10 +238,10 @@ const SubDatePicker = (Com, subType, props, opts) => {
                 })}
             </div>);
         }
-        return <SubDatePicker {...otherProps} {...valueProps} {...previewProps} disabled className={`${className || ''} ${previewClass}`} placeholder="" />;
+        return <SubDatePicker {...otherProps} {...valueProps} {...previewProps} disabled className={`${className || ''} ${previewClass}`} placeholder="" {...extProps}/>;
     }
 
-    return <SubDatePicker {...otherProps} {...valueProps} onChange={onChange} {...insetify(props)} />;
+    return <SubDatePicker {...otherProps} {...valueProps} onChange={onChange} {...insetify(props)} {...extProps}/>;
 }
 
 export {    

@@ -200,6 +200,12 @@ class App extends React.Component {
                 <FormItem label="Slider" name="Slider"><Slider /></FormItem>
                 <FormItem label="Rate" name="Rate"><Rate /></FormItem>
                 <FormItem label="RangePicker" name="RangePicker"><RangePicker placeholder={["start","end"]} showTime format="YYYY-MM-DD HH:mm:ss" /></FormItem>
+
+                <FormItem label="MMRangePicker" name="MMRangePicker"><RangePicker
+                    format="YYYY-MM"
+                    placeholder={["start","end"]}
+                    mode={['month', 'month']}
+                /></FormItem>
                 <FormItem label="DatePicker" name="DatePicker"><DatePicker placeholder="abcdefg" /></FormItem>
                 <FormItem label="TimePicker" name="TimePicker"><TimePicker placeholder="abcdefg"/></FormItem>
                 <FormItem label="InputNumber" name="InputNumber"><InputNumber placeholder="abcdefg"/></FormItem>

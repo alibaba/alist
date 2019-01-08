@@ -138,7 +138,7 @@ class WrapperClass {
             props.onChange && props.onChange(momentVal, { escape: true });
         };
 
-        return SubDatePicker(this.Antd.DatePicker, subType, props, {
+        const componentProps = {
             onChange,
             valueProps,
             prefix,
@@ -153,7 +153,12 @@ class WrapperClass {
                     rangeEndPlaceholder: '',
                 }
             }
-        });
+        };
+
+        if (props.mode) {
+            componentProps.onPanelChange = onChange;
+        }
+        return SubDatePicker(this.Antd.DatePicker, subType, props, componentProps);
     }
 
     TimePicker = (props) => {
