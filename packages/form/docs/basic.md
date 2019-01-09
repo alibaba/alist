@@ -38,33 +38,41 @@ function Select(props){
 }
 let children = [
 (() => {
-    const validateConfig = {
-        username: {type: "string", required: true},
-        age: [
-            {type: "number", required: true, transform(value) {
-              return parseInt(value, 10)
-            }},
-            {validator(rule, value, callback, source, options) {
-                if(value < 18){
-                    callback(['too young']);
-                }
-                callback([])
-            }}
-        ],
-        gender: {type: "enum", required: true, enum: ['male', 'female']}
-    }
-    let formcore
-    return <Form
-            onMount={core => formcore = core}
-            validateConfig={validateConfig}>
-        <h3>表单校验(动态变换校验规则)</h3>
-       <FormItem label="username" name="username" required>
-            <Input />
-        </FormItem>
-        <br/><br/>
-        <button onClick={() => console.log(formcore.validate())}> console value </button>
+    return <Form direction="vertical">
+        <h3>表单垂直布局</h3>
+       <FormItem label="username" name="username" required inline><Input /></FormItem>
+       <FormItem label="age" name="age" required inline><Input /></FormItem>
+       <FormItem label="gender" name="gender" required><Input /></FormItem>
     </Form>
 })(),
+// (() => {
+//     const validateConfig = {
+//         username: {type: "string", required: true},
+//         age: [
+//             {type: "number", required: true, transform(value) {
+//               return parseInt(value, 10)
+//             }},
+//             {validator(rule, value, callback, source, options) {
+//                 if(value < 18){
+//                     callback(['too young']);
+//                 }
+//                 callback([])
+//             }}
+//         ],
+//         gender: {type: "enum", required: true, enum: ['male', 'female']}
+//     }
+//     let formcore
+//     return <Form
+//             onMount={core => formcore = core}
+//             validateConfig={validateConfig}>
+//         <h3>表单校验(动态变换校验规则)</h3>
+//        <FormItem label="username" name="username" required>
+//             <Input />
+//         </FormItem>
+//         <br/><br/>
+//         <button onClick={() => console.log(formcore.validate())}> console value </button>
+//     </Form>
+// })(),
 // (() => {
 //     let formcore
 //     return <Form keys="root" style={{ marginBottom: 12 }} onMount={core => formcore = core} layout={{label: 5, control: 19}} full>
