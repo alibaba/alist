@@ -42,7 +42,7 @@ function filterUsername(value, key){
 
 const tCore = new FormCore({
     onChange: (fireKeys, values) => {
-        console.log('ffff', fireKeys, values);
+        // console.log('ffff', fireKeys, values);
     }
 });
 
@@ -83,7 +83,7 @@ const formCore = new FormCore({
         ]
     },
     onChange: (fireKeys, values) => {
-        console.log('[top onchange]', fireKeys, values);
+        // console.log('[top onchange]', fireKeys, values);
         const vprops = {
             locale: values.locale
         };
@@ -386,9 +386,15 @@ const renderOper = (btnList, core) => {
     </div>
 };
 
+const checkChangeConfig = {
+    onChange: (fireKey, values, ctx) => {
+        console.log('fireKey', fireKey, values);
+    }
+}
+
 // const hasDelete = false;
 
-ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.log} value={defaultValue}>
+ReactDOM.render(<Form defaultMinWidth={false} core={formCore} value={defaultValue}>
     {/* <FormItem name="tabledemo" defaultValue={[{ username: 'a' }, { username: 'b' }]}>
         <TableRepeater hasDeleteConfirm={false} hasOrder filter={filterUsername} formConfig={formConfig}>
             <FormItem status="hidden" label="order" renderCell={(_, { index: order }) => <div>{order+1}</div> } />
@@ -460,14 +466,14 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
     <br/>
     <hr/>
 
-    <FormItem name="deep2">
+    {/* <FormItem name="deep2">
         <SelectRepeater formConfig={formConfig}>
             <FormItem label="isCheck" name="isCheck" status="preview"><Switch /></FormItem>
             <FormItem label="isCheckText" name="isCheckText"><Switch checkedChildren="开" unCheckedChildren="关" /></FormItem>
             <FormItem label="drawerName" name="drawerName"><Input /></FormItem>
             <FormItem label="age" name="age"><Input /></FormItem>
         </SelectRepeater>        
-    </FormItem>
+    </FormItem> */}
 
     {/* <FormItem name="deep2">
         <SelectRepeater selectMode="multiple" asyncHandler={asyncHandler} formConfig={formConfig}>
@@ -563,7 +569,7 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} onChange={console.
     </FormItem> */}
 
     <FormItem label="rpnested" name="rpnested">
-        <InlineRepeater multiple renderOper={renderOper}>
+        <InlineRepeater multiple renderOper={renderOper} formConfig={checkChangeConfig}>
             <FormItem label="username" name="username"><Input /></FormItem>
             <FormItem label="age" name="age"><Input /></FormItem>
         </InlineRepeater>

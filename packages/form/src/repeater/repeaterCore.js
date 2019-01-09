@@ -1,6 +1,8 @@
 import FormCore from '../core/form';
 import { isPromise } from '../util/is';
 
+const noop = () => {};
+
 class RepeaterCore {
     constructor(props) {
         const {
@@ -93,7 +95,7 @@ class RepeaterCore {
 
 
     generateCore = (raw) => {
-        const { values: userValues } = this.formConfig;
+        const { values: userValues, onChange = noop } = this.formConfig;
         let values = {};
         if (raw) {
             values = { ...raw };
@@ -103,7 +105,11 @@ class RepeaterCore {
 
         return new FormCore({
             ...this.formConfig,
-            repeater: this,
+            onChange: (fks, v, ctx) => {
+                ctx.repeater = this;
+                ctx.repeaterIndex = this.formList.findIndex(item => item.id === ctx.id);
+                onChange(fks, v, ctx);
+            },
             values,
             globalStatus: this.status,
             disabledSyncChildForm: true,
