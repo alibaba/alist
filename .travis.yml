@@ -2,7 +2,7 @@
 language: node_js
 #指定nodejs版本，可以指定多个
 node_js:
-  - 9
+  # - 9
   - 8
 addons:
   chrome: stable
@@ -11,7 +11,7 @@ addons:
 script:  
   - npm run proxy
   - CI=false npm run build
-  - npm run gh
+  # - npm run gh
 
 cache:
   yarn: true
