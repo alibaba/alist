@@ -10,7 +10,7 @@ addons:
 #运行的脚本命令
 script:  
   - npm run proxy
-  - npm run build
+  - CI=false npm run build
   - npm run gh
 
 cache:
