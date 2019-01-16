@@ -577,6 +577,10 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} value={defaultValu
     }}> */}
         <FormItem label="rpnested" name="rpnested">
             <InlineRepeater filter={filterUsername} asyncHandler={dasyncHandler} onMount={rpOnMount} multiple renderOper={renderOper} formConfig={checkChangeConfig}>
+                <FormItem status="hidden" label="order" renderCell={(_, { index: order }) => {
+                    console.log('===', _);
+                    return <div>{order+1}</div>;
+                } } />
                 <FormItem label="username" name="username"><Input /></FormItem>
                 <FormItem label="age" name="age"><Input /></FormItem>
             </InlineRepeater>
