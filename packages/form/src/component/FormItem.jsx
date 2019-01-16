@@ -50,8 +50,15 @@ class BaseFormItem extends React.Component {
         }
 
         this.form = form;
-        this.predictChildForm = this.handlePredictForm(props);
-        this.core = this.initialCore(props);
+        this.compProps = {};
+        this.predictChildForm = this.handlePredictForm(props, (component) => {
+            const { props: comProps = {} } = component || {};
+            // 自动获取jsx组件属性，下个y位版本自动升级
+            if (this.form.enableReceiveProps) {
+                this.compProps = this.pickupComponentProps(comProps);
+            }
+        });
+        this.core = this.initialCore(props, this.compProps);
         this.core.predictChildForm = this.predictChildForm;
         this.core.jsx = this;
         this.core.getSuperFormProps = this.getSuperFormProps.bind(this);
@@ -249,7 +256,25 @@ class BaseFormItem extends React.Component {
         return `${formItemPrefix}-item-content ${full ? `${formItemPrefix}-full` : ''}`;
     }
 
-    initialCore = (props) => {
+    pickupComponentProps = (props) => {
+        const reservedWords = [
+            'name', 'value', 'error', 'props',
+            'label', 'required', 'suffix', 'prefix', 'top', 'help',
+            'onChange', 'onBlur', 'onFocus', 'key',
+            'children',
+        ];
+
+        const comp = {};
+        Object.keys(props || {}).forEach((key) => {
+            if (reservedWords.indexOf(key) === -1) {
+                comp[key] = props[key];
+            }
+        });
+
+        return comp;
+    }
+
+    initialCore = (props, componentProps = {}) => {
         const {
             name, error, props: itemProps, status,
             form, ifCore,
@@ -275,10 +300,10 @@ class BaseFormItem extends React.Component {
                 option.func_props = itemProps;
                 option.props = {};
             } else {
-                option.props = itemProps;
+                option.props = { ...componentProps, ...itemProps };
             }
         } else {
-            option.props = {};
+            option.props = { ...componentProps };
         }
 
         // 处理status
@@ -301,13 +326,16 @@ class BaseFormItem extends React.Component {
         return core;
     }
 
-    handlePredictForm = (props) => {
+    handlePredictForm = (props, sideEffect) => {
         // 构建时提前知道子类，比didmount再来通知，把控性好很多
         const { children } = props;
         this.displayName = '';
         if (children) {
             if (React.isValidElement(children)) {
                 const jsxComponent = React.Children.only(children);
+                if (jsxComponent) {
+                    sideEffect(jsxComponent);
+                }
                 if (jsxComponent && jsxComponent.type && jsxComponent.type.displayName) {
                     this.displayName = jsxComponent.type.displayName;
                 }
@@ -323,12 +351,10 @@ class BaseFormItem extends React.Component {
         if (render) {
             if (listenKeys.length === 0) {
                 return true;
-            } 
-                return listenKeys.indexOf(key) !== -1;
-            
-        } else {
-            return this.core.name === key;
+            }
+            return listenKeys.indexOf(key) !== -1;
         }
+        return this.core.name === key;
     }
 
     update = (type, name, value, silent = false) => {

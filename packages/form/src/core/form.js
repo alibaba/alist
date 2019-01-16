@@ -16,6 +16,7 @@ class Form {
             initialized,
             autoValidate,
             disabledSyncChildForm,
+            enableReceiveProps,
             initValues,
             exts,
         } = option || {};
@@ -26,6 +27,7 @@ class Form {
         this.currentEventType = 'api';
         this.autoValidate = autoValidate || false;
         this.exts = exts || {};
+        this.enableReceiveProps = enableReceiveProps || false; // breakChange 下个y位升级
 
         this.initValues = initValues;
         this.globalStatus = globalStatus || 'edit';
