@@ -23,6 +23,8 @@ export interface Option {
     formConfig?: FormConfig,
     /** 异步钩子函数 */
     asyncHandler?: Map<string, () => AsyncHandlerResult>,
+    /** 多编辑模式 */
+    multiple?: Boolean
 }
 
 export interface RepeaterCore {

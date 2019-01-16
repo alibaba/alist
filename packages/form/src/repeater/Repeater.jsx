@@ -202,8 +202,8 @@ export default function bind(type, source) {
                         } else {
                             globalStatus = 'preview';
                         }
-                        const itemStatus = validItemStatus ? conf.status : globalStatus;
 
+                        const itemStatus = validItemStatus ? conf.status : globalStatus;
                         innerValElement = React.cloneElement(childElement, { status: itemStatus });
                     } else {
                         innerValElement = childElement;

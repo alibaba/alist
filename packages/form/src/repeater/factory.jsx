@@ -57,7 +57,7 @@ export default function CreateRepeater(bindSource, type, source) {
         constructor(props) {
             super(props);
             const {
-                value, status, formConfig, asyncHandler, core, item,
+                value, status, formConfig, asyncHandler, core, item, multiple
             } = props;
             this.value = value || [];
             this.status = status;
@@ -69,6 +69,7 @@ export default function CreateRepeater(bindSource, type, source) {
                 status: this.status,
                 formConfig: this.formConfig,
                 asyncHandler: this.asyncHandler,
+                multiple,
             });
 
             this.superFormProps = {};

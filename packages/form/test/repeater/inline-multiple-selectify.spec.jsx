@@ -314,7 +314,7 @@ describe('Inline Multiple Selectify Repeater', () => {
 
         expect(form.find(Form).children('.table-repeater-row').length).toEqual(1);
         expect(form.find(Form).children('.table-repeater-row').at(0).find(Radio).length).toEqual(1);
-        expect(form.find(Form).children('.table-repeater-row').find('.repeater-table-cell-wrapper').at(1).find('.no-form-item-content-elem').render().text()).toEqual('客户');
+        expect(form.find(Form).children('.table-repeater-row').find('.repeater-table-cell-wrapper').at(1).find('.no-form-item-content-elem input').prop('value')).toEqual('客户');
 
         ReactTestUtils.Simulate.change(form.find('Input.repeater-search').getDOMNode(), {
             target: { value: '' },

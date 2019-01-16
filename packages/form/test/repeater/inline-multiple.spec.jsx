@@ -222,7 +222,7 @@ describe('Inline multiple Repeater', () => {
         form.mount();
 
         expect(form.find(Form).children('.table-repeater-row').length).toEqual(1);
-        expect(form.find(Form).children('.table-repeater-row').find('.repeater-table-cell-wrapper .no-form-item-content-elem').at(0).render().text()).toEqual('客户');
+        expect(form.find(Form).children('.table-repeater-row').find('.repeater-table-cell-wrapper .no-form-item-content-elem input').at(0).prop('value')).toEqual('客户');
 
         ReactTestUtils.Simulate.change(form.find('Input.repeater-search').getDOMNode(), {
             target: { value: '' },

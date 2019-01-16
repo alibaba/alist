@@ -62,6 +62,12 @@ describe('RepeaterCore feat', () => {
     });
 
     it('addMultipleInline', async () => {
+        repeaterCore = new RepeaterCore({
+            value: initialValues,
+            formConfig,
+            status,
+            multiple: true,
+        });
         await repeaterCore.addMultipleInline();
         expect(repeaterCore.formList.length).toEqual(initialValues.length + 1);
         repeaterCore.formList.forEach((form, idx) => {

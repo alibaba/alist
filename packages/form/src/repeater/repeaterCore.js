@@ -6,12 +6,13 @@ const noop = () => {};
 class RepeaterCore {
     constructor(props) {
         const {
-            value, status, formConfig, asyncHandler,
+            value, status, formConfig, asyncHandler, multiple
         } = props;
         this.formList = [];
         this.status = status || 'preview';
         this.formConfig = formConfig || {};
         this.asyncHandler = asyncHandler || {};
+        this.multiple = multiple;
 
         if (Array.isArray(value)) {
             this.formList = value.map(itemValues => this.generateCore(itemValues));
@@ -103,7 +104,7 @@ class RepeaterCore {
             values = { ...userValues };
         }
 
-        return new FormCore({
+        const instance = new FormCore({
             ...this.formConfig,
             onChange: (fks, v, ctx) => {
                 ctx.repeater = this;
@@ -114,6 +115,13 @@ class RepeaterCore {
             globalStatus: this.status,
             disabledSyncChildForm: true,
         });
+
+        if (this.multiple) {
+            instance.$focus = true;
+            instance.$multiple = true;
+        }
+
+        return instance;
     }
 
     hasValidateError = async () => {
@@ -254,8 +262,6 @@ class RepeaterCore {
             if (values) {
                 this.updateValue(values);
             } else {
-                tmp.$focus = true;
-                tmp.$multiple = true;
                 this.formList.push(tmp);
             }
         }
@@ -528,9 +534,6 @@ class RepeaterCore {
                     const formValues = values || {};
                     let core = this.generateCore(formValues);
                     core = cb(core);
-                    if (multiple && !core.$focus) {
-                        core.$focus = true;
-                    }
 
                     return core;
                 });

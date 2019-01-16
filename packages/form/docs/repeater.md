@@ -19,7 +19,7 @@ import dialogWrapper from '../src/dialog/antd';
 // import "antd/dist/antd.css";
 import "./repeater.scss";
 
-const { Modal, Button, Input, Checkbox, Radio, Switch }  = wrapper(Antd);
+const { Select, Modal, Button, Input, Checkbox, Radio, Switch }  = wrapper(Antd);
 const Dialog = dialogWrapper(Antd)
 const { TableRepeater, InlineRepeater, Selectify, ActionButton } = repeater({ Dialog, Button, Input, Checkbox, Radio });
 const { Group: RadioGroup } = Radio;
@@ -29,15 +29,15 @@ const SelectRepeaterInline = Selectify(InlineRepeater);
 
 // 自定义的过滤函数
 function filter(value, key){
-    return value.filter(item => item.drawerName.startsWith(key))
+    return value.filter(item => item.drawerName && item.drawerName.startsWith(key))
 }
 
 function filterX(value, key){
-    return value.filter(item => item.threshold.startsWith(key))
+    return value.filter(item => item.threshold && item.threshold.startsWith(key))
 }
 
 function filterUsername(value, key){
-    return value.filter(item => item.username.startsWith(key))
+    return value.filter(item => item.username && item.username.startsWith(key))
 }
 
 const tCore = new FormCore({
@@ -392,6 +392,10 @@ const checkChangeConfig = {
     }
 }
 
+const rpOnMount = (rp) => {
+    window.rp = rp;
+};
+
 // const hasDelete = false;
 
 ReactDOM.render(<Form defaultMinWidth={false} core={formCore} value={defaultValue}>
@@ -568,11 +572,19 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} value={defaultValu
         </InlineRepeater>
     </FormItem> */}
 
-    <FormItem label="rpnested" name="rpnested">
-        <InlineRepeater multiple renderOper={renderOper} formConfig={checkChangeConfig}>
-            <FormItem label="username" name="username"><Input /></FormItem>
-            <FormItem label="age" name="age"><Input /></FormItem>
-        </InlineRepeater>
+    {/* <If when={(values) => {
+        return values.casewhen === 'a';
+    }}> */}
+        <FormItem label="rpnested" name="rpnested">
+            <InlineRepeater filter={filterUsername} asyncHandler={dasyncHandler} onMount={rpOnMount} multiple renderOper={renderOper} formConfig={checkChangeConfig}>
+                <FormItem label="username" name="username"><Input /></FormItem>
+                <FormItem label="age" name="age"><Input /></FormItem>
+            </InlineRepeater>
+        </FormItem>
+    {/* </If> */}
+
+    <FormItem label="casewhen" name="casewhen">
+        <Select options={[{ label: 'a', value: 'a' }, { label: 'b', value: 'b' }]} />
     </FormItem>
 
     {/* <FormItem name="rulesy">
