@@ -18,12 +18,17 @@ cache:
   directories:
     - node_modules
 
-deploy:
-  provider: pages
-  skip-cleanup: true
-  github-token: 3c2b37a0db521ddd11745edffed4e4d73aabb3cc  # Set in the settings page of your repository, as a secure variable
-  keep-history: true
-  on:
-    branch: docs
+# deploy:
+#   provider: pages
+#   skip-cleanup: true
+#   github-token: 3c2b37a0db521ddd11745edffed4e4d73aabb3cc  # Set in the settings page of your repository, as a secure variable
+#   keep-history: true
+#   local_dir: build
+#   on:
+#     branch: docs
   
+
+env:
+  global:
+    - GH_TOKEN: 3c2b37a0db521ddd11745edffed4e4d73aabb3cc
 
