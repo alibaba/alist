@@ -11,7 +11,7 @@ addons:
 script:  
   - npm run proxy
   - CI=false npm run build
-  # - npm run gh
+  - npm run gh
 
 cache:
   yarn: true
@@ -30,5 +30,7 @@ cache:
 
 env:
   global:
+    - GH_REF: github.com/alibaba/nopage.git
+    - secure: "WjadYBRJdzztZiLIXPNAbXObQdbgFuRPZrDTm9kcY/qvxLuOmD+c3qlWS26HIYsCOOtTCDVfRLCZaFjF3aV8Ia6ofVgtOlKfIEY9dHRziclL08kNGahT/XdKg+7and4NMquj8SsmL6/O6npqEaCabEvySpg8L44Vy3YJSt64a0t3AL6Yjl0OhLqaQPJYL7F2LzlQ8Pam4hGTSBvhd/3qJoIeVXJpwU+bfuiGxFrSjIwePBxkNZSqrmeEvKhhra2SZNN10THzTafW1Di4ACAsVK2hjfBnj8XEZ/TOujxmcxNt/DpAZTKDKMHxwsVXIA4q2dHB0wLAV+4KtDLOoIDOVmuItlpSPS6k24J6i7oLt/jYVYM6LxtE/tJJcXaOgUurw9oaPPD4rABmWPC0bl62bO3vPJA5ukGmaS/tZYwsWVsfX7GxZeVIchHKTBJPksVzCV2OjNWC0mYD6QzIkmEVYl4mulL/1W7LKAjyB+c8ofrP1Rn4fe3altFwVMfGj/97rf74RCB6BMDIK0HyLysW9C1jVsjPjNyJ/6/a1WyYNFZAkp1WxHvAvfATiiKQzcnSg3mQRqPnGnJcxpTknSdosQCeQxvIo3KXJR35Yw+VMtY459IZhGUsiQCqSkm4qNL8L9N0zYcKZEUQeqAkmkrcFf69PFhMzy4WV4GlNJv6xMA="
     - GH_TOKEN: 3c2b37a0db521ddd11745edffed4e4d73aabb3cc
 
