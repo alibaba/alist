@@ -11,7 +11,7 @@ addons:
 script:  
   - npm run proxy
   - CI=false npm run build
-  - npm run gh
+  # - npm run gh
 
 cache:
   yarn: true
