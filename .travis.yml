@@ -9,8 +9,8 @@ addons:
 
 #运行的脚本命令
 script:  
-  - npm run proxy
-  - CI=false npm run build
+  # - npm run proxy
+  # - CI=false npm run build
   # - npm run gh
 
 cache:
@@ -21,7 +21,7 @@ cache:
 deploy:
   provider: pages
   skip-cleanup: true
-  github-token: 3c2b37a0db521ddd11745edffed4e4d73aabb3cc  # Set in the settings page of your repository, as a secure variable
+  github-token: 06ab82907cf7af8162c1a9e031f84ba39fcf6e9c  # Set in the settings page of your repository, as a secure variable
   keep-history: true
   local_dir: build
   on:
