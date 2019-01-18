@@ -389,6 +389,9 @@ const renderOper = (btnList, core) => {
 const checkChangeConfig = {
     onChange: (fireKey, values, ctx) => {
         console.log('fireKey', fireKey, values);
+    },
+    initialized: (ctx) => {
+        debugger;
     }
 }
 

@@ -96,7 +96,7 @@ class RepeaterCore {
 
 
     generateCore = (raw) => {
-        const { values: userValues, onChange = noop } = this.formConfig;
+        const { values: userValues, onChange = noop, initialized = noop } = this.formConfig;
         let values = {};
         if (raw) {
             values = { ...raw };
@@ -110,6 +110,11 @@ class RepeaterCore {
                 ctx.repeater = this;
                 ctx.repeaterIndex = this.formList.findIndex(item => item.id === ctx.id);
                 onChange(fks, v, ctx);
+            },
+            initialized: (ctx) => {
+                ctx.repeater = this;
+                ctx.repeaterIndex = this.formList.findIndex(item => item.id === ctx.id);
+                initialized(ctx);
             },
             values,
             globalStatus: this.status,
