@@ -38,12 +38,35 @@ function Select(props){
 }
 let children = [
 (() => {
-    return <Form direction="vertical">
-        <h3>表单垂直布局</h3>
-       <FormItem label="username" name="username" required inline><Input /></FormItem>
-       <FormItem label="age" name="age" required inline><Input /></FormItem>
-       <FormItem label="gender" name="gender" required><Input /></FormItem>
-    </Form>
+    return <div>
+        <Form direction="vertical">
+            <h3>表单垂直布局(vertical默认)</h3>
+            <FormItem label="username" name="username" required ><Input /></FormItem>
+            <FormItem label="age" name="age" required ><Input /></FormItem>
+            <FormItem label="gender" name="gender" required><Input /></FormItem>
+        </Form>
+
+        <Form direction="horizontal">
+            <h3>表单水平布局(horizontal)</h3>
+            <FormItem label="username" name="username" required ><Input /></FormItem>
+            <FormItem label="age" name="age" required ><Input /></FormItem>
+            <FormItem label="gender" name="gender" required><Input /></FormItem>
+        </Form>
+
+        <Form direction="vertical-top">
+            <h3>表单垂直布局label居上(vertical-top)</h3>
+            <FormItem label="username" name="username" required ><Input /></FormItem>
+            <FormItem label="age" name="age" required ><Input /></FormItem>
+            <FormItem label="gender" name="gender" required><Input /></FormItem>
+        </Form>
+
+        <Form direction="vertical-top">
+            <h3>表单垂直布局label居上(vertical-top) 子元素inline</h3>
+            <FormItem label="username" name="username" required inline><Input /></FormItem>
+            <FormItem label="age" name="age" required inline><Input /></FormItem>
+            <FormItem label="gender" name="gender" required><Input /></FormItem>
+        </Form>
+    </div>
 })(),
 // (() => {
 //     const validateConfig = {

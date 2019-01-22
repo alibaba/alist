@@ -23,6 +23,7 @@
 
     .no-form-item.no-form-item-no-default-width {
         .no-form-item-content-elem > * {
+            min-width: auto;
             min-width: unset;
         }
     }
@@ -152,28 +153,23 @@
     border: 1px solid red;
 }
 
-// 纵向布局
-// .no-form-ver,
-// .no-form-vertical {
-//     .no-form-item-control{
-//         display: block;
-//     }
-//     .no-form-item-label{
-//         display: block;
-//         text-align: left;
-//     }
-//     .no-form-item-inline {
-//         margin-right: 16px;
-//     }
-// }
+// 纵向 + label靠上布局
+.no-form-vertical-top {
+    .no-form-item-control{
+        display: block;
+    }
+    .no-form-item-label{
+        display: block;
+        text-align: left;
+    }
+    .no-form-item-inline {
+        margin-right: 16px;
+    }
+}
 
 // 水平布局
 .no-form-hoz,
 .no-form-horizontal {
-    .no-form-item-inset {
-        // min-width: 250px;
-    }
-
     .no-form-item + .no-form-item {
         margin: 0 16px 12px 0;        
     }
@@ -189,6 +185,7 @@
     .no-form-item-has-layout {
         .no-form-item-content{
             .no-form-item-content-elem > * {
+                min-width: auto;
                 min-width: unset;
             }
         }

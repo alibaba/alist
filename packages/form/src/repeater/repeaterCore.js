@@ -121,6 +121,7 @@ class RepeaterCore {
             disabledSyncChildForm: true,
         });
 
+        instance.repeater = this;
         if (this.multiple) {
             instance.$focus = true;
             instance.$multiple = true;
@@ -400,6 +401,8 @@ class RepeaterCore {
         let item = null;
         if (typeof res === 'boolean') {
             success = res;
+        } else if (res === undefined) {
+            success = true;
         } else if (Object.prototype.toString.call(res) === '[object Object]') {
             const { success: rs, item: ri, values: rv } = res || {};
             success = rs;
