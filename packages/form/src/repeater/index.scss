@@ -2,6 +2,12 @@
     display: table-row;
 }
 
+.table-repeater-wrapper-full {
+    table {
+        width: 100%;
+    }
+}
+
 .table-repeater-wrapper {
     margin-bottom: 12px;
 

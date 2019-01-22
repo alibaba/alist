@@ -401,7 +401,7 @@ const rpOnMount = (rp) => {
 
 // const hasDelete = false;
 
-ReactDOM.render(<Form defaultMinWidth={false} core={formCore} value={defaultValue}>
+ReactDOM.render(<Form direction="vertical-top" defaultMinWidth={false} core={formCore} value={defaultValue}>
     {/* <FormItem name="tabledemo" defaultValue={[{ username: 'a' }, { username: 'b' }]}>
         <TableRepeater hasDeleteConfirm={false} hasOrder filter={filterUsername} formConfig={formConfig}>
             <FormItem status="hidden" label="order" renderCell={(_, { index: order }) => <div>{order+1}</div> } />
@@ -578,8 +578,8 @@ ReactDOM.render(<Form defaultMinWidth={false} core={formCore} value={defaultValu
     {/* <If when={(values) => {
         return values.casewhen === 'a';
     }}> */}
-        <FormItem label="rpnested" name="rpnested">
-            <InlineRepeater filter={filterUsername} asyncHandler={dasyncHandler} onMount={rpOnMount} multiple renderOper={renderOper} formConfig={checkChangeConfig}>
+        <FormItem label="rpnested" name="rpnested" full>
+            <InlineRepeater full filter={filterUsername} asyncHandler={dasyncHandler} onMount={rpOnMount} multiple renderOper={renderOper} formConfig={checkChangeConfig}>
                 <FormItem status="hidden" label="order" renderCell={(_, { index: order }) => {
                     console.log('===', _);
                     return <div>{order+1}</div>;

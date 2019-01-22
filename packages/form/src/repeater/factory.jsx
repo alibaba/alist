@@ -40,6 +40,7 @@ export default function CreateRepeater(bindSource, type, source) {
             multiple: PropTypes.bool,
             filter: PropTypes.func,
             onMount: PropTypes.func,
+            full: PropTypes.bool,
             value: PropTypes.oneOfType([
                 PropTypes.array,
                 PropTypes.object,
@@ -50,6 +51,7 @@ export default function CreateRepeater(bindSource, type, source) {
 
         static defaultProps = {
             onChange: () => {},
+            full: false,
             status: 'edit',
             locale: 'en', // en | zh
         };

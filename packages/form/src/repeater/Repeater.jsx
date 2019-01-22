@@ -258,6 +258,7 @@ export default function bind(type, source) {
                 repeaterCore,
                 top,
                 bottom,
+                full = false,
             } = this.props;
 
             const { addText, operateText } = getText();
@@ -313,8 +314,9 @@ export default function bind(type, source) {
             if (top && (React.isValidElement(top) || typeof top === 'string')) topElement = typeof top === 'string' ? <div>{top}</div> : top;
             if (bottom && typeof bottom === 'function') bottomElement = bottom();
             if (bottom && (React.isValidElement(bottom) || typeof bottom === 'string')) bottomElement = typeof bottom === 'string' ? <div>{bottom}</div> : bottom;
+            const fullcls = full ? 'table-repeater-wrapper-full' : '';
 
-            return (<div className={`table-repeater-wrapper ${className || ''}`} style={style}>
+            return (<div className={`table-repeater-wrapper ${fullcls} ${className || ''}`} style={style}>
                 {topElement}
                 {this.renderFilter()}
                 {addPosition === 'top' ? addBtnEle : null}
