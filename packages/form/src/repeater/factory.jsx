@@ -90,7 +90,7 @@ export default function CreateRepeater(bindSource, type, source) {
             const { afterSetting } = this.asyncHandler;
 
             if (afterSetting && Array.isArray(formList) && formList.length > 0) {
-                afterSetting({ type: 'initialize', multiple }, formList);
+                afterSetting({ type: 'initialize', multiple }, this.repeaterCore);
             }
 
             if (onMount) {

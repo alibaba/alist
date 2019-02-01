@@ -89,8 +89,6 @@ class Example extends React.Component {
         const maxMin = current && !isNaN(current.min) ? Number(current.min) : null;
         const maxMax = after && !isNaN(after.min) ? Number(after.min) : null;
 
-        console.log(index, 'minMin', minMin, 'minMax', minMax, 'maxMin', maxMin, 'maxMax', maxMax, current);
-
         return {
             min: [
                 minMin ? { type: 'number', min: minMin, message: `[${index}]不能小于${minMin}` } : empty,
