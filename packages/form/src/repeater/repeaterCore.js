@@ -464,6 +464,7 @@ class RepeaterCore {
             try {
                 result = await this.asyncHandler.remove(lastValues, lastCore, index);
             } catch (e) {
+                console.error('e', e);
                 result = false;
             }
 
@@ -564,6 +565,10 @@ class RepeaterCore {
 
                     return old;
                 });
+            }
+
+            if (this.asyncHandler.afterSetting) {
+                this.asyncHandler.afterSetting(event, this);
             }
         }
     }

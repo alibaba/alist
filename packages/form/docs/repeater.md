@@ -579,20 +579,20 @@ ReactDOM.render(<Form direction="vertical-top" defaultMinWidth={false} core={for
         return values.casewhen === 'a';
     }}> */}
         <FormItem label="rpnested" name="rpnested" full>
-            <InlineRepeater full filter={filterUsername} asyncHandler={dasyncHandler} onMount={rpOnMount} multiple renderOper={renderOper} formConfig={checkChangeConfig}>
+            <InlineRepeater full filter={filterUsername} asyncHandler={dasyncHandler} onMount={rpOnMount} renderOper={renderOper} formConfig={checkChangeConfig}>
                 <FormItem status="hidden" label="order" renderCell={(_, { index: order }) => {
                     console.log('===', _);
                     return <div>{order+1}</div>;
                 } } />
                 <FormItem label="username" name="username"><Input /></FormItem>
-                <FormItem label="age" name="age"><Input /></FormItem>
+                <FormItem status="preview" label="age" name="age"><Input /></FormItem>
             </InlineRepeater>
         </FormItem>
     {/* </If> */}
 
-    <FormItem label="casewhen" name="casewhen">
+    {/* <FormItem label="casewhen" name="casewhen">
         <Select options={[{ label: 'a', value: 'a' }, { label: 'b', value: 'b' }]} />
-    </FormItem>
+    </FormItem> */}
 
     {/* <FormItem name="rulesy">
         <InlineRepeater {...extraProps} formConfig={formConfig} filter={filterX} hasDelete>

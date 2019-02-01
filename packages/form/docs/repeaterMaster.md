@@ -17,18 +17,13 @@ import wrapper from '../src/wrapper/antd';
 import dialogWrapper from '../src/dialog/antd';
 import "./repeater.scss";
 
-const { Button, Input, Radio, Checkbox, Select }  = wrapper(Antd);
+const { Button, Input, Radio, Checkbox, Select, InputNumber }  = wrapper(Antd);
 const Dialog = dialogWrapper(Antd)
 const { InlineRepeater, Selectify, ActionButton } = repeater({ Dialog, Button, Input, Checkbox, Radio });
 
 const validateConfig = {
     username: { type: 'string', required: true },
 };
-
-const repeatValues = [
-    { username: 'lily', gender: 'female', id: 'lily' },
-    { username: 'bobby', gender: 'male', id: 'bobby' }
-];
 
 const publicCountry = [
     { label: 'US', value: 'US' },
@@ -39,15 +34,11 @@ const publicCountry = [
     { label: 'EG', value: 'EG' },
     { label: 'DE', value: 'DE' },
 ];
-
-const sleep = (mills) => new Promise(resolve => setTimeout(resolve, mills));
-
 class Example extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.core = new FormCore({
             values: {
-                // countryRepeater: [],
                 countryRepeater: [
                     { country: ['US'] },
                     { country: ['AU', 'GB'] }
@@ -60,60 +51,61 @@ class Example extends React.Component {
             validateConfig,
             autoValidate: true,
         };
-
-        // TODO 影响设置值
-        // this.core.setItemProps('countryRepeater', { hasAdd: (restCountry.length !== 0) });
-        this.asyncHandler = {
-            add: (values, ctx, index) => {
-                const { repeater } = ctx;
+        
+        this.publicHandler = {
+            afterSetting: (event, repeater) => {
                 const { formList } = repeater;
-                const restCountry = this.getRestCountry(formList);
-
-                // TODO: 不生效
-                ctx.setItemProps('country', { options: restCountry });
-
-                this.core.setItemValue('restCountryDEMO', restCountry);
-            },
-            update: (values, ctx, index, keys) => {
-                if (keys.indexOf('country') !== -1) {
-                    const { repeater } = ctx;
-                    const { formList } = repeater;
-                    const options = this.getRestCountry(formList);
-                    ctx.setItemProps('country', { options });
-
-                    const repeaterIndex = formList.findIndex(item => item.id === ctx.id);
-                    formList.forEach((fc, fcIndex) => {
-                        if (fcIndex !== repeaterIndex) {
-                            fc.setItemProps('country', { options });
-                        }
-                    });
-
-                    this.core.setItemValue('restCountryDEMO', restCountry);
-                }
-            },
-            remove: (values, ctx, index) => {
-                const { repeater } = ctx;
-                const { formList } = repeater;
-                const otherList = formList.filter(fc => fc.id !== ctx.id);
-                const options = this.getRestCountry(otherList);
-                otherList.forEach(fc => {
-                    fc.setItemProps('country', { options });
+                const options = this.getRestCountry(formList);
+                formList.forEach((fc) => {
+                    fc.setItemProps('country', { options })
                 });
+                this.core.setItemValue('restCountryDEMO', options);
+                this.core.setItemProps('countryRepeater', { hasAdd: (options.length !== 0) });
+            }
+        };
 
-                this.core.setItemValue('restCountryDEMO', restCountry);
-            },
+        this.ruleHandler = {
+            afterSetting: (event, repeater) => {
+                const { formList } = repeater;
+                const values = repeater.getValues();
+
+                formList.forEach((ctx, index) => {
+                    const validateConfig = this.getValidateConfig(values, index);
+                    ctx.setValidateConfig(validateConfig);
+                });
+            }
         };
     }
 
-    syncCountry = () => {
+    getValidateConfig = (values, index) => {
+        const empty = { type: 'number' };
+        const before = values[index - 1];
+        const after = values[index + 1];
+        const current = values[index];
 
+        const minMin = before && !isNaN(before.max) ? Number(before.max) : null;
+        const minMax = current && !isNaN(current.max) ? Number(current.max) : null;
+
+        const maxMin = current && !isNaN(current.min) ? Number(current.min) : null;
+        const maxMax = after && !isNaN(after.min) ? Number(after.min) : null;
+
+        console.log(index, 'minMin', minMin, 'minMax', minMax, 'maxMin', maxMin, 'maxMax', maxMax, current);
+
+        return {
+            min: [
+                minMin ? { type: 'number', min: minMin, message: `[${index}]不能小于${minMin}` } : empty,
+                minMax ? { type: 'number', max: minMax, message: `[${index}]不能大于${minMax}` } : empty
+            ],
+            max: [
+                maxMin ? { type: 'number', min: maxMin, message: `[${index}]不能小于${maxMin}` } : empty,
+                maxMax ? { type: 'number', max: maxMax, message: `[${index}]不能大于${maxMax}` } : empty
+            ]
+        }
     }
 
     getRestCountry = (formList) => {
         let restCountry = [...publicCountry];
-
-        // 公共池去除本次已选取的
-        formList.forEach(fc => {
+        formList.forEach(fc => { // 公共池去除本次已选取的
             const countryCode = fc.getItemValue('country') || [];
             restCountry = restCountry.filter(r => countryCode.indexOf(r.value) === -1);
         });
@@ -123,36 +115,27 @@ class Example extends React.Component {
 
     render() {
         return (<Form core={this.core} layout={{ label: 6, control: 18 }} defaultMinWidth={false}>
-            <div className="app-wrapper-2">
-                <div className="example-item-wrapper">
-                    <div className="example-title">Master Repeater Examples</div>                    
-                    {/* <FormItem label="Public Country Repeater" name="countryRepeater">
-                        <InlineRepeater asyncHandler={this.asyncHandler} multiple formConfig={this.formConfig}>
-                            <FormItem label="country" name="country">
-                                <Select mode="multiple" options={[]} />
-                            </FormItem>
-                        </InlineRepeater>
-                    </FormItem> */}
-                    <FormItem label="Public Country Repeater" name="countryRepeater">
-                        <InlineRepeater asyncHandler={this.asyncHandler} multiple>
-                            <FormItem label="country" name="country">
-                                <Select mode="multiple" options={publicCountry} />
-                            </FormItem>
-                            <FormItem label="username" name="username">
-                                <Input />
-                            </FormItem>
-                        </InlineRepeater>
+            <div className="example-title">Master Repeater Examples</div>
+            {/* public source */}
+            {/* <FormItem label="Public Country Repeater" name="countryRepeater">
+                <InlineRepeater asyncHandler={this.publicHandler} multiple>
+                    <FormItem label="country" name="country">
+                        <Select mode="multiple" options={publicCountry} />
                     </FormItem>
-                    <FormItem render={(values) => {
-                        const { restCountryDEMO } = values;
-                        console.log('values', values);
-                        const availableCountry = (restCountryDEMO || []).map(item => item.label).join(', ');
-                        return <div>
-                            Available Country: <span style={{ color: 'red' }}>{availableCountry}</span>
-                        </div>
-                    }} />
-                </div>
-            </div>
+                </InlineRepeater>
+            </FormItem>
+            <FormItem render={(values) => {
+                const availableCountry = (values.restCountryDEMO || []).map(item => item.label).join(', ');
+                return <div>Available Country: <span style={{ color: 'red' }}>{availableCountry}</span></div>
+            }} /> */}
+
+            {/* rule config */}
+            <FormItem label="Rule Repeater" name="ruleRepeater">
+                <InlineRepeater asyncHandler={this.ruleHandler} multiple formConfig={{ autoValidate: true }}>
+                    <FormItem label="min" name="min"><InputNumber /></FormItem>
+                    <FormItem label="max" name="max"><InputNumber /></FormItem>
+                </InlineRepeater>
+            </FormItem>
         </Form>);
     }
 }

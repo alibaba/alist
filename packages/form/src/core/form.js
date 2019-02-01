@@ -12,7 +12,7 @@ const noop = () => {};
 class Form {
     constructor(option = {}) {
         const {
-            validateConfig, onChange, value, values, status, globalStatus, interceptor, uniqueId,
+            validateConfig, onChange, props, value, values, status, globalStatus, interceptor, uniqueId,
             initialized,
             autoValidate,
             disabledSyncChildForm,
@@ -35,7 +35,7 @@ class Form {
         // 基础属性
         this.value = Object.assign({}, (values || value || initValues || {}));
         this.status = isObject(status) ? status : {}; // 避免jsx传入单值status
-        this.props = {};
+        this.props = Object.assign({}, props || {});
         this.error = {};
         this.public = {}; // 公共属性，由最顶层form维护
 
@@ -451,7 +451,12 @@ class Form {
             this.value[mrOption.name] = mrOption.value;
             // eslint-disable-next-line
             this.status[mrOption.name] = mrOption.status = status || this.status[name] || this.globalStatus;
-            this.props[mrOption.name] = mrOption.props = props || {};
+
+            const presetProps = {
+                ...(this.props[mrOption.name] || {}),
+                ...(props || {}),
+            };
+            this.props[mrOption.name] = mrOption.props = presetProps;
             this.error[mrOption.name] = mrOption.error = error || null;
 
             const item = new ItemCore({

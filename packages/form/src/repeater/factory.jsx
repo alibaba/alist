@@ -59,10 +59,11 @@ export default function CreateRepeater(bindSource, type, source) {
         constructor(props) {
             super(props);
             const {
-                value, status, formConfig, asyncHandler, core, item, multiple
+                value, status, formConfig, asyncHandler, core, item, multiple,
             } = props;
             this.value = value || [];
             this.status = status;
+            this.multiple = multiple;
             this.formConfig = formConfig || {};
             this.asyncHandler = asyncHandler || {};
             this.manualEvent = this.genManualEvent();
@@ -84,6 +85,14 @@ export default function CreateRepeater(bindSource, type, source) {
 
         componentDidMount() {
             const { onMount } = this.props;
+
+            const { multiple, formList } = this.repeaterCore;
+            const { afterSetting } = this.asyncHandler;
+
+            if (afterSetting && Array.isArray(formList) && formList.length > 0) {
+                afterSetting({ type: 'initialize', multiple }, formList);
+            }
+
             if (onMount) {
                 onMount(this.repeaterCore);
             }
