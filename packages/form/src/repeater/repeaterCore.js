@@ -6,13 +6,14 @@ const noop = () => {};
 class RepeaterCore {
     constructor(props) {
         const {
-            value, status, formConfig, asyncHandler, multiple
+            value, status, formConfig, asyncHandler, multiple, multipleSyncHandler
         } = props;
         this.formList = [];
         this.status = status || 'preview';
         this.formConfig = formConfig || {};
         this.asyncHandler = asyncHandler || {};
         this.multiple = multiple;
+        this.multipleSyncHandler = multipleSyncHandler || (x => x);
 
         if (Array.isArray(value)) {
             this.formList = value.map(itemValues => this.generateCore(itemValues));
@@ -104,7 +105,7 @@ class RepeaterCore {
             values = { ...userValues };
         }
 
-        const instance = new FormCore({
+        let instance = new FormCore({
             ...this.formConfig,
             onChange: (fks, v, ctx) => {
                 ctx.repeater = this;
@@ -125,6 +126,8 @@ class RepeaterCore {
         if (this.multiple) {
             instance.$focus = true;
             instance.$multiple = true;
+
+            instance = this.multipleSyncHandler(instance);
         }
 
         return instance;
@@ -532,7 +535,7 @@ class RepeaterCore {
     }
 
     // 更新value
-    updateValue = async (valueArr, event, cb = x => x) => {
+    updateValue = async (valueArr, event) => {
         const {
             type, index, multiple, inline, changeKeys, forceRegenerate,
         } = event || {};
@@ -541,8 +544,7 @@ class RepeaterCore {
             if (!type || forceRegenerate) {
                 this.formList = valueArr.map((values) => {
                     const formValues = values || {};
-                    let core = this.generateCore(formValues);
-                    core = cb(core);
+                    const core = this.generateCore(formValues);
 
                     return core;
                 });
@@ -561,7 +563,7 @@ class RepeaterCore {
                         }
                     }
 
-                    old = cb(old);
+                    // old = cb(old);
 
                     return old;
                 });

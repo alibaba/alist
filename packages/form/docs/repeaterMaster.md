@@ -43,6 +43,11 @@ class Example extends React.Component {
                     { country: ['US'] },
                     { country: ['AU', 'GB'] }
                 ],
+                ruleRepeater: [
+                    { min: 5, max: 10 },
+                    { min: 24, max: 39 },
+                    { min: 45, max: 60 },
+                ]
             },
         });
 
@@ -54,6 +59,7 @@ class Example extends React.Component {
         
         this.publicHandler = {
             afterSetting: (event, repeater) => {
+                console.log('event', event, 'repeater', repeater);
                 const { formList } = repeater;
                 const options = this.getRestCountry(formList);
                 formList.forEach((fc) => {
@@ -66,12 +72,19 @@ class Example extends React.Component {
 
         this.ruleHandler = {
             afterSetting: (event, repeater) => {
+                const { type, index: modifyIndex } = event;
                 const { formList } = repeater;
                 const values = repeater.getValues();
+
+                console.log('event', event, repeater);
 
                 formList.forEach((ctx, index) => {
                     const validateConfig = this.getValidateConfig(values, index);
                     ctx.setValidateConfig(validateConfig);
+                    if (ctx.timer) clearTimeout(ctx.timer);
+                    ctx.timer = setTimeout(() => {
+                        ctx.validate();    
+                    }, 300);
                 });
             }
         };
@@ -88,6 +101,8 @@ class Example extends React.Component {
 
         const maxMin = current && !isNaN(current.min) ? Number(current.min) : null;
         const maxMax = after && !isNaN(after.min) ? Number(after.min) : null;
+
+        console.log(`[${index}]`, [minMin, minMax], [maxMin, maxMax]);
 
         return {
             min: [
@@ -115,17 +130,18 @@ class Example extends React.Component {
         return (<Form core={this.core} layout={{ label: 6, control: 18 }} defaultMinWidth={false}>
             <div className="example-title">Master Repeater Examples</div>
             {/* public source */}
-            {/* <FormItem label="Public Country Repeater" name="countryRepeater">
+            <FormItem label="Public Country Repeater" name="countryRepeater">
                 <InlineRepeater asyncHandler={this.publicHandler} multiple>
                     <FormItem label="country" name="country">
                         <Select mode="multiple" options={publicCountry} />
                     </FormItem>
+                    <FormItem label="min" name="min"><InputNumber /></FormItem>
                 </InlineRepeater>
             </FormItem>
             <FormItem render={(values) => {
                 const availableCountry = (values.restCountryDEMO || []).map(item => item.label).join(', ');
                 return <div>Available Country: <span style={{ color: 'red' }}>{availableCountry}</span></div>
-            }} /> */}
+            }} />
 
             {/* rule config */}
             <FormItem label="Rule Repeater" name="ruleRepeater">

@@ -73,6 +73,7 @@ export default function CreateRepeater(bindSource, type, source) {
                 formConfig: this.formConfig,
                 asyncHandler: this.asyncHandler,
                 multiple,
+                multipleSyncHandler: this.handleCoreUpdate,
             });
 
             this.superFormProps = {};
@@ -126,7 +127,7 @@ export default function CreateRepeater(bindSource, type, source) {
 
             // 是否强制刷新所有core
             manualEvent.forceRegenerate = forceRegenerate;
-            this.repeaterCore.updateValue(this.value, manualEvent, this.handleCoreUpdate);
+            this.repeaterCore.updateValue(this.value, manualEvent);
             this.forceUpdate();
             this.manualEvent = {};
         }
