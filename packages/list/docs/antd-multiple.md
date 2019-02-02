@@ -91,7 +91,6 @@ class NoList extends React.Component {
               <Filter.Item label="age" name="age"><Input /></Filter.Item>
               <Filter.Item label="date" name="date"><DatePicker placeholder="placeholder"/></Filter.Item>
             </Filter>
-
             {this.renderTable('section1')}
             {this.renderTable('section2')}
             {this.renderTable('section3')}

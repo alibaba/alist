@@ -1,18 +1,18 @@
 const umdConfig = [
     {
-        entry: 'src/antd.jsx',
+        entry: 'src/wrapper/antd.jsx',
         output: {
             filename: 'antd.js',
             library: 'antdList',
         },
     },
-    // {
-    //     entry: 'src/next.jsx',
-    //     output: {
-    //         filename: 'next.js',
-    //         library: 'nextList',
-    //     },
-    // },
+    {
+        entry: 'src/wrapper/next.jsx',
+        output: {
+            filename: 'next.js',
+            library: 'nextList',
+        },
+    },
 ];
 
 module.exports = umdConfig;

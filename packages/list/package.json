@@ -1,6 +1,6 @@
 {
   "name": "nolist",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "description": "nolist",
   "builder": {
     "entry": [
@@ -16,7 +16,8 @@
     "build": "nobuilder build",
     "profile": "nobuilder profile",
     "merge-wrapper": "node scripts/merge ",
-    "prepare": "npm run lib && npm run merge-wrapper"
+    "deploy": "npm run lib && npm run build",
+    "prepare": "npm run deploy && npm run merge-wrapper"
   },
   "dependencies": {
     "@alifd/next": "^1.11.3",

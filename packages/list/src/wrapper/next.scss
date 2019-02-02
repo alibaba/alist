@@ -1,5 +1,6 @@
-@import "~nowrapper/lib/next/index.scss";
-@import '../index.scss';
+@import '~noform/lib/index.scss';
+@import '~nowrapper/lib/next/index.scss';
+@import './index.scss';
 
 .next-table-body {
     tr:last-child {
