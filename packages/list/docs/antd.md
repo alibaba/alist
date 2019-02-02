@@ -40,7 +40,7 @@ const editForm = (val, index, record) => {
         message.success('编辑成功');
         hide();
     },
-    content: <Form handleError={handleError} layout={{ label: 8, control: 16 }} core={core} >
+    content: <Form layout={{ label: 8, control: 16 }} core={core} >
         <FormItem name="id" label="id"><Input /></FormItem>
         <FormItem name="username" label="username"><Input /></FormItem>
         <FormItem name="age" label="age"><Input /></FormItem>
@@ -55,9 +55,9 @@ const renderOperation = (text, record, idx) => {
   return <a href="javascript:void(0)" onClick={editForm}>编辑</a>
 };
 
-const customRender = ({ search, clear, builtin, dynamicBuiltin }) => {
+const customRender = ({ search, clear, builtin, DynamicBuiltin }) => {
   return <div>
-    {dynamicBuiltin({ inline: true, autoWidth: true, style: { display: 'inline-block', width: 'auto' } })}
+    <DynamicBuiltin />
     <a href="javascript:void(0)" onClick={search}>search</a>
   </div>
 }
@@ -66,8 +66,9 @@ class NoList extends React.Component {
   render() {
     return (
       <div style={{ margin: '24px' }}>
-        <List url="/docs/mock.json" onError={handleError} onMount={onMount} defaultFilterValues={{}}>
-            <Filter render={customRender}>
+        <List url="/docs/mock.json" onError={handleError} onMount={onMount}>
+            {/* <Filter render={customRender}> */}
+            <Filter noLayout>
               <Filter.Item label="username" name="username"><Input placeholder="placeholder" /></Filter.Item>
               <Filter.Item label="age" name="age"><Input /></Filter.Item>
               <Filter.Item label="date" name="date"><DatePicker placeholder="placeholder"/></Filter.Item>

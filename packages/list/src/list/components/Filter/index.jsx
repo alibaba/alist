@@ -59,22 +59,26 @@ class Filter extends React.Component {
         const { children, render } = this.props;
         const { cols, autoWidth } = this.state;        
         const core = gridCore.filterCore;
-        const filter = ({ autoWidth, cols, className, direction = 'hoz', ...others }) => {
+        const FilterBuiltin = (props) => {
+            const { autoWidth, cols, inset = false, className, direction = 'hoz', style: propStyle, ...others } = props;
             const filterContextValues = { cols, autoWidth };
             const cls = className ? `${className} filter-area` : 'filter-area';
-            return <Form colon={false} className={cls} direction={direction} inset={!autoWidth} core={core} {...others}>
+            const defaultStyle = { display: 'inline-block', width: 'auto' };
+            const style = { ...defaultStyle, ...(propStyle || {})};
+
+            return <Form colon={false} className={cls} direction={direction} inset={inset} style={style} core={core} {...others}>
                 <FilterContext.Provider value={filterContextValues}>
                     {children}
                 </FilterContext.Provider>
             </Form>;
         };
 
-        const builtin = filter({ cols, autoWidth });
+        const builtin = <FilterBuiltin cols={cols} autoWidth={autoWidth} inset={true} />;
         if (render && typeof render === 'function') {
             return render({
                 children,
                 builtin,
-                dynamicBuiltin: filter,
+                DynamicBuiltin: FilterBuiltin,
                 ctx: gridCore,
                 search: this.search,
                 clear: this.clear,
@@ -98,7 +102,7 @@ class Filter extends React.Component {
 }
 
 const FilterItem = (props) => {
-    const { autoWidth, cols, colSpan = 1, noLayout = false } = props;
+    const { autoWidth = true, cols, colSpan = 1, noLayout = false } = props;
     const style = props.style || {};    
     const itemStyle = { ...style, display: 'inline-block', paddingRight: '12px', marginRight: 0 };
     if (noLayout) {
