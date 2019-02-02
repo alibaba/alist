@@ -22,8 +22,8 @@ export default class GridCore {
         }
     }
 
-    updateProps(props){
-        if(!props){
+    updateProps(props) {
+        if (!props) {
             throw new Error('props is null!!!');
         }
         this.resetPage();
@@ -32,13 +32,13 @@ export default class GridCore {
         this.fetch();
     }
 
-    initProps(props = {}){
+    initProps(props = {}) {
         const {
-            dataSource, query, url,method, params,
+            dataSource, query, url, method, params,
             pageSize, currentPage, total,
             defaultQuery = innerDefaultQuery,
-            onError, autoLoad,formatBefore,formatAfter,formatFilter,
-            defaultFilterValues
+            onError, autoLoad, formatBefore, formatAfter, formatFilter,
+            defaultFilterValues, multiple,
         } = props;
 
         if ('dataSource' in props && dataSource) this.mode = 'dataSource'; // priority: low(1)
@@ -59,6 +59,8 @@ export default class GridCore {
         this.formatAfter = formatAfter;
         this.formatFilter = formatFilter;
         this.defaultFilterValues = defaultFilterValues;
+        this.multipleData = dataSource; // 多实体数据
+        this.multiple = multiple || false; // 多实体模式
     }
 
     setDataSource = (dataSource) => { // 设置dataSource，dataSource模式下需要改变分页数据
@@ -137,7 +139,7 @@ export default class GridCore {
             },
             _t: new Date().getTime(),
         };
-        
+
         this.isLoading = true;
         this.refreshTable();
         // 默认流程，包含前置格式化和结果格式化
@@ -146,7 +148,7 @@ export default class GridCore {
 
         // 异常流，需要保证请求方法失败时会抛出异常
         try {
-            result = await this.query(queryParams, this.url,this.method);
+            result = await this.query(queryParams, this.url, this.method);
         } catch (e) {
             this.onError(e);
         }
@@ -158,7 +160,9 @@ export default class GridCore {
         const {
             dataList, total, pageSize, currentPage,
         } = result || {};
+
         this.setDataSource(dataList);
+        this.setMultipleData(result);
         this.setPageData({
             total,
             pageSize,
@@ -168,6 +172,14 @@ export default class GridCore {
         // 触发渲染
         this.refreshTable();
         this.refreshPagination();
+    }
+
+    setMultipleData = (multipleData) => { // 为多实体table设计
+        this.multipleData = multipleData;
+    }
+
+    getMultipleData = () => {
+        return this.multipleData;
     }
 
     clearFilterData = () => { // 清空查询
@@ -211,19 +223,19 @@ export default class GridCore {
             currentPage,
         };
     }
-   
-    setParams = (params)=>{
+
+    setParams = (params) => {
         if (['url', 'query'].indexOf(this.mode) >= 0) {
             this.params = params || {};
         }
     }
 
-    setUrl = (url)=>{
+    setUrl = (url) => {
         if (['url', 'query'].indexOf(this.mode) >= 0) {
             this.url = url;
         }
     }
-    
+
     getParams = () => { // 获取url参数
         const { params } = this;
         return params;

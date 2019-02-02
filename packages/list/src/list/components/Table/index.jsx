@@ -35,9 +35,13 @@ class InnerGrid extends React.Component {
 
         const { children } = this.props;
         const otherProps = { ...this.props };
-        delete otherProps.dataSource;
+
+        if (!core.multiple) {
+            delete otherProps.dataSource;
+            otherProps.dataSource = core.getDataSource();
+        }
+
         delete otherProps.children;
-        otherProps.dataSource = core.getDataSource();
         otherProps.loading = core.isLoading;
 
         let element = null;
