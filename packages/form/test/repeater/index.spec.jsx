@@ -148,7 +148,7 @@ describe('Repeater', () => {
         await form.find(TableRepeater).find('InnerRepeater').instance().doDelete(core, id);
         expect(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .ant-btn').length).toEqual(2);
         ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .ant-btn')[0]);
-
+        form.mount();
         await sleep(500);
 
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([]));
@@ -158,10 +158,11 @@ describe('Repeater', () => {
         expect(formCore.getValue('repeat')).toEqual(null);
         expect(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .ant-btn').length).toEqual(0);
         form.find('button.repeater-add').simulate('click');
+        form.mount();
         await sleep(500);
         expect(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .ant-btn').length).toEqual(2);
         ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .ant-btn')[0]);
-
+        form.mount();
         await sleep(500);
         expect(formCore.getValue('repeat').length).toEqual(1);
     });
@@ -184,6 +185,7 @@ describe('Repeater', () => {
         });
 
         ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .ant-btn')[0]);
+        form.mount();
         await sleep(500);
         expect(JSON.stringify(formCore.getValue('repeat'))).toEqual(JSON.stringify([{
             ...testValues,
@@ -208,7 +210,7 @@ describe('Repeater', () => {
 
         expect(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .ant-btn').length).toEqual(2);
         ReactTestUtils.Simulate.click(document.querySelectorAll('.ant-modal-body .ant-modal-confirm-content .ant-btn')[0]);
-
+        form.mount();
         await sleep(500);
 
         expect(JSON.stringify(formCore.getValue())).toEqual(JSON.stringify({

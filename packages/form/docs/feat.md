@@ -44,183 +44,202 @@ const popup = () => {
 window.popup = popup;
 
 let children = [
+// (() => {
+//     const ic = new FormCore();
+//     window.ic = ic;
+//     return <Form core={ic} layout={{label: 5, control: 19}} full>
+//         <FormItem label="username" name="username"><Input /></FormItem>
+//         <If when={(values) => {
+//             const { username } = values || {};
+//             return username === 'a';
+//         }}>
+//             <FormItem label="nested" name="nested">
+//                 <Form>
+//                     <FormItem label="n1" name="n1">
+//                         <Input />
+//                     </FormItem>
+//                     <FormItem label="n2" name="n2">
+//                         <Input />
+//                     </FormItem>
+//                 </Form>
+//             </FormItem>
+//         </If>
+//     </Form>
+// })(), 
+// (() => {
+//     let formcore
+//     return <div>
+//         <h3>DialogForm</h3>
+//         <button onClick={popup}>popup</button>
+//     </div>
+// })(),
 (() => {
-    const ic = new FormCore();
-    window.ic = ic;
-    return <Form core={ic} layout={{label: 5, control: 19}} full>
-        <FormItem label="username" name="username"><Input /></FormItem>
-        <If when={(values) => {
-            const { username } = values || {};
-            return username === 'a';
-        }}>
-            <FormItem label="nested" name="nested">
-                <Form>
-                    <FormItem label="n1" name="n1">
-                        <Input />
-                    </FormItem>
-                    <FormItem label="n2" name="n2">
-                        <Input />
-                    </FormItem>
-                </Form>
-            </FormItem>
-        </If>
-    </Form>
-})(), 
-(() => {
-    let formcore
-    return <div>
-        <h3>DialogForm</h3>
-        <button onClick={popup}>popup</button>
-    </div>
-})(),
-(() => {
-    const options = [
-        { label: 'zero', value: 0 },
-        { label: 'one', value: 1 },
-        // { label: 'zero(str)', value: '0' }
-    ];
-
-    const Plain = ({ value }) => {
-        const str = `${value}`;
-        return <div>{str}</div>
-    }
-
-
-    const sleep = (time) => {
-        return new Promise((resolve) => {
-            setTimeout(resolve, time);
-        });
-    };
-
-
-    const validateConfig = {
-        username: {type: "string", required: true},
-        hidden: {type: "string", required: true},
-        // username: {
-        //     validator: async (rule, v, callback) => {
-        //         // console.log('vusername:', v);
-        //         // return new Promise((resolve, reject) => {
-        //         //     setTimeout(() => {
-        //         //         reject((['eeee', 'ddd']))
-        //         //     }, 1000);
-        //         // });
-
-        //         await sleep(1000);
-        //         console.log('throwing....cc');
-        //         throw new Error('eee');
-        //     }
-        // },
-        // age: (values, ctx) => {
-        //     // const { username } = ctx.getValues();
-        //     const { username } = values;
-        //     if (username === 'r') {
-        //         return {type: "string", required: true};
-        //     } else {
-        //         return null;
-        //     }
-            
-        // }
-    }
-
     let formcore = new FormCore({
-        initValues: {},
-        validateConfig,
-        autoValidate: true,
-        values: {
-            user: {
-                email: '456'
-            }
-        }
+        // values: { point: 'ab' }
     });
 
     window.formcore = formcore;
 
-    const judge = async () => {
-        // const result = await formcore.validate();
-        const result = await formcore.validateWithoutRender();
-        // const result = await formcore.validateItem(['username']);
-        formcore.scrollToError();
-        console.log(result, 'jdjdjdjd');
-    };
-
-    const boolOpts = [
-        { label: '是', value: true },
-        { label: '否', value: false }
-    ];
-
     return <Form core={formcore} colon={false} style={{ marginBottom: 12 }} layout={{label: 5, control: 19}} full>
-        <h3>Validate errors</h3>
         <div className="demo-form">
-            <FormItem label="battery" name="battery">
-                <RadioGroup options={boolOpts} />
-            </FormItem>
-            <FormItem required label="username" name="username"><Input /></FormItem>
-            <If when={({ username }) => {
-                return username === 'bobby';
+            <FormItem required label="point" name="point"><Input /></FormItem>
+            <If when={({ point }) => {
+                return point === 'ab';
             }}>
-                <FormItem required label="hidden" name="hidden"><Input /></FormItem>
+                <FormItem required label="ax" name="ax"><Input /></FormItem>
             </If>
-            {/* <FormItem label="username" name="username"><Input /></FormItem> */}
-            {/* <FormItem label="user" name="user">
-                
-                    <Form layout={false}>
-                        <FormItem label="age" name="age"><Input /></FormItem>
-                        <FormItem label="email" name="email"><Input /></FormItem>
-                    </Form>
-                
-            </FormItem> */}
-            <If when={({ username }, ctx) => {
-                return ctx.globalStatus === 'preview';
-            }}>
-                <div>123</div>
-            </If>
-            
-            {/* <If when={values => values.username === 'bobby'}>
-                <FormItem label="" style={{ margin: '12px 0' }} name="wrapper">
-                    <div>
-                        hello bobby!
-                        <FormItem label="" name="deep">
-                            <Input />
-                        </FormItem>
-
-                        <If when={values => values.deep === 'abcd'}>
-                            <FormItem label="" name="deepForm">
-                                <Form layout={{ label: 5, control: 19 }} full>
-                                    <FormItem label="nif" name="nif"><Input /></FormItem>
-                                    <FormItem label="dif" name="dif">
-                                        <If when={values => values.nif === 100}>
-                                            <FormItem label="nifDeep" name="nifDeep">
-                                                <div>nif 100!!!</div>
-                                            </FormItem>
-                                        </If>
-                                    </FormItem>
-                                </Form>
-                            </FormItem>
-                        </If>
-                    </div>
-                </FormItem>
-            </If> */}
-            {/* <FormItem required label="errorJudge" render={(values, ctx) => {
-                const { error } = ctx;
-                console.log('error', error, ctx);
-                return null;
-            }}/> */}
-            {/* <Item render={(values) => {
-                const { username = '', isShow } = values || {};
-                return <div>
-                    <FormItem label={`${username}_age`} name="age"><Input /></FormItem>
-                </div>
-            }} /> */}
-            {/* <Form >
-                <FormItem label="time" name="time"><DatePicker /></FormItem>
-                <FormItem label="timeRange" name="timeRange"><DatePicker.RangePicker /></FormItem>
-            </Form> */}
         </div>
         <br/><br/>
-        <button onClick={() => console.log(formcore.getValue())}> console value </button>
-        <button onClick={judge}> Judge </button>
 </Form>
 })(),
+// (() => {
+//     const options = [
+//         { label: 'zero', value: 0 },
+//         { label: 'one', value: 1 },
+//         // { label: 'zero(str)', value: '0' }
+//     ];
+
+//     const Plain = ({ value }) => {
+//         const str = `${value}`;
+//         return <div>{str}</div>
+//     }
+
+
+//     const sleep = (time) => {
+//         return new Promise((resolve) => {
+//             setTimeout(resolve, time);
+//         });
+//     };
+
+
+//     const validateConfig = {
+//         username: {type: "string", required: true},
+//         hidden: {type: "string", required: true},
+//         // username: {
+//         //     validator: async (rule, v, callback) => {
+//         //         // console.log('vusername:', v);
+//         //         // return new Promise((resolve, reject) => {
+//         //         //     setTimeout(() => {
+//         //         //         reject((['eeee', 'ddd']))
+//         //         //     }, 1000);
+//         //         // });
+
+//         //         await sleep(1000);
+//         //         console.log('throwing....cc');
+//         //         throw new Error('eee');
+//         //     }
+//         // },
+//         // age: (values, ctx) => {
+//         //     // const { username } = ctx.getValues();
+//         //     const { username } = values;
+//         //     if (username === 'r') {
+//         //         return {type: "string", required: true};
+//         //     } else {
+//         //         return null;
+//         //     }
+            
+//         // }
+//     }
+
+//     let formcore = new FormCore({
+//         initValues: {},
+//         validateConfig,
+//         autoValidate: true,
+//         values: {
+//             user: {
+//                 email: '456'
+//             }
+//         }
+//     });
+
+//     window.formcore = formcore;
+
+//     const judge = async () => {
+//         // const result = await formcore.validate();
+//         const result = await formcore.validateWithoutRender();
+//         // const result = await formcore.validateItem(['username']);
+//         formcore.scrollToError();
+//         console.log(result, 'jdjdjdjd');
+//     };
+
+//     const boolOpts = [
+//         { label: '是', value: true },
+//         { label: '否', value: false }
+//     ];
+
+//     return <Form core={formcore} colon={false} style={{ marginBottom: 12 }} layout={{label: 5, control: 19}} full>
+//         <h3>Validate errors</h3>
+//         <div className="demo-form">
+//             <FormItem label="battery" name="battery">
+//                 <RadioGroup options={boolOpts} />
+//             </FormItem>
+//             <FormItem required label="username" name="username"><Input /></FormItem>
+//             <If when={({ username }) => {
+//                 return username === 'bobby';
+//             }}>
+//                 <FormItem required label="hidden" name="hidden"><Input /></FormItem>
+//             </If>
+//             {/* <FormItem label="username" name="username"><Input /></FormItem> */}
+//             {/* <FormItem label="user" name="user">
+                
+//                     <Form layout={false}>
+//                         <FormItem label="age" name="age"><Input /></FormItem>
+//                         <FormItem label="email" name="email"><Input /></FormItem>
+//                     </Form>
+                
+//             </FormItem> */}
+//             <If when={({ username }, ctx) => {
+//                 return ctx.globalStatus === 'preview';
+//             }}>
+//                 <div>123</div>
+//             </If>
+            
+//             {/* <If when={values => values.username === 'bobby'}>
+//                 <FormItem label="" style={{ margin: '12px 0' }} name="wrapper">
+//                     <div>
+//                         hello bobby!
+//                         <FormItem label="" name="deep">
+//                             <Input />
+//                         </FormItem>
+
+//                         <If when={values => values.deep === 'abcd'}>
+//                             <FormItem label="" name="deepForm">
+//                                 <Form layout={{ label: 5, control: 19 }} full>
+//                                     <FormItem label="nif" name="nif"><Input /></FormItem>
+//                                     <FormItem label="dif" name="dif">
+//                                         <If when={values => values.nif === 100}>
+//                                             <FormItem label="nifDeep" name="nifDeep">
+//                                                 <div>nif 100!!!</div>
+//                                             </FormItem>
+//                                         </If>
+//                                     </FormItem>
+//                                 </Form>
+//                             </FormItem>
+//                         </If>
+//                     </div>
+//                 </FormItem>
+//             </If> */}
+//             {/* <FormItem required label="errorJudge" render={(values, ctx) => {
+//                 const { error } = ctx;
+//                 console.log('error', error, ctx);
+//                 return null;
+//             }}/> */}
+//             {/* <Item render={(values) => {
+//                 const { username = '', isShow } = values || {};
+//                 return <div>
+//                     <FormItem label={`${username}_age`} name="age"><Input /></FormItem>
+//                 </div>
+//             }} /> */}
+//             {/* <Form >
+//                 <FormItem label="time" name="time"><DatePicker /></FormItem>
+//                 <FormItem label="timeRange" name="timeRange"><DatePicker.RangePicker /></FormItem>
+//             </Form> */}
+//         </div>
+//         <br/><br/>
+//         <button onClick={() => console.log(formcore.getValue())}> console value </button>
+//         <button onClick={judge}> Judge </button>
+// </Form>
+// })(),
 // (() => {
 //     const options = [
 //         { label: 'zero', value: 0 },

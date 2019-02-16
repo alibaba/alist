@@ -402,12 +402,18 @@ const rpOnMount = (rp) => {
 // const hasDelete = false;
 
 ReactDOM.render(<Form direction="vertical-top" defaultMinWidth={false} core={formCore} value={defaultValue}>
-    {/* <FormItem name="tabledemo" defaultValue={[{ username: 'a' }, { username: 'b' }]}>
+    <FormItem name="tabledemo" defaultValue={[{ username: 'a' }, { username: 'b' }]}>
         <TableRepeater hasDeleteConfirm={false} hasOrder filter={filterUsername} formConfig={formConfig}>
             <FormItem status="hidden" label="order" renderCell={(_, { index: order }) => <div>{order+1}</div> } />
             <FormItem label="username" name="username"><Input /></FormItem>
         </TableRepeater>
     </FormItem>
+    <FormItem name="deepselect">
+        <SelectRepeater selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig}>
+            <FormItem label="username" name="username"><Input /></FormItem>
+        </SelectRepeater>        
+    </FormItem>
+    {/* 
     <FormItem name="tabledemoff" defaultValue={[{ username: 'a' }, { username: 'b' }]}>
         <InlineRepeater hasOrder filter={filterUsername} formConfig={formConfig}>
             <FormItem status="hidden" label="order" renderCell={(_, { index: order }) => <div>{order+1}</div> } />
@@ -418,11 +424,7 @@ ReactDOM.render(<Form direction="vertical-top" defaultMinWidth={false} core={for
         { label: 'en', value: 'en' },
         { label: 'zh', value: 'zh' }
     ]} /></FormItem>
-    <FormItem name="deepselect">
-        <SelectRepeater selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig}>
-            <FormItem label="username" name="username"><Input /></FormItem>
-        </SelectRepeater>        
-    </FormItem> */}
+     */}
 
     {/* <FormItem defaultValue={{ dataSource: [{username: 'a', id: 'a'}, {username: 'b', id: 'b'}] }} name="deepselectxxxxx">
         <SelectRepeater selectMode="single" formConfig={formConfig}>

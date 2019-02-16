@@ -14,7 +14,7 @@ class Item {
         this.option = option;
         this.initWith(option);
         this.on(ANY_CHANGE, () => {
-            if (!this.consistenting) {
+            if (!this.consistenting) {                
                 this.selfConsistent();
             }
         });
@@ -124,7 +124,7 @@ class Item {
 
     initWith(option) {
         const {
-            form, on, emit, removeListener,
+            form, on, emit, removeListener, isIf
         } = option;
 
         this.form = form;
@@ -138,6 +138,7 @@ class Item {
             func_status, func_props, jsx_status,
         } = option;
 
+        this.isIf = !!isIf;
         this.name = name;
         this.value = value;
         this.props = props;
@@ -217,11 +218,18 @@ class Item {
             calulateWhen,
         } = this;
 
-        let syncSetting = true;
-        let statusResult = form.globalStatus;
+        let syncSetting = true;        
         const escape = false;
         const whenResult = when ? this.calulateWhen(value, when) : false;
         const canConsistWhen = when === null || whenResult;
+
+        let statusResult = form.globalStatus;
+        if (canConsistWhen && !this.isIf) {
+            const localstatus = this.name ? (form ? form.status[this.name] : this.status) : null;
+            if (localstatus !== 'hidden' && statusResult !== localstatus) {
+                statusResult = localstatus;
+            }
+        }
 
         if (jsx_status) { // 可能为promise
             if (isFunction(func_status)) {

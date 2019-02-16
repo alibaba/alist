@@ -363,7 +363,7 @@ class BaseFormItem extends React.Component {
         const hitListen = this.hitListenKeys(name);
         const canUpdate = this.didMount &&
             hitListen && !silent;
-        if (canUpdate) {
+        if (canUpdate) {            
             switch (type) {
             case 'status':
                 this.forceUpdate(); break;
@@ -401,7 +401,7 @@ class BaseFormItem extends React.Component {
         const {
             errorRender, className = '', name, style = {}, status: propStatus,
         } = itemProps;
-        const status = name ? this.form.getItemStatus(name) : propStatus; // 动态status
+        const status = name ? this.form.getItemStatus(name) : propStatus; // 动态status        
 
         // 状态隐藏
         if (status === HIDDEN) {
