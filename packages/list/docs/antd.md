@@ -67,7 +67,17 @@ class NoList extends React.Component {
     return (
       <div style={{ margin: '24px' }}>
         <List url="/docs/mock.json" onError={handleError} onMount={onMount}>
-            <Filter noLayout direction="ver">
+            <Filter noDefaultLayout direction="ver">
+              <Filter.Item className="search-form-item" label="包裹与收发货">
+                  <React.Fragment>
+                      <Filter.Item label="" inline>
+                          <Input label="发货地邮编" placeholder="编写邮编" />
+                      </Filter.Item>                        
+                      <Filter.Item inline><Input label="货件信息" placeholder="填写货物信息"/></Filter.Item>
+                      <Filter.Item inline><Input label="目的地" placeholder="编写目的地信息"/></Filter.Item>
+                      <Filter.Item inline><Input label="收货地邮编" placeholder="编写邮编"/></Filter.Item>
+                  </React.Fragment>
+              </Filter.Item>
               <Filter.Item label="username" name="username"><Input placeholder="placeholder" /></Filter.Item>
               <Filter.Item label="age" name="age"><Input /></Filter.Item>
               <Filter.Item label="date" name="date"><DatePicker placeholder="placeholder"/></Filter.Item>

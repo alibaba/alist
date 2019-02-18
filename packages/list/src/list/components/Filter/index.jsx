@@ -56,7 +56,7 @@ class Filter extends React.Component {
             this.grid = grid;
             window.grid = grid;
         }
-        const { noLayout, children, render, className, style: propStyle, direction = 'hoz' } = this.props;
+        const { noDefaultLayout, children, render, className, style: propStyle, direction = 'hoz' } = this.props;
         const { cols, autoWidth } = this.state;
         const core = gridCore.filterCore;
         const FilterBuiltin = (props) => {
@@ -66,7 +66,7 @@ class Filter extends React.Component {
 
             const filterContextValues = { cols, autoWidth };
             const cls = className ? `${className} filter-area` : 'filter-area';
-            const defaultStyle = noLayout ? {} : { display: 'inline-block', width: 'auto' };
+            const defaultStyle = noDefaultLayout ? {} : { display: 'inline-block', width: 'auto' };
             const style = { ...defaultStyle, ...(propStyle || {}) };
 
             return (<Form colon={false} className={cls} direction={direction} inset={inset} style={style} core={core} {...others}>
@@ -76,7 +76,7 @@ class Filter extends React.Component {
             </Form>);
         };
 
-        const builtinprops = noLayout ? {} : { cols, autoWidth, inset: true };
+        const builtinprops = noDefaultLayout ? {} : { cols, autoWidth, inset: true };
         const builtin = <FilterBuiltin {...builtinprops} />;
         if (render && typeof render === 'function') {
             return render({
@@ -89,7 +89,7 @@ class Filter extends React.Component {
             });
         }
 
-        if (noLayout) {
+        if (noDefaultLayout) {
             return <React.Fragment>{builtin}</React.Fragment>;
         }
 
