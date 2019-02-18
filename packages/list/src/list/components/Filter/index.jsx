@@ -56,12 +56,12 @@ class Filter extends React.Component {
             this.grid = grid;
             window.grid = grid;
         }
-        const { noLayout, children, render } = this.props;
+        const { noLayout, children, render, className, style: propStyle, direction = 'hoz' } = this.props;
         const { cols, autoWidth } = this.state;
         const core = gridCore.filterCore;
         const FilterBuiltin = (props) => {
             const {
-                autoWidth, cols, inset = false, className, direction = 'hoz', style: propStyle, ...others
+                autoWidth, cols, inset = false, ...others
             } = props;
 
             const filterContextValues = { cols, autoWidth };

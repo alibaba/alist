@@ -67,7 +67,7 @@ class NoList extends React.Component {
     return (
       <div style={{ margin: '24px' }}>
         <List url="/docs/mock.json" onError={handleError} onMount={onMount}>
-            <Filter noLayout>
+            <Filter noLayout direction="ver">
               <Filter.Item label="username" name="username"><Input placeholder="placeholder" /></Filter.Item>
               <Filter.Item label="age" name="age"><Input /></Filter.Item>
               <Filter.Item label="date" name="date"><DatePicker placeholder="placeholder"/></Filter.Item>
