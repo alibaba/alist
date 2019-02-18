@@ -74,7 +74,7 @@ class NoList extends React.Component {
       <div style={{ margin: '24px' }}>
         <List filterConfig={filterConfig} url="/docs/mock.json" onError={handleError} onMount={onMount}>
             <Filter noDefaultLayout direction="ver">
-              <Filter.Item className="search-form-item" label="包裹与收发货">
+              <Filter.Item layout={{ label: 4, control: 20 }}  className="search-form-item" label="包裹与收发货">
                   <React.Fragment>
                       <Filter.Item label="" inline>
                           <Input label="发货地邮编" placeholder="编写邮编" />

@@ -56,11 +56,12 @@ class Filter extends React.Component {
             this.grid = grid;
             window.grid = grid;
         }
-        const { noDefaultLayout, children, render, className, style: propStyle, direction = 'hoz' } = this.props;
+        const { noDefaultLayout = false, children, render, ...otherParent } = this.props;
         const { cols, autoWidth } = this.state;
         const core = gridCore.filterCore;
         const FilterBuiltin = (props) => {
             const {
+                className, style: propStyle, direction = 'hoz',
                 autoWidth, cols, inset = false, ...others
             } = props;
 
@@ -76,7 +77,13 @@ class Filter extends React.Component {
             </Form>);
         };
 
-        const builtinprops = noDefaultLayout ? {} : { cols, autoWidth, inset: true };
+        const builtinprops = { ...otherParent };
+        if (!noDefaultLayout) {
+            builtinprops.cols = cols;
+            builtinprops.autoWidth = autoWidth;
+            builtinprops.inset = true;
+        }
+
         const builtin = <FilterBuiltin {...builtinprops} />;
         if (render && typeof render === 'function') {
             return render({
