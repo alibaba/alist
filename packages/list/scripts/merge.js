@@ -7,13 +7,15 @@ const rootDir = process.cwd();
 const destDir = path.join(rootDir, 'lib');
 const wrapperDir = path.join(rootDir, 'lib/wrapper');
 
-const files = glob.sync('*.*', { cwd: wrapperDir, });
+const files = glob.sync('*.*', { cwd: wrapperDir });
 console.log('files', rootDir, destDir, wrapperDir, files);
 const run = async () => {
-    for (let file of files) {
-        const srcFile = path.resolve(wrapperDir, file);
-        const destFile = path.resolve(destDir, file);
-        await fs.copy(srcFile, destFile);
+    for (const file of files) {
+        if (file !== 'index.scss') {
+            const srcFile = path.resolve(wrapperDir, file);
+            const destFile = path.resolve(destDir, file);
+            await fs.copy(srcFile, destFile);
+        }
     }
 };
 
