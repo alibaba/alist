@@ -67,11 +67,12 @@ class NoList extends React.Component {
     return (
       <div style={{ margin: '24px' }}>
         <List url="/docs/mock.json" onError={handleError} onMount={onMount}>
-            {/* <Filter render={customRender}> */}
             <Filter noLayout>
               <Filter.Item label="username" name="username"><Input placeholder="placeholder" /></Filter.Item>
               <Filter.Item label="age" name="age"><Input /></Filter.Item>
               <Filter.Item label="date" name="date"><DatePicker placeholder="placeholder"/></Filter.Item>
+              <Filter.Search>搜搜</Filter.Search>
+              <Filter.Clear>清理</Filter.Clear>
             </Filter>
             <Table>
               <Table.Column title="id" dataIndex="id" />

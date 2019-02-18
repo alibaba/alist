@@ -56,24 +56,28 @@ class Filter extends React.Component {
             this.grid = grid;
             window.grid = grid;
         }
-        const { children, render } = this.props;
-        const { cols, autoWidth } = this.state;        
+        const { noLayout, children, render } = this.props;
+        const { cols, autoWidth } = this.state;
         const core = gridCore.filterCore;
         const FilterBuiltin = (props) => {
-            const { autoWidth, cols, inset = false, className, direction = 'hoz', style: propStyle, ...others } = props;
+            const {
+                autoWidth, cols, inset = false, className, direction = 'hoz', style: propStyle, ...others
+            } = props;
+
             const filterContextValues = { cols, autoWidth };
             const cls = className ? `${className} filter-area` : 'filter-area';
-            const defaultStyle = { display: 'inline-block', width: 'auto' };
-            const style = { ...defaultStyle, ...(propStyle || {})};
+            const defaultStyle = noLayout ? {} : { display: 'inline-block', width: 'auto' };
+            const style = { ...defaultStyle, ...(propStyle || {}) };
 
-            return <Form colon={false} className={cls} direction={direction} inset={inset} style={style} core={core} {...others}>
+            return (<Form colon={false} className={cls} direction={direction} inset={inset} style={style} core={core} {...others}>
                 <FilterContext.Provider value={filterContextValues}>
                     {children}
                 </FilterContext.Provider>
-            </Form>;
+            </Form>);
         };
 
-        const builtin = <FilterBuiltin cols={cols} autoWidth={autoWidth} inset={true} />;
+        const builtinprops = noLayout ? {} : { cols, autoWidth, inset: true };
+        const builtin = <FilterBuiltin {...builtinprops} />;
         if (render && typeof render === 'function') {
             return render({
                 children,
@@ -83,6 +87,10 @@ class Filter extends React.Component {
                 search: this.search,
                 clear: this.clear,
             });
+        }
+
+        if (noLayout) {
+            return <React.Fragment>{builtin}</React.Fragment>;
         }
 
         return (<div className="filter-wrapper">
@@ -102,22 +110,59 @@ class Filter extends React.Component {
 }
 
 const FilterItem = (props) => {
-    const { autoWidth = true, cols, colSpan = 1, noLayout = false } = props;
-    const style = props.style || {};    
-    const itemStyle = { ...style, display: 'inline-block', paddingRight: '12px', marginRight: 0 };
+    const {
+        autoWidth = true, cols, colSpan = 1, noLayout = false, className = ''
+    } = props;
+
+    const cls = `${className} nolist-filter-item`;
+    const style = props.style || {};
+    const itemStyle = { ...style };
+
     if (noLayout) {
         itemStyle.paddingRight = '0';
-    } else if (cols && !autoWidth) {
+    } else if (cols && !autoWidth) { // priority: autoWidth > cols
         const width = (1 / Number(cols)).toFixed(2) * 100;
         const colWidth = (Number(colSpan) * width);
         itemStyle.width = `${colWidth}%`;
     }
 
-    return <FormItem defaultMinWidth={false} full {...props} style={itemStyle} />
+    return <FormItem defaultMinWidth={false} full {...props} className={cls} style={itemStyle} />;
 };
 
 Filter.Item = props => (<FilterContext.Consumer>
-    {({ cols, autoWidth }) => <FilterItem cols={cols} autoWidth={autoWidth} {...props} />}
+    {({ cols, autoWidth, ...others }) => <FilterItem cols={cols} autoWidth={autoWidth} {...others} {...props} />}
 </FilterContext.Consumer>);
+
+Filter.Clear = (props) => {
+    const { children, style, ...others } = props;
+    return (<Consumer>
+        {(grid) => {
+            const clear = () => {
+                if (grid) grid.core.clearFilterData();
+            };
+
+            const defaultStyle = { style: { cursor: 'pointer', ...style } };
+            return (<span onClick={clear} {...defaultStyle} {...others} >
+                {children}
+            </span>);
+        }}
+    </Consumer>);
+};
+
+Filter.Search = (props) => {
+    const { children, style, ...others } = props;
+    return (<Consumer>
+        {(grid) => {
+            const search = () => {
+                if (grid) grid.core.search();
+            };
+
+            const defaultStyle = { style: { cursor: 'pointer', ...style } };
+            return (<span onClick={search}{...defaultStyle} {...others} >
+                {children}
+            </span>);
+        }}
+    </Consumer>);
+};
 
 export default Filter;
