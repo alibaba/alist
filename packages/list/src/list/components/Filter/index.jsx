@@ -56,7 +56,9 @@ class Filter extends React.Component {
             this.grid = grid;
             window.grid = grid;
         }
-        const { noDefaultLayout = false, children, render, ...otherParent } = this.props;
+        const {
+            noDefaultLayout = false, children, render, ...otherParent
+        } = this.props;
         const { cols, autoWidth } = this.state;
         const core = gridCore.filterCore;
         const FilterBuiltin = (props) => {
@@ -65,12 +67,20 @@ class Filter extends React.Component {
                 autoWidth, cols, inset = false, ...others
             } = props;
 
-            const filterContextValues = { cols, autoWidth };
+            const filterContextValues = noDefaultLayout ? {} : { cols, autoWidth };
             const cls = className ? `${className} filter-area` : 'filter-area';
             const defaultStyle = noDefaultLayout ? {} : { display: 'inline-block', width: 'auto' };
             const style = { ...defaultStyle, ...(propStyle || {}) };
 
-            return (<Form colon={false} className={cls} direction={direction} inset={inset} style={style} core={core} {...others}>
+            return (<Form
+                colon={false}
+                className={cls}
+                direction={direction}
+                inset={inset}
+                style={style}
+                core={core}
+                {...others}
+            >
                 <FilterContext.Provider value={filterContextValues}>
                     {children}
                 </FilterContext.Provider>
@@ -118,7 +128,7 @@ class Filter extends React.Component {
 
 const FilterItem = (props) => {
     const {
-        autoWidth = true, cols, colSpan = 1, noLayout = false, className = ''
+        autoWidth = true, cols, colSpan = 1, noLayout = false, className = '',
     } = props;
 
     const cls = `${className} nolist-filter-item`;
