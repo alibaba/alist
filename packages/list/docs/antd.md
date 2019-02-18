@@ -24,6 +24,12 @@ const onMount = (list) => {
   window.list = list;
 }
 
+const filterConfig = {
+  onChange: (firekeys, values, ctx) => {
+    console.log(firekeys, values, ctx);
+  }
+};
+
 const editForm = (val, index, record) => {
   const core = new FormCore({
     values: record
@@ -66,7 +72,7 @@ class NoList extends React.Component {
   render() {
     return (
       <div style={{ margin: '24px' }}>
-        <List url="/docs/mock.json" onError={handleError} onMount={onMount}>
+        <List filterConfig={filterConfig} url="/docs/mock.json" onError={handleError} onMount={onMount}>
             <Filter noDefaultLayout direction="ver">
               <Filter.Item className="search-form-item" label="包裹与收发货">
                   <React.Fragment>

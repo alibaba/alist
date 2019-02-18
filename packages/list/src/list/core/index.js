@@ -7,7 +7,10 @@ const noop = () => {};
 export default class GridCore {
     constructor(props = {}) {
         this.initProps(props);
-        const formConfig = {};
+        let formConfig = {};
+        if (this.filterConfig) {
+            formConfig = { ...(this.filterConfig || {}) };
+        }
 
         if (this.defaultFilterValues) {
             formConfig.initValues = this.defaultFilterValues;
@@ -38,7 +41,7 @@ export default class GridCore {
             pageSize, currentPage, total,
             defaultQuery = innerDefaultQuery,
             onError, autoLoad, formatBefore, formatAfter, formatFilter,
-            defaultFilterValues, multiple,
+            defaultFilterValues, multiple, filterConfig,
         } = props;
 
         if ('dataSource' in props && dataSource) this.mode = 'dataSource'; // priority: low(1)
@@ -59,6 +62,7 @@ export default class GridCore {
         this.formatAfter = formatAfter;
         this.formatFilter = formatFilter;
         this.defaultFilterValues = defaultFilterValues;
+        this.filterConfig = filterConfig;
         this.multipleData = dataSource; // 多实体数据
         this.multiple = multiple || false; // 多实体模式
     }
