@@ -40,14 +40,14 @@ export default class GridCore {
             dataSource, query, url, method, params,
             pageSize, currentPage, total,
             defaultQuery = innerDefaultQuery,
-            onError, autoLoad, formatBefore, formatAfter, formatFilter,
+            onError, autoLoad = true, formatBefore, formatAfter, formatFilter,
             defaultFilterValues, multiple, filterConfig,
         } = props;
 
         if ('dataSource' in props && dataSource) this.mode = 'dataSource'; // priority: low(1)
         if ('url' in props && url) this.mode = 'url'; // priority: middle(10)
         if ('query' in props && query) this.mode = 'query'; // priority: high(100)
-        this.autoLoad = autoLoad || true; // 初始直接发起请求
+        this.autoLoad = autoLoad; // 初始直接发起请求
         this.dataSource = dataSource || []; // 列表数据
         this.url = url; // 请求url
         this.params = params || {};// 请求url的param
