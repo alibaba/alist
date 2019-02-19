@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Form, { FormCore, FormItem } from 'noform';
+import Form, { If, FormItem } from 'noform';
 import { Consumer } from '../../context';
 import FilterContext from '../../context/filter';
 
@@ -150,13 +150,19 @@ Filter.Item = props => (<FilterContext.Consumer>
     {({ cols, autoWidth, ...others }) => <FilterItem cols={cols} autoWidth={autoWidth} {...others} {...props} />}
 </FilterContext.Consumer>);
 
+Filter.If = If;
+
 Filter.Clear = (props) => {
-    const { children, style, ...others } = props;
+    const { render, children, style, ...others } = props;
     return (<Consumer>
         {(grid) => {
             const clear = () => {
                 if (grid) grid.core.clearFilterData();
             };
+
+            if (render) {
+                return render(clear);
+            }
 
             const defaultStyle = { style: { cursor: 'pointer', ...style } };
             return (<span onClick={clear} {...defaultStyle} {...others} >
@@ -167,15 +173,21 @@ Filter.Clear = (props) => {
 };
 
 Filter.Search = (props) => {
-    const { children, style, ...others } = props;
+    const {
+        render, children, style, ...others
+    } = props;
     return (<Consumer>
         {(grid) => {
             const search = () => {
                 if (grid) grid.core.search();
             };
 
+            if (render) {
+                return render(search);
+            }
+
             const defaultStyle = { style: { cursor: 'pointer', ...style } };
-            return (<span onClick={search}{...defaultStyle} {...others} >
+            return (<span role="search" onClick={search}{...defaultStyle} {...others} >
                 {children}
             </span>);
         }}

@@ -80,8 +80,12 @@ class NoList extends React.Component {
                           <Input label="发货地邮编" placeholder="编写邮编" />
                       </Filter.Item>                        
                       <Filter.Item inline><Input label="货件信息" placeholder="填写货物信息"/></Filter.Item>
-                      <Filter.Item inline><Input label="目的地" placeholder="编写目的地信息"/></Filter.Item>
-                      <Filter.Item inline><Input label="收货地邮编" placeholder="编写邮编"/></Filter.Item>
+                      <Filter.Item name="d1" inline><Input label="目的地" placeholder="编写目的地信息"/></Filter.Item>
+                      <Filter.If when={(values) => {
+                        return values.d1 === '123';
+                      }}>
+                        <Filter.Item name="d2" inline><Input label="收货地邮编" placeholder="编写邮编"/></Filter.Item>
+                      </Filter.If>
                   </React.Fragment>
               </Filter.Item>
               <Filter.Item label="username" name="username"><Input placeholder="placeholder" /></Filter.Item>
@@ -89,6 +93,10 @@ class NoList extends React.Component {
               <Filter.Item label="date" name="date"><DatePicker placeholder="placeholder"/></Filter.Item>
               <Filter.Search>搜搜</Filter.Search>
               <Filter.Clear>清理</Filter.Clear>
+
+              <Filter.Search render={(search) => {
+                return <div onClick={search}>custom search</div>
+              }} />
             </Filter>
             <Table>
               <Table.Column title="id" dataIndex="id" />
