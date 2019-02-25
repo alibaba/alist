@@ -11,5 +11,5 @@ export {
     Filter,
     Any,
     PaginationWrapper,
-    DataGrid
+    DataGrid,
 };

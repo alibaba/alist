@@ -42,11 +42,13 @@ export default class GridCore {
             defaultQuery = innerDefaultQuery,
             onError, autoLoad = true, formatBefore, formatAfter, formatFilter,
             defaultFilterValues, multiple, filterConfig,
+            willUpdate,
         } = props;
 
         if ('dataSource' in props && dataSource) this.mode = 'dataSource'; // priority: low(1)
         if ('url' in props && url) this.mode = 'url'; // priority: middle(10)
         if ('query' in props && query) this.mode = 'query'; // priority: high(100)
+
         this.autoLoad = autoLoad; // 初始直接发起请求
         this.dataSource = dataSource || []; // 列表数据
         this.url = url; // 请求url
@@ -65,6 +67,7 @@ export default class GridCore {
         this.filterConfig = filterConfig;
         this.multipleData = dataSource; // 多实体数据
         this.multiple = multiple || false; // 多实体模式
+        this.willUpdate = willUpdate || noop;
     }
 
     setDataSource = (dataSource) => { // 设置dataSource，dataSource模式下需要改变分页数据
@@ -176,6 +179,8 @@ export default class GridCore {
         // 触发渲染
         this.refreshTable();
         this.refreshPagination();
+
+        this.willUpdate();
     }
 
     setMultipleData = (multipleData) => { // 为多实体table设计
