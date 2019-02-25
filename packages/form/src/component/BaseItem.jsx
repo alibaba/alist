@@ -76,13 +76,13 @@ class BaseItem extends React.Component {
         let comboFormProps = { ...formProps };        
         component = React.Children.only(this.props.children);
         if (predictChildForm) {
-            comboFormProps = { ...comboFormProps, ...component.props }
+            comboFormProps = { ...comboFormProps, ...component.props };
         }
 
         const cloneProps = {
             ...comboFormProps,
             inset,
-            disabled: status === 'disabled',
+            // disabled: status === 'disabled',
             name,
             ...itemProps,
             onChange,
@@ -90,6 +90,10 @@ class BaseItem extends React.Component {
             onFocus,
             ...others,
         };
+
+        if (status === 'disabled') {
+            cloneProps.disabled = true;
+        }
 
         if (component && component.type && component.type.displayName === 'If') {
             delete cloneProps.name;
