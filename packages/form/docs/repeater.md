@@ -391,7 +391,7 @@ const checkChangeConfig = {
         console.log('fireKey', fireKey, values);
     },
     initialized: (ctx) => {
-        debugger;
+
     }
 }
 
@@ -410,7 +410,7 @@ ReactDOM.render(<Form direction="vertical-top" defaultMinWidth={false} core={for
     </FormItem>
     <FormItem name="deepselect">
         <SelectRepeater selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig}>
-            <FormItem label="username" name="username"><Input /></FormItem>
+            <FormItem label="username" name="username" defaultValue="1234"><Input /></FormItem>
         </SelectRepeater>        
     </FormItem>
     {/* 

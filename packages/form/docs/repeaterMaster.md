@@ -136,20 +136,20 @@ class Example extends React.Component {
                         <Select mode="multiple" options={publicCountry} />
                     </FormItem>
                     <FormItem label="min" name="min"><InputNumber /></FormItem>
+                    <FormItem label="abb" name="abb"><InputNumber /></FormItem>
                 </InlineRepeater>
             </FormItem>
-            <FormItem render={(values) => {
+            {/* <FormItem render={(values) => {
                 const availableCountry = (values.restCountryDEMO || []).map(item => item.label).join(', ');
                 return <div>Available Country: <span style={{ color: 'red' }}>{availableCountry}</span></div>
             }} />
-
-            {/* rule config */}
+            
             <FormItem label="Rule Repeater" name="ruleRepeater">
                 <InlineRepeater asyncHandler={this.ruleHandler} multiple formConfig={{ autoValidate: true }}>
                     <FormItem label="min" name="min"><InputNumber /></FormItem>
                     <FormItem label="max" name="max"><InputNumber /></FormItem>
                 </InlineRepeater>
-            </FormItem>
+            </FormItem> */}
         </Form>);
     }
 }

@@ -13,10 +13,15 @@ const formItemPrefix = 'no-form';
 const noop = () => { };
 const getValue = (jsxProps) => {
     const hasVal = ('value' in jsxProps);
-    const hasDefaultVal = ('defaultValue' in jsxProps);
     if (hasVal) {
         return jsxProps.value;
-    } else if (hasDefaultVal) {
+    }
+    return null;
+};
+
+const getDefaultValue = (jsxProps) => {
+    const hasDefaultVal = ('defaultValue' in jsxProps);
+    if (hasDefaultVal) {
         return jsxProps.defaultValue;
     }
     return null;
@@ -58,6 +63,7 @@ class BaseFormItem extends React.Component {
                 this.compProps = this.pickupComponentProps(comProps);
             }
         });
+
         this.core = this.initialCore(props, this.compProps);
         this.core.predictChildForm = this.predictChildForm;
         this.core.jsx = this;
@@ -281,11 +287,13 @@ class BaseFormItem extends React.Component {
         } = props;
 
         const value = getValue(props);
+        const defaultValue = getDefaultValue(props);
 
         const option = {
             error,
             value,
             name,
+            defaultValue,
         };
 
         // 上有if item

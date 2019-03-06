@@ -75,7 +75,6 @@ let children = [
 // })(),
 (() => {
     let formcore = new FormCore({
-        // values: { point: 'ab' }
     });
 
     window.formcore = formcore;
@@ -89,6 +88,7 @@ let children = [
                 <FormItem required label="ax" name="ax"><Input /></FormItem>
             </If>
         </div>
+        <FormItem required label="hello" defaultValue="abcd" name="hello"><Input /></FormItem>
         <br/><br/>
 </Form>
 })(),

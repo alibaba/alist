@@ -42,6 +42,7 @@ class Form {
         this.escape = {}; // 用于避免嵌套form的filter逻辑的map
         this.interceptor = interceptor || {}; // 拦截器
         this.validateConfig = validateConfig;
+        this.defaultSettingMap = {};
 
         this.disabledSyncChildForm = disabledSyncChildForm || false; // 禁止子Form自动向Item同步数据
         this.id = uniqueId || `__noform__${genId()}`;
@@ -432,7 +433,7 @@ class Form {
         const ret = fieldProps.map((option) => {
             const mrOption = Object.assign({}, option);
             const {
-                value, name, status, error, props, func_status,
+                value, name, status, error, props, func_status, defaultValue,
                 interceptor: localInterceptor,
             } = option;
 
@@ -446,8 +447,17 @@ class Form {
 
             // JSX 属性 > core默认值 > 默认属性(globalStatus) > 空值
             mrOption.jsx_status = status || func_status;
-            const initialValue = isInvalidVal(this.value[name]) ? null : this.value[name];
-            mrOption.value = isInvalidVal(value) ? initialValue : value;
+
+            const itemGlobalValue = isInvalidVal(this.value[name]) ? null : this.value[name];
+            let itemValue = itemGlobalValue || null;
+
+            // undefined 作为未定义的标志，null作为未赋值的标志
+            if (!this.defaultSettingMap[name] && !(name in this.value)) {
+                itemValue = (itemGlobalValue || defaultValue);
+                this.defaultSettingMap[name] = true;
+            }
+            mrOption.value = isInvalidVal(value) ? itemValue : value;
+
             this.value[mrOption.name] = mrOption.value;
             // eslint-disable-next-line
             this.status[mrOption.name] = mrOption.status = status || this.status[name] || this.globalStatus;
