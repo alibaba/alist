@@ -19,7 +19,7 @@ import "./repeater.scss";
 
 const { Button, Input, Radio, Checkbox, Select, InputNumber }  = wrapper(Antd);
 const Dialog = dialogWrapper(Antd)
-const { InlineRepeater, Selectify, ActionButton } = repeater({ Dialog, Button, Input, Checkbox, Radio });
+const { TableRepeater, InlineRepeater, Selectify, ActionButton } = repeater({ Dialog, Button, Input, Checkbox, Radio });
 
 const validateConfig = {
     username: { type: 'string', required: true },
@@ -47,6 +47,10 @@ class Example extends React.Component {
                     { min: 5, max: 10 },
                     { min: 24, max: 39 },
                     { min: 45, max: 60 },
+                ],
+                masterRepeater: [
+                    { check: 'bbb'},
+                    { check: 'aaa'}
                 ]
             },
         });
@@ -126,6 +130,56 @@ class Example extends React.Component {
         return restCountry;
     }
 
+    renderTableView = (_, ctx) => {
+        const { getDataSource, getViewElements } = ctx;
+
+        const dataSource = getDataSource() || [];
+        const viewElements = getViewElements() || [];
+
+        console.log('ddd', dataSource);
+        console.log('vvv', viewElements);
+        const elements = dataSource.map((item, index) => {
+            console.log('vvv [item]',index, item);
+            
+            return <div>{Object.keys(item).map(key => {
+                return viewElements[index][key];
+            })}</div>
+        });    
+
+        return <div>
+            {elements}
+        </div>
+    }
+
+    renderTest = () => {
+        const repeaterDialogConfig = {
+            layout: { label: 6, control: 16 },
+            // defaultMinWidth: false,
+            style: { width: '800px' },
+        };
+        const inlineWrap = { style: { display: 'flex' }};
+        const inlinePrefix = { layout: null, inline: true };
+        const inlineSuffix = { layout: { label: 6, control: 18 }, inline: true, full: true, style: { flex: 1 }};
+        return <FormItem label="masterRepeater" name="masterRepeater" full>
+            <TableRepeater view={this.renderTableView} dialogConfig={repeaterDialogConfig}>
+                <div>hello1</div>
+                <FormItem name="username" label="username"><Input /></FormItem>
+                <FormItem name="check" label="check"><Select options={[
+                    {label: '111', value: 'aaa'},
+                    {label: '222', value: 'bbb'}
+                ]} /></FormItem>
+                {/* <FormItem label="age" multiple>
+                    <div {...inlineWrap}>
+                        <FormItem {...inlinePrefix} name="age1" ><Input /></FormItem>
+                        <FormItem {...inlineSuffix} name="age2" label="age2"><Input /></FormItem>
+                    </div>
+                </FormItem>
+                <div>hello2</div>
+                <FormItem name="gender" label="gender"><Input /></FormItem> */}
+            </TableRepeater>
+        </FormItem>
+    }
+
     render() {
 
         const typeSource = [
@@ -136,6 +190,7 @@ class Example extends React.Component {
 
         return (<Form core={this.core} layout={{ label: 6, control: 18 }} defaultMinWidth={false}>
             <div className="example-title">Master Repeater Examples</div>
+            {this.renderTest()}
             {/* public source */}
             {/* <FormItem label="Public Country Repeater" name="countryRepeater">
                 <InlineRepeater asyncHandler={this.publicHandler} multiple>
@@ -146,7 +201,7 @@ class Example extends React.Component {
                     <FormItem label="abb" name="abb"><InputNumber /></FormItem>
                 </InlineRepeater>
             </FormItem> */}
-            <FormItem label="Freight Calculator" name="freightCalculator">
+            {/* <FormItem label="Freight Calculator" name="freightCalculator">
                 <InlineRepeater multiple>
                     <FormItem label="type" name="type" defaultValue="aaa">
                         <Select options={typeSource} />
@@ -165,7 +220,7 @@ class Example extends React.Component {
                         </div>
                     </FormItem>
                 </InlineRepeater>
-            </FormItem>
+            </FormItem> */}
             {/* <FormItem render={(values) => {
                 const availableCountry = (values.restCountryDEMO || []).map(item => item.label).join(', ');
                 return <div>Available Country: <span style={{ color: 'red' }}>{availableCountry}</span></div>

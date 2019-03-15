@@ -17,6 +17,86 @@ export default function bind(type, source) {
     const addSuffix = isInline ? 'Inline' : '';
 
     class Repeater extends React.Component {
+        getDataSource = () => {
+            const { repeaterCore } = this.props;
+            return repeaterCore.getValues();
+        }
+
+        getViewElements = () => {
+            const {
+                itemAlign = 'left',
+                children,
+                status,
+                repeaterCore,
+            } = this.props;
+
+            const { formList } = repeaterCore;
+            const rowList = formList.map((core, index) => {
+                const values = core.getValues();
+                const { id } = core;
+
+                const focusMode = core.$focus;
+                const focusCls = focusMode ? 'inline-repeater-focus' : '';
+                const cellCls = `repeater-table-cell-wrapper ${focusCls} repeater-table-cell-wrapper-${itemAlign}`;
+                const cleanLayout = { layout: { label: null, control: null } };
+                const componentMap = {};
+                const childMap = {};
+                const childrenRefArr = ([].concat(children)).reduce((a, b) => [].concat(a, b), []);
+                childrenRefArr.forEach((childitem) => {
+                    let mrChild = childitem;
+                    if (isIf(childitem)) {
+                        mrChild = getIfChild(childitem);
+                    }
+                    const { label, name } = mrChild.props;
+                    childMap[`${label}${name}`] = React.cloneElement(mrChild, { label: undefined, ...cleanLayout });
+                });
+
+                // 遍历渲染数据
+                const itemsConfig = this.getItemsConfig(index);
+                itemsConfig.forEach((conf) => {
+                    const cls = conf.className || '';
+                    const style = conf.style || {};
+                    let customRender = null;
+                    if (conf.renderCell) {
+                        customRender = conf.renderCell(values[conf.name], {
+                            values, id, core, index,
+                        });
+                    }
+
+                    const childElement = childMap[`${conf.label}${conf.name}`];
+                    let innerValElement = null;
+                    if (customRender) {
+                        innerValElement = customRender;
+                    } else if (React.isValidElement(childElement)) {
+                        const validItemStatus = isValidStatus(conf.status);
+                        let globalStatus = status;
+                        if (focusMode) { // 焦点模式下，默认为edit，外界状态不为edit时需要同步
+                            globalStatus = status !== 'edit' ? status : 'edit';
+                        } else {
+                            globalStatus = 'preview';
+                        }
+
+                        const itemStatus = validItemStatus ? conf.status : globalStatus;
+                        innerValElement = React.cloneElement(childElement, { status: itemStatus });
+                    } else {
+                        innerValElement = childElement;
+                    }
+
+                    if (conf.name && !conf.renderCell) {
+                        innerValElement = React.cloneElement(innerValElement, { name: '', value: values[conf.name] });
+                    }
+
+                    componentMap[conf.name] = (<div style={style} className={`${cellCls} ${cls}`}>
+                        {innerValElement}
+                    </div>);
+                });
+
+                return componentMap;
+            });
+
+            return rowList;
+        }
+
         getItemsConfig = (rowIndex) => {
             const { children, repeaterCore } = this.props;
             const { formList = [] } = repeaterCore || {};
@@ -72,7 +152,7 @@ export default function bind(type, source) {
             const {
                 multiple = false, repeaterCore,
                 hasUpdate: propUpdate, hasDelete: propDelete,
-                renderOper
+                renderOper,
             } = this.props;
 
             if (renderOper && typeof renderOper === 'function') {
