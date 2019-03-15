@@ -200,9 +200,9 @@ export default function CreateRepeater(bindSource, type, source) {
 
 
         getForm = (core) => {
-            const formProps = {};
             const { dialogConfig, children } = this.props;
-            const { layout, full } = dialogConfig || {};
+            const { layout, full, ...others } = dialogConfig || {};
+            const formProps = { ...others };
             formProps.layout = layout || { label: 8, control: 16 };
             formProps.full = !!full;
 

@@ -10,7 +10,7 @@
 ## 可执行 DEMO
 
 ````js
-import Form, { FormItem, FormCore } from 'noform';
+import Form, { FormItem, FormCore, If, Item } from 'noform';
 import repeater  from '../src/repeater';
 import * as Antd from 'antd';
 import wrapper from '../src/wrapper/antd';
@@ -127,16 +127,43 @@ class Example extends React.Component {
     }
 
     render() {
+
+        const typeSource = [
+            { label: 'aaa', value: 'aaa' },
+            { label: 'bbb', value: 'bbb' },
+            { label: 'ccc', value: 'ccc' }
+        ];
+
         return (<Form core={this.core} layout={{ label: 6, control: 18 }} defaultMinWidth={false}>
             <div className="example-title">Master Repeater Examples</div>
             {/* public source */}
-            <FormItem label="Public Country Repeater" name="countryRepeater">
+            {/* <FormItem label="Public Country Repeater" name="countryRepeater">
                 <InlineRepeater asyncHandler={this.publicHandler} multiple>
                     <FormItem label="country" name="country">
                         <Select mode="multiple" options={publicCountry} />
                     </FormItem>
                     <FormItem label="min" name="min"><InputNumber /></FormItem>
                     <FormItem label="abb" name="abb"><InputNumber /></FormItem>
+                </InlineRepeater>
+            </FormItem> */}
+            <FormItem label="Freight Calculator" name="freightCalculator">
+                <InlineRepeater multiple>
+                    <FormItem label="type" name="type" defaultValue="aaa">
+                        <Select options={typeSource} />
+                    </FormItem>
+                    <FormItem label="rule" multiple>
+                        <div>
+                            <If when={(values) => values.type === 'aaa'}>
+                                <Item name="aaa"><Input placeholder="aaa" /></Item>
+                            </If>
+                            <If when={(values) => values.type === 'bbb'}>
+                                <Item name="bbb"><Input placeholder="bbb" /></Item>
+                            </If>
+                            <If when={(values) => values.type === 'ccc'}>
+                                <Item name="ccc"><Input placeholder="ccc" /></Item>
+                            </If>
+                        </div>
+                    </FormItem>
                 </InlineRepeater>
             </FormItem>
             {/* <FormItem render={(values) => {
