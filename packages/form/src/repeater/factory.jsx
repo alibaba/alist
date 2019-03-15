@@ -201,7 +201,9 @@ export default function CreateRepeater(bindSource, type, source) {
 
         getForm = (core) => {
             const { dialogConfig, children } = this.props;
-            const { layout, full, ...others } = dialogConfig || {};
+            const {
+                layout, full, custom, className, width, ...others
+            } = dialogConfig || {};
             const formProps = { ...others };
             formProps.layout = layout || { label: 8, control: 16 };
             formProps.full = !!full;
@@ -284,7 +286,7 @@ export default function CreateRepeater(bindSource, type, source) {
         }
 
         sync = (opts) => {
-            this.manualEvent = opts || {};            
+            this.manualEvent = opts || {};
             const values = this.repeaterCore.getValues();
             this.onChange(values, opts);
         }
@@ -456,11 +458,9 @@ export default function CreateRepeater(bindSource, type, source) {
     const OtRepeater = React.forwardRef((props, ref) => (<ItemContext.Consumer>
         {(itemContext) => {
             const { item } = itemContext;
-            return <SelectRepeaterContext.Consumer>
-                {( { selectRepeater }) => {
-                    return <InnerRepeater ref={ref} {...props} item={item} selectRepeater={selectRepeater} />;
-                }}
-            </SelectRepeaterContext.Consumer>
+            return (<SelectRepeaterContext.Consumer>
+                {({ selectRepeater }) => <InnerRepeater ref={ref} {...props} item={item} selectRepeater={selectRepeater} />}
+            </SelectRepeaterContext.Consumer>);
         }}
     </ItemContext.Consumer>));
 
