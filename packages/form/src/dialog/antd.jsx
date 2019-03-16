@@ -6,8 +6,9 @@ const DialogFormWrapper = (AntdSource) => {
 
     const compatiMap = {
         show: (options) => {
-            const { className, ...others } = options;
+            const { className, btnAlign = 'right', ...others } = options;
             return {
+                btnAlign,
                 ...others,
                 className: `${className || ''} dialog-form-wrapper`,
                 iconType: true,

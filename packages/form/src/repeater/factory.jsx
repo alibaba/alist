@@ -183,7 +183,7 @@ export default function CreateRepeater(bindSource, type, source) {
         getDialogConfig = (core, props) => {
             const { dialogConfig, selectRepeater } = this.props;
             const { okText, cancelText } = this.getText();
-            const { custom, ...otherDialogProps } = dialogConfig || {};
+            const { title, custom, ...otherDialogProps } = dialogConfig || {};
             const { type: dialogType, content } = props;
             core.selectRepeater = selectRepeater;
             const rewriteProps = custom ? custom(core, dialogType, props) : {};
@@ -191,6 +191,7 @@ export default function CreateRepeater(bindSource, type, source) {
             return {
                 ...otherDialogProps,
                 ...props,
+                title: title || props.title,
                 okText,
                 cancelText,
                 content: content || this.getForm(core),
@@ -202,7 +203,7 @@ export default function CreateRepeater(bindSource, type, source) {
         getForm = (core) => {
             const { dialogConfig, children } = this.props;
             const {
-                layout, full, custom, className, width, ...others
+                style, layout, full, custom, className, width, ...others
             } = dialogConfig || {};
             const formProps = { ...others };
             formProps.layout = layout || { label: 8, control: 16 };

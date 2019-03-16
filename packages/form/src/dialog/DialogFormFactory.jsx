@@ -33,17 +33,17 @@ class DialogForm {
     }
 
     renderFooter = (Button) => {
-        const { footer, okText = 'OK', cancelText = 'Cancel', btnLoadingPropsName } = this.options;
+        const { btnAlign, hasCancel = true, footer, okText = 'OK', cancelText = 'Cancel', btnLoadingPropsName } = this.options;
 
         let footerElement = null;
         if (footer) {
             footerElement = footer(this.hide);
         } else {
             footerElement = (
-                <div key="footer" className="ant-custom-btns noform-dialog-custom-btns">
+                <div key="footer" className={`ant-custom-btns noform-dialog-custom-btns noform-dialog-btns-align-${btnAlign}`}>
                     <ActionButton btnLoadingPropsName={btnLoadingPropsName} btnOrigin={Button} type="primary" onClick={this.handleOk}>{okText}</ActionButton>
-                    <span style={{ marginRight: '12px' }} />
-                    <ActionButton btnLoadingPropsName={btnLoadingPropsName} btnOrigin={Button} onClick={this.hide}>{cancelText}</ActionButton>
+                    { hasCancel ? <span style={{ marginRight: '12px' }} /> : null }
+                    { hasCancel ? <ActionButton btnLoadingPropsName={btnLoadingPropsName} btnOrigin={Button} onClick={this.hide}>{cancelText}</ActionButton> : null }
                 </div>);
         }
 

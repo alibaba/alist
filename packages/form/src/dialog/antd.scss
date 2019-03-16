@@ -5,5 +5,15 @@
 
 .dialog-form-wrapper .ant-custom-btns {
     margin-top: 24px;
-    float: right;
+    
+}
+
+.dialog-form-wrapper {
+    .ant-custom-btns.noform-dialog-btns-align-left { 
+        float: left;
+    }
+    
+    .ant-custom-btns.noform-dialog-btns-align-right { 
+        float: right;
+    }
 }

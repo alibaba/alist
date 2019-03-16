@@ -154,8 +154,11 @@ class Example extends React.Component {
     renderTest = () => {
         const repeaterDialogConfig = {
             layout: { label: 6, control: 16 },
+            title: 'title123',
             // defaultMinWidth: false,
-            style: { width: '800px' },
+            // style: { width: '800px' },
+            // hasCancel: false,
+            // btnAlign: 'left',
         };
         const inlineWrap = { style: { display: 'flex' }};
         const inlinePrefix = { layout: null, inline: true };

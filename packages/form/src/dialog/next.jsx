@@ -6,9 +6,10 @@ const DialogFormWrapper = (NextSource) => {
 
     const compatiMap = {
         show: (options) => {
-            const { width, className } = options;
+            const { width, className, btnAlign = 'left' } = options;
 
             return {
+                btnAlign,
                 ...options,
                 width,
                 className: `${className || ''} dialog-form-wrapper`,

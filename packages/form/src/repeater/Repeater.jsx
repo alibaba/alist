@@ -352,6 +352,7 @@ export default function bind(type, source) {
             const listLength = Array.isArray(formList) ? formList.length : 0;
             const addType = multiple ? `addMultiple${addSuffix}` : `add${addSuffix}`;
             let addBtnEle = null;
+
             if (hasAdd && editable) {
                 if (maxLength !== undefined &&
                     (listLength > maxLength || listLength === maxLength)) {
@@ -380,7 +381,9 @@ export default function bind(type, source) {
 
             // 渲染内容
             let containerContent = null;
+            let viewCls = '';
             if (view) {
+                viewCls = 'table-repeater-wrapper-custom-view';
                 containerContent = this.renderView();
             } else {
                 containerContent = (<TableCom hasHeader={hasHeader} header={header}>
@@ -396,7 +399,7 @@ export default function bind(type, source) {
             if (bottom && (React.isValidElement(bottom) || typeof bottom === 'string')) bottomElement = typeof bottom === 'string' ? <div>{bottom}</div> : bottom;
             const fullcls = full ? 'table-repeater-wrapper-full' : '';
 
-            return (<div className={`table-repeater-wrapper ${fullcls} ${className || ''}`} style={style}>
+            return (<div className={`table-repeater-wrapper ${viewCls} ${fullcls} ${className || ''}`} style={style}>
                 {topElement}
                 {this.renderFilter()}
                 {addPosition === 'top' ? addBtnEle : null}
