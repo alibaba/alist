@@ -6,18 +6,25 @@ const noop = () => {};
 class RepeaterCore {
     constructor(props) {
         const {
-            value, status, formConfig, asyncHandler, multiple, multipleSyncHandler
+            value, status, formConfig, asyncHandler, multiple,
+            multipleSyncHandler, setLoadingSideEffect,
         } = props;
         this.formList = [];
+        this.loading = false;
         this.status = status || 'preview';
         this.formConfig = formConfig || {};
         this.asyncHandler = asyncHandler || {};
         this.multiple = multiple;
         this.multipleSyncHandler = multipleSyncHandler || (x => x);
+        this.setLoadingSideEffect = setLoadingSideEffect || (x => x);
 
         if (Array.isArray(value)) {
             this.formList = value.map(itemValues => this.generateCore(itemValues));
         }
+    }
+
+    setLoading = (loading) => {
+        this.loading = loading;
     }
 
     updateStatus = (status) => {
@@ -183,6 +190,14 @@ class RepeaterCore {
         return canSync;
     }
 
+    beforeAsyncHandler = ({ type, inline = false }) => {
+        // this.setLoadingSideEffect(true);
+    }
+
+    afterAsyncHandler = () => {
+        // this.setLoadingSideEffect(false);
+    }
+
     // 增加临时编辑项
     addInline = async () => {
         let values = null;
@@ -195,6 +210,7 @@ class RepeaterCore {
         const tmp = this.generateCore();
 
         if (this.asyncHandler.add) {
+            this.beforeAsyncHandler({ type: 'add', inline: true });
             const index = this.formList.length - 1 < 0 ? 0 : this.formList.length - 1;
             let result = true;
             try {
@@ -212,6 +228,7 @@ class RepeaterCore {
             if (rv) {
                 values = rv;
             }
+            this.afterAsyncHandler({ type: 'add', inline: true });
         }
 
         if (success) {
@@ -233,7 +250,9 @@ class RepeaterCore {
         cb(index);
 
         if (this.asyncHandler.update) {
+            // this.beforeAsyncHandler({ type: 'update', multiple: true });
             this.asyncHandler.update(v, ctx, index, keys);
+            // this.afterAsyncHandler({ type: 'update', multiple: true });
         }
     }
 
@@ -247,6 +266,7 @@ class RepeaterCore {
         const tmp = this.generateCore();
 
         if (this.asyncHandler.add) {
+            this.beforeAsyncHandler({ type: 'add' });
             const index = this.formList.length - 1 < 0 ? 0 : this.formList.length - 1;
             let result = true;
             try {
@@ -265,6 +285,8 @@ class RepeaterCore {
             if (rv) {
                 values = rv;
             }
+
+            this.afterAsyncHandler({ type: 'add' });
         }
 
         if (success) {
@@ -287,6 +309,7 @@ class RepeaterCore {
         if (hasError) return false;
 
         if (this.asyncHandler.update) {
+            this.beforeAsyncHandler({ type: 'update', inline: true });
             const index = this.formList.findIndex(rp => rp.id === id);
             let result = true;
             try {
@@ -304,6 +327,8 @@ class RepeaterCore {
             if (item) {
                 currentValues = item;
             }
+
+            this.afterAsyncHandler({ type: 'update', inline: true });
         }
 
         if (success) {
@@ -336,6 +361,7 @@ class RepeaterCore {
         const lastCore = this.formList.find(rp => rp.id === id);
         if (lastCore) {
             if (this.asyncHandler.save) {
+                this.beforeAsyncHandler({ type: 'save', inline: true });
                 const index = this.formList.findIndex(rp => rp.id === id);
                 let result = true;
                 try {
@@ -353,6 +379,8 @@ class RepeaterCore {
                 if (rv) {
                     values = rv;
                 }
+
+                this.afterAsyncHandler({ type: 'save', inline: true });
             }
         }
 
@@ -425,6 +453,7 @@ class RepeaterCore {
         let success = true;
         let values = null;
         if (this.asyncHandler.add) {
+            this.beforeAsyncHandler({ type: 'add' });
             const index = this.formList.length - 1 < 0 ? 0 : this.formList.length - 1;
             let result = true;
             try {
@@ -443,6 +472,7 @@ class RepeaterCore {
             if (rv) {
                 values = rv;
             }
+            this.afterAsyncHandler({ type: 'add' });
         }
 
         if (success) {
@@ -461,6 +491,7 @@ class RepeaterCore {
         let success = true;
         let values = null;
         if (this.asyncHandler.remove) {
+            this.beforeAsyncHandler({ type: 'remove' });
             const index = this.formList.findIndex(rp => rp.id === id);
             const lastValues = lastCore.getValues();
             let result = true;
@@ -477,6 +508,7 @@ class RepeaterCore {
             if (rv) {
                 values = rv;
             }
+            this.afterAsyncHandler({ type: 'remove' });
         }
 
         if (success) {
@@ -496,6 +528,7 @@ class RepeaterCore {
         let currentValues = currentCore.getValues();
         let values = null;
         if (this.asyncHandler.update) {
+            this.beforeAsyncHandler({ type: 'update' });
             const index = this.formList.findIndex(rp => rp.id === id);
             let result = true;
             try {
@@ -513,6 +546,7 @@ class RepeaterCore {
             if (item) {
                 currentValues = item;
             }
+            this.afterAsyncHandler({ type: 'update' });
         }
 
         if (success) {

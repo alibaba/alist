@@ -74,6 +74,8 @@ export default function CreateRepeater(bindSource, type, source) {
                 asyncHandler: this.asyncHandler,
                 multiple,
                 multipleSyncHandler: this.handleCoreUpdate,
+                setLoadingSideEffect: this.setLoading,
+
             });
 
             this.superFormProps = {};
@@ -286,6 +288,11 @@ export default function CreateRepeater(bindSource, type, source) {
             this.forceUpdate();
         }
 
+        setLoading = (loading) => {
+            this.repeaterCore.setLoading(loading);
+            this.forceUpdate();
+        }
+
         sync = (opts) => {
             this.manualEvent = opts || {};
             const values = this.repeaterCore.getValues();
@@ -435,6 +442,7 @@ export default function CreateRepeater(bindSource, type, source) {
                     doMultipleInline: this.doMultipleInline,
                     doUpdateDialog: this.doUpdateDialog,
                     doUpdateInline: this.doUpdateInline,
+                    setLoading: this.setLoading,
                     doSave: this.doSave,
                     doCancel: this.doCancel,
                     doDelete: this.doDelete,

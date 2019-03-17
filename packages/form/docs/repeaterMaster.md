@@ -131,19 +131,23 @@ class Example extends React.Component {
     }
 
     renderTableView = (_, ctx) => {
-        const { getDataSource, getViewElements } = ctx;
+        const { setLoading, getLoading, getDataSource, getCoreList } = ctx;
 
+        const coreList = getCoreList();
         const dataSource = getDataSource() || [];
-        const viewElements = getViewElements() || [];
+        const loading = getLoading();        
 
-        console.log('ddd', dataSource);
-        console.log('vvv', viewElements);
-        const elements = dataSource.map((item, index) => {
-            console.log('vvv [item]',index, item);
-            
-            return <div>{Object.keys(item).map(key => {
-                return viewElements[index][key];
-            })}</div>
+        const elements = dataSource.map((item, index) => {            
+            const core = coreList[index];
+            console.log('coreList', core);
+
+            return <div>
+                <div>loading: {loading ? 'on' : 'off'}</div>
+                <div>username: {item.username}</div>
+                <Button onClick={setLoading.bind(null, true)}>Turn ON Loading</Button>
+                <Button onClick={setLoading.bind(null, false)}>Turn OFF Loading</Button>
+                <ActionButton core={core} type="delete">删除{index}</ActionButton>
+            </div>
         });    
 
         return <div>
@@ -167,18 +171,6 @@ class Example extends React.Component {
             <TableRepeater view={this.renderTableView} dialogConfig={repeaterDialogConfig}>
                 <div>hello1</div>
                 <FormItem name="username" label="username"><Input /></FormItem>
-                <FormItem name="check" label="check"><Select options={[
-                    {label: '111', value: 'aaa'},
-                    {label: '222', value: 'bbb'}
-                ]} /></FormItem>
-                {/* <FormItem label="age" multiple>
-                    <div {...inlineWrap}>
-                        <FormItem {...inlinePrefix} name="age1" ><Input /></FormItem>
-                        <FormItem {...inlineSuffix} name="age2" label="age2"><Input /></FormItem>
-                    </div>
-                </FormItem>
-                <div>hello2</div>
-                <FormItem name="gender" label="gender"><Input /></FormItem> */}
             </TableRepeater>
         </FormItem>
     }

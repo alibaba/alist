@@ -100,8 +100,13 @@ const ActionButton = props => (<RepeaterContext.Consumer>
         const actionProps = repeaterAction || {};
         const { repeater } = actionProps;
         const { type, ...others } = repeater || {};
+        const { core: propCore, ...otherProps } = props || {};
+
         return (<RowContext.Consumer>
-            {rowCtx => <InnerActionButton {...props} {...others} {...rowCtx} />}
+            {(rowCtx) => {
+                const { core, ...otherCtx } = rowCtx || {};
+                return <InnerActionButton {...otherProps} {...others} {...otherCtx} core={core || propCore} />;
+            }}
         </RowContext.Consumer>);
     }}
 </RepeaterContext.Consumer>);

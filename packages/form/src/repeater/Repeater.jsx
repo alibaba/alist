@@ -22,6 +22,22 @@ export default function bind(type, source) {
             return repeaterCore.getValues();
         }
 
+        getCoreList = () => {
+            const { repeaterCore } = this.props;
+            const { formList } = repeaterCore;
+            return formList;
+        }
+
+        setLoading = (loading) => {
+            const { setLoading } = this.props;
+            setLoading(loading);
+        }
+
+        getLoading = () => {
+            const { repeaterCore } = this.props;
+            return repeaterCore.loading;
+        }
+
         getViewElements = () => {
             const {
                 itemAlign = 'left',
