@@ -49,6 +49,7 @@ class DialogForm {
         const { label } = layout || {};
         const { locale = 'en', footer, btnLoadingPropsName, footerAlign } = this.options;
         const textMap = LocaleMap[locale];
+        const { hasCancel = true } = this.options;
         const okText = this.options.okText || textMap.ok;
         const cancelText = this.options.cancelText || textMap.cancel;
 
@@ -71,8 +72,8 @@ class DialogForm {
             }}>
                 <div key="footer" className={`noform-dialog-custom-btns ${alignCls}`} {...styleProps}>
                     <ActionButton key="align-footer-ok" btnLoadingPropsName={btnLoadingPropsName} btnOrigin={Button} type="primary" onClick={this.handleOk}>{okText}</ActionButton>
-                    <span key="align-footer-sep" style={{ marginRight: '12px' }} />
-                    <ActionButton key="align-footer-cancel" btnLoadingPropsName={btnLoadingPropsName} btnOrigin={Button} onClick={this.handleCancel}>{cancelText}</ActionButton>
+                    { hasCancel ? <span key="align-footer-sep" style={{ marginRight: '12px' }} /> : null }
+                    { hasCancel ? <ActionButton key="align-footer-cancel" btnLoadingPropsName={btnLoadingPropsName} btnOrigin={Button} onClick={this.handleCancel}>{cancelText}</ActionButton> : null }
                 </div>
             </If>
         }

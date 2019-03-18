@@ -9,6 +9,19 @@
     float: right;
 }
 
+
+.dialog-form-wrapper {
+    .ant-custom-btns.noform-dialog-btns-align-left { 
+        float: left;
+        text-align: left;
+    }
+    
+    .ant-custom-btns.noform-dialog-btns-align-right { 
+        float: right;
+        text-align: right;
+    }
+}
+
 .dialog-polifill-cancel {
     float: right;
     cursor: pointer;
