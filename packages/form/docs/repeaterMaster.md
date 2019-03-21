@@ -49,9 +49,14 @@ class Example extends React.Component {
                     { min: 45, max: 60 },
                 ],
                 masterRepeater: [
-                    { check: 'bbb'},
-                    { check: 'aaa'}
-                ]
+                    // { check: 'bbb'},
+                    // { check: 'aaa'}
+                    { username: 0 },
+                    { username: 0.0 },
+                    { username: 1 }
+                ],
+                int1: 0,
+                int2: 1
             },
         });
 
@@ -168,7 +173,10 @@ class Example extends React.Component {
         const inlinePrefix = { layout: null, inline: true };
         const inlineSuffix = { layout: { label: 6, control: 18 }, inline: true, full: true, style: { flex: 1 }};
         return <FormItem label="masterRepeater" name="masterRepeater" full>
-            <TableRepeater view={this.renderTableView} dialogConfig={repeaterDialogConfig}>
+            <TableRepeater
+                // view={this.renderTableView}
+                dialogConfig={repeaterDialogConfig}
+            >
                 <div>hello1</div>
                 <FormItem name="username" label="username"><Input /></FormItem>
             </TableRepeater>
@@ -186,6 +194,13 @@ class Example extends React.Component {
         return (<Form core={this.core} layout={{ label: 6, control: 18 }} defaultMinWidth={false}>
             <div className="example-title">Master Repeater Examples</div>
             {this.renderTest()}
+            <FormItem label="int1" name="int1" status="preview" defaultValue="2">
+                <Input />
+            </FormItem>
+
+            <FormItem label="int2" name="int2" status="preview">
+                <Input />
+            </FormItem>
             {/* public source */}
             {/* <FormItem label="Public Country Repeater" name="countryRepeater">
                 <InlineRepeater asyncHandler={this.publicHandler} multiple>

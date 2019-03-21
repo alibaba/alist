@@ -449,11 +449,11 @@ class Form {
             mrOption.jsx_status = status || func_status;
 
             const itemGlobalValue = isInvalidVal(this.value[name]) ? null : this.value[name];
-            let itemValue = itemGlobalValue || null;
+            let itemValue = itemGlobalValue;
 
             // undefined 作为未定义的标志，null作为未赋值的标志
             if (!this.defaultSettingMap[name] && !(name in this.value)) {
-                itemValue = (itemGlobalValue || defaultValue);
+                itemValue = (isInvalidVal(itemGlobalValue) ? defaultValue : itemGlobalValue);
                 this.defaultSettingMap[name] = true;
             }
             mrOption.value = isInvalidVal(value) ? itemValue : value;

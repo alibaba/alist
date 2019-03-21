@@ -286,7 +286,7 @@ class BaseFormItem extends React.Component {
             form, ifCore,
         } = props;
 
-        const value = getValue(props);
+        const value = getValue(props);        
         const defaultValue = getDefaultValue(props);
 
         const option = {
@@ -329,6 +329,7 @@ class BaseFormItem extends React.Component {
                 option[key] = props[key];
             }
         });
+
 
         const core = form.addField(option);
         return core;
