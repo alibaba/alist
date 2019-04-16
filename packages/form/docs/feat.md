@@ -79,7 +79,7 @@ let children = [
 
     window.formcore = formcore;
 
-    return <Form core={formcore} colon={false} style={{ marginBottom: 12 }} layout={{label: 5, control: 19}} full>
+    return <Form direction="ver" core={formcore} colon={false} style={{ marginBottom: 12 }} layout={{label: 5, control: 19}} full>
         <div className="demo-form">
             <FormItem required label="point" name="point"><Input /></FormItem>
             <If when={({ point }) => {

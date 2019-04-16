@@ -55,6 +55,10 @@ class Example extends React.Component {
                     { username: 0.0 },
                     { username: 1 }
                 ],
+                inlineRepeater: [
+                    { s1: 's1', s2: 's2', s3: 's3' },
+                    { s1: 's1...', s2: 's2...', s3: 's3...' }
+                ],
                 int1: 0,
                 int2: 1
             },
@@ -191,16 +195,57 @@ class Example extends React.Component {
             { label: 'ccc', value: 'ccc' }
         ];
 
+        const asyncHandlerInline = {
+            add: () => {
+            }
+        };
+
         return (<Form core={this.core} layout={{ label: 6, control: 18 }} defaultMinWidth={false}>
             <div className="example-title">Master Repeater Examples</div>
-            {this.renderTest()}
-            <FormItem label="int1" name="int1" status="preview" defaultValue="2">
+            {/* {this.renderTest()} */}
+            {/* <FormItem label="int1" name="int1" status="preview" defaultValue="2">
                 <Input />
             </FormItem>
 
             <FormItem label="int2" name="int2" status="preview">
                 <Input />
+            </FormItem> */}
+            <FormItem label="dynamic repeater" name="inlineRepeater">
+                <InlineRepeater multiple>
+                    <FormItem label="s1" name="s1" status="preview">
+                        <Input />
+                    </FormItem>
+                    <FormItem label="s2" name="s2" status="disabled">
+                        <Input />
+                    </FormItem>
+                    <FormItem label="s3" name="s3" status={() => {
+                        return 'preview'
+                    }}>
+                        <Input />
+                    </FormItem>
+                </InlineRepeater>
             </FormItem>
+            {/* <FormItem label="dynamic repeater" name="inlineRepeater">
+                <InlineRepeater multiple>
+                    <FormItem label="source" name="source">
+                        <Input />
+                    </FormItem>
+                    <FormItem label="view" multiple>
+                        <FormItem render={(values, ctx) => {
+                            return values.source + ' | ' + values.result;
+                        }} />
+                    </FormItem>
+                    <FormItem label="result" multiple>
+                        <FormItem render={(values, ctx) => {
+                            return <Input
+                                placeholder={values.source || ''}
+                                onChange={e => ctx.setItemValue('result', e.target.value)}
+                                value={values.result}
+                            />
+                        }} />
+                    </FormItem>
+                </InlineRepeater>
+            </FormItem> */}
             {/* public source */}
             {/* <FormItem label="Public Country Repeater" name="countryRepeater">
                 <InlineRepeater asyncHandler={this.publicHandler} multiple>

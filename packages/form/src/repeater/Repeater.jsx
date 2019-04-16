@@ -299,7 +299,12 @@ export default function bind(type, source) {
                             globalStatus = 'preview';
                         }
 
-                        const itemStatus = validItemStatus ? conf.status : globalStatus;
+                        let statusResult = conf.status;
+                        if (typeof conf.status === 'function') {
+                            statusResult = conf.status(values, core);
+                        }
+
+                        const itemStatus = validItemStatus ? statusResult : globalStatus;
                         innerValElement = React.cloneElement(childElement, { status: itemStatus });
                     } else {
                         innerValElement = childElement;
