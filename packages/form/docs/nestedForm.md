@@ -23,6 +23,16 @@ const consoleValue = () => {
     console.log(core.getValues());
 }
 
+const nestedCore = new FormCore({
+    validateConfig: {
+        name: { required: true, message: '公司名必填' }
+    }
+});
+
+const nestedInnerConfig = {
+    province: { required: true, message: '省份必填' }
+};
+
 const toggleStatus = () => {
     const globalStatus = core.getGlobalStatus();
     const targetStatus = (globalStatus === 'edit' ? 'preview' : 'edit');
@@ -30,14 +40,18 @@ const toggleStatus = () => {
     core.setGlobalStatus(targetStatus);
 };
 
+const validateNested = async () => {
+    await core.validate();
+}
+
 ReactDOM.render(
     <Form core={core} layout={{ label: 2, control: 22 }}>
         {/* <FormItem label="产品名" name="productName"><Input /></FormItem> */}
         <FormItem label="公司信息" name="company">
-            <Form layout={false}>
+            <Form layout={false} core={nestedCore}>
                 <FormItem label="公司名" name="name"><Input /></FormItem>
                 <FormItem label="公司地址" name="address">
-                    <Form>
+                    <Form validateConfig={nestedInnerConfig}>
                         <FormItem label="省" name="province"><Input /></FormItem>
                         <FormItem label="市" name="city"><Input /></FormItem>
                         <FormItem label="区" name="district"><Input /></FormItem>
@@ -46,6 +60,7 @@ ReactDOM.render(
                 </FormItem>
             </Form>
         </FormItem>
+        <FormItem label=""><Button onClick={validateNested}>Validate Nested</Button></FormItem>
         {/* <FormItem label="产品参数" name="param"><Input /></FormItem> */}
         {/* <FormItem label="">
             <div>

@@ -336,7 +336,7 @@ export default function bind(type, source) {
 
                 const rowContextValue = { core, id };
                 return (<RowContext.Provider value={rowContextValue} key={id}>
-                    <Form Com="tr" {...formProps} {...cleanLayout} core={core} className="table-repeater-row">
+                    <Form Com="tr" {...formProps} {...cleanLayout} core={core} className="table-repeater-row" repeaterRow>
                         {listItems}
                         {operEle}
                     </Form>

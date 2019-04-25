@@ -211,7 +211,7 @@ export default function CreateRepeater(bindSource, type, source) {
             formProps.layout = layout || { label: 8, control: 16 };
             formProps.full = !!full;
 
-            return (<Form core={core} {...formProps}>
+            return (<Form core={core} {...formProps} repeaterRow>
                 {children}
             </Form>);
         }
