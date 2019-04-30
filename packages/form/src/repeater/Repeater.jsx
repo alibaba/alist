@@ -256,10 +256,10 @@ export default function bind(type, source) {
                 const focusCls = focusMode ? 'inline-repeater-focus' : '';
                 const cellCls = `repeater-table-cell-wrapper ${focusCls} repeater-table-cell-wrapper-${itemAlign}`;
 
-                const updateBtn = !multiple && !focusMode && hasUpdate ? <ActionButton type={`update${addSuffix}`} updateText={updateText} /> : null;
-                const deleteBtn = (!focusMode || multiple) && hasDelete ? <ActionButton type="delete" deleteText={deleteText} /> : null;
-                const saveBtn = !isTable && !multiple && focusMode ? <ActionButton type="save" saveText={saveText} /> : null;
-                const cancelBtn = !isTable && !multiple && focusMode ? <ActionButton type="cancel" cancelText={cancelText} /> : null;
+                const updateBtn = !multiple && !focusMode && hasUpdate ? <ActionButton key={`update-${id}`} type={`update${addSuffix}`} updateText={updateText} /> : null;
+                const deleteBtn = (!focusMode || multiple) && hasDelete ? <ActionButton key={`delete-${id}`} type="delete" deleteText={deleteText} /> : null;
+                const saveBtn = !isTable && !multiple && focusMode ? <ActionButton key={`save-${id}`} type="save" saveText={saveText} /> : null;
+                const cancelBtn = !isTable && !multiple && focusMode ? <ActionButton key={`cancel-${id}`} type="cancel" cancelText={cancelText} /> : null;
 
                 const cleanLayout = { layout: { label: null, control: null } };
                 let listItems = null;

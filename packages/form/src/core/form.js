@@ -292,6 +292,23 @@ class Form {
         this.setValue(emptyValue);
     }
 
+    // 重置错误信息
+    resetError(keys) {
+        let emptyValue = {};
+        let resetKeys = [];
+        if (Array.isArray(keys)) {
+            resetKeys = keys;
+        } else {
+            resetKeys = Object.keys(this.value);
+        }
+
+        resetKeys.forEach((key) => {
+            emptyValue[key] = null;
+        });
+
+        this.setError(emptyValue);
+    }
+
     // 设置多字段
     set(type, value) {
         // 设置单字段

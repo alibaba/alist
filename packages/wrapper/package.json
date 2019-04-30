@@ -1,6 +1,6 @@
 {
   "name": "nowrapper",
-  "version": "1.0.28",
+  "version": "1.2.0",
   "description": "nowrapper",
   "builder": {
     "entry": [
@@ -37,7 +37,8 @@
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-jest": "^21.15.1",
     "eslint-plugin-mocha": "^5.0.0",
-    "eslint-plugin-react": "^7.8.2"
+    "eslint-plugin-react": "^7.8.2",
+    "moment": "^2.24.0"
   },
   "keywords": [
     "component",

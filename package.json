@@ -1,9 +1,10 @@
 {
   "name": "nopage",
-  "version": "1.0.1",
+  "version": "1.2.0",
   "scripts": {
     "clean": "lerna clean",
-    "start": "lerna bootstrap"
+    "start": "lerna bootstrap",
+    "deploy": "lerna publish"
   },
   "devDependencies": {
     "lerna": "^3.4.1"

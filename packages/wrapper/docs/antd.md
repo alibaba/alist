@@ -13,7 +13,8 @@ import Form, { Item, FormItem, FormCore } from 'noform';
 import { Input, Select, Checkbox, Radio, Switch, Slider, DatePicker, TimePicker,
     Rate, Cascader, TreeSelect, Upload, Button, InputNumber, AutoComplete, Dialog } from '../src/antd/index';
 import { TableRepeater } from '../src/antd/repeater';
-import { Alert, Icon, message, Row, Col, } from 'antd';
+import { Alert, Icon, message, Row, Col } from 'antd';
+import moment from 'moment';
 import './antd.scss';
 
 const sleep = (mills) => new Promise(resolve => setTimeout(resolve, mills));
@@ -77,6 +78,9 @@ class App extends React.Component {
     constructor(props, context) {
         super(props, context);
         window.antdCore = this.core = new FormCore({
+            values: {
+                DatePicker: moment('2017-05-20 12:00:00'),
+            },
             onChange: (firekeys, values) => {
                 if (firekeys.indexOf('province' !== -1) ) {
                     window.antdCore.setItemProps('city', { options: [{ label: 'abc', value: 'abc' }] })
@@ -208,7 +212,13 @@ class App extends React.Component {
                 /></FormItem>
                 <FormItem label="DatePicker" name="DatePicker"><DatePicker placeholder="abcdefg" /></FormItem>
                 <FormItem label="TimePicker" name="TimePicker"><TimePicker placeholder="abcdefg"/></FormItem>
-                <FormItem label="InputNumber" name="InputNumber"><InputNumber placeholder="abcdefg"/></FormItem>
+                <FormItem defaultValue={1000} label="InputNumber" name="InputNumber">
+                    <InputNumber
+                        formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                        placeholder="abcdefg"
+                    />
+                </FormItem>
                 <FormItem label="Cascader" name="Cascader"><Cascader options={dataSource} placeholder="abcdefg"/></FormItem>
                 <FormItem label="TreeSelect" name="TreeSelect"><TreeSelect treeData={treeData} placeholder="abcdefg"/></FormItem>
                 <FormItem label="Upload" name="Upload" value={fileList}>

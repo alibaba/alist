@@ -134,14 +134,14 @@ const Rate = (Com, props) => {
 };
 
 const NumberPicker = (Com, props) => {
-    const { status, value } = props;
+    const { status, value, format } = props;
     const otherProps = getCleanProps(props);
     const valueProps = getValueProps(props, {
         format: formatNumber,
         defaultValue: undefined
     });
 
-    if (status === 'preview') return renderValue(value, { defaultValue: '' }); // 处理预览态
+    if (status === 'preview') return renderValue(value, { defaultValue: '', format }); // 处理预览态
 
     return <Com {...otherProps} {...valueProps} {...insetify(props)} />;
 };

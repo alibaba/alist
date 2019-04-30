@@ -4,6 +4,7 @@ import React from 'react';
 const isEmpty = (value) => ([undefined, null].indexOf(value) !== -1);
 
 const renderValue = (value, opts = {}) => {
+    const { format = noop } = opts;
     const hasDefaultValue = 'defaultValue' in opts;
     const defaultEmptyValue = hasDefaultValue ? opts.defaultValue : null;
     if (isEmpty(value)) return defaultEmptyValue; // 空值直接返回
@@ -12,7 +13,8 @@ const renderValue = (value, opts = {}) => {
         return <span className="multi-value-item-wrapper">{arrValue}</span>;
     }
 
-    return <span className="multi-value-item">{value}</span>;
+    const singleFormatValue = format(value);
+    return <span className="multi-value-item">{singleFormatValue}</span>;
 };
 
 const renderOption = (props = {}) => { // 处理
@@ -114,6 +116,7 @@ function formatNumber(value) {
 }
 
 export {
+    noop,
     formatValue,
     formatArray,
     formatBoolValue,

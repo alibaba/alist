@@ -73,7 +73,7 @@ class WrapperClass {
     }
 
     InputNumber = (props) => {
-        return NumberPicker(this.Antd.InputNumber, props);
+        return NumberPicker(this.Antd.InputNumber, { ...props, format: props.formatter });
     }
 
     Rate = (props) => {
