@@ -5,6 +5,9 @@
   "command": {
     "bootstrap": {
       "npmClientArgs": ["--registry=https://registry.npm.taobao.org"]      
+    },
+    "publish": {
+      "npmClientArgs": ["--registry=https://registry.npmjs.org"]
     }
   },
   "version": "independent"
