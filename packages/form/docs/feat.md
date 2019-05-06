@@ -36,8 +36,10 @@ let children = [
         values: {
             // code: '2019-05-20 10:00:00'
         },
+        autoValidate: true,
         validateConfig: {
-            code: { required: true, message: 'reuqired' }
+            code: { required: true, type: "string", message: 'reuqired' },
+            userId: { required: true, type: "string", message: 'reuqired' }
         }
     });
 
@@ -51,13 +53,25 @@ let children = [
         layout={{label: 5, control: 19}}
         full
     >
-        <FormItem key="code" required name="code"><DatePicker /></FormItem>
-        <FormItem label="repeater-outter">
-            <InlineRepeater multiple>
-                <FormItem label="s1" name="s1">
-                    <Input />
-                </FormItem>
-            </InlineRepeater>
+        <FormItem label="code" required name="code"><Input trim/></FormItem>
+        <FormItem label="userId" render={(values, core) => {
+            return (
+                <Select
+                    allowClear
+                    options={[{ label: 'a1', value: 'a' }, { label: 'b1', value: 'b' }]}
+                    onChange={(val, option) => {
+                        core.setItemValue('userId', val);
+                        core.setItemValue('userName', option.props.children);
+                    }}
+                    value={values.userId}
+                />
+            )
+            }}
+        />
+        <FormItem label="student" name="student" onChange={(a, b, c) => {
+            console.log(a,b,c)
+        }}>
+            <Select options={[{ label: 'a1', value: 'a' }, { label: 'b1', value: 'b' }]} />
         </FormItem>
     </Form>
 })(),
