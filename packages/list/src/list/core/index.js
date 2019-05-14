@@ -124,6 +124,11 @@ export default class GridCore {
         }
     }
 
+    setLoading = (isLoading) => {
+        this.isLoading = isLoading;
+        this.refreshTable();
+    }
+
     fetch = async () => {
         if (this.mode === 'dataSource') {
             return;

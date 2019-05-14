@@ -29,50 +29,37 @@ const { Group: CheckboxGroup } = Checkbox;
 import './antd.scss';
 import "./repeater.scss";
 
+export const customizeFormType = {
+  options: [
+    { label: '单选', value: 'Radio' },
+    { label: '多选', value: 'Checkbox' },
+    { label: '文本', value: 'Input' },
+    { label: '数字', value: 'InputNumber' },
+    { label: '日期', value: 'DatePicker' },
+    { label: '日期区间', value: 'RangePicker' },
+  ],
+  text: {
+    Radio: '单选',
+    Checkbox: '多选',
+    Input: '文本',
+    InputNumber: '数字',
+    DatePicker: '日期',
+    RangePicker: '日期区间'
+  }
+};
 
 let children = [
 (() => {
-    let formcore = new FormCore({
-        values: {
-            // code: '2019-05-20 10:00:00'
-        },
-        autoValidate: true,
-        validateConfig: {
-            code: { required: true, type: "string", message: 'reuqired' },
-            userId: { required: true, type: "string", message: 'reuqired' }
-        }
-    });
+    let formcore = new FormCore();
 
     window.formcore = formcore;
 
-    return <Form
-        direction="ver"
-        core={formcore}
-        colon={false}
-        style={{ marginBottom: 12 }}
-        layout={{label: 5, control: 19}}
-        full
-    >
-        <FormItem label="code" required name="code"><Input trim/></FormItem>
-        <FormItem label="userId" render={(values, core) => {
-            return (
-                <Select
-                    allowClear
-                    options={[{ label: 'a1', value: 'a' }, { label: 'b1', value: 'b' }]}
-                    onChange={(val, option) => {
-                        core.setItemValue('userId', val);
-                        core.setItemValue('userName', option.props.children);
-                    }}
-                    value={values.userId}
-                />
-            )
-            }}
-        />
-        <FormItem label="student" name="student" onChange={(a, b, c) => {
-            console.log(a,b,c)
-        }}>
-            <Select options={[{ label: 'a1', value: 'a' }, { label: 'b1', value: 'b' }]} />
-        </FormItem>
+    return <Form core={formcore} layout={{label: 5, control: 19}}>
+        <FormItem label="hello" render={(values, ctx) => {
+          return <FormItem layout={null} name="hello">
+            <Input />
+          </FormItem>
+        }} />
     </Form>
 })(),
 ]
