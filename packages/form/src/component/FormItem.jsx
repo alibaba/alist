@@ -153,11 +153,7 @@ class BaseFormItem extends React.Component {
             }
         }
 
-        this.core.emit(ON_EVENT, {
-            fireKey: this.core.name,
-            function: 'onChange',
-            args
-        });
+        this.onEvent('onChange', args);
         this.form.currentCore = this.core;
         this.form.currentEventOpts = opts;
         this.form.currentEventType = 'manual';
@@ -171,22 +167,14 @@ class BaseFormItem extends React.Component {
 
     onBlur = () => {
         this.core.emit(BLUR, this.core.name);
-        this.core.emit(ON_EVENT, {
-            fireKey: this.core.name,
-            function: 'onBlur',
-            args: []
-        });
+        this.onEvent('onBlur', []);
         if (typeof this.props.onBlur === 'function') {
             this.props.onBlur();
         }
     }
     onFocus = () => {
         this.core.emit(FOCUS, this.core.name);
-        this.core.emit(ON_EVENT, {
-            fireKey: this.core.name,
-            function: 'onFocus',
-            args: []
-        });
+        this.onEvent('onFocus', []);
         if (typeof this.props.onFocus === 'function') {
             this.props.onFocus();
         }
@@ -207,11 +195,7 @@ class BaseFormItem extends React.Component {
                 typeof this.props[propKey] === 'function') {
                 if (!this[propKey]) {
                     this.eventProps[propKey] = (...args) => {
-                        this.core.emit(ON_EVENT, {
-                            fireKey: this.core.name,
-                            function: propKey,
-                            args
-                        });
+                        this.onEvent(propKey, args);
                         if (this.props[propKey]) this.props[propKey](...args);
                     }
                 }
