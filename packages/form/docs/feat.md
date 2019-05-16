@@ -65,8 +65,13 @@ let children = [
       console.log('...pHandler', args);
     }
 
+    const gHandler = () => {
+      const v = formcore.getValues();
+      console.log('v', JSON.stringify(v));
+    }
+
     return <Form core={formcore} layout={{label: 5, control: 19}}>
-        <FormItem onPressEnter={pHandler} name="abcd" label="hello" defaultValue="1234">
+        <FormItem name="abcd" label="hello" onChange={gHandler}>
           <Input />
         </FormItem>
     </Form>

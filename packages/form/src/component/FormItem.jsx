@@ -130,8 +130,6 @@ class BaseFormItem extends React.Component {
     onChange = (...args) => {        
         const [e, opts = {}] = args;
         const { escape = false } = opts; // 直接用原生对象不进行判断
-        const { onChange } = this.props;
-        if (onChange) onChange(...args); // 把原本劫持的方法提供api供开发者使用
 
         let val = e;
         if (!escape) {
@@ -163,6 +161,9 @@ class BaseFormItem extends React.Component {
             this.form.currentEventOpts = null;
             this.form.currentEventType = 'api';
         });
+
+        const { onChange } = this.props;
+        if (onChange) onChange(...args); // 把原本劫持的方法提供api供开发者使用
     }
 
     onBlur = () => {
