@@ -41,6 +41,7 @@ class Form extends Component {
         onFocus: noop,
         onBlur: noop,
         onMount: noop,
+        onEvent: noop,
         onDialogMount: noop,
         dialogFooter: noopEle,
         colon: true,

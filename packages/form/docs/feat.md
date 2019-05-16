@@ -65,7 +65,7 @@ let children = [
       console.log('...pHandler', args);
     }
 
-    return <Form core={formcore} layout={{label: 5, control: 19}} onEvent={eHandler} onFocus={fHandler}>
+    return <Form core={formcore} layout={{label: 5, control: 19}}>
         <FormItem onPressEnter={pHandler} name="abcd" label="hello" defaultValue="1234">
           <Input />
         </FormItem>
