@@ -1,2 +1,11 @@
 @import './wrapper.scss';
 @import './dialog.scss';
+
+.ant-modal-confirm-title {
+    position: relative;
+    .dialog-polifill-cancel {
+        position: absolute;
+        right: 0;
+        top: 4px;
+    }
+}

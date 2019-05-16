@@ -113,7 +113,10 @@ class App extends React.Component {
         });
         Dialog.show({
             footerAlign: 'label',
-            title: 'dialog',
+            title: <div>
+                标题
+                <Button>复制</Button>
+            </div>,
             locale: 'zh',
             content: <Form core={core} layout={{ label: 4, control: 20 }}>
                 <div className="list-dialog-hint" >地址维护</div>

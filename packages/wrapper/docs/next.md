@@ -69,7 +69,10 @@ class App extends React.Component {
         });
         Dialog.show({
             footerAlign: 'label',
-            title: 'dialog',
+            title: <div>
+                标题
+                <Button>复制</Button>
+            </div>,
             locale: 'zh',
             content: <Form core={core} layout={{ label: 4, control: 20 }}>
                 <div className="list-dialog-hint" >您确定要取消订单吗？订单取消后，不能恢复。</div>
