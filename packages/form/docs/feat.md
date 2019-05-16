@@ -55,11 +55,9 @@ let children = [
     window.formcore = formcore;
 
     return <Form core={formcore} layout={{label: 5, control: 19}}>
-        <FormItem label="hello" render={(values, ctx) => {
-          return <FormItem layout={null} name="hello">
-            <Input />
-          </FormItem>
-        }} />
+        <FormItem status="preview" label="hello" defaultValue="1234">
+          <Input />
+        </FormItem>
     </Form>
 })(),
 ]
