@@ -53,9 +53,20 @@ let children = [
     let formcore = new FormCore();
 
     window.formcore = formcore;
+    const fHandler = (...args) => {
+      console.log('...fHandler', args);
+    }
 
-    return <Form core={formcore} layout={{label: 5, control: 19}}>
-        <FormItem status="preview" label="hello" defaultValue="1234">
+    const eHandler = (...args) => {
+      console.log('...fHandler', args);
+    }
+
+    const pHandler = (...args) => {
+      console.log('...pHandler', args);
+    }
+
+    return <Form core={formcore} layout={{label: 5, control: 19}} onEvent={eHandler} onFocus={fHandler}>
+        <FormItem onPressEnter={pHandler} name="abcd" label="hello" defaultValue="1234">
           <Input />
         </FormItem>
     </Form>

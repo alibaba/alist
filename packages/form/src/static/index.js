@@ -5,6 +5,7 @@ const ANY_CHANGE = 'ANY_CHANGE';
 const CHANGE = 'change';
 const FOCUS = 'FOCUS';
 const BLUR = 'BLUR';
+const ON_EVENT = 'ON_EVENT';
 
 // 基础属性变更
 const VALUE_CHANGE = 'VALUE_CHANGE';
@@ -44,4 +45,5 @@ export {
     DISABLED,
     HIDDEN,
     INITIALIZED,
+    ON_EVENT,
 };

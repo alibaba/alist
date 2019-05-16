@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import deepEqual from 'deep-equal';
 import FormCore from '../core/form';
-import { STATUS_ENUMS, CHANGE, FOCUS, BLUR, INITIALIZED } from '../static';
+import { STATUS_ENUMS, CHANGE, FOCUS, BLUR, INITIALIZED, ON_EVENT } from '../static';
 import FormContext from '../context/form';
 import IfContext from '../context/if';
 import ItemContext from '../context/item';
@@ -75,6 +75,7 @@ class Form extends Component {
         this.core.on(CHANGE, this.onChange);
         this.core.on(FOCUS, this.props.onFocus);
         this.core.on(BLUR, this.props.onBlur);
+        this.core.on(ON_EVENT, this.props.onEvent)
 
         // 嵌套Form
         if (item) {

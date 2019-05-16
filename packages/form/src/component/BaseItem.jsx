@@ -33,6 +33,7 @@ class BaseItem extends React.Component {
             children, render, didMount,
             form, onChange, onBlur, onFocus,
             name, formProps, inset, predictChildForm,
+            eventProps = {},
         } = this.props;
 
         if (render) {
@@ -80,6 +81,7 @@ class BaseItem extends React.Component {
         }
 
         const cloneProps = {
+            ...eventProps,
             ...comboFormProps,
             inset,
             // disabled: status === 'disabled',

@@ -1,6 +1,6 @@
 {
   "name": "nopage",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "scripts": {
     "clean": "lerna clean",
     "start": "lerna bootstrap",

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import BaseItem from './BaseItem';
-import { ANY_CHANGE, EDIT, HIDDEN, FOCUS, BLUR, STATUS_ENUMS } from '../static';
+import { ANY_CHANGE, EDIT, HIDDEN, FOCUS, BLUR, STATUS_ENUMS, ON_EVENT } from '../static';
 import genId from '../util/random';
 import { isObject, isFunction } from '../util/is';
 import FormContext from '../context/form';
@@ -56,6 +56,7 @@ class BaseFormItem extends React.Component {
 
         this.form = form;
         this.compProps = {};
+        this.eventProps = {};
         this.predictChildForm = this.handlePredictForm(props, (component) => {
             const { props: comProps = {} } = component || {};
             // 自动获取jsx组件属性，下个y位版本自动升级
@@ -152,6 +153,11 @@ class BaseFormItem extends React.Component {
             }
         }
 
+        this.core.emit(ON_EVENT, {
+            fireKey: this.core.name,
+            function: 'onChange',
+            args
+        });
         this.form.currentCore = this.core;
         this.form.currentEventOpts = opts;
         this.form.currentEventType = 'manual';
@@ -165,30 +171,68 @@ class BaseFormItem extends React.Component {
 
     onBlur = () => {
         this.core.emit(BLUR, this.core.name);
+        this.core.emit(ON_EVENT, {
+            fireKey: this.core.name,
+            function: 'onBlur',
+            args: []
+        });
         if (typeof this.props.onBlur === 'function') {
             this.props.onBlur();
         }
     }
     onFocus = () => {
         this.core.emit(FOCUS, this.core.name);
+        this.core.emit(ON_EVENT, {
+            fireKey: this.core.name,
+            function: 'onFocus',
+            args: []
+        });
         if (typeof this.props.onFocus === 'function') {
             this.props.onFocus();
         }
     }
 
-    getBaseProps = () => ({
-        predictChildForm: this.predictChildForm,
-        children: this.props.children,
-        render: this.props.render,
-        didMount: this.didMount,
-        form: this.form,
-        onChange: this.onChange,
-        onBlur: this.onBlur,
-        onFocus: this.onFocus,
-        inset: this.props.inset,
-        name: this.core.name,
-        formProps: this.predictChildForm ? this.getSuperFormProps() : {},
-    })
+    onEvent = (functionName, args) => {
+        this.core.emit(ON_EVENT, {
+            fireKey: this.core.name,
+            function: functionName,
+            args
+        });
+    }
+
+    getBaseProps = () => {
+        Object.keys(this.props || {}).forEach(propKey => {
+            if (typeof propKey === 'string' && propKey.startsWith('on') &&
+                ['onChange', 'onBlur', 'onFocus', 'onEvent'].indexOf(propKey) === -1 &&
+                typeof this.props[propKey] === 'function') {
+                if (!this[propKey]) {
+                    this.eventProps[propKey] = (...args) => {
+                        this.core.emit(ON_EVENT, {
+                            fireKey: this.core.name,
+                            function: propKey,
+                            args
+                        });
+                        if (this.props[propKey]) this.props[propKey](...args);
+                    }
+                }
+            }
+        });
+
+        return {
+            eventProps: this.eventProps,
+            predictChildForm: this.predictChildForm,
+            children: this.props.children,
+            render: this.props.render,
+            didMount: this.didMount,
+            form: this.form,
+            onChange: this.onChange,
+            onBlur: this.onBlur,
+            onFocus: this.onFocus,
+            inset: this.props.inset,
+            name: this.core.name,
+            formProps: this.predictChildForm ? this.getSuperFormProps() : {},
+        };
+    }
 
     getSuperFormProps = () => {
         let formProps = {};
