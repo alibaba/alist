@@ -450,7 +450,7 @@ class Form {
         const ret = fieldProps.map((option) => {
             const mrOption = Object.assign({}, option);
             const {
-                value, name, status, error, props, func_status, defaultValue,
+                value, name, status, error, props, func_status, defaultValue = null,
                 interceptor: localInterceptor,
             } = option;
 

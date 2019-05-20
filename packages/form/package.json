@@ -36,7 +36,8 @@
     "deep-equal": "^1.0.1",
     "events": "2.x",
     "moment": "^2.18.1",
-    "prop-types": "15.x"
+    "prop-types": "15.x",
+    "react-fast-compare": "^2.0.4"
   },
   "peerDependencies": {
     "react": "16.x",

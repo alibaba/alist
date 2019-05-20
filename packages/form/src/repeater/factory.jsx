@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import deepEqual from 'deep-equal';
+// import deepEqual from 'deep-equal';
+import deepEqual from 'react-fast-compare';
 import RepeaterCore from './repeaterCore';
 import localeMap from './locale';
 import Form, { FormCore } from '..';
