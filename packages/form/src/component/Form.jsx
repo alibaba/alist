@@ -58,7 +58,7 @@ class Form extends Component {
 
     constructor(props) {
         super(props);
-        const { item, value, onChange, repeaterRow } = props;
+        const { item, value, onChange, repeaterRow, validate: propValidate } = props;
 
         // 初始化core
         if (props.core) {
@@ -84,7 +84,7 @@ class Form extends Component {
             this.core.parent = item;
             if (!repeaterRow) {
                 item.addSubField({
-                    validate: this.core.validate.bind(this.core),
+                    validate: propValidate || this.core.validate.bind(this.core),
                 });
             }            
             if (!this.item.predictChildForm) {
