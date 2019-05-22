@@ -83,13 +83,15 @@ export default class GridCore {
         this.refreshTable();
     }
 
-    refresh = () => {
-        this.search();
+    refresh = async(extraFilterData) => {
+        const result = await this.search(extraFilterData);
+        return result;
     }
 
-    search = () => {
+    search = async (extraFilterData) => {
         this.resetPage();
-        this.fetch();
+        const result = await this.fetch(extraFilterData);
+        return result;
     }
 
     refreshTable = () => { // 刷新表格数据
@@ -129,13 +131,14 @@ export default class GridCore {
         this.refreshTable();
     }
 
-    fetch = async () => {
+    fetch = async (extraFilterData = {}) => {
         if (this.mode === 'dataSource') {
             return;
         }
 
         const pageData = this.getPageData(); // 分页数据
         let filterData = this.getFilterData(); // 搜索数据
+        filterData = { ...filterData, ...extraFilterData };
         const params = this.getParams();
         const { currentPage: cp, pageSize: ps } = pageData;
 
@@ -186,6 +189,8 @@ export default class GridCore {
         this.refreshPagination();
 
         this.willUpdate();
+
+        return result;
     }
 
     setMultipleData = (multipleData) => { // 为多实体table设计

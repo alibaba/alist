@@ -48,6 +48,18 @@ export const customizeFormType = {
   }
 };
 
+const FnComponent = () => {
+      const ff = new FormCore();
+      return <Form core={ff} layout={{label: 5, control: 19}}>
+        <Button onClick={() => {
+          console.log(ff.getValues())
+        }}>print</Button>
+        <FormItem name="abcd" label="hello">
+          <Input />
+        </FormItem>
+    </Form>
+    }
+
 let children = [
 (() => {
     let formcore = new FormCore();
@@ -70,11 +82,14 @@ let children = [
       console.log('v', JSON.stringify(v));
     }
 
-    return <Form core={formcore} layout={{label: 5, control: 19}}>
-        <FormItem name="abcd" label="hello" onChange={gHandler}>
-          <Input />
-        </FormItem>
-    </Form>
+    
+
+    return <FnComponent />
+    // return <Form core={formcore} layout={{label: 5, control: 19}}>
+    //     <FormItem name="abcd" label="hello" onChange={gHandler}>
+    //       <Input />
+    //     </FormItem>
+    // </Form>
 })(),
 ]
 
