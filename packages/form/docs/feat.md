@@ -65,31 +65,12 @@ let children = [
     let formcore = new FormCore();
 
     window.formcore = formcore;
-    const fHandler = (...args) => {
-      console.log('...fHandler', args);
-    }
 
-    const eHandler = (...args) => {
-      console.log('...fHandler', args);
-    }
-
-    const pHandler = (...args) => {
-      console.log('...pHandler', args);
-    }
-
-    const gHandler = () => {
-      const v = formcore.getValues();
-      console.log('v', JSON.stringify(v));
-    }
-
-    
-
-    return <FnComponent />
-    // return <Form core={formcore} layout={{label: 5, control: 19}}>
-    //     <FormItem name="abcd" label="hello" onChange={gHandler}>
-    //       <Input />
-    //     </FormItem>
-    // </Form>
+    return <Form core={formcore} layout={{label: 5, control: 19}}>
+        <FormItem name="abcd" label="hello" >
+          <Input />
+        </FormItem>
+    </Form>
 })(),
 ]
 

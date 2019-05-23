@@ -184,7 +184,7 @@ class BaseFormItem extends React.Component {
     onEvent = (functionName, args) => {
         this.core.emit(ON_EVENT, {
             fireKey: this.core.name,
-            function: functionName,
+            fn: functionName,
             args
         });
     }

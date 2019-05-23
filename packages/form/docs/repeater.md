@@ -392,11 +392,67 @@ const checkChangeConfig = {
     },
     initialized: (ctx) => {
 
+    },
+    validateConfig: {
+        label: [{ required: true, max: 10, message: '请输入选项名最多为10个字符'}],
+        value: [{ required: true, message: '请输入选项值'}],
     }
 }
 
 const rpOnMount = (rp) => {
     window.rp = rp;
+};
+
+const customizeForm = new FormCore({
+    validateConfig: {
+      title: [{ required: true, max: 10, message: '请输入表单标题，最多为10个字符'}],
+      type: [{ required: true, message: '请选择表单类型'}],
+    },
+});
+const inlineRepeaterConfig = {
+    locale: 'zh',
+    addText: '新增选项',
+    formConfig: {
+      validateConfig: {
+        label: [{ required: true, max: 10, message: '请输入选项名最多为10个字符'}],
+        value: [{ required: true, message: '请输入选项值'}],
+      }
+    }
+};
+const popupForm = () => {
+    customizeForm.setValues({
+        options: [{label: "男", value: "man"},
+        {label: "女", value: "women"}]
+    });    
+
+    Dialog.show({
+        title: '自定义表单',
+        width: 800,
+        content: (
+          <Form core={customizeForm}>
+            <FormItem label="表单标题" name="title">
+              <Input />
+            </FormItem>
+            <FormItem label="表单类型" name="type">
+              <Select options={[{ label: 'Radio', value: 'Radio' }]} />
+            </FormItem>
+            <If when={(values) => (values.type === 'Radio' || values.type === 'Checkbox')}>
+              <FormItem name="options" validateConfig={[{ required: true, message: '请配置表单选项且不少于两项', type: 'array', min: 2 }]} >
+                <InlineRepeater
+                  {...inlineRepeaterConfig}
+                >
+                  <FormItem label="选项名" name="label">
+                    <Input />
+                  </FormItem>
+                  <FormItem label="选项值" name="value">
+                    <Input />
+                  </FormItem>
+                </InlineRepeater>
+              </FormItem>
+            </If>
+          </Form>
+        ),
+      });
 };
 
 // const hasDelete = false;
@@ -577,9 +633,11 @@ ReactDOM.render(<Form direction="vertical-top" defaultMinWidth={false} core={for
         </InlineRepeater>
     </FormItem> */}
 
-    {/* <If when={(values) => {
+    <Button onClick={popupForm}>popup</Button>
+
+    <If when={(values) => {
         return values.casewhen === 'a';
-    }}> */}
+    }}>
         <FormItem label="rpnested" name="rpnested" full>
             <InlineRepeater full filter={filterUsername} asyncHandler={dasyncHandler} onMount={rpOnMount} renderOper={renderOper} formConfig={checkChangeConfig}>
                 <FormItem status="hidden" label="order" renderCell={(_, { index: order }) => {
@@ -588,13 +646,15 @@ ReactDOM.render(<Form direction="vertical-top" defaultMinWidth={false} core={for
                 } } />
                 <FormItem label="username" name="username"><Input /></FormItem>
                 <FormItem status="preview" label="age" name="age"><Input /></FormItem>
+                <FormItem label="label" name="label"><Input /></FormItem>
+                <FormItem label="value" name="value"><Input /></FormItem>
             </InlineRepeater>
         </FormItem>
-    {/* </If> */}
+    </If>
 
-    {/* <FormItem label="casewhen" name="casewhen">
+    <FormItem label="casewhen" name="casewhen">
         <Select options={[{ label: 'a', value: 'a' }, { label: 'b', value: 'b' }]} />
-    </FormItem> */}
+    </FormItem>
 
     {/* <FormItem name="rulesy">
         <InlineRepeater {...extraProps} formConfig={formConfig} filter={filterX} hasDelete>
