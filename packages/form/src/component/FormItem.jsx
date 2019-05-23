@@ -150,8 +150,7 @@ class BaseFormItem extends React.Component {
                 }
             }
         }
-
-        this.onEvent('onChange', args);
+        
         this.form.currentCore = this.core;
         this.form.currentEventOpts = opts;
         this.form.currentEventType = 'manual';
@@ -163,6 +162,7 @@ class BaseFormItem extends React.Component {
         });
 
         const { onChange } = this.props;
+        this.onEvent('onChange', args);
         if (onChange) onChange(...args); // 把原本劫持的方法提供api供开发者使用
     }
 
