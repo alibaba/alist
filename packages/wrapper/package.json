@@ -1,6 +1,6 @@
 {
   "name": "nowrapper",
-  "version": "1.2.13",
+  "version": "1.2.14",
   "description": "nowrapper",
   "builder": {
     "entry": [
@@ -21,7 +21,7 @@
   "dependencies": {
     "@alifd/next": "^1.11.3",
     "antd": "3.x",
-    "noform": "^1.3.2",
+    "noform": "^1.3.3",
     "react": "16.x",
     "react-dom": "16.x"
   },
