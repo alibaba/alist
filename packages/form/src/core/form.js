@@ -518,12 +518,14 @@ class Form {
         });
     }
 
-    setValidateConfig(config) {
+    setValidateConfig(config, replace = false) {
         if (isObject(config)) {
             this.validateConfig = config;
             this.children.forEach((child) => {
                 if (child.name in config) {
                     child.setValidateConfig(config[child.name]);
+                } else if (replace) {
+                    child.setValidateConfig({});
                 }
             });
         }

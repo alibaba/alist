@@ -1,10 +1,10 @@
 function isEmpty(value) {
-    return value === undefined || value === null || String(value) === '';
+    return value === undefined || value === null || String(value).trim() === '';
 }
 export function configRules(local = 'zh_CN') {
     return {
         zh_CN: {
-            required: (label, message) => ({
+            required: (label, message) => ({                
                 validator(rule, value, callback) {
                     if (isEmpty(value)) {
                         callback([new Error(message || '必填')]);
