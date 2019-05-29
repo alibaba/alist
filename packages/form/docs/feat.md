@@ -50,61 +50,85 @@ export const customizeFormType = {
 };
 
 let children = [
+// (() => {
+//     const propKeys = ['inline', 'defaultMinWidth', 'colon', 'full', 'inset'];
+//     const core = new FormCore({
+//         onChange: (fireKeys, values, ctx) => {
+//             const { direction, props } = values;
+//             if (fireKeys.includes('direction')) {
+//                 core.setItemProps('form', { direction });
+//             } else if (fireKeys.includes('props')) { // 选中为true，没选为false
+//                 const prop = {};                        
+//                 propKeys.forEach(k => prop[k] = props.includes(k));
+//                 core.setItemProps('form', prop);
+//             } else if (fireKeys.includes('layout-label')) {
+//                 core.setItemValue('layout-control', 24 - values['layout-label']);
+//                 core.setItemProps('form', { layout: { label: values['layout-label'], control: 24 - values['layout-label'] } });
+//             } else if (fireKeys.includes('layout-control')) {
+//                 core.setItemValue('layout-label', 24 - values['layout-control']);
+//                 core.setItemProps('form', { layout: { label: 24- values['layout-control'], control: values['layout-control'] } });
+//             }
+//         }
+//     });
+
+//     return <Form core={core}>
+//         <div style={{ color: '#999' }}>点击一次改变属性，再点一次清空改变</div>
+//         <FormItem label="direction" name="direction" defaultValue="vertical">
+//             <Radio.Group>
+//                 <Radio.Button value="vertical">vertical</Radio.Button>
+//                 <Radio.Button value="horizontal">horizontal</Radio.Button>
+//                 <Radio.Button value="vertical-top">vertical-top</Radio.Button>
+//             </Radio.Group>
+//         </FormItem>
+
+//         <FormItem label="props" name="props" defaultValue={['full', 'colon']}>
+//             <Checkbox.Group
+//                 options={propKeys.map(k => ({ label: k, value: k }))}
+//             />
+//         </FormItem>
+
+//         <If when={(values => values.direction === 'vertical')}>
+//             <FormItem label="layout">
+//                 <div>
+//                     <FormItem defaultValue="6" label="label" name="layout-label" inline>
+//                         <InputNumber />
+//                     </FormItem>
+//                     <FormItem style={{ marginLeft: '8px' }} defaultValue="18" label="control" name="layout-control" inline>
+//                         <InputNumber />
+//                     </FormItem>
+//                 </div>
+//             </FormItem>
+//         </If>
+
+//         <FormItem name="form" layout={{ control: 24 }} full>
+//             <Form layout={{ label: 6, control: 18 }}>
+//                 <FormItem label="name" name="name"><Input /></FormItem>
+//                 <FormItem label="age" name="age"><Input /></FormItem>
+//             </Form>
+//         </FormItem>
+//     </Form>
+// })(),
 (() => {
-    const keys = {
-      simple: {
-        username: '姓名',
-        age: '年龄'
-      },
-      complicated: {
-        type: '种类',
-        color: '颜色'
-      }
-    };
-
-
-    const sValidateConfig = {};
-    const cValidateConfig = {};
-    Object.keys(keys.simple).forEach(key => sValidateConfig[key] = { required: true, message: keys.simple[key] + '必填' } );
-    Object.keys(keys.complicated).forEach(key => cValidateConfig[key] = { required: true, message: keys.complicated[key] + '必填' } );
-
-    let subCore = new FormCore();
-    let formcore = new FormCore({
-      onChange: (firekeys, values) => {
-        const { select } = values;
-        if (select === 'simple') {
-          subCore.setValidateConfig(sValidateConfig, true);
-        } else if (select === 'complicated') {
-          subCore.setValidateConfig(cValidateConfig, true);
-        }
-      }
-    });
-
-    window.formcore = formcore;
-    window.subCore = subCore;
-
-    return <Form core={formcore} layout={{label: 5, control: 19}}>
-        <FormItem name="select" label="select">
-          <Select options={[{ label: '简单', value: 'simple' }, { label: '复杂', value: 'complicated' }]} />
+    const core = new FormCore();
+    return <Form core={core}>
+        <FormItem label="fullfelx200" name="fullfelx200" flex full labelWidth={200}>
+            <Input />
         </FormItem>
-        <FormItem render={(values) => {
-          const { select } = values;
-          if (!select) return null;
-
-          return <Form core={subCore}>
-            {
-              Object.keys(keys[select]).map(key => (<FormItem key={key} name={key} label={keys[select][key]}>
-                <Input />
-              </FormItem>)
-              )
-            }
-
-            <Button onClick={async () => {
-              const errors = await subCore.validate();
-              console.log('errors', errors);
-            }}>validate</Button>
-          </Form>
-        }} />
+        <FormItem label="full200" name="full200" full labelWidth={200}>
+            <Input />
+        </FormItem>
+        <FormItem label="fullflex" name="fullflex" full flex>
+            <Input />
+        </FormItem>
+        <FormItem label="full" name="full" full>
+            <Input />
+        </FormItem>
+        <FormItem label="flex" name="flex" flex>
+            <Input />
+        </FormItem>
+        <FormItem label="none" name="none">
+            <Input />
+        </FormItem>
     </Form>
 })(),
 ]

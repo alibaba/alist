@@ -235,6 +235,7 @@ class BaseFormItem extends React.Component {
     }
 
     getWrapperClassName = () => {
+        const isFlex = this.getIsFlexMode();
         const { name, error: propError } = this.props;
         const inset = this.props.inset || this.form.jsx.props.inset;
         let error = this.form.getItemError(name); // 动态error
@@ -250,10 +251,15 @@ class BaseFormItem extends React.Component {
             hasSubError = error.sub;
         }
 
+        let flexCls = '';
+        if (isFlex) {
+            flexCls = `${formItemPrefix}-item-flex`;
+        }
+
         const insetCls = inset ? `${formItemPrefix}-item-inset` : '';
         const errCls = hasMainError ? `${formItemPrefix}-item-has-error` : '';
         const subErrCls = hasSubError ? `${formItemPrefix}-item-has-sub-error` : '';
-        return `${insetCls} ${errCls} ${subErrCls}`;
+        return `${insetCls} ${errCls} ${subErrCls} ${flexCls}`;
     }
 
     getLabelClassName = () => {
@@ -275,6 +281,11 @@ class BaseFormItem extends React.Component {
 
         const layout = layoutProps.layout || {};
         return `${formItemPrefix}-item-label ${requiredCls} ${layout.label ? `col-${layout.label}` : ''}`;
+    }
+
+    getIsFlexMode = () => {
+        const { flex = false } = this.props;
+        return flex;
     }
 
     getFullClassName = () => {
@@ -452,6 +463,7 @@ class BaseFormItem extends React.Component {
         // 处理布局
         const {
             inline = false, inset = false, colon, layout: originLayout,
+            labelWidth,
             defaultMinWidth = true,
         } = {
             ...this.form.jsx.props,
@@ -495,10 +507,18 @@ class BaseFormItem extends React.Component {
             idProps.id = itemContext.item.id;
         }
 
+        const labelWidthStyle = {};
+        if (labelWidth) {
+            labelWidthStyle.style = {
+                width: labelWidth,
+                display: 'inline-block'
+            };
+        }
+
         return (
             <div id={this.id} name={`form-item-${name}`} className={`${formItemPrefix}-item ${className} ${layoutCls} ${colonCls} ${inlineCls} ${defaultMinCls}`} style={style}>
                 <div {...idProps} className={wrapperCls} ref={this.wrapperElement}>
-                    <span className={labelCls} ref={this.labelElement}>{labelElement}</span>
+                    <span className={labelCls} ref={this.labelElement} {...labelWidthStyle}>{labelElement}</span>
                     <span className={`${formItemPrefix}-item-control ${layout.control ? `col-${layout.control}` : ''}`} >
                         {topElement}
                         <span className={fullCls} ref={this.fullElement}>

@@ -142,6 +142,18 @@
     }    
 }
 
+.no-form-item-flex {
+    display: flex;
+
+    .no-form-item-label {
+        flex: initial;
+    }
+
+    .no-form-item-control {
+        flex: 1;
+    }
+}
+
 .no-form-item-inset {
     .no-form-item-label {
         padding: 0 12px;
