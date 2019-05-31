@@ -13,7 +13,7 @@ import { Input, Select, Checkbox, Radio, Switch, Range, DatePicker, TimePicker,
     Rating, CascaderSelect, Upload, Button, NumberPicker, Dialog } from '../src/next/index';
 
 import sp from '../src/next/index';
-import { Message, Icon } from '@alifd/next';
+import { Message, Icon, Radio as NRadio } from '@alifd/next';
 import './next.scss';
 
 
@@ -143,6 +143,15 @@ class App extends React.Component {
                 <FormItem label="Switch" name="Switch"><Switch /></FormItem>
                 <FormItem label="CheckboxGroup" name="CheckboxGroup"><CheckboxGroup dataSource={dataSource} /></FormItem>
                 <FormItem label="RadioGroup" name="RadioGroup"><RadioGroup dataSource={boolOpts} /></FormItem>
+
+                <FormItem label="RadioGroupRaw" name="RadioGroupRaw">
+                    <RadioGroup>
+                        {dataSource.map(item => <Radio value={item.value} >
+                            {item.label}
+                        </Radio>)}
+                    </RadioGroup>
+                </FormItem>
+
                 <FormItem label="Range" name="Range"><Range /></FormItem>
                 <FormItem label="Rating" name="Rating"><Rating /></FormItem>
                 <FormItem label="RangePicker" name="RangePicker"><RangePicker showTime={{ format: 'HH:mm' }} format="YYYY-MM-DD" /></FormItem>

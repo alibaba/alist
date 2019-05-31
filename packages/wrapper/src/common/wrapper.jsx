@@ -77,7 +77,7 @@ const Checkbox = (Com, props, opts = {}) => {
         return null;
     }
 
-    return <Com {...otherProps} {...valueProps} {...opts} />;
+    return <Com value={value} {...otherProps} {...valueProps} {...opts} />;
 }
 
 const Radio = (Com, props, opts = {}) => {
