@@ -232,8 +232,13 @@
     }
 }
 
-.ant-preview-datepicker { // 预览态      
+.ant-calendar-picker.ant-preview-datepicker,
+.ant-time-picker.ant-preview-datepicker {
     line-height: 28px;
+}
+
+.ant-preview-datepicker { // 预览态      
+    
   
     .ant-input.disabled {
         background: transparent;
