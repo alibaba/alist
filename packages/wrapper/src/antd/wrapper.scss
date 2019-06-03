@@ -232,7 +232,9 @@
     }
 }
 
-.ant-preview-datepicker { // 预览态        
+.ant-preview-datepicker { // 预览态      
+    line-height: 28px;
+  
     .ant-input.disabled {
         background: transparent;
         border: none;
