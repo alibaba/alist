@@ -1,6 +1,6 @@
 import AsyncValidator from 'async-validator';
 import EventEmitter from 'events';
-import { VALUE_CHANGE, CHANGE, ANY_CHANGE, BASIC_EVENT, INITIALIZED } from '../static';
+import { FOCUS, BLUR, ON_EVENT, VALUE_CHANGE, CHANGE, ANY_CHANGE, BASIC_EVENT, INITIALIZED } from '../static';
 import ItemCore from './item';
 import genId from '../util/random';
 import scroll from '../util/scroll';
@@ -13,6 +13,7 @@ class Form {
     constructor(option = {}) {
         const {
             validateConfig, onChange, props, value, values, status, globalStatus, interceptor, uniqueId,
+            onEvent, onFocus, onBlur,
             initialized,
             autoValidate,
             disabledSyncChildForm,
@@ -44,6 +45,10 @@ class Form {
         this.validateConfig = validateConfig;
         this.defaultSettingMap = {};
 
+        this.onEvent = onEvent || noop;
+        this.onFocus = onFocus || noop;
+        this.onBlur = onBlur || noop;
+
         this.disabledSyncChildForm = disabledSyncChildForm || false; // 禁止子Form自动向Item同步数据
         this.id = uniqueId || `__noform__${genId()}`;
 
@@ -69,6 +74,9 @@ class Form {
         // 处理item的setValue事件
         this.on(VALUE_CHANGE, this.handleChange);
         this.on(INITIALIZED, this.initialized);
+        this.on(ON_EVENT, this.onEvent);
+        this.on(FOCUS, this.onFocus);
+        this.on(BLUR, this.onBlur);
     }
 
     // 上报change事件到JSX

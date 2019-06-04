@@ -108,25 +108,44 @@ let children = [
 //         </FormItem>
 //     </Form>
 // })(),
+// (() => {
+//     const core = new FormCore();
+//     return <Form core={core}>
+//         <FormItem label="fullfelx200" name="fullfelx200" flex full labelWidth={200}>
+//             <Input />
+//         </FormItem>
+//         <FormItem label="full200" name="full200" full labelWidth={200}>
+//             <Input />
+//         </FormItem>
+//         <FormItem label="fullflex" name="fullflex" full flex>
+//             <Input />
+//         </FormItem>
+//         <FormItem label="full" name="full" full>
+//             <Input />
+//         </FormItem>
+//         <FormItem label="flex" name="flex" flex>
+//             <Input />
+//         </FormItem>
+//         <FormItem label="none" name="none">
+//             <Input />
+//         </FormItem>
+//     </Form>
+// })(),
 (() => {
-    const core = new FormCore();
-    return <Form core={core}>
-        <FormItem label="fullfelx200" name="fullfelx200" flex full labelWidth={200}>
-            <Input />
-        </FormItem>
-        <FormItem label="full200" name="full200" full labelWidth={200}>
-            <Input />
-        </FormItem>
-        <FormItem label="fullflex" name="fullflex" full flex>
-            <Input />
-        </FormItem>
-        <FormItem label="full" name="full" full>
-            <Input />
-        </FormItem>
-        <FormItem label="flex" name="flex" flex>
-            <Input />
-        </FormItem>
-        <FormItem label="none" name="none">
+    const core = new FormCore({
+        onEvent: (event) => {
+            debugger;
+        },
+        onBlur: (firekey) => {
+            debugger;
+        }
+    });
+    return <Form core={core} onBlur={(firekey) => {
+            debugger;
+        }} onEvent={(event) => {
+            debugger;
+        }}>
+        <FormItem label="feated" name="feated" >
             <Input />
         </FormItem>
     </Form>
