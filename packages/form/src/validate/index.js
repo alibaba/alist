@@ -4,16 +4,20 @@ function isEmpty(value) {
 export function configRules(local = 'zh_CN') {
     return {
         zh_CN: {
-            required: (label, message) => ({                
-                validator(rule, value, callback) {
-                    if (isEmpty(value)) {
-                        callback([new Error(message || '必填')]);
-                    } else {
-                        callback([]);
-                    }
-                },
-            }),
-            number: (label, message) => ({
+            required: (label, message) => {
+                const msg = !message ? label : message;
+                
+                return {                
+                    validator(rule, value, callback) {
+                        if (isEmpty(value)) {
+                            callback([new Error(msg || '必填')]);
+                        } else {
+                            callback([]);
+                        }
+                    },
+                }
+            },
+            number: (message) => ({
                 validator(rule, value, callback) {
                     const errors = [];
                     const err = new Error(message || '只能输入数字');
@@ -27,7 +31,7 @@ export function configRules(local = 'zh_CN') {
                     callback(errors);
                 },
             }),
-            int: (label, message) => ({
+            int: (message) => ({
                 validator(rule, value, callback) {
                     if (isEmpty(value)) {
                         callback([]);
@@ -38,7 +42,7 @@ export function configRules(local = 'zh_CN') {
                     }
                 },
             }),
-            uint: (label, message) => ({
+            uint: (message) => ({
                 validator(rule, value, callback) {
                     if (isEmpty(value)) {
                         callback([]);
@@ -49,7 +53,7 @@ export function configRules(local = 'zh_CN') {
                     }
                 },
             }),
-            length: (length, label, message) => ({
+            length: (length, message) => ({
                 validator(rule, value, callback) {
                     if (isEmpty(value)) {
                         callback([]);
@@ -60,7 +64,7 @@ export function configRules(local = 'zh_CN') {
                     }
                 },
             }),
-            minLength: (min, label, message) => ({
+            minLength: (min, message) => ({
                 validator(rule, value, callback) {
                     if (isEmpty(value)) {
                         callback([]);
@@ -71,7 +75,7 @@ export function configRules(local = 'zh_CN') {
                     }
                 },
             }),
-            maxLength: (max, label, message) => ({
+            maxLength: (max, message) => ({
                 validator(rule, value, callback) {
                     if (isEmpty(value)) {
                         callback([]);
@@ -98,7 +102,7 @@ export function configRules(local = 'zh_CN') {
                     },
                 };
             },
-            min: (min, label, message) => ({
+            min: (min, message) => ({
                 validator(rule, value, callback) {
                     if (isEmpty(value)) {
                         callback([]);
@@ -109,7 +113,7 @@ export function configRules(local = 'zh_CN') {
                     }
                 },
             }),
-            max: (max, label, message) => ({
+            max: (max, message) => ({
                 validator(rule, value, callback) {
                     if (isEmpty(value)) {
                         callback([]);
@@ -120,11 +124,11 @@ export function configRules(local = 'zh_CN') {
                     }
                 },
             }),
-            email: (label, message) => ({
+            email: (message) => ({
                 type: 'email',
                 message: message || '邮箱格式不正确',
             }),
-            url: (label, message) => ({
+            url: (message) => ({
                 type: 'url',
                 message: message || '链接格式不正确,请以 http:// 或者 https:// 开头',
             }),
@@ -148,7 +152,7 @@ export function configRules(local = 'zh_CN') {
                     },
                 };
             },
-            precision: (precision, label, message) => ({
+            precision: (precision, message) => ({
                 validator(rule, value, callback) {
                     const regex = new RegExp(`^(\\d+(\\.[\\d]{1,${precision}})?)?$`, 'g');
                     if (!regex.test(value)) {
@@ -158,27 +162,27 @@ export function configRules(local = 'zh_CN') {
                     }
                 },
             }),
-            alphabet: (label, message) => ({
+            alphabet: (message) => ({
                 pattern: /^[a-z]*$/i,
                 message: message || '只允许输入英文字母',
             }),
-            words: (label, message) => ({
+            words: (message) => ({
                 pattern: /^[a-z0-9]*$/i,
                 message: message || '只允许输入英文字母和数字',
             }),
-            ascii: (label, message) => ({
+            ascii: (message) => ({
                 pattern: /^[\x00-\x7F]*$/, // eslint-disable-line
                 message: message || '只允许输入英文字母标点和数字',
             }),
-            idCard: (label, message) => ({
+            idCard: (message) => ({
                 pattern: /(^\d{15}$)|(^\d{17}([0-9]|X|x)$)/,
                 message: message || '请输入正确的身份证号',
             }),
-            mobile: (label, message) => ({
+            mobile: (message) => ({
                 pattern: /^1\d{10}$/,
                 message: message || '请输入正确的手机号码',
             }),
-            hsCode: (label, message) => ({
+            hsCode: (message) => ({
                 validator(rule, value, callback) {
                     if (isEmpty(value)) {
                         callback([]);

@@ -270,8 +270,11 @@ export default function bind(type, source) {
                     if (isIf(childitem)) {
                         mrChild = getIfChild(childitem);
                     }
-                    const { label, name } = mrChild.props;
-                    childMap[`${label}${name}`] = React.cloneElement(mrChild, { label: undefined, ...cleanLayout });
+                    
+                    if (mrChild) {
+                        const { label, name } = mrChild.props;
+                        childMap[`${label}${name}`] = React.cloneElement(mrChild, { label: undefined, ...cleanLayout });
+                    }                    
                 });
 
                 // 遍历渲染数据
@@ -362,8 +365,7 @@ export default function bind(type, source) {
                 full = false,
             } = this.props;
 
-            const { addText, operateText } = getText();
-            const itemsConfig = this.getItemsConfig();
+            const { addText, operateText } = getText();            
 
             const editable = status === 'edit';
             const cellCls = `repeater-table-cell-wrapper repeater-table-cell-wrapper-${itemAlign}`;
@@ -383,23 +385,6 @@ export default function bind(type, source) {
                 }
             }
 
-            // 渲染头部
-            const header = itemsConfig.map((conf) => {
-                const cls = conf.className || '';
-                const headStyle = conf.style || {};
-                return (<th style={headStyle} className={`${cls} repeater-table-header-node`} key={`${conf.label}${conf.name}`}>
-                    <div className={cellCls}> {conf.label} </div>
-                </th>);
-            });
-
-            // 如果当前状态为编辑状态，展示操作栏位
-            const hasOperBtn = this.hasOperBtn();
-            if (editable && hasOperBtn) {
-                header.push(<th className={`repeater-table-header-node ${operateClassName}`} key="last">
-                    <div className={cellCls}>{operateText}</div>
-                </th>);
-            }
-
             // 渲染内容
             let containerContent = null;
             let viewCls = '';
@@ -407,6 +392,23 @@ export default function bind(type, source) {
                 viewCls = 'table-repeater-wrapper-custom-view';
                 containerContent = this.renderView();
             } else {
+                // 渲染头部
+                const itemsConfig = this.getItemsConfig();
+                const header = itemsConfig.map((conf) => {
+                    const cls = conf.className || '';
+                    const headStyle = conf.style || {};
+                    return (<th style={headStyle} className={`${cls} repeater-table-header-node`} key={`${conf.label}${conf.name}`}>
+                        <div className={cellCls}> {conf.label} </div>
+                    </th>);
+                });
+
+                // 如果当前状态为编辑状态，展示操作栏位
+                const hasOperBtn = this.hasOperBtn();
+                if (editable && hasOperBtn) {
+                    header.push(<th className={`repeater-table-header-node ${operateClassName}`} key="last">
+                        <div className={cellCls}>{operateText}</div>
+                    </th>);
+                }
                 containerContent = (<TableCom hasHeader={hasHeader} header={header}>
                     {this.renderRowList()}
                 </TableCom>);
@@ -432,12 +434,16 @@ export default function bind(type, source) {
 
         // 自定义渲染视图
         renderView = () => {
-            const { view } = this.props;
+            const { view, children } = this.props;
             let viewElement = null;
             if (view) {
                 if (typeof view === 'function') {
-                    const rowList = this.renderRowList();
-                    viewElement = view(rowList, this);
+                    if (children) {
+                        const rowList = this.renderRowList();
+                        viewElement = view(rowList, this);
+                    } else {
+                        viewElement = view(null, this);
+                    }
                 } else {
                     viewElement = view;
                 }

@@ -59,6 +59,9 @@ class Example extends React.Component {
                     { s1: 's1', s2: 's2', s3: 's3' },
                     { s1: 's1...', s2: 's2...', s3: 's3...' }
                 ],
+                products: [
+                    { name: 123}
+                ],
                 int1: 0,
                 int2: 1
             },
@@ -187,6 +190,37 @@ class Example extends React.Component {
         </FormItem>
     }
 
+    handleView = (_, ctx) => {
+        const dataSource = ctx.getDataSource();
+        const formList = ctx.getCoreList();
+
+        return formList.map((core) => {
+            return <Form core={core}>
+                <FormItem label="sx" name="sx">
+                    <Input />
+                </FormItem>
+                <FormItem label="s1" name="s1" status="preview">
+                    <Input />
+                </FormItem>
+                <FormItem label="s2" name="s2" status="disabled">
+                    <Input />
+                </FormItem>
+                <FormItem label="s3" name="s3" status={() => {
+                    return 'preview'
+                }}>
+                    <Input />
+                </FormItem>
+                <If when={(values) => {
+                    return !values.noPrice;
+                }} >
+                    <FormItem label="pp" name="pp">
+                        <Input />
+                    </FormItem>
+                </If>
+            </Form>
+        });
+    }
+
     render() {
 
         const typeSource = [
@@ -210,7 +244,7 @@ class Example extends React.Component {
             <FormItem label="int2" name="int2" status="preview">
                 <Input />
             </FormItem> */}
-            <FormItem label="dynamic repeater" name="inlineRepeater">
+            {/* <FormItem label="dynamic repeater" name="inlineRepeater">
                 <InlineRepeater multiple>
                     <FormItem label="s1" name="s1" status="preview">
                         <Input />
@@ -224,7 +258,21 @@ class Example extends React.Component {
                         <Input />
                     </FormItem>
                 </InlineRepeater>
+            </FormItem> */}
+            <FormItem label="dynamic repeater" name="inlineRepeater">
+                <InlineRepeater multiple view={this.handleView} />
             </FormItem>
+            <FormItem label="hide price" name="noPrice"><Checkbox /></FormItem>
+            <Item render={(values) => {
+                const { noPrice = false } = values;
+
+                return <FormItem name="products">
+                    <TableRepeater>
+                        <FormItem label="name" name="name"><Input /></FormItem>
+                        { noPrice ? null : <FormItem label="price" name="price"><Input /></FormItem> }
+                    </TableRepeater>
+                </FormItem>
+            }} />
             {/* <FormItem label="dynamic repeater" name="inlineRepeater">
                 <InlineRepeater multiple>
                     <FormItem label="source" name="source">

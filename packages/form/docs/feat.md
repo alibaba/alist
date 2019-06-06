@@ -133,21 +133,18 @@ let children = [
 // })(),
 (() => {
     const core = new FormCore({
-        onEvent: (event) => {
-            debugger;
-        },
-        onBlur: (firekey) => {
-            debugger;
+        validateConfig: {
+            username: rules.required('username is required'),
         }
     });
-    return <Form core={core} onBlur={(firekey) => {
-            debugger;
-        }} onEvent={(event) => {
-            debugger;
-        }}>
-        <FormItem label="feated" name="feated" >
+    return <Form core={core}>
+        <FormItem label="username" name="username" >
             <Input />
         </FormItem>
+
+        <Button onClick={() => {
+            core.validate();
+        }}>validate</Button>
     </Form>
 })(),
 ]
