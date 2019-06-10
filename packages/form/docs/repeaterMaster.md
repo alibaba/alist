@@ -56,8 +56,8 @@ class Example extends React.Component {
                     { username: 1 }
                 ],
                 inlineRepeater: [
-                    { s1: 's1', s2: 's2', s3: 's3' },
-                    { s1: 's1...', s2: 's2...', s3: 's3...' }
+                    { s1: 's1', s2: 's2', s3: 's3', source: 1, },
+                    { s1: 's1...', s2: 's2...', s3: 's3...', source: 2 }
                 ],
                 products: [
                     { name: 123}
@@ -65,6 +65,14 @@ class Example extends React.Component {
                 int1: 0,
                 int2: 1
             },
+            onChange: (fireKeys, values, ctx) => {
+                const { currentEventOpts } = ctx;
+                const { type } = currentEventOpts;
+                setTimeout(() => {
+                    const withRender = type !== 'add';
+                    ctx.validateItem('inlineRepeater', undefined, { withRender });
+                }, 500);
+            }
         });
 
         window.core = this.core;
@@ -259,10 +267,10 @@ class Example extends React.Component {
                     </FormItem>
                 </InlineRepeater>
             </FormItem> */}
-            <FormItem label="dynamic repeater" name="inlineRepeater">
+            {/* <FormItem label="dynamic repeater" name="inlineRepeater">
                 <InlineRepeater multiple view={this.handleView} />
-            </FormItem>
-            <FormItem label="hide price" name="noPrice"><Checkbox /></FormItem>
+            </FormItem> */}
+            {/* <FormItem label="hide price" name="noPrice"><Checkbox /></FormItem>
             <Item render={(values) => {
                 const { noPrice = false } = values;
 
@@ -272,13 +280,18 @@ class Example extends React.Component {
                         { noPrice ? null : <FormItem label="price" name="price"><Input /></FormItem> }
                     </TableRepeater>
                 </FormItem>
-            }} />
-            {/* <FormItem label="dynamic repeater" name="inlineRepeater">
-                <InlineRepeater multiple>
+            }} /> */}
+            <FormItem label="dynamic repeater" name="inlineRepeater">
+                <InlineRepeater multiple formConfig={{
+                    validateConfig: {
+                        source: { required: true, message: 'rrrr' },
+                        autoValidate: true,
+                    }
+                }}>
                     <FormItem label="source" name="source">
                         <Input />
                     </FormItem>
-                    <FormItem label="view" multiple>
+                    {/* <FormItem label="view" multiple>
                         <FormItem render={(values, ctx) => {
                             return values.source + ' | ' + values.result;
                         }} />
@@ -291,9 +304,9 @@ class Example extends React.Component {
                                 value={values.result}
                             />
                         }} />
-                    </FormItem>
+                    </FormItem> */}
                 </InlineRepeater>
-            </FormItem> */}
+            </FormItem>
             {/* public source */}
             {/* <FormItem label="Public Country Repeater" name="countryRepeater">
                 <InlineRepeater asyncHandler={this.publicHandler} multiple>

@@ -53,8 +53,8 @@ class RepeaterCore {
         return err;
     }
 
-    validate = (cb = e => e, opts) => {
-        const { changeKeys = null, index = -1 } = opts || {};
+    validate = (cb = e => e, opts) => {        
+        const { changeKeys = null, index = -1, withRender = true } = opts || {};
         let hasPromise = false;
         const promiseValidator = [];
 
@@ -69,7 +69,12 @@ class RepeaterCore {
                     promiseValidator.push(result);
                 }
             } else {
-                result = item.validate();
+                if (withRender) {
+                    result = item.validate();
+                } else {
+                    result = item.validateWithoutRender();
+                }
+                
                 if (isPromise(result)) {
                     hasPromise = true;
                 }
