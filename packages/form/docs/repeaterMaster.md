@@ -65,6 +65,10 @@ class Example extends React.Component {
                 int1: 0,
                 int2: 1
             },
+            autoValidate: true,
+            validateConfig: {                
+                inlineRepeater: { type: 'array', required: true, messgae: 'hull' }
+            },
             onChange: (fireKeys, values, ctx) => {
                 const { currentEventOpts } = ctx;
                 const { type } = currentEventOpts;

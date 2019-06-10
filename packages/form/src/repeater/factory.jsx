@@ -162,6 +162,8 @@ export default function CreateRepeater(bindSource, type, source) {
             while (val.length > i) {
                 value.push(val[i]);
                 i += 1;
+
+                opts.withRender = false;
             }
 
             this.props.onChange(value, opts);
