@@ -20,6 +20,7 @@ class Form {
             enableReceiveProps,
             initValues,
             exts,
+            repeaterRowCore = false,
         } = option || {};
 
         this.onChange = onChange || noop;
@@ -29,6 +30,7 @@ class Form {
         this.autoValidate = autoValidate || false;
         this.exts = exts || {};
         this.enableReceiveProps = enableReceiveProps || false; // breakChange 下个y位升级
+        this.repeaterRowCore = repeaterRowCore; // 避免JSX和core定位不清
 
         this.initValues = initValues;
         this.globalStatus = globalStatus || 'edit';

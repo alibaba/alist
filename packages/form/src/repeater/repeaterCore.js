@@ -132,6 +132,7 @@ class RepeaterCore {
             values,
             globalStatus: this.status,
             disabledSyncChildForm: true,
+            repeaterRowCore: true,
         });
 
         instance.repeater = this;

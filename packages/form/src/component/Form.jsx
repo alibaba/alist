@@ -82,11 +82,14 @@ class Form extends Component {
         if (item) {
             this.item = item;
             this.core.parent = item;
-            if (!repeaterRow) {
+            if (repeaterRow || this.core.repeaterRowCore) {
+                // repeater 最外层表单不应该影响 validate，尤其是自定义视图view时
+            } else {
                 item.addSubField({
                     validate: propValidate || this.core.validate.bind(this.core),
                 });
-            }            
+            }
+
             if (!this.item.predictChildForm) {
                 // this.core.value = this.item.value; // 补齐
             }

@@ -233,6 +233,17 @@ class Example extends React.Component {
         });
     }
 
+    renderView = (_, ctx) => {
+        const formList = ctx.getCoreList();
+        return formList.map((core) => {
+            return <Form core={core}>
+                <FormItem label="source" name="source">
+                    <Input />
+                </FormItem>
+            </Form>
+        });
+    }
+
     render() {
 
         const typeSource = [
@@ -291,7 +302,9 @@ class Example extends React.Component {
                         source: { required: true, message: 'rrrr' },
                         autoValidate: true,
                     }
-                }}>
+                }}
+                view={this.renderView}
+                >
                     <FormItem label="source" name="source">
                         <Input />
                     </FormItem>
