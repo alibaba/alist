@@ -192,6 +192,17 @@ let children = [
         }} />
     </Form>
 })(),
+(() => {
+    return <Form>
+        <FormItem label="inline1" name="inline1" direction="vertical-top" inline>
+            <Input />
+        </FormItem>
+
+        <FormItem label="inline2" name="inline2" direction="vertical-top" inline>
+            <Input />
+        </FormItem>
+    </Form>
+})(),
 ]
 
 

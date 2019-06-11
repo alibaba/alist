@@ -79,6 +79,7 @@
         &-top{
             display: block;
         }
+
         &-content{
             display: flex;
             &-elem > *{
@@ -104,20 +105,24 @@
             }
             &-suffix, &-prefix{
                 line-height: 28px;
-            }
-            .no-form-full &-suffix{
+            }            
+        }
+
+        &-content-full {
+            .no-form-item-content-suffix{
                 flex: 0;
                 white-space: nowrap;
             }
-            .no-form-full &-elem{
+            .no-form-item-content-elem{
                 flex: 1;
                 display: block;
             }
-            .no-form-full &-prefix{
+            .no-form-item-content-prefix{
                 flex: 0;
                 white-space: nowrap;
             }
         }
+
         &-help{
             display: block;
         }
@@ -166,7 +171,7 @@
 }
 
 // 纵向 + label靠上布局
-.no-form-vertical-top {
+.no-form-item.no-form-item-direction-vertical-top {
     .no-form-item-control{
         display: block;
     }
@@ -174,32 +179,34 @@
         display: block;
         text-align: left;
     }
-    .no-form-item-inline {
-        margin-right: 16px;
+}
+
+// 纵向 + label靠上布局
+.no-form-item.no-form-item-direction-vertical-top.no-form-item-inline {
+    margin-right: 16px;
+}
+
+// 水平布局
+.no-form-item.no-form-item-direction-hoz,
+.no-form-item.no-form-item-direction-horizontal {
+    display: inline-block;
+    vertical-align: top;
+    width: auto;
+    margin-right: 16px;
+    margin-bottom: 12px;
+
+    + .no-form-item {
+        margin: 0 16px 12px 0;        
     }
 }
 
 // 水平布局
-.no-form-hoz,
-.no-form-horizontal {
-    .no-form-item + .no-form-item {
-        margin: 0 16px 12px 0;        
-    }
-
-    .no-form-item {
-        display: inline-block;
-        vertical-align: top;
-        width: auto;
-        margin-right: 16px;
-        margin-bottom: 12px;
-    }    
-
-    .no-form-item-has-layout {
-        .no-form-item-content{
-            .no-form-item-content-elem > * {
-                min-width: auto;
-                min-width: unset;
-            }
+.no-form-item-has-layout.no-form-item-direction-hoz,
+.no-form-item-has-layout.no-form-item-direction-horizontal {
+    .no-form-item-content {
+        .no-form-item-content-elem > * {
+            min-width: auto;
+            min-width: unset;
         }
     }
 }

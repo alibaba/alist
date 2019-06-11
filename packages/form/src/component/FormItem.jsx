@@ -283,6 +283,14 @@ class BaseFormItem extends React.Component {
         return `${formItemPrefix}-item-label ${requiredCls} ${layout.label ? `col-${layout.label}` : ''}`;
     }
 
+    getDirectionClassName = () => {
+        const isFlex = this.getIsFlexMode();
+        const direction = this.props.direction || this.form.jsx.props.direction || 'vertical';
+
+        const directionCls = `${formItemPrefix}-item-direction-${direction}`;
+        return `${directionCls}`;
+    }
+
     getIsFlexMode = () => {
         const { flex = false } = this.props;
         return flex;
@@ -302,7 +310,7 @@ class BaseFormItem extends React.Component {
         };
 
         const full = jsxFull || coreFull || inset;
-        return `${formItemPrefix}-item-content ${full ? `${formItemPrefix}-full` : ''}`;
+        return `${formItemPrefix}-item-content ${full ? `${formItemPrefix}-item-content-full` : ''}`;
     }
 
     pickupComponentProps = (props) => {
@@ -500,6 +508,7 @@ class BaseFormItem extends React.Component {
         const wrapperCls = this.getWrapperClassName(); // no-form-item
         const labelCls = this.getLabelClassName(); // no-form-item-label
         const fullCls = this.getFullClassName(); // no-form-item-content
+        const directionCls = this.getDirectionClassName(); // no-form-item-direction
 
         const idProps = {};
         if (itemContext.item && itemContext.item.id &&
@@ -516,7 +525,7 @@ class BaseFormItem extends React.Component {
         }
 
         return (
-            <div id={this.id} name={`form-item-${name}`} className={`${formItemPrefix}-item ${className} ${layoutCls} ${colonCls} ${inlineCls} ${defaultMinCls}`} style={style}>
+            <div id={this.id} name={`form-item-${name}`} className={`${formItemPrefix}-item ${directionCls} ${className} ${layoutCls} ${colonCls} ${inlineCls} ${defaultMinCls}`} style={style}>
                 <div {...idProps} className={wrapperCls} ref={this.wrapperElement}>
                     <span className={labelCls} ref={this.labelElement} {...labelWidthStyle}>{labelElement}</span>
                     <span className={`${formItemPrefix}-item-control ${layout.control ? `col-${layout.control}` : ''}`} >
