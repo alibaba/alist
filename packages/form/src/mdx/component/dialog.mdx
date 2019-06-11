@@ -1,0 +1,103 @@
+---
+name: 4. 弹窗表单
+route: /component/dialog
+menu: 3. 组件
+---
+
+import { Playground } from 'docz'
+import react from 'react';
+import { Select, Input, Radio, Button, Switch, Dialog } from 'nowrapper/lib/antd';
+import ReactJson from 'react-json-view'
+import { message } from 'antd';
+import Form, { FormItem, FormCore, If } from 'noform';
+import 'antd/dist/antd.css';
+import 'noform/dist/index.css';
+import 'nowrapper/dist/antd/index.css';
+
+# 弹窗表单
+
+## 引入方式
+
+### antd
+
+```jsx
+import { Input, Dialog } from 'nowrapper/lib/antd';
+import 'nowrapper/dist/antd/index.css';
+```
+
+### fusion-next
+
+```jsx
+import { Input, Dialog } from 'nowrapper/lib/next';
+import 'nowrapper/lib/next/index.scss';
+```
+
+
+## 使用方式
+
+> 建议每次弹窗，最好都创建 **FormCore** 这样会保证每次渲染都是新的。
+
+```jsx
+const sleep = (mills) => new Promise(resolve => setTimeout(resolve, mills));
+const core = new FormCore();
+Dialog.show({
+    title: '标题',
+    locale: 'zh', // 中文
+    footerAlign: 'label', // label对齐形式，主要用于操作按钮对齐
+    content: <Form core={core} layout={{ label: 4, control: 20 }}>        
+        <FormItem label="username" name="username">
+            <Input />
+        </FormItem>
+    </Form>,
+    onOk: async (values, hide) => {
+        await sleep(1000); // 等待1秒，期间会进入loading状态，完成后提示成功信息，成功信息消失时关闭弹窗
+        message.success('Success', 1, hide);
+    },
+    onCancel: () => {}
+});
+```
+
+<Playground>
+    {
+        () => {
+            const popupDialog = () => {
+                const core = new FormCore();
+                Dialog.show({
+                    title: '标题',
+                    locale: 'zh', // 中文
+                    footerAlign: 'label', // label对齐形式，主要用于操作按钮对齐
+                    content: <Form core={core} layout={{ label: 6, control: 18 }}>        
+                        <FormItem label="username" name="username">
+                            <Input />
+                        </FormItem>
+                    </Form>,
+                    onOk: (values, hide) => {
+                        return new Promise((resolve) => {
+                            setTimeout(() => {
+                                message.success('Success', 1, hide);
+                            }, 1000);
+                        });
+                    },
+                    onCancel: () => {}
+                });
+            };
+            return <Button onClick={popupDialog}>弹窗</Button>
+        }
+    }
+</Playground>
+
+
+## JSX 属性
+
+| 属性名 | 作用 | 类型 | 默认值 |
+| ------ | ------ | ------ | ----- |
+| title | 标题 | 字符串 | '' |
+| locale | 国际化 | ENUM('en', 'zh') | 'en' |
+| footerAlign | 底部操作按钮对齐 | ENUM('label', 'left', 'right') | null |
+| content | 弹窗内容 | JSX | null |
+| onOk |  | 点击确定时触发 | (values, hide) | noop |
+| onCancel | 点击取消时触发 | (hide) | noop |
+| className | 类名 | 字符串 | '' |
+| width | 宽度 | 数字 | undefined |
+| height | 宽度 | 数字 | undefined |
+| style | 样式 | {} | undefined |

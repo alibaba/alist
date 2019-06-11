@@ -1,0 +1,136 @@
+---
+name: 3. 完全自定义渲染
+route: /repeater/view
+menu: 4. Repeater 重复表单
+---
+
+import { Playground } from 'docz'
+import react from 'react';
+import Form, { FormItem, FormCore } from 'noform';
+import { Button, Table } from 'antd';
+import { Input, Radio, Switch, InputNumber, Checkbox } from 'nowrapper/lib/antd';
+import { TableRepeater, InlineRepeater, Selectify, ActionButton } from 'nowrapper/lib/antd/repeater';
+import 'antd/dist/antd.css';
+import 'noform/dist/index.css';
+import 'nowrapper/dist/antd/index.css';
+import 'nowrapper/dist/antd/repeater.css';
+
+# Repeater 完全自定义渲染
+
+## view
+
+通过 `view`属性自定义渲染内容，注意：
+
+* 对于**InlineRepeater**，整个交互都可以通过 `view` 来控制
+* 对于**TableRepeater**, 弹窗部分无法控制，`view` 只可以控制展示的结果。如需控制弹窗，请查看<a href="/form/repeater/config#自定义tablerepeater的弹窗表单内容">此小节</a>
+
+## 用法
+
+这里引入了**ActionButton**, 使得用户可以定制操作按钮。更多类型请查看本节末尾。
+
+> 需要注意的是：**ActionButton** 需要绑定当前行的**core**
+
+```jsx
+import { ActionButton } from 'nowrapper/lib/antd/repeater';
+<Repeater view={(_, ctx) => {
+    const dataSource = ctx.getDataSource(); // 获取Repeater当前数据源
+    const coreList = ctx.getCoreList(); // 获取Repeater form核心列表
+    const isLoading = ctx.getLoading(); // 获取loading状态, 通过setLoading更改
+
+    return <Table dataSource={dataSource} loading={isLoading}>
+        <Table.Column title="username" dataIndex="username"/>
+        <Table.Column title="Operate" render={(value, record, index) => (<div>            
+            <ActionButton core={coreList[index]} type="update">{/* 绑定核心 */}
+                <Button size="small">Edit</Button>
+            </ActionButton>
+            <ActionButton core={coreList[index]} type="delete">{/* 绑定核心 */}
+                <Button size="small">Remove</Button>
+            </ActionButton>
+        </div>)}/>
+    </Table>
+}} />
+```
+
+## Demo
+
+<Playground>
+    {
+        () => {
+            const { Group: RadioGroup } = Radio;
+            const repeatValues = [
+                { username: 'lily', gender: 'female', id: 'lily' },
+                { username: 'bobby', gender: 'male', id: 'bobby' }
+            ];
+
+            function view(_, ctx) {
+                const dataSource = ctx.getDataSource(); // 获取Repeater当前数据源
+                const coreList = ctx.getCoreList(); // 获取Repeater form核心列表
+
+                return <Table dataSource={dataSource}>
+                    <Table.Column title="username" dataIndex="username"/>
+                    <Table.Column title="Operate" render={(value, record, index) => (<div>            
+                        <ActionButton core={coreList[index]} type="update">{/* 绑定核心 */}
+                            <Button size="small">Edit</Button>
+                        </ActionButton>
+                        <ActionButton core={coreList[index]} type="delete">{/* 绑定核心 */}
+                            <Button size="small">Remove</Button>
+                        </ActionButton>
+                    </div>)}/>
+                </Table>
+            }
+
+            const core = new FormCore({
+                values: {
+                    repeater: repeatValues,
+                },
+                onChange: (firekeys, values, ctx) => {
+                    ctx.setItemProps('repeater', {
+                        view: values.enableView ? view : undefined,
+                    });
+                }
+            });
+
+            const dataSource = [{ label: 'male', value: 'male' }, { label: 'female', value: 'female' }];
+            return <Form core={core} layout={{ label: 8, control: 16 }} defaultMinWidth={false}>
+                <FormItem label="启用自定义视图 view" name="enableView" defaultValue={false} ><Checkbox /></FormItem>            
+
+                <FormItem label="InlineRepeater" name="repeater">
+                    <InlineRepeater >
+                        <FormItem label="username" name="username"><Input style={{ width: 100 }} /></FormItem>
+                        <FormItem label="gender" name="gender"><RadioGroup style={{ width: 200 }} options={dataSource} /></FormItem>
+                    </InlineRepeater>
+                </FormItem>
+            </Form>
+        }
+    }
+</Playground>
+
+## ActionButton 类型
+
+引入
+
+```jsx
+import { ActionButton } from 'nowrapper/lib/antd/repeater'; // ant-design
+import { ActionButton } from 'nowrapper/lib/next/repeater'; // fusion-next
+```
+
+针对不同的操作类型，这里都提供了，可以通过组合它们实现不同的功能。
+
+```jsx
+'add' - TableRepeater
+'addInline' - InlineRepeater
+'addMultipleInline' - InlineRepeater(multiple)
+'update' - ALL
+'updateInline' - InlineRepeater(update)
+'save' - InlineRepeater(single)
+'cancel' - InlineRepeater(single)
+'remove' - ALL
+```
+
+用法
+
+```jsx
+<ActionButton type="addInline">
+    任意的JSX
+</ActionButton>
+```

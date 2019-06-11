@@ -1,0 +1,398 @@
+---
+name: 2. 配置
+route: /repeater/config
+menu: 4. Repeater 重复表单
+---
+
+import { Playground } from 'docz'
+import react from 'react';
+import Form, { FormItem, FormCore } from 'noform';
+import { Input, Radio, Switch, InputNumber, Checkbox } from 'nowrapper/lib/antd';
+import { TableRepeater, InlineRepeater, Selectify } from 'nowrapper/lib/antd/repeater';
+import 'antd/dist/antd.css';
+import 'noform/dist/index.css';
+import 'nowrapper/dist/antd/index.css';
+import 'nowrapper/dist/antd/repeater.css';
+
+# Repeater 配置
+
+重复表单提供了非常多的配置项，您可以现在就开始试玩一番。
+
+## 核心配置
+
+定义每一行的配置，如：`<Repeater formConfig={formConfig} >` 
+
+和 [FormCore构建参数](/form/core/index#构建参数) 完全一致，**校验**，**状态管理**...都通过此配置实现。
+
+## 基本配置
+
+以下配置命名和实际使用一致，如：`<Repeater locale="en">`
+
+<Playground>
+    {
+        () => {
+            const { Group: RadioGroup } = Radio;
+            const repeatValues = [
+                { username: 'lily', gender: 'female', id: 'lily' },
+                { username: 'bobby', gender: 'male', id: 'bobby' }
+            ];
+
+            const core = new FormCore({
+                values: {
+                    repeater: repeatValues,
+                },
+                onChange: (firekeys, values, ctx) => {
+                    const { locale, addPosition, itemAlign, maxLength } = values;
+                    if (firekeys.includes('locale')) {
+                        ctx.setItemProps('repeater', { locale });
+                    }
+                    if (firekeys.includes('addPosition')) {
+                        ctx.setItemProps('repeater', { addPosition });
+                    }
+                    if (firekeys.includes('itemAlign')) {
+                        ctx.setItemProps('repeater', { itemAlign });
+                    }
+
+                    if (firekeys.includes('maxLength')) {
+                        ctx.setItemProps('repeater', {
+                            maxLength: [null, undefined].indexOf(maxLength) !== -1 ? undefined : maxLength
+                        });
+                    }
+                }
+            });
+
+            const dataSource = [{ label: 'male', value: 'male' }, { label: 'female', value: 'female' }];
+            return <Form core={core} layout={{ label: 6, control: 18 }} defaultMinWidth={false}>
+                <FormItem label="语种 locale" name="locale" defaultValue="en"><RadioGroup options={[
+                    { label: 'en', value: 'en' },
+                    { label: 'zh', value: 'zh' }
+                ]} /></FormItem>
+
+                <FormItem label="添加按钮位置 addPosition" name="addPosition" defaultValue="top"><RadioGroup options={[
+                    { label: 'top', value: 'top' },
+                    { label: 'bottom', value: 'bottom' }
+                ]} /></FormItem>
+
+                <FormItem label="对齐方式 itemAlign" name="itemAlign" defaultValue="left"><RadioGroup options={[
+                    { label: 'left', value: 'left' },
+                    { label: 'center', value: 'center' },
+                    { label: 'right', value: 'right' }
+                ]} /></FormItem>
+                
+                <FormItem label="最大可添加条数 maxLength" defaultValue={3} name="maxLength"><InputNumber /></FormItem>
+
+                <FormItem label="TableRepeater" name="repeater">
+                    <TableRepeater >
+                        <FormItem label="username" name="username"><Input style={{ width: 100 }} /></FormItem>
+                        <FormItem label="gender" name="gender"><RadioGroup style={{ width: 200 }} options={dataSource} /></FormItem>
+                    </TableRepeater>
+                </FormItem>
+            </Form>
+        }
+    }
+</Playground>
+
+
+## 显示/隐藏配置
+
+以下配置命名和实际使用一致，如：`<Repeater hasAdd={false}>`
+
+<Playground>
+    {
+        () => {
+            const { Group: RadioGroup } = Radio;
+            const repeatValues = [
+                { username: 'lily', gender: 'female', id: 'lily' },
+                { username: 'bobby', gender: 'male', id: 'bobby' }
+            ];
+
+            const core = new FormCore({
+                values: {
+                    repeater: repeatValues,
+                },
+                onChange: (firekeys, values, ctx) => {
+                    const { hasAdd, hasUpdate, hasDelete, hasHeader, hasDeleteConfirm } = values;
+                    if (firekeys.includes('hasAdd')) {
+                        ctx.setItemProps('repeater', { hasAdd });
+                    }
+                    if (firekeys.includes('hasUpdate')) {
+                        ctx.setItemProps('repeater', { hasUpdate });
+                    }
+                    if (firekeys.includes('hasDelete')) {
+                        ctx.setItemProps('repeater', { hasDelete });
+                    }
+                    if (firekeys.includes('hasDelete')) {
+                        ctx.setItemProps('repeater', { hasDelete });
+                    }
+                    if (firekeys.includes('hasHeader')) {
+                        ctx.setItemProps('repeater', { hasHeader });
+                    }                    
+                    if (firekeys.includes('hasDeleteConfirm')) {
+                        ctx.setItemProps('repeater', { hasDeleteConfirm });
+                    }                    
+                }
+            });
+
+            const dataSource = [{ label: 'male', value: 'male' }, { label: 'female', value: 'female' }];
+            return <Form core={core} layout={{ label: 6, control: 18 }} defaultMinWidth={false}>
+                <div>
+                    <div>
+                        <FormItem style={{ width: '50%' }} layout={null} inline label="是否有添加 hasAdd" defaultValue={true} name="hasAdd"><Checkbox /></FormItem>
+                        <FormItem style={{ width: '50%' }} layout={null} inline label="是否有更新 hasUpdate" defaultValue={true} name="hasUpdate"><Checkbox /></FormItem>
+                    </div>
+                    <div>
+                        <FormItem style={{ width: '50%' }} layout={null} inline label="是否有删除 hasDelete" defaultValue={true} name="hasDelete"><Checkbox /></FormItem>
+                        <FormItem style={{ width: '50%' }} layout={null} inline label="是否有头部 hasHeader" defaultValue={true} name="hasHeader"><Checkbox /></FormItem>
+                    </div>
+                    <FormItem layout={null} label="删除前确认弹窗 hasDeleteConfirm" name="hasDeleteConfirm" defaultValue={true} ><Checkbox /></FormItem>
+                </div>
+
+                <FormItem label="TableRepeater" name="repeater">
+                    <TableRepeater >
+                        <FormItem label="username" name="username"><Input style={{ width: 100 }} /></FormItem>
+                        <FormItem label="gender" name="gender"><RadioGroup style={{ width: 200 }} options={dataSource} /></FormItem>
+                    </TableRepeater>
+                </FormItem>
+            </Form>
+        }
+    }
+</Playground>
+
+
+## 文案配置
+
+以下配置命名和实际使用一致，如：`<Repeater addText="Add">`
+
+<Playground>
+    {
+        () => {
+            const { Group: RadioGroup } = Radio;
+            const repeatValues = [
+                { username: 'lily', gender: 'female', id: 'lily' },
+                { username: 'bobby', gender: 'male', id: 'bobby' }
+            ];
+
+            const handleNull = (val) => val ? val : undefined;
+            const core = new FormCore({
+                values: {
+                    repeater: repeatValues,
+                },
+                onChange: (firekeys, values, ctx) => {
+                    const vprops = {
+                        addText: handleNull(values.addText),
+                        updateText: handleNull(values.updateText),
+                        deleteText: handleNull(values.deleteText),
+                        dialogAddText: handleNull(values.dialogAddText),
+                        dialogUpdateText: handleNull(values.dialogUpdateText),
+                        dialogDeleteText: handleNull(values.dialogDeleteText),
+                        saveText: handleNull(values.saveText),
+                        cancelText: handleNull(values.cancelText),                    
+                        operateText: handleNull(values.operateText),
+                    };
+
+
+                    ctx.setItemProps('repeater', vprops);
+                }
+            });
+
+            const inlineLayout = { layout: null, style: { width: '50%', marginBottom: '8px' } };
+            const inlineInputStyle = { style: { width: 100 }};
+
+            const dataSource = [{ label: 'male', value: 'male' }, { label: 'female', value: 'female' }];
+            return <Form core={core} layout={{ label: 8, control: 16 }} defaultMinWidth={false}>
+                <div>
+                    <FormItem {...inlineLayout} inline label="添加文案 addText"  name="addText"><Input {...inlineInputStyle} /></FormItem>
+                    <FormItem {...inlineLayout} inline label="更新文案 updateText" name="updateText"><Input {...inlineInputStyle} /></FormItem>
+                    <FormItem {...inlineLayout} inline label="删除文案 deleteText" name="deleteText"><Input {...inlineInputStyle} /></FormItem>
+                    <FormItem {...inlineLayout} inline label="保存文案 saveText" name="saveText"><Input {...inlineInputStyle} /></FormItem>
+                    <FormItem {...inlineLayout} inline label="取消文案 cancelText" name="cancelText"><Input {...inlineInputStyle} /></FormItem>
+                    <FormItem {...inlineLayout} inline label="操作文案 operateText" name="operateText"><Input {...inlineInputStyle} /></FormItem>
+                    <FormItem {...inlineLayout} inline label="弹窗添加标题 dialogAddText"  name="dialogAddText"><Input {...inlineInputStyle} /></FormItem>
+                    <FormItem {...inlineLayout} inline label="弹窗更新标题 dialogUpdateText" name="dialogUpdateText"><Input {...inlineInputStyle} /></FormItem>
+                    <FormItem {...inlineLayout} inline label="弹窗删除标题 dialogDeleteText" name="dialogDeleteText"><Input {...inlineInputStyle} /></FormItem>
+                </div>
+
+                <FormItem label="TableRepeater" name="repeater">
+                    <TableRepeater >
+                        <FormItem label="username" name="username"><Input style={{ width: 100 }} /></FormItem>
+                        <FormItem label="gender" name="gender"><RadioGroup style={{ width: 200 }} options={dataSource} /></FormItem>
+                    </TableRepeater>
+                </FormItem>
+
+                <FormItem label="InlineRepeater" name="repeater">
+                    <InlineRepeater >
+                        <FormItem label="username" name="username"><Input style={{ width: 100 }} /></FormItem>
+                        <FormItem label="gender" name="gender"><RadioGroup style={{ width: 200 }} options={dataSource} /></FormItem>
+                    </InlineRepeater>
+                </FormItem>
+            </Form>
+        }
+    }
+</Playground>
+
+
+## 搜索
+
+通过 `filter` 自定义过滤条件函数
+
+<Playground>
+    {
+        () => {
+            const { Group: RadioGroup } = Radio;
+            const repeatValues = [
+                { username: 'lily', gender: 'female', id: 'lily' },
+                { username: 'bobby', gender: 'male', id: 'bobby' }
+            ];
+
+            function filter(value, key) {
+                return value.filter(item => (item.username && item.username.startsWith(key)));
+            }
+
+            const core = new FormCore({
+                values: {
+                    repeater: repeatValues,
+                },
+                onChange: (firekeys, values, ctx) => {
+                    ctx.setItemProps('repeater', {
+                        filter: values.enableFilter ? filter : undefined,
+                    });
+                }
+            });
+
+            const inlineLayout = { layout: null, style: { width: '50%', marginBottom: '8px' } };
+            const inlineInputStyle = { style: { width: 100 }};
+
+            const dataSource = [{ label: 'male', value: 'male' }, { label: 'female', value: 'female' }];
+            return <Form core={core} layout={{ label: 8, control: 16 }} defaultMinWidth={false}>
+                <FormItem label="启用过滤 enableFilter" name="enableFilter" defaultValue={false} ><Checkbox /></FormItem>            
+
+                <FormItem label="TableRepeater" name="repeater">
+                    <TableRepeater >
+                        <FormItem label="username" name="username"><Input style={{ width: 100 }} /></FormItem>
+                        <FormItem label="gender" name="gender"><RadioGroup style={{ width: 200 }} options={dataSource} /></FormItem>
+                    </TableRepeater>
+                </FormItem>
+            </Form>
+        }
+    }
+</Playground>
+
+## 自定义展示字段
+
+通过**renderCell**配置来实现，该方法有两个参数：
+
+* 参数1： `currentValue` 为当前行的值
+* 参数2:  `currentRow` 格式如下：
+```jsx
+{
+    values, // 当前行的值
+    id, // 当前行的id
+    core, // 当前行的FormCore实例
+    index, // 当前行的索引，从0开始
+}
+```
+
+> 注意：`status=hidden`会影响**TableRepeater**弹窗内的字段，但不会影响**InlineRepeater**的字段。
+
+以下是增加序号的例子：
+
+<Playground>
+    {
+        () => {
+            const core = new FormCore({
+                values: {
+                    renderCell: [
+                        { username: 'hello' },
+                        { username: 'world' }
+                    ]
+                }
+            });
+            return <Form core={core} layout={{ label: 8, control: 16 }} defaultMinWidth={false}>
+                <FormItem label="renderCell" name="renderCell">
+                    <TableRepeater locale="zh">
+                        <FormItem label="序号" status="hidden" renderCell={(_, { index: order }) => <div>{order + 1}</div>} />
+                        <FormItem label="姓名" name="username"><Input /></FormItem>
+                    </TableRepeater>
+                </FormItem>
+            </Form>
+        }
+    }
+</Playground>
+
+
+## 自定义操作按钮渲染
+
+通过**renderOper**配置来实现，该方法有两个参数：
+
+* 参数1： `btnList: Array<ReactElement>` 数组依次为**saveBtn**, **cancelBtn**, **updateBtn**, **deleteBtn** 按配置情况显示
+* 参数2:  `core: FormCore` 当前行核心
+
+```jsx
+const renderOper = (btnList, core) => {
+    const showValue = () => console.log('showValue:', core.getValues());
+    return <div>
+        <a href="javascript:void(0)" onClick={showValue}>查看</a>
+        {btnList}
+    </div>
+};
+
+<FormItem label="renderOper" name="renderOper">
+  <InlineRepeater renderOper={renderOper}>
+    <FormItem label="username" name="username"><Input /></FormItem>
+  </InlineRepeater>
+</FormItem>
+```
+
+
+<Playground>
+    {
+        () => {
+            const core = new FormCore({
+                values: {
+                    renderOper: [{ username: 'hello' }]
+                }
+            });
+            const renderOper = (btnList, core) => {
+                const showValue = () => console.log('showValue:', core.getValues());
+                return <div>
+                    <a href="javascript:void(0)" onClick={showValue}>查看</a>
+                    {btnList}
+                </div>
+            };
+            return <Form core={core} layout={{ label: 8, control: 16 }} defaultMinWidth={false}>
+                <FormItem label="renderOper" name="renderOper">
+                    <InlineRepeater renderOper={renderOper}>
+                        <FormItem label="username" name="username"><Input /></FormItem>
+                    </InlineRepeater>
+                </FormItem>
+            </Form>
+        }
+    }
+</Playground>
+
+## 自定义TableRepeater的弹窗表单内容
+
+可供配置的属性如下：
+
+```jsx
+
+const dialogConfig = {    
+    custom: (core, type, props) => { // type: add|update|remove
+        const { onOk } = props; // 原本的onOk执行方法，包含一系列内部处理逻辑
+        return {
+            className: 'address-dialog-wrapper',            
+            title: 'xxx', // 弹窗标题            
+            content: <Form core={core}>...</Form>, // 自定义内容
+            footer: (hide) => { // 自定义操作按钮
+                return <Button onClick={() => {
+                    onOk();
+                    hide();
+                }}>确定</Button>
+            }
+        };
+    }
+};
+
+<TableRpeeater dialogConfig={dialogConfig} />
+
+```

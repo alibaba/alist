@@ -1,0 +1,61 @@
+---
+name: 4. Ant-Design-Pro最佳实践
+route: /get-start/antd-pro-best-practise
+menu: 1. Getting Started
+---
+
+## 拉取实例项目
+
+<p>首先拉取ant-design-pro，此步骤和<a target="_blank" href="https://pro.ant.design/docs/getting-started">官网介绍</a>的一致。</p>
+
+```bash
+git clone --depth=1 https://github.com/ant-design/ant-design-pro.git my-project
+cd my-project
+```
+
+## 安装
+
+```bash
+npm install
+npm install --save noform nowrapper
+```
+
+## 运行
+
+```bash
+npm start
+```
+
+Done！ 现在你已经能够随便在目录中使用NoForm了。
+
+
+
+## 牛刀小试
+随后我们直接去改动 src/pages/Forms 下的 basicForm.jsx
+
+
+```jsx
+import React from 'react';
+import Form, { FormItem } from 'noform';
+import { Input } from 'nowrapper/lib/antd';
+
+import styles from './style.less';
+
+const App = () => (<Form>
+  <FormItem label="test" name="test"><Input /></FormItem>
+</Form>);
+
+export default App;
+```
+
+## 修改样式 style.less
+
+```less
+@import '~antd/lib/style/themes/default.less';
+@import '~nowrapper/dist/antd/index.css'; // 新增
+@import '~noform/dist/index.css'; // 新增
+```
+
+再次刷新页面，看到如下图的页面即成功了。
+
+![成功页面](https://cdn.nlark.com/yuque/0/2018/png/110109/1544576382393-cf1bd198-8719-4acb-9160-13f1abc2fa82.png)

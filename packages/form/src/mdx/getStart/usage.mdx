@@ -1,0 +1,176 @@
+---
+name: 2. 安装及使用
+route: /get-start/usage
+menu: 1. Getting Started
+---
+
+import { Playground } from 'docz'
+import react from 'react';
+import { Select, Input, Radio, Button } from 'nowrapper/lib/antd';
+import { Select as AntdSelect } from 'antd';
+import Form, { FormItem, FormCore } from 'noform';
+import 'antd/dist/antd.css';
+import 'noform/dist/index.css';
+import 'nowrapper/dist/antd/index.css';
+
+# 安装
+
+首先我们会安装 `noform`, 但是光有表单框架没有实质的组件也是不行的，这里以 `antd` 为例演示。
+同时安装 `nowrapper`。
+
+
+<p>
+    它的作用主要是提供组件标准，目前支持两大组件阵营 
+    <span>
+        <a href="https://github.com/alibaba-fusion/next" target="_blank"> fusion-next </a>
+        和
+        <a href="https://ant.design" target="_blank"> antd </a>
+    </span>
+</p>
+
+```bash
+$ npm install --save noform antd nowrapper
+```
+
+# 引入
+
+这里会引入 **nowrapper** 已经标准化过的 `antd` 表单组件 `select`, `input`
+
+```jsx
+import Form, { FormItem, FormCore } from 'noform';
+import { Select, Input } from 'nowrapper/lib/antd';
+import 'antd/dist/antd.css';
+import 'noform/lib/index.scss';
+import 'nowrapper/dist/antd/index.css'; // antd
+import 'nowrapper/lib/next/index.scss'; // next
+```
+
+> lib目录下是scss文件，dist目录下是css文件
+
+# 初使用
+
+以下代码会演示这几个功能：
+
+1. 切换全局状态，发现 **nowrapper** 处理过的组件有预览功能 ( 并且`FormItem`已经做了`value/onChange`的绑定动作了 )
+2. 通过设置属性API，动态切换 `select` 的数据源
+3. combo功能，动态渲染多字段合成值
+4. 获取表单值功能, 获取表单所有组件属性，获取表单所有组件状态，在控制台查看
+
+```jsx
+
+const App = () => {
+    const core = new FormCore({
+        enableReceiveProps: true,
+    });
+    const statusHandler = (e) => core.setGlobalStatus(e.target.value); // 切换全局状态
+    const opstHandler = (e) => { // 切换select数据源
+        core.setItemProps('choice', { options: opts[e.target.value]})
+    }
+
+    const print = () => { // 打印values, props, status
+        console.log('values:', core.getValues())
+        console.log('props:', core.getProps())
+        console.log('status:', core.getStatus())
+    }
+
+    const opts = {
+        opts1: [{ label: '选项1', value: 'opt1' }],
+        opts2: [{ label: 'selection A', value: 'opt1' }]
+    };
+    return <Form core={core}>
+        <FormItem label="setGlobalStatus" render={() => {
+            return <Radio.Group defaultValue="edit" onChange={statusHandler}>
+                <Radio.Button value="edit">编辑</Radio.Button>
+                <Radio.Button value="preview">预览</Radio.Button>
+                <Radio.Button value="disabled">禁用</Radio.Button>
+            </Radio.Group>
+        }} />
+
+        <FormItem label="setItemProps" render={() => {
+            return <Radio.Group defaultValue="opts1" onChange={opstHandler}>
+                <Radio.Button value="opts1">数据源1</Radio.Button>
+                <Radio.Button value="opts2">数据源2</Radio.Button>
+            </Radio.Group>
+        }} />
+
+        <FormItem label="WrapperSelect" name="choice" defaultValue="opt1">
+            <Select options={opts.opts1}/>
+        </FormItem>
+
+        <FormItem label="UserName" name="username" defaultValue="Bobby">
+            <Input />
+        </FormItem>
+
+        <FormItem listenProps label="Combo" render={(values, ctx) => {
+            const { username, choice } = values;
+            const { options } = ctx.getItemProps('choice');
+            const { label } = options.find(item => item.value === choice);
+            return <div style={{ lineHeight: '28px' }}>
+                <div>{username} 选择了 {label}</div>
+                <Button onClick={print}>打印</Button>
+            </div>
+        }} />
+    </Form>
+}
+```
+
+效果如下：
+
+<Playground>
+    {
+        () => {
+            const core = new FormCore({
+                enableReceiveProps: true,
+            });
+            const statusHandler = (e) => core.setGlobalStatus(e.target.value); // 切换全局状态
+            const opstHandler = (e) => { // 切换select数据源
+                core.setItemProps('choice', { options: opts[e.target.value]})
+            }
+
+            const print = () => {
+                console.log('values:', core.getValues())
+                console.log('props:', core.getProps())
+                console.log('status:', core.getStatus())
+            }
+
+            const opts = {
+                opts1: [{ label: '选项1', value: 'opt1' }],
+                opts2: [{ label: 'selection A', value: 'opt1' }]
+            };
+            return <Form core={core}>
+                <FormItem label="setGlobalStatus" render={() => {
+                    return <Radio.Group defaultValue="edit" onChange={statusHandler}>
+                        <Radio.Button value="edit">编辑</Radio.Button>
+                        <Radio.Button value="preview">预览</Radio.Button>
+                        <Radio.Button value="disabled">禁用</Radio.Button>
+                    </Radio.Group>
+                }} />
+
+                <FormItem label="setItemProps" render={() => {
+                    return <Radio.Group defaultValue="opts1" onChange={opstHandler}>
+                        <Radio.Button value="opts1">数据源1</Radio.Button>
+                        <Radio.Button value="opts2">数据源2</Radio.Button>
+                    </Radio.Group>
+                }} />
+
+                <FormItem label="WrapperSelect" name="choice" defaultValue="opt1">
+                    <Select options={opts.opts1}/>
+                </FormItem>
+
+                <FormItem label="UserName" name="username" defaultValue="Bobby">
+                    <Input />
+                </FormItem>
+
+                <FormItem listenProps label="Combo" render={(values, ctx) => {
+                    const { username, choice } = values;
+                    const { options } = ctx.getItemProps('choice');
+                    const { label } = options.find(item => item.value === choice);
+                    return <div style={{ lineHeight: '28px' }}>
+                        {username} 选择了 {label}
+                        <Button onClick={print}>打印</Button>
+                    </div>
+                }} />
+            </Form>
+        }
+    }
+</Playground>

@@ -1,0 +1,31 @@
+---
+name: 5. 内置校验规则
+route: /core/validate-inner
+menu: 2. Core核心
+---
+
+# 内置校验规则
+
+| 规则名 | 作用 | 入参 | message默认值 |
+| ------ | ------ | ------ | ----- |
+| required | 必填 | (message: string) | 必填 |
+| number | 数字 | (message: string) | 只能输入数字 |
+| int | 正整数 | (message: string) | 只能输入正整数 |
+| uint | 非负整数 | (message: string) | 只能输入非负整数 |
+| length | 长度 | (length: number, message: string) | 长度只能是${length}个字符 |
+| minLength | 最小长度 | (min: number, message: string) | 长度不能少于${min}个字符 |
+| maxLength | 最大长度 | (max: number, message: string) | 长度不能超过${max}个字符 |
+| eq | 相等 | (val: any, message: string) | **不传入会抛异常, 必须传入** |
+| equal | 相等于其他字段 | (field: string, message: string) | **不传入会抛异常, 必须传入** |
+| min | 最小值 | (min: number, message: string) | 不能小于${min} |
+| max | 最大值度 | (max: number, message: string) | 不能大于${max} |
+| email | 邮箱 | (message: string) | 邮箱格式不正确 |
+| url | url | (message: string) | 链接格式不正确,请以 http:// 或者 https:// 开头 |
+| phone | 固话 | (message: string) | 错误的电话格式 |
+| precision | 精确到小数 | (precision: number, message: string) | 必须精确到${precision}位小数 |
+| alphabet | 英文字母 | (message: string) | 只允许输入英文字母 |
+| words | 英文字母和数字 | (message: string) | 只允许输入英文字母和数字 |
+| ascii | 英文字母标点和数字 | (message: string) | 只允许输入英文字母标点和数字 |
+| idCard | 身份证号 | (message: string) | 请输入正确的身份证号 |
+| mobile | 手机号码 | (message: string) | 请输入正确的手机号码 |
+| hsCode | HSCODE | (message: string) | 请输入正确的HSCODE |

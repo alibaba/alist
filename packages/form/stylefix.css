@@ -1,0 +1,8 @@
+
+li {
+    margin: 4px 0;
+}
+
+li:before {
+    font-size: 0.1em;
+}

@@ -1,0 +1,290 @@
+---
+name: 1. 基本使用
+route: /repeater/usage
+menu: 4. Repeater 重复表单
+---
+
+import { Playground } from 'docz'
+import react from 'react';
+import Form, { FormItem, FormCore } from 'noform';
+import { Input, Radio, Switch } from 'nowrapper/lib/antd';
+import { TableRepeater, InlineRepeater, Selectify } from 'nowrapper/lib/antd/repeater';
+import 'antd/dist/antd.css';
+import 'noform/dist/index.css';
+import 'nowrapper/dist/antd/index.css';
+import 'nowrapper/dist/antd/repeater.css';
+
+# Repeater 重复表单
+
+重复表单的使用场景非常广，甚至可以延伸至传统的操作型List/Table，总之，Repeater被视为复杂表单的标志。
+
+NoForm提供以下几种类型：
+
+* TableRepeater（弹窗编辑）
+* InlineRepeater(single/multiple)（行内编辑）
+* SelectifyRepeater（多选/单选）
+
+## 引入
+
+```jsx
+// 有antd/next两种选择
+import { InlineRepeater, TableRepeater, SelectifyRepeater, ActionButton } from 'nowrapper/lib/antd/repeater';
+import { InlineRepeater, TableRepeater, SelectifyRepeater, ActionButton } from 'nowrapper/lib/next/repeater';
+
+// 可以赋予重复表单选择的能力，Selectify是高阶组件
+const SelectTableRepeater = Selectify(TableRepeater);
+const SelectInlineRepeater = Selectify(InlineRepeater);
+```
+
+## 用法
+
+如下所示，这里用XRepeater来表示各种Repeater，内容的写法与Form内容完全一致，用于描述每一个重复Form。
+
+这里的`formConfig` 则和 **FormCore** 的构建参数完全保持一致，用于定义每一
+
+```jsx
+
+<XRepeater formConfig={formConfig}>
+    <FormItem name="username" label="username"><Input /></FormItem>
+    <FormItem name="age" label="age"><Input /></FormItem>
+</XRepeater>
+
+```
+
+## 初体验
+
+## TableRepeater
+
+基于弹窗编辑的重复表单
+
+<Playground>
+    {
+        () => {
+            const { Group: RadioGroup } = Radio;
+            const repeatValues = [
+                { username: 'lily', gender: 'female', id: 'lily' },
+                { username: 'bobby', gender: 'male', id: 'bobby' }
+            ];
+            const core = new FormCore({
+                values: {
+                    repeater: repeatValues,
+                }
+            });            
+
+            const dataSource = [{ label: 'male', value: 'male' }, { label: 'female', value: 'female' }];
+
+            const formConfig = {
+                validateConfig: {
+                    username: { type: 'string', required: true },
+                }
+            };
+
+            return <Form core={core} layout={{ label: 6, control: 18 }} defaultMinWidth={false}>
+                <FormItem label="TableRepeater" name="repeater">
+                    <TableRepeater formConfig={formConfig}>
+                        <FormItem label="username" name="username"><Input style={{ width: 100 }} /></FormItem>
+                        <FormItem label="gender" name="gender"><RadioGroup style={{ width: 200 }} options={dataSource} /></FormItem>
+                    </TableRepeater>
+                </FormItem>
+            </Form>
+        }
+    }
+</Playground>
+
+## InlineRepeater
+
+基于行内编辑的重复表单，有确认阶段，确认后生效。
+
+<Playground>
+    {
+        () => {
+            const { Group: RadioGroup } = Radio;
+            const repeatValues = [
+                { username: 'lily', gender: 'female', id: 'lily' },
+                { username: 'bobby', gender: 'male', id: 'bobby' }
+            ];
+            const core = new FormCore({
+                values: {
+                    inlineRepeater: repeatValues,
+                }
+            });
+
+            const dataSource = [{ label: 'male', value: 'male' }, { label: 'female', value: 'female' }];
+
+            const formConfig = {
+                validateConfig: {
+                    username: { type: 'string', required: true },
+                }
+            };
+
+            return <Form core={core} layout={{ label: 6, control: 18 }} defaultMinWidth={false}>
+                <FormItem label="InlineRepeater" name="inlineRepeater">
+                    <InlineRepeater formConfig={formConfig}>
+                        <FormItem label="username" name="username"><Input style={{ width: '100px' }} /></FormItem>
+                        <FormItem defaultMinWidth={false} label="trigger" name="isOpen"><Switch checkedChildren="on" unCheckedChildren="off" /></FormItem>
+                    </InlineRepeater>
+                </FormItem>
+            </Form>
+        }
+    }
+</Playground>
+
+## InlineRepeater(multiple)
+
+基于行内编辑的重复表单，直接编辑直接生效。
+
+<Playground>
+    {
+        () => {
+            const { Group: RadioGroup } = Radio;
+            const repeatValues = [
+                { username: 'lily', gender: 'female', id: 'lily' },
+                { username: 'bobby', gender: 'male', id: 'bobby' }
+            ];
+            const core = new FormCore({
+                values: {
+                    inlineRepeaterMultiple: repeatValues,
+                }
+            });            
+
+            const dataSource = [{ label: 'male', value: 'male' }, { label: 'female', value: 'female' }];
+
+            const formConfig = {
+                validateConfig: {
+                    username: { type: 'string', required: true },
+                }
+            };
+
+            return <Form core={core} layout={{ label: 6, control: 18 }} defaultMinWidth={false}>
+                <FormItem label="InlineRepeater(multiple)" name="inlineRepeaterMultiple">
+                    <InlineRepeater multiple formConfig>
+                        <FormItem label="username" name="username"><Input style={{ width: '100px' }} /></FormItem>
+                        <FormItem label="gender" name="gender"><RadioGroup style={{ width: 200 }} options={dataSource} /></FormItem>
+                    </InlineRepeater>
+                </FormItem>
+            </Form>
+        }
+    }
+</Playground>
+
+## Selectify + Repeater
+
+**Selectify** 赋予上述三种Repeater以选择的能力。
+
+同时 **Selectify** 后的组件通过 `selectMode="multiple|single"` 来决定多选或单选。
+
+### 数据结构变更
+
+**Selectify** 后数据结构从数组变为以下结构
+
+```jsx
+{
+    dataSource: [], // 原先repeater的值，现在变成dataSource
+    value: [] // 现在选中的值，数组类型，可以是多选或单选
+}
+```
+
+### Demo
+
+<Playground>
+    {
+        () => {
+            const { Group: RadioGroup } = Radio;
+            const SelectTableRepeater = Selectify(TableRepeater);
+            const SelectInlineRepeater = Selectify(InlineRepeater);    
+            const repeatValues = [
+                { username: 'lily', gender: 'female', id: 'lily' },
+                { username: 'bobby', gender: 'male', id: 'bobby' }
+            ];
+            
+            const core = new FormCore({
+                values: {
+                    selectTableRepeater: {
+                        value: [repeatValues[0]],
+                        dataSource: repeatValues,
+                    },
+                    selectInlineRepeater: {
+                        value: [repeatValues[0]],
+                        dataSource: repeatValues,
+                    },
+                    selectInlineRepeaterMultiple: {
+                        value: [repeatValues[0]],
+                        dataSource: repeatValues,
+                    },
+                    selectInlineRepeaterMultiple2: {
+                        value: [repeatValues[0], repeatValues[1]],
+                        dataSource: repeatValues,
+                    }
+                }
+            });        
+
+            const dataSource = [{ label: 'male', value: 'male' }, { label: 'female', value: 'female' }];
+
+            const validateConfig = {
+                username: { type: 'string', required: true },
+            };
+
+            return <Form core={core} layout={{ label: 6, control: 18 }} defaultMinWidth={false}>
+                <FormItem label="TableRepeater" name="selectTableRepeater">
+                    <SelectTableRepeater>
+                        <FormItem label="username" name="username"><Input style={{ width: '100px' }} /></FormItem>
+                        <FormItem label="gender" name="gender"><RadioGroup style={{ width: 200 }} options={dataSource} /></FormItem>
+                    </SelectTableRepeater>
+                </FormItem>
+
+                <FormItem label="InlineRepeater" name="selectInlineRepeater">
+                    <SelectInlineRepeater>
+                        <FormItem label="username" name="username"><Input style={{ width: '100px' }} /></FormItem>
+                        <FormItem label="gender" name="gender"><RadioGroup style={{ width: 200 }} options={dataSource} /></FormItem>
+                    </SelectInlineRepeater>
+                </FormItem>
+
+                <FormItem label="Inline + multiple（single）" name="selectInlineRepeaterMultiple">
+                    <SelectInlineRepeater multiple>
+                        <FormItem label="username" name="username"><Input style={{ width: '100px' }} /></FormItem>
+                        <FormItem label="gender" name="gender"><RadioGroup style={{ width: 200 }} options={dataSource} /></FormItem>
+                    </SelectInlineRepeater>
+                </FormItem>
+
+                <FormItem label="Inline + multiple（multiple）" name="selectInlineRepeaterMultiple2">
+                    <SelectInlineRepeater selectMode="multiple" multiple>
+                        <FormItem label="username" name="username"><Input style={{ width: '100px' }} /></FormItem>
+                        <FormItem label="gender" name="gender"><RadioGroup style={{ width: 200 }} options={dataSource} /></FormItem>
+                    </SelectInlineRepeater>
+                </FormItem>
+            </Form>
+        }
+    }
+</Playground>
+
+## JSX 属性
+
+| 属性名 | 作用 | 类型 | 默认值 |
+| ------ | ------ | ------ | ----- |
+| locale | 国际化 | ENUM('en', 'zh') | 'en' |
+| addPosition | 添加按钮位置 | ENUM('top', 'bottom') | 'top' |
+| itemAlign | 对齐方式 | ENUM('left', 'center', 'right') | 'left' |
+| maxLength | 最大可添加条数 | 数字 | undefined |
+| hasAdd | 是否有添加按钮 | 布尔值 | true |
+| hasUpdate | 是否有更新按钮 | 布尔值 | true |
+| hasDelete | 是否有删除按钮 | 布尔值 | true |
+| hasDeleteConfirm | 是否有删除前确认弹窗 | 布尔值 | true |
+| hasHeader | 是否有头部 | 布尔值 | true |
+| addText | 添加文案  | 字符串 | Add/添加 |
+| updateText | 更新文案 | 字符串 | Update/更新 |
+| deleteText | 删除文案 | 字符串 | Delete/删除 |
+| saveText | 保存文案 | 字符串 | Save/保存 |
+| cancelText | 取消文案 | 字符串 | Cancel/取消 |
+| dialogAddText | 弹窗添加标题 | 字符串 | Add/添加 |
+| dialogUpdateText | 弹窗更新标题 | 字符串 | Update/更新 |
+| dialogDeleteText | 弹窗删除标题 | 字符串 | Delete/删除 |
+| filter | [过滤搜索函数](/form/repeater/config#搜索) | (v) => array[any] | noop |
+| renderOper | [自定义操作按钮](/form/repeater/config#自定义操作按钮渲染) | (btnList, core) => JSX | noop |
+| dialogConfig | [自定义弹窗表单内容](/form/repeater/config#自定义tablerepeater的弹窗表单内容) | {} | {} |
+
+## Repeater下的FormItem JSX 属性
+
+| 属性名 | 作用 | 类型 | 默认值 |
+| ------ | ------ | ------ | ----- |
+| renderCell | [自定义展示字段](/form/repeater/config#自定义展示字段) | (value, payload: { values, id, core, index } ) => JSX | noop |
+| multiple | 是否用于展示多字段 | 布尔值 | false |

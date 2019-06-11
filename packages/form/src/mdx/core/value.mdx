@@ -1,0 +1,85 @@
+---
+name: 2. 值控制
+route: /core/value
+menu: 2. Core核心
+---
+
+import { Playground } from 'docz'
+import react from 'react';
+import { Input, Radio, Button } from 'nowrapper/lib/antd';
+import Form, { FormItem, FormCore } from 'noform';
+import 'antd/dist/antd.css';
+import 'noform/dist/index.css';
+import 'nowrapper/dist/antd/index.css';
+
+# 值控制
+
+通过以下方法可以处理表单组件的赋值和取值：
+
+* 单个组件赋值 **setItemValue** (fieldName: `string`, value: `any`)
+* 批量组件赋值 **setValues** (obj: { [fieldName]: `string`, [value]: `any` })
+* 同样的，以上的API都有get版本: **getItemValue** , **getValues**
+* 清空方法 **reset** 会将所有组件赋值重置为null，除非设置了原始状态initValues，更详细的请查看 [重置](/form/core/reset)
+
+## 单个组件赋值
+
+通过 **core.setItemValue()** 可以切换单个表单组件的值
+
+<Playground>
+    {
+        () => {
+            const core = new FormCore(); // 初始化核心
+            return <Form core={core}>
+                <FormItem label="setItemValue(text1)" render={() => {
+                    return <div>
+                        <Button onClick={() => {
+                            core.setItemValue('text1', 'abcd');
+                        }}>赋值</Button>
+
+                        <Button style={{ marginLeft: '8px' }} onClick={() => {
+                            core.setItemValue('text1', null);
+                        }}>清空</Button>
+                    </div>
+                }} />
+                <FormItem label="字段1" name="text1">
+                    <Input />
+                </FormItem>
+            </Form>
+        }
+    }
+</Playground>
+
+## 批量组件赋值
+
+通过 **core.setValues()** 可以控制多个表单组件的赋值，以下的例子会设置字段1为`abcd`, 字段2为`efgh`
+
+<Playground>
+    {
+        () => {
+            const core = new FormCore(); // 初始化核心
+            return <Form core={core}>
+                <FormItem label="setItemStatus(text1)" render={() => {
+                    return <div>
+                        <Button onClick={() => {
+                            core.setValues({
+                                text1: 'abcd',
+                                text2: 'efgh',
+                            });
+                        }}>赋值</Button>
+
+                        <Button style={{ marginLeft: '8px' }} onClick={() => {
+                            core.reset();
+                        }}>reset清空</Button>
+                    </div>
+                }} />
+                <FormItem label="字段1" name="text1">
+                    <Input />
+                </FormItem>
+                <FormItem label="字段2" name="text2">
+                    <Input />
+                </FormItem>
+            </Form>
+        }
+    }
+</Playground>
+

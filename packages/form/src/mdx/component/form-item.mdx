@@ -1,0 +1,203 @@
+---
+name: 2. FormItem与Item
+route: /component/form-item
+menu: 3. 组件
+---
+
+import { Playground } from 'docz'
+import react from 'react';
+import { Button, Input, Radio } from 'nowrapper/lib/antd';
+import Form, { FormItem, FormCore } from 'noform';
+import 'antd/dist/antd.css';
+import 'noform/dist/index.css';
+import 'nowrapper/dist/antd/index.css';
+
+# FormItem与Item
+
+## FormItem是什么
+
+**FormItem** 的语义是 **表单组件**。实现上是 **FormCore** 的客户端，负责收发信息和处理表单组件的渲染。
+
+如下图所示， 功能完备的表单组件需要包含以下的结构(`required`, `label`, `top`, `prefix`, `suffix`, `help`, `error`)
+
+实际的表单组件，诸如 **input**, **select** 都是位于图中的`content`中。
+
+<img alt="form-item slot" width="480" src="https://img.alicdn.com/tfs/TB1nAv2X8SD3KVjSZFqXXc4bpXa-948-334.png" />
+
+## Item是什么
+
+**Item** 实际上是没有 **layout**(`prefix`, `suffix`...) 的 **FormItem** , 常常用来配合下面说的 **动态渲染** 来实现值的拼装。
+<img alt="form-item slot" width="100" src="https://img.alicdn.com/tfs/TB1E5UkX79E3KVjSZFGXXc19XXa-238-94.png" />
+
+## 作用
+
+**FormItem** 或 **Item** 会自动绑定 `value` 和 `onChange` 等属性 到对应真实的表单组件，需要注意的是，真实的表单组件必须是单个组件。
+
+如需绑定自定义组件，请参照[如何编写自定义组件](/form/component/standard)
+
+
+## 引入方式
+
+```jsx
+import Form, { FormItem, Item, FormCore, If } from 'noform';
+```
+
+## 演示
+
+下面demo演示表单组件各个可配置的结构，代码点击右下角查看
+
+<Playground>
+    {
+        () => {
+            const core = new FormCore(); // 初始化核心
+
+            return <Form core={core}>
+                <div style={{ color: '#999' }}>点击一次改变属性，再点一次清空改变</div>
+                <FormItem label="setItemProps(text1)" render={() => {
+                    return <div>        
+                        <Button onClick={() => {
+                            const { required } = core.getItemProps('text1');
+                            core.setItemProps('text1', { required: !required });
+                        }}>required</Button>
+
+                        <Button style={{ marginLeft: '8px' }} onClick={() => {
+                            const { label } = core.getItemProps('text1');
+                            core.setItemProps('text1', { label: label ? null : '设置label' });
+                        }}>label</Button>
+
+                        <Button style={{ marginLeft: '8px' }} onClick={() => {
+                            const { prefix } = core.getItemProps('text1');
+                            core.setItemProps('text1', { prefix: prefix ? '' : '设置prefix' });
+                        }}>prefix</Button>
+
+                        <Button style={{ marginLeft: '8px' }} onClick={() => {
+                            const { suffix } = core.getItemProps('text1');
+                            core.setItemProps('text1', { suffix: suffix ? '' : '设置suffix' });
+                        }}>suffix</Button>
+
+                        <Button style={{ marginLeft: '8px' }} onClick={() => {
+                            const { top } = core.getItemProps('text1');
+                            core.setItemProps('text1', { top: top ? '' : '设置top' });
+                        }}>top</Button>
+
+                        <Button style={{ marginLeft: '8px' }} onClick={() => {
+                            const { help } = core.getItemProps('text1');
+                            core.setItemProps('text1', { help: help ? '' : '设置help' });
+                        }}>help</Button>
+                    </div>
+                }} />
+                <FormItem name="text1">
+                    <Input />
+                </FormItem>
+            </Form>
+        }
+    }
+</Playground>
+
+## 布局
+
+* 默认无布局，根据长度自由撑开
+* layout布局，如果 **Form** 定义了 `layout`，会继承此属性，如果需要取消布局，可以设置 `layout={null}`
+* 弹性布局， 设置 `flex={true}`, 默认`control`根据父容器长度自伸缩。可以设置`labelWidth`属性自定义`label`长度。
+* full, 设置`full={true}`，表单组件撑满`control`空间
+
+
+<Playground>
+    {
+        () => {
+            return <Form style={{ border: '1px solid #999', padding: '16px' }}>
+                <FormItem label="默认布局" name="dlayout"><Input /></FormItem>                
+                <FormItem label="layout布局" layout={{ label: 6, control: 18 }} name="llayout"><Input /></FormItem>
+                <FormItem label="layout布局 + full" full layout={{ label: 6, control: 18 }} name="ffllayout"><Input /></FormItem>
+                <FormItem label="flex布局" flex name="llayout"><Input /></FormItem>
+                <FormItem label="flex + full布局" flex full name="fllayout"><Input /></FormItem>
+                <FormItem labelWidth={240} label="flex + labelWdith+ full布局" flex full name="fbllayout"><Input /></FormItem>
+            </Form>
+        }
+    }
+</Playground>
+
+
+## 动态渲染
+
+通过`render`实现 **combo** 效果。
+
+* 默认 **不监听** `props` 的变更，如果要开启，`listenProps` 需要置为 `true`。
+* 默认 **不监听** `errors` 的变更，如果要开启，`listenErrors` 需要置为 `true`。
+* 默认 **监听全部** `value` 的变更，如果要减少渲染提升性能，需要设置监听的字段 `listenKeys`，如下所示：
+
+```jsx
+
+<FormItem listenKeys={['username', 'age']} label="combo" render={(values) => {
+    const { username, age } = values;
+    return <div>姓名：{username} 年龄{age}</div>;
+}} />
+
+```
+
+<Playground>
+    {
+        () => {
+            const core = new FormCore(); // 初始化核心
+
+            return <Form core={core}>
+                <FormItem defaultValue="bobby" label="姓名" name="username"><Input /></FormItem>
+                <FormItem defaultValue="20" label="年龄" name="age"><Input /></FormItem>
+                <FormItem listenKeys={['username', 'age']} label="combo" render={(values) => {
+                    const { username, age } = values;
+                    return <div style={{ lineHeight: '28px' }}>姓名：{username} ,  年龄{age}</div>;
+                }} />
+            </Form>
+        }
+    }
+</Playground>
+
+## 监听错误信息
+
+常用于提交按钮，通过 `listenErrors` 实现，点击右下角查看代码。
+
+<Playground>
+    {
+        () => {
+            const core = new FormCore({
+                autoValidate: true,
+                validateConfig: { username: { required: true, message: '姓名必填' }}
+            });
+
+            window.core = core;
+
+            setTimeout(() => {
+                core.validate();
+            });
+
+            return <Form core={core}>
+                <FormItem label="姓名" name="username"><Input /></FormItem>
+                <FormItem listenErrors label="" render={(values, ctx) => {
+                    const error = ctx.getError();
+                    return <Button disabled={!error}>提交</Button>
+                }} />
+            </Form>
+        }
+    }
+</Playground>
+
+## JSX 属性
+
+| 属性名 | 作用 | 类型 | 默认值 |
+| ------ | ------ | ------ | ----- |
+| name | 表单控件的field | 字符串 | undefined |
+| status | 表单控件状态 | ENUM('edit', 'preview', 'disbaled') | 'edit' |
+| value | 表单值 | any | null |
+| onChange | 表单值变更时触发 | (value: {}) | noop |
+| flex | flex模式 | 布尔值 | false |
+| labelWdith | flex模式下label的宽度 | number | false |
+| full | layout激活下，组件是否占满control | 布尔值 | false |
+| inline | 行内模式 | 布尔值 | false |
+| inset | inset模式 | 布尔值 | false |
+| colon | label是否带 ':' | 布尔值 | true |
+| render | 自定义渲染 | (values, core) => JSX | undefined |
+| prefix | 前缀 | JSX | null |
+| suffix | 后缀 | JSX | null |
+| top | 顶部自定义渲染 | JSX | null |
+| help | 底部自定义渲染 | JSX | null |
+| errorRender | 错误信息自定义渲染 | (error) => JSX | null |

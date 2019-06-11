@@ -1,0 +1,96 @@
+---
+name: 4. AsyncHandler 钩子
+route: /repeater/async-handler
+menu: 4. Repeater 重复表单
+---
+
+import { Playground } from 'docz'
+import react from 'react';
+import Form, { FormItem, FormCore } from 'noform';
+import { Input, Radio, Switch, InputNumber, Checkbox } from 'nowrapper/lib/antd';
+import { TableRepeater, InlineRepeater, Selectify } from 'nowrapper/lib/antd/repeater';
+import 'antd/dist/antd.css';
+import 'noform/dist/index.css';
+import 'nowrapper/dist/antd/index.css';
+import 'nowrapper/dist/antd/repeater.css';
+
+# Repeater 钩子
+
+该配置允许 **Repeater** 在这些操作生效前决定最终生效的值： `add`, `update`, `save`, `remove`, `select`。
+
+用法如下：
+
+```jsx
+const asyncHandler = {
+    add: (values, core, index) => {},
+    update: (values, core, index) => {},
+    save: (values, core, index) => {},
+    remove: (values, core, index) => {},
+    select: (checked, value, values),
+    afterSetting: (event, repeaterContext) => {}
+};
+
+<Repeater asyncHandler={asyncHandler}>
+```
+
+> 其中`afterSetting` 是所有钩子执行后的钩子，event涵盖触发的数据集合，格式如下：
+
+```jsx
+{
+    type, // 钩子类型
+    index, // 哪一行发生变更
+    multiple, // 是否为
+    changeKeys
+}
+
+```
+
+> **asyncHandler** 支持返回 `promise`, 意味着你可以使用 `async` 来编写。
+
+## 返回格式
+
+有两种返回格式，**布尔值** 及 **对象值**
+
+## 返回布尔值 true | false
+
+以下实例会简单影响 `add` 操作成功或失败。
+
+```jsx
+add: async (values, core, index) => {
+    return true;
+}
+```
+
+## 返回对象值
+
+可以影响 `add`, `update`, `save`, `remove` 操作后生效的值是 **替换当前项** 或 **批量替换**
+
+### #1 替换当前项
+
+适用于某些数据写入数据库后可能会有更多字段返回的情况。
+
+```jsx
+add: async (values, core, index) => {
+    const storedValues = await someStoreAPI(values);
+    return {
+        success: true,
+        item: storedValues
+    }
+}
+```
+
+### #2 批量替换
+
+常见于某些分布式存储时，后台计算出来最新的列表与本地有差异的情况，如：多人编辑的列表等。
+
+```jsx
+add: async (values, core, index) => {
+    const storedValues = await someStoreAPI(values);
+    const list = await someListAPI();
+
+    return {
+        success: true,
+        values: list
+    }
+}
+```

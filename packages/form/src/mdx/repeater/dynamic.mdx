@@ -1,0 +1,65 @@
+---
+name: 5. 与外界联动
+route: /repeater/dynamic
+menu: 4. Repeater 重复表单
+---
+
+import { Playground } from 'docz'
+import react from 'react';
+import Form, { Item, FormItem, FormCore } from 'noform';
+import { Input, Radio, Switch, InputNumber, Checkbox } from 'nowrapper/lib/antd';
+import { TableRepeater, InlineRepeater, Selectify } from 'nowrapper/lib/antd/repeater';
+import 'antd/dist/antd.css';
+import 'noform/dist/index.css';
+import 'nowrapper/dist/antd/index.css';
+import 'nowrapper/dist/antd/repeater.css';
+
+# Repeater 与外界联动
+
+## 基于Item render实现与外界组件联动
+
+```jsx
+<Form>
+    <FormItem label="Hide Price" name="noPrice"><Checkbox /></FormItem>
+    <Item render={(values) => {
+        const { noPrice = false } = values;
+
+        return <FormItem name="products">
+            <TableRepeater>
+                <FormItem label="name" name="name"><Input /></FormItem>
+                { noPrice ? null : <FormItem label="price" name="price"><Input /></FormItem> }
+            </TableRepeater>
+        </FormItem>
+    }} />
+</Form>
+```
+
+<Playground>
+    {
+        () => {
+            const repeatValues = [
+                { name: 'watch', price: '$3000' },
+                { name: 'phone', price: '$600' }
+            ];
+
+            const core = new FormCore({
+                values: {
+                    products: repeatValues,
+                }
+            });
+            return <Form core={core}>
+                <FormItem label="hide price" name="noPrice"><Checkbox /></FormItem>
+                <Item render={(values) => {
+                    const { noPrice = false } = values;
+
+                    return <FormItem name="products">
+                        <TableRepeater>
+                            <FormItem label="name" name="name"><Input /></FormItem>
+                            { noPrice ? null : <FormItem label="price" name="price"><Input /></FormItem> }
+                        </TableRepeater>
+                    </FormItem>
+                }} />
+            </Form>
+        }
+    }
+</Playground>

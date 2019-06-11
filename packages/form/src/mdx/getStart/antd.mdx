@@ -1,0 +1,140 @@
+---
+name: 3. Ant-Design最佳实践
+route: /get-start/antd-best-practise
+menu: 1. Getting Started
+---
+
+# Ant-Design最佳实践
+
+<p>
+    本文会使用create-react-app作为脚手架，然后在创建的工程里使用 `NoForm` 和 `antd` 组件 的结合，快速的编写表单应用。
+    当然，你也可以直接clone <a href="https://github.com/quirkyshop/noform-start-app" target="_blank"> noform-start-app </a>
+    在这里面我们集成了各种实用的例子。
+</p>
+
+## 安装和初始化
+
+```bash
+$ npm install -g create-react-app
+```
+
+## 新建项目
+
+```bash
+npx create-react-app noform-app
+cd noform-app
+npm start
+```
+
+当然你也可以使用`yarn`，这里不赘述了。看到 Welcome to React 就表示已经创建成功了，接下来我们接入antd组件和NoForm。
+
+## 引入antd和NoForm
+
+```bash
+$ npm install --save antd noform nowrapper
+```
+
+## 配置优化
+
+`create-react-app`最酷的一点是，人们不需要任何配置就可以把React应用run起来，但是修改配置的时候又会很痛苦。 
+`react-app-rewire`d 就是解决这个痛点的社区方案。
+
+```bash
+$ npm install --save-dev react-app-rewired
+```
+
+## 加载less样式
+
+```bash
+$ npm install --save react-app-rewire-less
+```
+
+## 编写配置
+
+```jsx
+const { injectBabelPlugin } = require('react-app-rewired');
+const rewireLess = require('react-app-rewire-less');
+
+module.exports = function override(config, env) {
+  config = injectBabelPlugin(['import', { libraryName: 'antd', style: true }], config);
+  config = rewireLess.withLoaderOptions({
+    modifyVars: { "@primary-color": "#1DA57A" },
+    javascriptEnabled: true,
+  })(config, env);
+  return config;
+};
+```
+
+## 脚本更新
+
+配置撸完了，现在着手编写代码吧。
+
+1. 首先编写样式文件
+
+```less
+// src/App.less
+@import '~antd/dist/antd.less';
+@import '~noform/dist/index.css';
+@import '~nowrapper/dist/antd/index.css';
+```
+
+2. 编写主要代码
+
+```jsx
+// src/App.js
+import React, { Component } from 'react';
+import Form, { FormItem, FormCore, If } from 'noform';
+import { Input, Select } from 'nowrapper/lib/antd';
+import { Button } from 'antd';
+import './App.less';
+
+const dataSource = [
+    { label: 'optA', value: 'optA'},
+    { label: 'optB', value: 'optB'}
+];
+
+class App extends Component {
+    constructor(props, context) {
+        super(props, context);
+        window.core = this.core = new FormCore();
+    }
+
+    setStatus = (status) => {
+        this.core.setGlobalStatus(status);
+    }
+
+    render() {
+        return (
+            <Form core={this.core} layout={{ label: 8, control: 16 }}>
+                <FormItem label="input" name="input"><Input /></FormItem>
+                <FormItem label="select" name="select"><Select options={dataSource} /></FormItem>
+                <If when={(values, { globalStatus }) => {
+                    return !!values.select;
+                }}>
+                <FormItem label="bingo!"><span>🎉</span></FormItem>
+                </If>
+                <FormItem label="Global status">
+                    <div >
+                        <Button style={{ marginRight: 12 }} onClick={this.core.reset.bind(this.core)}>Clear</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'edit')}>Edit</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'preview')}>Preview</Button>
+                        <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'disabled')}>Disabled</Button>
+                    </div>
+                </FormItem>
+            </Form>
+        );
+    }
+}
+
+export default App;
+```
+
+## 重新启动
+
+```bash
+$ npm start
+```
+
+## Wow
+
+当你能够顺利切换状态的时候，恭喜你！已经完成了最佳实践的教程，现在可以继续查看其它文档。

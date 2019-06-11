@@ -1,0 +1,40 @@
+---
+name: 1. 概述
+route: /
+menu: 1. Getting Started
+---
+
+# 概述
+
+* NoForm 将表单操作到抽象到核心, **操作核心相当于操作表单**，从此数据(data)的管理和视图(view)分离开来，权责分明。
+* 通过内置的**状态管理方案**，能够快速切换同一表单的不同状态，新建和详情不再需要维护多份代码。
+* 通过定制**组件接入标准**，方便接入社区优秀的组件库，减少开发者重复劳动的时间。
+
+## 核心抽离
+
+* 核心是表单操作的抽象，涵盖 `值values`, `状态status`, `属性props`, `错误errors` 等方面。
+* 表单UI只是简单透传核心的数据，操作核心即可完成UI的渲染。
+
+<div style={{ textAlign: 'center' }}>
+    <img src="https://img.alicdn.com/tfs/TB1xYPobBKw3KVjSZTEXXcuRpXa-277-260.png" width="200px" />
+</div>
+
+## 组件标准
+
+* 编写大量组件是痛苦的，我们应该减少重复开发，通过定制接入组件标准，我们可以拥抱社区优秀的组件。
+* NoForm内置的wrapper涵盖 `fusion-next` 和 `antd`的表单组件，标准化`value/onChange` 以及`状态管理`
+
+<div style={{ textAlign: 'center' }}>
+    <img src="https://img.alicdn.com/tfs/TB1sHPobBKw3KVjSZTEXXcuRpXa-265-244.png" width="200px" />
+</div>
+
+## 状态管理
+
+* 基于状态管理方案，能够自由操作表单各个部分的状态显示。
+* 通过切换全局状态还能够达到代码复用的效果，写一份代码，相当于写新建、编辑、预览的代码。
+
+<div style={{ textAlign: 'center' }}>
+    <img src="https://img.alicdn.com/tfs/TB144YlbBOD3KVjSZFFXXcn9pXa-684-323.png" width="500px" />
+</div>
+
+
