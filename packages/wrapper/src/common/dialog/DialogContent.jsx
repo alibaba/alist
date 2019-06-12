@@ -5,9 +5,17 @@ class DialogContent extends React.Component {
     constructor(props) {
         super(props);
 
+        const { task } = props;
         this.state = {
             core: null,
+            loading: typeof task === 'function',
+            success: false,
+            data: null,
         };
+    }
+
+    componentDidMount = async () => {
+        await this.runTask();
     }
 
     handleOnMount = (core) => {
@@ -18,19 +26,48 @@ class DialogContent extends React.Component {
                 core,
             });
         }
-        
+    }
+
+    runTask = async () => {
+        const { task } = this.props;
+        if (typeof task === 'function') {
+            let success = false;
+            let data = null;
+
+            try {
+                data = await task();
+                success = true;
+            } catch (e) {
+                success = false;
+            }
+
+            this.setState({
+                loading: false,
+                success,
+                data,
+            });
+        }
     }
 
     render() {
-        const { core } = this.state;
-        const { children, footer } = this.props;
+        const { core, loading, success, data } = this.state;
+        const { content, footer } = this.props;
+
+        let formInstance = null;
+        const payload = { loading, success, data, refresh: this.runTask };
+        if (typeof content === 'function') {
+            formInstance = content(payload);
+        } else {
+            formInstance = content;
+        }
 
         return <Context.Provider value={{
             onDialogMount: this.handleOnMount,
-            dialogFooter: footer
+            dialogFooter: footer,
+            taskPayload: payload,
         }}>
-            {children}
-            {core ?  null : footer()}
+            {formInstance}
+            {core ?  null : footer(payload)}
         </Context.Provider>
     }
 }

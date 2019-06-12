@@ -45,7 +45,7 @@ class DialogForm {
     }
 
     renderFooter = (Button, opts) => {
-        const { layout } = opts || {};
+        const { layout, loading = false } = opts || {};
         const { label } = layout || {};
         const { locale = 'en', footer, btnLoadingPropsName, footerAlign } = this.options;
         const textMap = LocaleMap[locale];
@@ -71,9 +71,9 @@ class DialogForm {
                 return ctx.globalStatus !== 'preview';
             }}>
                 <div key="footer" className={`noform-dialog-custom-btns ${alignCls}`} {...styleProps}>
-                    <ActionButton key="align-footer-ok" btnLoadingPropsName={btnLoadingPropsName} btnOrigin={Button} type="primary" onClick={this.handleOk}>{okText}</ActionButton>
+                    <ActionButton disabled={loading} key="align-footer-ok" btnLoadingPropsName={btnLoadingPropsName} btnOrigin={Button} type="primary" onClick={this.handleOk}>{okText}</ActionButton>
                     { hasCancel ? <span key="align-footer-sep" style={{ marginRight: '12px' }} /> : null }
-                    { hasCancel ? <ActionButton key="align-footer-cancel" btnLoadingPropsName={btnLoadingPropsName} btnOrigin={Button} onClick={this.handleCancel}>{cancelText}</ActionButton> : null }
+                    { hasCancel ? <ActionButton disabled={loading} key="align-footer-cancel" btnLoadingPropsName={btnLoadingPropsName} btnOrigin={Button} onClick={this.handleCancel}>{cancelText}</ActionButton> : null }
                 </div>
             </If>
         }
@@ -82,22 +82,13 @@ class DialogForm {
     }
 
     renderContent = (Button) => {
-        const { content } = this.options;
-
-        let formInstance = null;
-        if (typeof content === 'function') {
-            formInstance = content();
-        } else {
-            formInstance = content;
-        }
+        const { content, task } = this.options;
 
         const onDialogMount = (core) => {
             this.dialogCore = core;
         };
         const footer = this.renderFooter.bind(this, Button);
-        return <DialogContent footer={footer} onMount={onDialogMount}>
-            {formInstance}
-        </DialogContent>
+        return <DialogContent content={content} task={task} footer={footer} onMount={onDialogMount} />
     }
 }
 

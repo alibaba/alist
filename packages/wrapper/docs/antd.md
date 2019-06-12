@@ -13,7 +13,7 @@ import Form, { Item, FormItem, FormCore } from 'noform';
 import { Input, Select, Checkbox, Radio, Switch, Slider, DatePicker, TimePicker,
     Rate, Cascader, TreeSelect, Upload, Button, InputNumber, AutoComplete, Dialog } from '../src/antd/index';
 import { TableRepeater } from '../src/antd/repeater';
-import { Alert, Icon, message, Row, Col } from 'antd';
+import { Spin, Alert, Icon, message, Row, Col } from 'antd';
 import moment from 'moment';
 import './antd.scss';
 
@@ -118,7 +118,7 @@ class App extends React.Component {
                 <Button>复制</Button>
             </div>,
             locale: 'zh',
-            content: <Form core={core} layout={{ label: 4, control: 20 }}>
+            content: <Form core={core} layout={{ label: 6, control: 18 }}>
                 <div className="list-dialog-hint" >地址维护</div>
                 <FormItem label="province" name="province">
                     <Select options={[{ label: '广东省', value: '广东省' }]} />
@@ -127,17 +127,17 @@ class App extends React.Component {
                     <Select options={[]} />
                 </FormItem>
             </Form>,
-            footer: (hide, { ok, cancel, ctx }) => {
-                const getValues = () => {
-                    console.log('gv:', ctx.getValues());
-                };
+            // footer: (hide, { ok, cancel, ctx }) => {
+            //     const getValues = () => {
+            //         console.log('gv:', ctx.getValues());
+            //     };
 
-                return <div>
-                    <Button onClick={getValues}>getValues</Button>
-                    <Button onClick={ok}>ok</Button>
-                    <Button onClick={cancel}>cancel</Button>
-                </div>
-            },
+            //     return <div>
+            //         <Button onClick={getValues}>getValues</Button>
+            //         <Button onClick={ok}>ok</Button>
+            //         <Button onClick={cancel}>cancel</Button>
+            //     </div>
+            // },
             onOk: async (values, hide) => {
                 console.log('values', values);
                 await sleep(1000);
@@ -150,9 +150,49 @@ class App extends React.Component {
     }
 
     render() {
+        const someTask = () => {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve('hello world');
+                }, 500);
+            });
+        };
         return (
             <Form core={this.core} layout={{ label: 8, control: 16 }}>
                 <div className="example-title">Antd Examples</div>
+                <div>
+                    <Button onClick={() => {
+                        Dialog.show({
+                            title: 'hello',
+                            content: ({ loading, success, data, refresh }) => {
+                                if (loading) {
+                                    return <Spin>loading...</Spin>
+                                }
+
+                                if (!success) {
+                                    return <div>
+                                        请求失败，请重试
+                                        <Button onClick={refresh}>重试</Button>
+                                    </div>
+                                } else {
+                                    return <div>
+                                        请求成功{data}
+                                    </div>
+                                }
+                            },
+                            task: () => {
+                                return new Promise(async (resolve, reject) => {
+                                    try {
+                                        const result = await someTask();
+                                        resolve(result);
+                                    } catch (e) {
+                                        reject();
+                                    }
+                                });
+                            }
+                        });
+                    }}>dialog</Button>
+                </div>
                 <Alert style={{ marginBottom: 12 }} message={<div>
                     <div>open console.log for more details of values</div>
                 </div>} type="info" showIcon />

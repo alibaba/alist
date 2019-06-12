@@ -193,9 +193,9 @@ class Form extends Component {
     }
 
     renderFooter = () => {
-        const { layout } = this.props;
+        const { layout, taskPayload } = this.props;
         const { dialogFooter } = this.props;
-        return dialogFooter({ layout });
+        return dialogFooter({ layout, ...(taskPayload || {}) });
     }
 
     render() {
