@@ -63,44 +63,42 @@ const customRender = ({ search, clear, builtin, DynamicBuiltin }) => {
 }
 
 class NoList extends React.Component {
-  renderTable = (key) => {
-    return <Any render={(grid) => {
-      const multipleData = grid.getMultipleData();              
-      const dataSource = (multipleData || {})[key] || [];
-      return <div>
-        <h3>{key}</h3>
-        <Table dataSource={dataSource}>
-          <Table.Column title="id" dataIndex="id" />
-          <Table.Column title="username" dataIndex="username" />
-          <Table.Column title="age" dataIndex="age" />
-          <Table.Column title="gender" dataIndex="gender" />
-          <Table.Column title="country" dataIndex="country" />
-          <Table.Column title="registeredDate" dataIndex="registeredDate" />
-          <Table.Column title="operation" render={renderOperation} />
-        </Table>
-        <Pagination current={1} pageSize={10} total={50} onChange={(current) => {
-          grid.setPageData({ current });
-        }} />
-      </div>
-    }} />
-  }
+  onMount = (grid) => {
+        this.grid = grid;
+    }
 
-  render() {
-    return (
-      <div style={{ margin: '24px' }}>
-        <List url="/docs/multiple-mock.json" onError={handleError} onMount={onMount} multiple>
-            <Filter>
-              <Filter.Item label="username" name="username"><Input placeholder="placeholder" /></Filter.Item>
-              <Filter.Item label="age" name="age"><Input /></Filter.Item>
-              <Filter.Item label="date" name="date"><DatePicker placeholder="placeholder"/></Filter.Item>
-            </Filter>
-            {this.renderTable('section1')}
-            {this.renderTable('section2')}
-            {this.renderTable('section3')}
-        </List>
-      </div>
-    );
-  }
+    formatAfter = (data) => {
+        this.grid.setExtraData(data);
+        return {
+          dataList: []
+        }
+    }
+
+    renderActionBtn = (grid) => {
+        const extraData = grid.getExtraData();
+        if (!extraData) return null;
+
+        const { totalPage } = extraData;
+        if (totalPage) {
+          return <div>{totalPage}</div>
+        } else {
+          return <div>empty</div>
+        }
+    }
+
+    render() {
+        return (
+            <div className="app">
+                <List url="/docs/mock.json" onMount={this.onMount} formatAfter={this.formatAfter}>
+                    <Any render={this.renderActionBtn} />
+                    <Table>
+                        <Table.Column title="模板名称" dataIndex="username" />
+                    </Table>
+                    <Pagination />
+                </List>
+            </div>
+        );
+    }
 }
 
 ReactDOM.render(<NoList />, mountNode);

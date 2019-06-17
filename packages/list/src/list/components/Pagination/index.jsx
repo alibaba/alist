@@ -31,10 +31,17 @@ class InnerPg extends React.Component {
             this.grid = grid;
         }
 
-        const { children } = this.props;
+        const { children, ...others } = this.props;
+
+        if (React.isValidElement(children) && (this.props.toal || this.props.pageSize)) {
+            const element = React.cloneElement(children, others);
+            return <div className="pagination-wrapper">{element}</div>;
+        }
+
         const pageData = core.getPageData();
         const { total, pageSize } = pageData;
         const totalPage = Math.ceil(total / pageSize);
+
         if (total === 0 || totalPage === 1) {
             return null;
         }
@@ -42,9 +49,8 @@ class InnerPg extends React.Component {
         const otherProps = { ...this.props, ...pageData, onChange: this.handlePageChange };
         delete otherProps.children;
 
-        let element = null;
         if (React.isValidElement(children)) {
-            element = React.cloneElement(children, otherProps);
+            const element = React.cloneElement(children, otherProps);
             return <div className="pagination-wrapper">{element}</div>;
         }
         return null;

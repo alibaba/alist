@@ -49,6 +49,7 @@ export default class GridCore {
         if ('url' in props && url) this.mode = 'url'; // priority: middle(10)
         if ('query' in props && query) this.mode = 'query'; // priority: high(100)
 
+        this.extraData = null;
         this.autoLoad = autoLoad; // 初始直接发起请求
         this.dataSource = dataSource || []; // 列表数据
         this.url = url; // 请求url
@@ -168,7 +169,7 @@ export default class GridCore {
             this.onError(e);
         }
 
-        if (this.formatAfter) result = this.formatAfter(result); // 后置格式化
+        if (this.formatAfter && this.formatAfter(result)) result = this.formatAfter(result); // 后置格式化
         this.isLoading = false;
 
         // 数据更新
@@ -225,6 +226,14 @@ export default class GridCore {
 
     resetFilterData = () => { // 重置搜索数据
         this.filterCore.reset();
+    }
+
+    setExtraData = (extraData) => {
+        this.extraData = extraData;
+    }
+
+    getExtraData = () => {
+        return this.extraData;
     }
 
     setPageData = (props) => { // merge型设置分页数据
