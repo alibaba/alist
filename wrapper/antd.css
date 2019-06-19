@@ -1,0 +1,239 @@
+.dialog-form-wrapper .ant-confirm-btns,
+.dialog-form-wrapper .ant-modal-confirm-btns {
+  display: none; }
+
+.dialog-form-wrapper .ant-custom-btns {
+  margin-top: 24px; }
+
+.dialog-form-wrapper .ant-custom-btns.noform-dialog-btns-align-left {
+  float: left; }
+
+.dialog-form-wrapper .ant-custom-btns.noform-dialog-btns-align-right {
+  float: right; }
+
+.no-form-item-content-elem > .ant-switch {
+  min-width: 44px;
+  width: auto; }
+
+.no-form-hoz .no-form-item .no-form-item-content .no-form-item-content-elem > .ant-switch {
+  min-width: 44px;
+  width: auto; }
+
+.no-form-item-content-elem > .ant-btn {
+  min-width: auto; }
+
+.dialog-form-wrapper .ant-confirm-btns {
+  display: none; }
+
+.dialog-form-wrapper .ant-custom-btns {
+  margin-top: 24px;
+  float: right; }
+
+.ant-slider {
+  padding: 0; }
+
+.no-form-item-inset .ant-input,
+.no-form-item-inset .ant-input:focus,
+.no-form-item-inset .ant-cascader-input,
+.no-form-item-inset .ant-time-picker-input,
+.no-form-item-inset .ant-select-selection,
+.no-form-item-inset .ant-input-number,
+.no-form-item-inset .ant-mention-wrapper.ant-mention-active:not(.disabled) .ant-mention-editor,
+.no-form-item-inset .ant-select-search__field,
+.no-form-item-inset .ant-select-focused .ant-select-selection,
+.no-form-item-inset .ant-select-selection:focus,
+.no-form-item-inset .public-DraftEditor-content:focus,
+.no-form-item-inset .ant-mention-editor,
+.no-form-item-inset .ant-mention-editor-wrapper,
+.no-form-item-inset .DraftEditor-root,
+.no-form-item-inset .DraftEditor-editorContainer,
+.no-form-item-inset .ant-select-selection:active {
+  border: none;
+  outline: none;
+  box-shadow: none; }
+
+.no-form-item-inset .ant-radio-group,
+.no-form-item-inset .ant-checkbox-group {
+  width: auto; }
+
+.multi-value-item-wrapper .multi-value-item {
+  margin-right: 8px; }
+
+.ant-checkbox-group {
+  display: inline-block;
+  width: 400px;
+  line-height: 28px;
+  white-space: nowrap; }
+
+.ant-radio-group {
+  display: inline-block;
+  width: 400px;
+  line-height: 28px;
+  white-space: nowrap; }
+
+.multi-value-item {
+  white-space: nowrap;
+  color: rgba(0, 0, 0, 0.6); }
+
+.ant-range {
+  white-space: nowrap;
+  width: 300px; }
+
+.ant-upload {
+  min-width: 224px; }
+
+.ant-preview-upload {
+  display: inline-block; }
+  .ant-preview-upload .ant-upload-select {
+    display: none; }
+  .ant-preview-upload .anticon.anticon-cross {
+    display: none; }
+  .ant-preview-upload .ant-upload-list-item .anticon.anticon-delete,
+  .ant-preview-upload .ant-upload-list-item .anticon.anticon-close,
+  .ant-preview-upload .ant-upload-list-item .anticon.anticon-cross {
+    display: none; }
+
+.no-form-item-content .ant-rating,
+.no-form-item-content .ant-checkbox-wrapper,
+.no-form-item-content .ant-radio-wrapper {
+  line-height: 28px; }
+
+.ant-preview-slider.ant-slider-disabled {
+  cursor: auto; }
+  .ant-preview-slider.ant-slider-disabled .ant-slider-handle {
+    cursor: auto; }
+
+.ant-preview-select.ant-select-auto-complete,
+.ant-preview-datepicker,
+.ant-preview-select.ant-select,
+.ant-preview-select.ant-cascader-picker {
+  display: inline-flex;
+  border: none;
+  background: transparent;
+  cursor: text;
+  padding: 0; }
+  .ant-preview-select.ant-select-auto-complete .ant-select-search__field,
+  .ant-preview-select.ant-select-auto-complete .ant-calendar-picker-input,
+  .ant-preview-select.ant-select-auto-complete .ant-time-picker-input,
+  .ant-preview-select.ant-select-auto-complete .ant-cascader-input,
+  .ant-preview-select.ant-select-auto-complete .ant-time-picker-input,
+  .ant-preview-select.ant-select-auto-complete .ant-select-selection,
+  .ant-preview-datepicker .ant-select-search__field,
+  .ant-preview-datepicker .ant-calendar-picker-input,
+  .ant-preview-datepicker .ant-time-picker-input,
+  .ant-preview-datepicker .ant-cascader-input,
+  .ant-preview-datepicker .ant-time-picker-input,
+  .ant-preview-datepicker .ant-select-selection,
+  .ant-preview-select.ant-select .ant-select-search__field,
+  .ant-preview-select.ant-select .ant-calendar-picker-input,
+  .ant-preview-select.ant-select .ant-time-picker-input,
+  .ant-preview-select.ant-select .ant-cascader-input,
+  .ant-preview-select.ant-select .ant-time-picker-input,
+  .ant-preview-select.ant-select .ant-select-selection,
+  .ant-preview-select.ant-cascader-picker .ant-select-search__field,
+  .ant-preview-select.ant-cascader-picker .ant-calendar-picker-input,
+  .ant-preview-select.ant-cascader-picker .ant-time-picker-input,
+  .ant-preview-select.ant-cascader-picker .ant-cascader-input,
+  .ant-preview-select.ant-cascader-picker .ant-time-picker-input,
+  .ant-preview-select.ant-cascader-picker .ant-select-selection {
+    background: transparent;
+    border: none;
+    cursor: text; }
+    .ant-preview-select.ant-select-auto-complete .ant-select-search__field .ant-select-selection__rendered,
+    .ant-preview-select.ant-select-auto-complete .ant-calendar-picker-input .ant-select-selection__rendered,
+    .ant-preview-select.ant-select-auto-complete .ant-time-picker-input .ant-select-selection__rendered,
+    .ant-preview-select.ant-select-auto-complete .ant-cascader-input .ant-select-selection__rendered,
+    .ant-preview-select.ant-select-auto-complete .ant-time-picker-input .ant-select-selection__rendered,
+    .ant-preview-select.ant-select-auto-complete .ant-select-selection .ant-select-selection__rendered,
+    .ant-preview-datepicker .ant-select-search__field .ant-select-selection__rendered,
+    .ant-preview-datepicker .ant-calendar-picker-input .ant-select-selection__rendered,
+    .ant-preview-datepicker .ant-time-picker-input .ant-select-selection__rendered,
+    .ant-preview-datepicker .ant-cascader-input .ant-select-selection__rendered,
+    .ant-preview-datepicker .ant-time-picker-input .ant-select-selection__rendered,
+    .ant-preview-datepicker .ant-select-selection .ant-select-selection__rendered,
+    .ant-preview-select.ant-select .ant-select-search__field .ant-select-selection__rendered,
+    .ant-preview-select.ant-select .ant-calendar-picker-input .ant-select-selection__rendered,
+    .ant-preview-select.ant-select .ant-time-picker-input .ant-select-selection__rendered,
+    .ant-preview-select.ant-select .ant-cascader-input .ant-select-selection__rendered,
+    .ant-preview-select.ant-select .ant-time-picker-input .ant-select-selection__rendered,
+    .ant-preview-select.ant-select .ant-select-selection .ant-select-selection__rendered,
+    .ant-preview-select.ant-cascader-picker .ant-select-search__field .ant-select-selection__rendered,
+    .ant-preview-select.ant-cascader-picker .ant-calendar-picker-input .ant-select-selection__rendered,
+    .ant-preview-select.ant-cascader-picker .ant-time-picker-input .ant-select-selection__rendered,
+    .ant-preview-select.ant-cascader-picker .ant-cascader-input .ant-select-selection__rendered,
+    .ant-preview-select.ant-cascader-picker .ant-time-picker-input .ant-select-selection__rendered,
+    .ant-preview-select.ant-cascader-picker .ant-select-selection .ant-select-selection__rendered {
+      margin: 0; }
+  .ant-preview-select.ant-select-auto-complete .ant-select-search__field,
+  .ant-preview-select.ant-select-auto-complete .ant-select-search__field__mirror,
+  .ant-preview-select.ant-select-auto-complete .ant-calendar-picker-input,
+  .ant-preview-select.ant-select-auto-complete .ant-time-picker-input,
+  .ant-preview-select.ant-select-auto-complete .ant-cascader-picker-label,
+  .ant-preview-select.ant-select-auto-complete .ant-select-selection-selected-value,
+  .ant-preview-datepicker .ant-select-search__field,
+  .ant-preview-datepicker .ant-select-search__field__mirror,
+  .ant-preview-datepicker .ant-calendar-picker-input,
+  .ant-preview-datepicker .ant-time-picker-input,
+  .ant-preview-datepicker .ant-cascader-picker-label,
+  .ant-preview-datepicker .ant-select-selection-selected-value,
+  .ant-preview-select.ant-select .ant-select-search__field,
+  .ant-preview-select.ant-select .ant-select-search__field__mirror,
+  .ant-preview-select.ant-select .ant-calendar-picker-input,
+  .ant-preview-select.ant-select .ant-time-picker-input,
+  .ant-preview-select.ant-select .ant-cascader-picker-label,
+  .ant-preview-select.ant-select .ant-select-selection-selected-value,
+  .ant-preview-select.ant-cascader-picker .ant-select-search__field,
+  .ant-preview-select.ant-cascader-picker .ant-select-search__field__mirror,
+  .ant-preview-select.ant-cascader-picker .ant-calendar-picker-input,
+  .ant-preview-select.ant-cascader-picker .ant-time-picker-input,
+  .ant-preview-select.ant-cascader-picker .ant-cascader-picker-label,
+  .ant-preview-select.ant-cascader-picker .ant-select-selection-selected-value {
+    color: rgba(0, 0, 0, 0.6);
+    padding: 0;
+    height: 28px; }
+  .ant-preview-select.ant-select-auto-complete .ant-calendar-picker-icon,
+  .ant-preview-select.ant-select-auto-complete .ant-time-picker-icon,
+  .ant-preview-select.ant-select-auto-complete .ant-cascader-picker-arrow,
+  .ant-preview-select.ant-select-auto-complete .ant-select-arrow,
+  .ant-preview-datepicker .ant-calendar-picker-icon,
+  .ant-preview-datepicker .ant-time-picker-icon,
+  .ant-preview-datepicker .ant-cascader-picker-arrow,
+  .ant-preview-datepicker .ant-select-arrow,
+  .ant-preview-select.ant-select .ant-calendar-picker-icon,
+  .ant-preview-select.ant-select .ant-time-picker-icon,
+  .ant-preview-select.ant-select .ant-cascader-picker-arrow,
+  .ant-preview-select.ant-select .ant-select-arrow,
+  .ant-preview-select.ant-cascader-picker .ant-calendar-picker-icon,
+  .ant-preview-select.ant-cascader-picker .ant-time-picker-icon,
+  .ant-preview-select.ant-cascader-picker .ant-cascader-picker-arrow,
+  .ant-preview-select.ant-cascader-picker .ant-select-arrow {
+    display: none; }
+
+.ant-upload-disabled + .ant-upload-list .anticon.anticon-close {
+  display: none; }
+
+.ant-preview-datepicker .ant-input.disabled {
+  background: transparent;
+  border: none; }
+  .ant-preview-datepicker .ant-input.disabled input:disabled {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: rgba(0, 0, 0, 0.6);
+    cursor: text;
+    height: 28px; }
+
+.ant-preview-datepicker .ant-calendar-range-picker-separator {
+  margin: 0 8px; }
+
+.ant-preview-datepicker .ant-calendar-range-picker-input[disabled],
+.ant-preview-datepicker .ant-time-picker-input[disabled] {
+  background: transparent;
+  border: none;
+  color: rgba(0, 0, 0, 0.6);
+  padding: 0;
+  cursor: text;
+  height: 28px; }
+
+.ant-preview-datepicker .ant-icon {
+  display: none; }

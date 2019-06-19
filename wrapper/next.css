@@ -1,0 +1,89 @@
+.next-checkbox-group {
+  display: inline-block;
+  width: 400px;
+  line-height: 28px;
+  white-space: nowrap; }
+
+.next-radio-group {
+  display: inline-block;
+  width: 400px;
+  line-height: 28px;
+  white-space: nowrap; }
+
+.multi-value-item {
+  white-space: nowrap; }
+
+.next-range {
+  white-space: nowrap;
+  width: 300px; }
+
+.no-form-item-inset .next-select,
+.no-form-item-inset .next-input,
+.no-form-item-inset .next-input:focus {
+  border: none;
+  outline: none;
+  box-shadow: none; }
+
+.no-form-item-inset .next-radio-group,
+.no-form-item-inset .next-checkbox-group,
+.no-form-item-inset .next-number-picker-input {
+  width: auto; }
+
+.no-form-hoz .no-form-item .no-form-item-content .no-form-item-content-elem > .next-switch {
+  min-width: 44px;
+  width: auto; }
+
+.no-form-item-content-elem > .next-range,
+.no-form-item-content-elem > .next-switch {
+  min-width: 44px;
+  width: auto;
+  line-height: 28px;
+  height: 28px; }
+
+.no-form-item-content-elem > .next-upload .next-upload-list-item {
+  width: 100%; }
+
+.no-form-item-content-elem > label {
+  line-height: 28px; }
+
+.next-upload {
+  min-width: 224px; }
+
+.next-rating {
+  line-height: 28px; }
+
+.next-preview-upload .next-upload-select {
+  display: none; }
+
+.next-preview-select.next-select {
+  display: inline-flex;
+  border: none;
+  background: transparent;
+  cursor: text;
+  padding: 0; }
+  .next-preview-select.next-select .next-select-inner {
+    color: #000;
+    padding: 0; }
+  .next-preview-select.next-select .next-icon {
+    display: none; }
+
+.next-preview-datepicker .next-input.disabled {
+  background: transparent;
+  border: none; }
+  .next-preview-datepicker .next-input.disabled input:disabled {
+    background: transparent;
+    border: none;
+    color: #000;
+    cursor: text; }
+
+.next-preview-datepicker .next-icon {
+  display: none; }
+
+.next-preview-select .next-select-placeholder {
+  display: none; }
+
+.no-form-item-has-error > .no-form-item-control > .no-form-item-content > .no-form-item-content-elem > .next-select .next-input,
+.no-form-item-has-error > .no-form-item-control > .no-form-item-content > .no-form-item-content-elem > .next-input-group .next-input-group-text,
+.no-form-item-has-error > .no-form-item-control > .no-form-item-content > .no-form-item-content-elem > .next-input-group .next-input,
+.no-form-item-has-error > .no-form-item-control > .no-form-item-content > .no-form-item-content-elem > .next-input {
+  border-color: red; }
