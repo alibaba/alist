@@ -1,8 +1,8 @@
 {
   "name": "docz-noform",
   "scripts": {
-    "doc": "umi-lib doc dev -p 9001 --websocketPort=8738",
-    "doc-build": "umi-lib doc build",
+    "start": "umi-lib doc dev -p 9001 --websocketPort=8738",
+    "build": "umi-lib doc build",
     "deploy": "umi-lib doc deploy"
   },
   "dependencies": {
