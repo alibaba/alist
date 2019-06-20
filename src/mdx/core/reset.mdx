@@ -1,0 +1,127 @@
+---
+name: 6.重置值
+route: /core/reset
+menu: 2. FormCore 表单核心
+---
+
+import { Playground } from 'docz'
+import react from 'react';
+import { Input, Radio, Button } from 'nowrapper/lib/antd';
+import Form, { FormItem, FormCore } from 'noform';
+import 'antd/dist/antd.css';
+import 'noform/dist/index.css';
+import 'nowrapper/dist/antd/index.css';
+
+# Reset
+
+通过以下方法可以处理表单组件的赋值和取值：
+
+* **reset**(fieldNames: array[string]), 接受组件name数组，如不传入则为清空全部组件
+
+## 清空所有值
+
+通过 **core.reset()** 可以清空所有值为null
+
+<Playground>
+    {
+        () => {
+            const core = new FormCore(); // 初始化核心
+            return <Form core={core}>
+                <FormItem label="reset" render={() => {
+                    return <div>
+                        <Button onClick={() => {
+                            core.setValues({ text1: 'text1', text2: 'text2' });
+                        }}>恢复</Button>
+
+                        <Button style={{ marginLeft: '8px' }} onClick={() => {
+                            core.reset();
+                        }}>清空</Button>
+                    </div>
+                }} />
+                <FormItem label="字段1" name="text1" defaultValue="text1">
+                    <Input />
+                </FormItem>
+
+                <FormItem label="字段2" name="text2" defaultValue="text2">
+                    <Input />
+                </FormItem>
+            </Form>
+        }
+    }
+</Playground>
+
+## 批量清空
+
+通过 **core.reset(['text1', 'text2'])** 可以控制清空指定表单组件，以下的例子会清空字段1和2，保留3
+
+<Playground>
+    {
+        () => {
+            const core = new FormCore(); // 初始化核心
+            return <Form core={core}>
+                <FormItem label="reset" render={() => {
+                    return <div>
+                        <Button onClick={() => {
+                            core.setValues({ text1: 'text1', text2: 'text2' });
+                        }}>恢复</Button>
+
+                        <Button style={{ marginLeft: '8px' }} onClick={() => {
+                            core.reset(['text1', 'text2']);
+                        }}>清空</Button>
+                    </div>
+                }} />
+                <FormItem label="字段1" name="text1" defaultValue="text1">
+                    <Input />
+                </FormItem>
+
+                <FormItem label="字段2" name="text2" defaultValue="text2">
+                    <Input />
+                </FormItem>
+
+                <FormItem label="字段3" name="text3" defaultValue="text3">
+                    <Input />
+                </FormItem>
+            </Form>
+        }
+    }
+</Playground>
+
+## 清空到默认值
+
+需要核心在初始化时在构建函数设置 **initValues** , **reset** 会根据这个值作代替默认空值`null`
+
+```jsx
+const core = new FormCore({
+  initValues: { text1: 'initValues' }
+});
+```
+
+<Playground>
+    {
+        () => {
+            const core = new FormCore({
+              initValues: { text1: 'initValues' } // 设置原始值
+            });
+            return <Form core={core}>
+                <FormItem label="reset" render={() => {
+                    return <div>
+                        <Button onClick={() => {
+                            core.setValues({ text1: 'text1', text2: 'text2' });
+                        }}>赋值</Button>
+
+                        <Button style={{ marginLeft: '8px' }} onClick={() => {
+                            core.reset();
+                        }}>清空</Button>
+                    </div>
+                }} />
+                <FormItem label="字段1" name="text1" defaultValue="text1">
+                    <Input />
+                </FormItem>
+
+                <FormItem label="字段2" name="text2" defaultValue="text2">
+                    <Input />
+                </FormItem>
+            </Form>
+        }
+    }
+</Playground>

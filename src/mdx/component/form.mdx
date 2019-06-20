@@ -1,0 +1,152 @@
+---
+name: 1. Form
+route: /component/form
+menu: 3. 表单组件
+---
+
+import { Playground } from 'docz'
+import react from 'react';
+import { InputNumber, Input, Checkbox, Radio, Button } from 'nowrapper/lib/antd';
+import Form, { FormItem, Item, FormCore, If } from 'noform';
+import 'antd/dist/antd.css';
+import 'noform/dist/index.css';
+import 'nowrapper/dist/antd/index.css';
+
+# Form
+
+## Form是什么
+
+**Form** 的语义是 **表单组件容器**。实现上负责关联 **FormCore** ，代理核心对表单组件一切事件的分发和收集。
+
+<img width="460" src="https://img.alicdn.com/tfs/TB1PgbtaaWs3KVjSZFxXXaWUXXa-884-576.png" alt="form链接core" />
+
+## 引入方式
+
+```jsx
+import Form, { FormItem, Item, FormCore, If } from 'noform';
+```
+
+## 如何使用
+
+**Form** 的主要作用就是关联**formCore**示例，并且和**FormItem**或**Item**通信，示意伪代码如下：
+
+```jsx
+const core = new FormCore();
+<Form core={core}>
+    <FormItem label="username" name="username">
+        <Input />
+    </FormItem>
+</Form>
+```
+
+## 布局
+
+**Form**提供以下属性供布局使用，
+
+* direction(总体布局方式)
+* layout(**vertical**布局下的栅格布局)
+* inline(是否行内布局)
+* defaultMinWidth(表单组件默认最小宽度200)
+* colon(label后是否带 **：**)
+* full(是否占满宽度)
+* inset(是否inset风格布局)
+
+详细代码可以点击DEMO右下角查看
+
+<Playground>
+    {
+        () => {
+            const propKeys = ['inline', 'defaultMinWidth', 'colon', 'full', 'inset'];
+            const core = new FormCore({
+                onChange: (fireKeys, values, ctx) => {
+                    const { direction, props } = values;
+                    if (fireKeys.includes('direction')) {
+                        core.setItemProps('form', { direction });
+                    } else if (fireKeys.includes('props')) { // 选中为true，没选为false
+                        const prop = {};                        
+                        propKeys.forEach(k => prop[k] = props.includes(k));
+                        core.setItemProps('form', prop);
+                    } else if (fireKeys.includes('layout-label')) {
+                        core.setItemValue('layout-control', 24 - values['layout-label']);
+                        core.setItemProps('form', { layout: { label: values['layout-label'], control: 24 - values['layout-label'] } });
+                    } else if (fireKeys.includes('layout-control')) {
+                        core.setItemValue('layout-label', 24 - values['layout-control']);
+                        core.setItemProps('form', { layout: { label: 24- values['layout-control'], control: values['layout-control'] } });
+                    }
+                }
+            });
+
+            return <Form core={core}>
+                <div style={{ color: '#999' }}>点击一次改变属性，再点一次清空改变</div>
+                <FormItem label="direction" name="direction" defaultValue="vertical">
+                    <Radio.Group>
+                        <Radio.Button value="vertical">vertical</Radio.Button>
+                        <Radio.Button value="horizontal">horizontal</Radio.Button>
+                        <Radio.Button value="vertical-top">vertical-top</Radio.Button>
+                    </Radio.Group>
+                </FormItem>
+
+                <FormItem label="props" name="props" defaultValue={['colon']}>
+                    <Checkbox.Group
+                        options={propKeys.map(k => ({ label: k, value: k }))}
+                    />
+                </FormItem>
+
+                <If when={(values => values.direction === 'vertical')}>
+                    <FormItem label="layout">
+                        <div>
+                            <FormItem defaultValue="6" label="label" name="layout-label" inline>
+                                <InputNumber />
+                            </FormItem>
+                            <FormItem style={{ marginLeft: '8px' }} defaultValue="18" label="control" name="layout-control" inline>
+                                <InputNumber />
+                            </FormItem>
+                        </div>
+                    </FormItem>
+                </If>
+
+                <Item listenProps render={(values, ctx) => {
+                    const props = ctx.getItemProps('form') || {};
+                    return <div style={{ marginTop: '16px' }}>
+                        <Form layout={{ label: 6, control: 18 }} {...props}>
+                            <FormItem label="name" name="name"><Input /></FormItem>
+                            <FormItem label="age" name="age"><Input /></FormItem>
+                        </Form>
+                    </div>
+                }} />
+            </Form>
+        }
+    }
+</Playground>
+
+
+## 作为组件使用
+
+将**Form**作为组件可以轻松实现嵌套表单，如下代码所示。
+
+作为组件使用时，`value`和`onChange`一样被**FormItem**自动代理掉，需要注意的是，此时无论是`value`, `props`, `status`, `error`都会变成**对象级别**。
+
+```jsx
+<Form>
+    <FormItem name="nestedForm" label="嵌套表单">
+        <Form>
+            <FormItem label="username" name="username"><Input /></FormItem>
+            <FormItem label="age" name="age"><Input /></FormItem>
+        </Form>
+    </FormItem>
+</Form>
+
+```
+## JSX属性
+
+| 属性名 | 作用 | 类型 | 默认值 |
+| ------ | ------ | ------ | ----- |
+| direction | 表单布局方式 | ENUM('vertical', 'horizontal', 'vertical-top') | 'vertical' |
+| layout | 表单栅格布局（继承） | { label: [0-24], control: [0-24] } | null |
+| defaultMinWidth | 最小表单组件宽度(200px) | 布尔值 | true |
+| full | layout激活下，组件是否占满control | 布尔值 | false |
+| inline | 行内模式 | 布尔值 | false |
+| inset | inset模式 | 布尔值 | false |
+| colon | label是否带 ':' | 布尔值 | true |
+| value | 表单值集合 | {} | {} |
+| onChange | 表单值变更时触发 | (value: {}) | noop |

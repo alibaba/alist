@@ -1,0 +1,268 @@
+---
+name: 4. 校验
+route: /core/validate
+menu: 2. FormCore 表单核心
+---
+
+import { Playground } from 'docz'
+import react from 'react';
+import { DatePicker, Button, Input, Radio } from 'nowrapper/lib/antd';
+import Form, { FormItem, FormCore } from 'noform';
+import 'antd/dist/antd.css';
+import 'noform/dist/index.css';
+import 'nowrapper/dist/antd/index.css';
+
+
+# 校验
+
+## 定义校验规则
+
+```jsx
+const validateConfig = {
+    username: {type: "string", required: true},
+    age: [
+        {type: "number", required: true, transform(value) {
+            return parseInt(value, 10)
+        }},
+        {validator(rule, value, callback, source, options) {
+            if(value < 18){
+                callback(['too young']);
+            }
+            callback([])
+        }}
+    ],
+}
+
+const core = new FormCore({ validateConfig });
+```
+
+<p>
+    validateConfig完全与async-validator一致，更多的校验规则请参考 <a href="https://github.com/yiminghe/async-validator">async-validator</a>
+</p>
+
+## 内置校验规则
+
+为了更加方便编写校验规则，NoForm内置了一部分校验规则，可以这样去使用，更多内置规则，可以参考[内置校验规则](/form/core/validate-inner)一节。
+
+```jsx
+
+import rules from 'noform/lib/validate';
+
+const validateConfig = {
+    username: rules.required('必须填写username'),
+    age: [rules.number('必须填写数字类型'), rules.min(18, 'too young')],
+};
+
+```
+
+## 校验API
+
+### 触发渲染的API
+
+> 需要注意的是，错误信息的渲染是依赖`FormItem`的，`Item`不会渲染错误信息。
+
+* **validate** 是最常使用的方法，通常在提交时使用，返回`Promise`，因此可以搭配`async`, `await`使用。
+* **validateItem** (**checkFields**: array[string]) 可以用来只校验部分字段, 返回结果格式同validate。
+* **scrollToError** 滚动到第一个报错的字段。
+* **resetError** (**checkFields**: array[string]) 可以清空部分校验字段的错误，如果不传参，默认清空所有字段错误。
+
+### 不触发渲染的API
+* **validateWithoutRender** 此方法会返回校验结果（格式同`validate`），但错误信息不会渲染在`FormItem`上。
+* **setValidateConfig** 重置校验规则，此方法可以异步动态切换校验规则
+
+## 点击触发校验
+
+以下例子会通过`validate`触发校验，然后通过resetError清理错误信息
+
+<Playground>
+    {
+        () => {
+            const core = new FormCore({
+                validateConfig: { text1: [{ required: true, message: '字段1不能为空' }] }
+            });
+
+            return <Form core={core}>
+                <FormItem label="字段1" name="text1">
+                    <Input />
+                </FormItem>
+                <FormItem label="操作" render={() => {
+                    return <div>
+                        <Button onClick={() => {
+                            core.validate();
+                        }}>validate</Button>
+
+                        <Button style={{ marginLeft: '8px' }} onClick={() => {
+                            core.resetError();
+                        }}>resetError</Button>
+                    </div>
+                }} />
+            </Form>
+        }
+    }
+</Playground>
+
+## onChange触发校验
+
+通过在核心构建函数中传入 `autoValidate` 为 `true` 启用onChange校验
+
+<Playground>
+    {
+        () => {
+            const core = new FormCore({
+                validateConfig: { text1: [{ required: true, message: '字段1不能为空' }] },
+                autoValidate: true,
+            });
+
+            return <Form core={core}>
+                <FormItem label="字段1" name="text1">
+                    <Input />
+                </FormItem>
+            </Form>
+        }
+    }
+</Playground>
+
+## onBlur触发校验
+
+由于 `onBlur` 非常依赖组件的实现，NoForm并不会强实现相关的功能，但可以传入`onEvent`属性给`<Form>` 来手动触发校验，
+同时注意 `autoValidate` 需要设置为 `false`，代码可以点击右下角查看。
+
+
+<Playground>
+    {
+        () => {
+            const core = new FormCore({
+                validateConfig: {
+                    blurField: { required: true, message : '请填写blur字段' },
+                    changeField: { required: true, message : '请填写change字段' }
+                }
+            });
+
+            const eventHandler = (payload) => {
+                const { fireKey, fn, args } = payload;
+                if (['blurField'].includes(fireKey)) {
+                    if (fn === 'onBlur') {
+                        core.validateItem(fireKey);
+                    }
+                } else if (fn === 'onChange') {
+                    core.validateItem(fireKey);
+                }
+            };
+
+            return <Form onEvent={eventHandler} core={core}>
+                <FormItem label="blur字段" name="blurField">
+                    <Input />
+                </FormItem>
+
+                <FormItem label="change字段" name="changeField">
+                    <DatePicker />
+                </FormItem>
+            </Form>
+        }
+    }
+</Playground>
+
+
+## 动态校验
+
+可以根据表单其他字段值来决定校验规则
+
+```jsx
+const validateConfig = {
+    username: {type: "string", required: true},
+    age: (values, ctx) => { // values是当前表单值集合，ctx为核心实例
+        const { username } = values;
+        return {type: "string", required: !!username };
+    }
+}
+```
+
+## 子项校验
+
+很多时候我们会编写一些非常复杂的组件，这些组件内部有自己的校验规则，当调用`validate`时，也想要触发这些组件的内部校验，
+并将内部校验的结果返回到`validate`的结果时，此时错误信息结构会变成 `{ main, sub }`，子项校验的结果在sub里。
+
+此时，可以通过`errorRender`来自定义渲染错误信息。（errorRender用于自定义错误信息，尤其是和子项校验搭配）
+
+### 定义组件，关联校验方法
+
+```jsx
+class ComplexComponent extends React.Component {
+    constructor(props, context) {
+        super(props, context);
+        const { item } = context;
+        if (item && item.core) { // FormItem的核心
+            item.core.addSubField({
+                validate: this.validate // 子组件自己的validate方法，全局validate时会被调用
+            });
+        }
+    }
+
+    async validate = () => {
+        const error = await somemethod();
+        return error;
+    }
+}
+
+```
+
+### 自定义错误信息渲染
+
+```jsx
+
+const errorRender = (errMsg, error) => {
+    const { main, sub } = error; // sub 为子项校验的结果
+    return sub ? <span style={{ color: 'blue' }}>{sub}</span> : null;
+}
+
+<Form>
+    <FormItem label="complex" name="complex" errorRender={this.errorRender}>
+        <ComplexComponent />
+    </FormItem>
+</Form>
+
+```
+
+## 嵌套表单校验
+
+实际上`<Form>`是已经内置子项校验的组件了，当你使用嵌套写法时，**如果子表单也配置响应的校验规则，会自动触发**。
+
+以下是3层嵌套的例子, 点击右下角查看代码。
+
+<Playground>
+    {
+        () => {
+            const core = new FormCore();
+            const nestedCore = new FormCore({ // 第一层
+                validateConfig: {
+                    name: { required: true, message: '公司名必填' }
+                }
+            });
+            
+            const nestedInnerConfig = { // 第二层
+                province: { required: true, message: '省份必填' }
+            };
+
+            const validateNested = () => {
+                core.validate();
+            }
+
+            return <Form core={core} layout={{ label: 4, control: 20 }}>
+                <FormItem label="公司信息" name="company">
+                    <Form layout={false} core={nestedCore}>
+                        <FormItem label="公司名" name="name"><Input /></FormItem>
+                        <FormItem label="公司地址" name="address">
+                            <Form validateConfig={nestedInnerConfig}>
+                                <FormItem label="省" name="province"><Input /></FormItem>
+                                <FormItem label="市" name="city"><Input /></FormItem>
+                                <FormItem label="区" name="district"><Input /></FormItem>
+                                <FormItem label="详细地址" name="detail"><Input /></FormItem>
+                            </Form>
+                        </FormItem>
+                    </Form>
+                </FormItem>
+                <FormItem label=""><Button onClick={validateNested}>Validate Nested</Button></FormItem>
+            </Form>
+        }
+    }
+</Playground>

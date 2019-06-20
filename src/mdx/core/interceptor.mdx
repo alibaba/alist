@@ -1,0 +1,31 @@
+---
+name: 7.拦截器
+route: /core/interceptor
+menu: 2. FormCore 表单核心
+---
+
+import { Playground } from 'docz'
+import react from 'react';
+import { Input, Radio, Button } from 'nowrapper/lib/antd';
+import Form, { FormItem, FormCore } from 'noform';
+import 'antd/dist/antd.css';
+import 'noform/dist/index.css';
+import 'nowrapper/dist/antd/index.css';
+
+# 拦截器 interceptor
+
+拦截器能够在设置值之前做自定义的修改, interceptor接受方法，返回值可以是 值 或 promise
+
+```jsx
+new FormCore({
+    interceptor: {
+        money: (rawMoney) => { // 接受值
+            return parseInt(rawMoney);
+        },
+        lazyMoney: async () => { // 接受promise
+            const money = await remoteCalculateMoney();
+            return money;
+        }
+    }
+})
+```
