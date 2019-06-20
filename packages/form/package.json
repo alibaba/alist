@@ -1,9 +1,9 @@
 {
-  "name": "docz-nopage",
+  "name": "docz-noform",
   "scripts": {
     "doc": "umi-lib doc dev -p 9001 --websocketPort=8738",
     "doc-build": "umi-lib doc build",
-    "build": "umi-lib build"
+    "deploy": "umi-lib doc deploy"
   },
   "dependencies": {
     "antd": "^3.18.2",
