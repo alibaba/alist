@@ -204,6 +204,16 @@ class App extends React.Component {
                     <Select options={[]} />
                 </FormItem>
 
+                <FormItem label="gender" name="gender" status="preview" defaultValue="M">
+                    <Select options={[ {label: '男', value: 'M' } ]} />
+                </FormItem>
+
+                <FormItem label="genderJSX" name="genderJSX" status="preview" defaultValue="M">
+                    <Select>
+                        <Select.Option value="M">男</Select.Option>
+                    </Select>
+                </FormItem>
+
                 <FormItem label="Global Status">
                     <div >
                         <Button style={{ marginRight: 12 }} onClick={this.setStatus.bind(this, 'edit')}>Edit</Button>

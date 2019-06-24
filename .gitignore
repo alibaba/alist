@@ -16,3 +16,5 @@ package-lock.json
 /packages/*/dist
 .idea/
 /.changelog
+/.docz
+.docz

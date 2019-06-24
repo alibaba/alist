@@ -34,7 +34,7 @@ const Select = (Com, props, opts) => {
 
     if (status === 'preview') {
         return <Com placeholder="" {...otherProps}
-            className={`${className || ''} ${previewClass}`} {...valueProps}
+            className={`${className || ''} ${previewClass}`} {...rewriteProps} {...valueProps}
             style={previewStyle}
         />;
     }
