@@ -5,7 +5,6 @@
     "build": "father doc build --base /",
     "deploy": "father doc deploy"
   },
-  "homepage": "./",
   "dependencies": {
     "antd": "^3.18.2",
     "father": "^2.11.1",

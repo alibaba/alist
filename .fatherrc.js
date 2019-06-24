@@ -10,6 +10,7 @@ export default {
       title: "NoPage",
       indexHtml: './index.html',
       public: './public',
-      // base: "./",
+      hashRouter: true,
+      base: "",
     },
 };

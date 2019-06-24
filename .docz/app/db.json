@@ -18,6 +18,8 @@
     "dest": "dist",
     "indexHtml": "./index.html",
     "public": "./public",
+    "hashRouter": true,
+    "base": "",
     "plugins": [
       {},
       {},
@@ -70,47 +72,6 @@
             "slug": "jsx-属性",
             "depth": 2,
             "value": "JSX 属性"
-          }
-        ]
-      }
-    },
-    {
-      "key": "src/mdx/component/if.mdx",
-      "value": {
-        "name": "If",
-        "route": "/component/if",
-        "menu": "表单组件",
-        "order": 3,
-        "menuOrder": 3,
-        "id": "78a9a14506e647e965bd53ca566f3fda",
-        "filepath": "src/mdx/component/if.mdx",
-        "link": "",
-        "slug": "src-mdx-component-if",
-        "headings": [
-          {
-            "slug": "if",
-            "depth": 1,
-            "value": "If"
-          },
-          {
-            "slug": "引入方式",
-            "depth": 2,
-            "value": "引入方式"
-          },
-          {
-            "slug": "使用方式",
-            "depth": 2,
-            "value": "使用方式"
-          },
-          {
-            "slug": "实例演示",
-            "depth": 2,
-            "value": "实例演示"
-          },
-          {
-            "slug": "demo",
-            "depth": 2,
-            "value": "DEMO"
           }
         ]
       }
@@ -177,6 +138,47 @@
             "slug": "jsx-属性",
             "depth": 2,
             "value": "JSX 属性"
+          }
+        ]
+      }
+    },
+    {
+      "key": "src/mdx/component/if.mdx",
+      "value": {
+        "name": "If",
+        "route": "/component/if",
+        "menu": "表单组件",
+        "order": 3,
+        "menuOrder": 3,
+        "id": "78a9a14506e647e965bd53ca566f3fda",
+        "filepath": "src/mdx/component/if.mdx",
+        "link": "",
+        "slug": "src-mdx-component-if",
+        "headings": [
+          {
+            "slug": "if",
+            "depth": 1,
+            "value": "If"
+          },
+          {
+            "slug": "引入方式",
+            "depth": 2,
+            "value": "引入方式"
+          },
+          {
+            "slug": "使用方式",
+            "depth": 2,
+            "value": "使用方式"
+          },
+          {
+            "slug": "实例演示",
+            "depth": 2,
+            "value": "实例演示"
+          },
+          {
+            "slug": "demo",
+            "depth": 2,
+            "value": "DEMO"
           }
         ]
       }
@@ -423,6 +425,27 @@
       }
     },
     {
+      "key": "src/mdx/core/validate-inner.mdx",
+      "value": {
+        "name": "内置校验规则",
+        "route": "/core/validate-inner",
+        "menu": "FormCore 表单核心",
+        "order": 6,
+        "menuOrder": 2,
+        "id": "c01700f92e5382b46dac7689310ab5ae",
+        "filepath": "src/mdx/core/validate-inner.mdx",
+        "link": "",
+        "slug": "src-mdx-core-validate-inner",
+        "headings": [
+          {
+            "slug": "内置校验规则",
+            "depth": 1,
+            "value": "内置校验规则"
+          }
+        ]
+      }
+    },
+    {
       "key": "src/mdx/core/status.mdx",
       "value": {
         "name": "状态控制",
@@ -454,68 +477,6 @@
             "slug": "批量组件状态切换",
             "depth": 2,
             "value": "批量组件状态切换"
-          }
-        ]
-      }
-    },
-    {
-      "key": "src/mdx/core/validate-inner.mdx",
-      "value": {
-        "name": "内置校验规则",
-        "route": "/core/validate-inner",
-        "menu": "FormCore 表单核心",
-        "order": 6,
-        "menuOrder": 2,
-        "id": "c01700f92e5382b46dac7689310ab5ae",
-        "filepath": "src/mdx/core/validate-inner.mdx",
-        "link": "",
-        "slug": "src-mdx-core-validate-inner",
-        "headings": [
-          {
-            "slug": "内置校验规则",
-            "depth": 1,
-            "value": "内置校验规则"
-          }
-        ]
-      }
-    },
-    {
-      "key": "src/mdx/getStart/antd-pro.mdx",
-      "value": {
-        "name": "Ant-Design-Pro最佳实践",
-        "route": "/get-start/antd-pro-best-practise",
-        "menu": "Getting Started",
-        "order": 4,
-        "menuOrder": 1,
-        "id": "daf7dfe225a53f1a855d08d4b82e56a7",
-        "filepath": "src/mdx/getStart/antd-pro.mdx",
-        "link": "",
-        "slug": "src-mdx-get-start-antd-pro",
-        "headings": [
-          {
-            "slug": "拉取实例项目",
-            "depth": 2,
-            "value": "拉取实例项目"
-          },
-          {
-            "slug": "安装",
-            "depth": 2,
-            "value": "安装"
-          },
-          {
-            "slug": "运行",
-            "depth": 2,
-            "value": "运行"
-          },
-          {
-            "slug": "牛刀小试",
-            "depth": 2,
-            "value": "牛刀小试"
-          },
-          {
-            "slug": "修改样式-styleless",
-            "depth": 2,
-            "value": "修改样式 style.less"
           }
         ]
       }
@@ -638,6 +599,113 @@
       }
     },
     {
+      "key": "src/mdx/getStart/antd-pro.mdx",
+      "value": {
+        "name": "Ant-Design-Pro最佳实践",
+        "route": "/get-start/antd-pro-best-practise",
+        "menu": "Getting Started",
+        "order": 4,
+        "menuOrder": 1,
+        "id": "daf7dfe225a53f1a855d08d4b82e56a7",
+        "filepath": "src/mdx/getStart/antd-pro.mdx",
+        "link": "",
+        "slug": "src-mdx-get-start-antd-pro",
+        "headings": [
+          {
+            "slug": "拉取实例项目",
+            "depth": 2,
+            "value": "拉取实例项目"
+          },
+          {
+            "slug": "安装",
+            "depth": 2,
+            "value": "安装"
+          },
+          {
+            "slug": "运行",
+            "depth": 2,
+            "value": "运行"
+          },
+          {
+            "slug": "牛刀小试",
+            "depth": 2,
+            "value": "牛刀小试"
+          },
+          {
+            "slug": "修改样式-styleless",
+            "depth": 2,
+            "value": "修改样式 style.less"
+          }
+        ]
+      }
+    },
+    {
+      "key": "src/mdx/getStart/antd.mdx",
+      "value": {
+        "name": "Ant-Design最佳实践",
+        "route": "/get-start/antd-best-practise",
+        "menu": "Getting Started",
+        "order": 3,
+        "menuOrder": 1,
+        "id": "7e677050dc5e44a95ba99afea9357f9f",
+        "filepath": "src/mdx/getStart/antd.mdx",
+        "link": "",
+        "slug": "src-mdx-get-start-antd",
+        "headings": [
+          {
+            "slug": "ant-design最佳实践",
+            "depth": 1,
+            "value": "Ant-Design最佳实践"
+          },
+          {
+            "slug": "安装和初始化",
+            "depth": 2,
+            "value": "安装和初始化"
+          },
+          {
+            "slug": "新建项目",
+            "depth": 2,
+            "value": "新建项目"
+          },
+          {
+            "slug": "引入antd和noform",
+            "depth": 2,
+            "value": "引入antd和NoForm"
+          },
+          {
+            "slug": "配置优化",
+            "depth": 2,
+            "value": "配置优化"
+          },
+          {
+            "slug": "加载less样式",
+            "depth": 2,
+            "value": "加载less样式"
+          },
+          {
+            "slug": "编写配置",
+            "depth": 2,
+            "value": "编写配置"
+          },
+          {
+            "slug": "脚本更新",
+            "depth": 2,
+            "value": "脚本更新"
+          },
+          {
+            "slug": "重新启动",
+            "depth": 2,
+            "value": "重新启动"
+          },
+          {
+            "slug": "wow",
+            "depth": 2,
+            "value": "Wow"
+          }
+        ]
+      }
+    },
+    {
       "key": "src/mdx/getStart/fusion.mdx",
       "value": {
         "name": "Fusion-Next最佳实践",
@@ -740,27 +808,32 @@
       }
     },
     {
-      "key": "src/mdx/list/multiple.mdx",
+      "key": "src/mdx/getStart/usage.mdx",
       "value": {
-        "name": "多实例列表",
-        "route": "/list/multiple",
-        "menu": "NoList 列表",
-        "order": 3,
-        "menuOrder": 5,
-        "id": "94c4783e06e0ff96b76989b81c553877",
-        "filepath": "src/mdx/list/multiple.mdx",
+        "name": "安装及使用",
+        "route": "/get-start/usage",
+        "menu": "Getting Started",
+        "order": 2,
+        "menuOrder": 1,
+        "id": "8f9c3a237149b59741035a077e8bc279",
+        "filepath": "src/mdx/getStart/usage.mdx",
         "link": "",
-        "slug": "src-mdx-list-multiple",
+        "slug": "src-mdx-get-start-usage",
         "headings": [
           {
-            "slug": "多实例列表请求控制",
+            "slug": "安装",
             "depth": 1,
-            "value": "多实例列表请求控制"
+            "value": "安装"
           },
           {
-            "slug": "分页多实例",
+            "slug": "引入",
             "depth": 1,
-            "value": "分页多实例"
+            "value": "引入"
+          },
+          {
+            "slug": "初使用",
+            "depth": 1,
+            "value": "初使用"
           }
         ]
       }
@@ -852,98 +925,27 @@
       }
     },
     {
-      "key": "src/mdx/getStart/antd.mdx",
+      "key": "src/mdx/list/multiple.mdx",
       "value": {
-        "name": "Ant-Design最佳实践",
-        "route": "/get-start/antd-best-practise",
-        "menu": "Getting Started",
+        "name": "多实例列表",
+        "route": "/list/multiple",
+        "menu": "NoList 列表",
         "order": 3,
-        "menuOrder": 1,
-        "id": "7e677050dc5e44a95ba99afea9357f9f",
-        "filepath": "src/mdx/getStart/antd.mdx",
+        "menuOrder": 5,
+        "id": "94c4783e06e0ff96b76989b81c553877",
+        "filepath": "src/mdx/list/multiple.mdx",
         "link": "",
-        "slug": "src-mdx-get-start-antd",
+        "slug": "src-mdx-list-multiple",
         "headings": [
           {
-            "slug": "ant-design最佳实践",
+            "slug": "多实例列表请求控制",
             "depth": 1,
-            "value": "Ant-Design最佳实践"
+            "value": "多实例列表请求控制"
           },
           {
-            "slug": "安装和初始化",
-            "depth": 2,
-            "value": "安装和初始化"
-          },
-          {
-            "slug": "新建项目",
-            "depth": 2,
-            "value": "新建项目"
-          },
-          {
-            "slug": "引入antd和noform",
-            "depth": 2,
-            "value": "引入antd和NoForm"
-          },
-          {
-            "slug": "配置优化",
-            "depth": 2,
-            "value": "配置优化"
-          },
-          {
-            "slug": "加载less样式",
-            "depth": 2,
-            "value": "加载less样式"
-          },
-          {
-            "slug": "编写配置",
-            "depth": 2,
-            "value": "编写配置"
-          },
-          {
-            "slug": "脚本更新",
-            "depth": 2,
-            "value": "脚本更新"
-          },
-          {
-            "slug": "重新启动",
-            "depth": 2,
-            "value": "重新启动"
-          },
-          {
-            "slug": "wow",
-            "depth": 2,
-            "value": "Wow"
-          }
-        ]
-      }
-    },
-    {
-      "key": "src/mdx/getStart/usage.mdx",
-      "value": {
-        "name": "安装及使用",
-        "route": "/get-start/usage",
-        "menu": "Getting Started",
-        "order": 2,
-        "menuOrder": 1,
-        "id": "8f9c3a237149b59741035a077e8bc279",
-        "filepath": "src/mdx/getStart/usage.mdx",
-        "link": "",
-        "slug": "src-mdx-get-start-usage",
-        "headings": [
-          {
-            "slug": "安装",
+            "slug": "分页多实例",
             "depth": 1,
-            "value": "安装"
-          },
-          {
-            "slug": "引入",
-            "depth": 1,
-            "value": "引入"
-          },
-          {
-            "slug": "初使用",
-            "depth": 1,
-            "value": "初使用"
+            "value": "分页多实例"
           }
         ]
       }
