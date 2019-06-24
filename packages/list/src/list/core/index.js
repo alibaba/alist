@@ -17,6 +17,9 @@ export default class GridCore {
         }
         this.filterCore = new FormCore(formConfig); // 搜索的核心，基于noform实现
         this.emitter = new EventEmitter(); // 全局的事件总线
+        this.filterCore.onChange = (fireKeys, values, ctx) => {
+            this.refreshFilterChange(fireKeys, values, ctx);
+        };
     }
 
     launch() {
@@ -97,6 +100,12 @@ export default class GridCore {
 
     refreshTable = () => { // 刷新表格数据
         this.emitter.emit('refresh');
+    }
+
+    refreshFilterChange = (fireKeys, values, ctx) => { // 刷新表格数据
+        this.emitter.emit('refresh_on_filter_change', {
+            fireKeys, values, ctx
+        });
     }
 
     refreshPagination = () => { // 刷新分页数据

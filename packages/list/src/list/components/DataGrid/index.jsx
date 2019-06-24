@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Provider, getGridCore } from '../../context';
+import deepEqual from 'react-fast-compare';
 
 const noop = () => {};
 
@@ -45,6 +46,14 @@ export default class DataGrid extends React.Component {
         const { core } = this.state;
         core.launch(); // 由UI通知核心正式开始运行
         onMount(core);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const { dataSource } = nextProps;
+        const { core } = this.state;
+        if (deepEqual(this.props.dataSource, dataSource)) {
+            core.setDataSource(dataSource);
+        }
     }
 
     render() {

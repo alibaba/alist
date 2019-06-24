@@ -11,6 +11,7 @@ export default class Any extends React.Component {
     };
 
     componentDidMount = () => {
+        const { listenFilterChange = false } = this.props;
         const { core } = this.grid;
         if (core && core.emitter) {
             core.emitter.on('refresh', () => {
@@ -18,6 +19,12 @@ export default class Any extends React.Component {
             });
             core.emitter.on('pagination_refresh', () => {
                 this.forceUpdate();
+            });
+
+            core.emitter.on('refresh_on_filter_change', () => {
+                if (listenFilterChange) {
+                    this.forceUpdate();
+                }                
             });
         }
     }

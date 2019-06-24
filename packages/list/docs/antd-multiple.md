@@ -86,9 +86,14 @@ class NoList extends React.Component {
   }
 
   render() {
+    const formatAfter = (data) => {
+        console.log('===>', data);
+        return data;
+    };
+    
     return (
       <div style={{ margin: '24px' }}>
-        <List url="/docs/multiple-mock.json" onError={handleError} onMount={onMount} multiple>
+        {/* <List url="/docs/multiple-mock.json" onError={handleError} onMount={onMount} multiple>
             <Filter>
               <Filter.Item label="username" name="username"><Input placeholder="placeholder" /></Filter.Item>
               <Filter.Item label="age" name="age"><Input /></Filter.Item>
@@ -97,6 +102,46 @@ class NoList extends React.Component {
             {this.renderTable('section1')}
             {this.renderTable('section2')}
             {this.renderTable('section3')}
+        </List> */}
+        
+        <List multiple url="/docs/multiple-mock.json" formatAfter={formatAfter}>
+            <Any render={(grid) => {
+                const multipleData = grid.getMultipleData(); // formatAfter的data
+                if (!multipleData) return null;
+
+                const { section1 } = multipleData;
+                return <div>
+                    <List dataSource={section1} pageSize={2}>
+                        <Table>
+                            <Table.Column title="id" dataIndex="id" />
+                            <Table.Column title="username" dataIndex="username" />
+                        </Table>
+                        <Pagination />
+                    </List>
+                </div>
+            }} />
+        </List>
+
+
+        <List dataSource={[{ id: '123', username: 'billy' }]}>
+            <Any listenFilterChange render={(core) => {
+                const filterData = core.getFilterData();
+                const pageData = core.getPageData();
+                return <div>
+                    <div>列表搜索数据: {JSON.stringify(filterData)}</div>
+                    <div>列表返回数据: {JSON.stringify(pageData)}</div>
+                </div>
+            }} />
+            <Filter>
+                <Filter.Item label="id" name="id"><Input /></Filter.Item>
+                <Filter.Item label="username" name="username"><Input /></Filter.Item>
+                <Filter.Item label="age" name="age"><Input /></Filter.Item>
+            </Filter>
+            <Table>
+                <Table.Column title="id" dataIndex="id" />
+                <Table.Column title="username" dataIndex="username" />
+            </Table>
+            <Pagination />
         </List>
       </div>
     );
