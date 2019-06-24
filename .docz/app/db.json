@@ -77,6 +77,72 @@
       }
     },
     {
+      "key": "src/mdx/component/form-item.mdx",
+      "value": {
+        "name": "FormItem与Item",
+        "route": "/nopage/component/form-item",
+        "menu": "表单组件",
+        "order": 2,
+        "menuOrder": 3,
+        "id": "51d6e01286df34bc2abbe5b9bee3d2ef",
+        "filepath": "src/mdx/component/form-item.mdx",
+        "link": "",
+        "slug": "src-mdx-component-form-item",
+        "headings": [
+          {
+            "slug": "formitem与item",
+            "depth": 1,
+            "value": "FormItem与Item"
+          },
+          {
+            "slug": "formitem是什么",
+            "depth": 2,
+            "value": "FormItem是什么"
+          },
+          {
+            "slug": "item是什么",
+            "depth": 2,
+            "value": "Item是什么"
+          },
+          {
+            "slug": "作用",
+            "depth": 2,
+            "value": "作用"
+          },
+          {
+            "slug": "引入方式",
+            "depth": 2,
+            "value": "引入方式"
+          },
+          {
+            "slug": "演示",
+            "depth": 2,
+            "value": "演示"
+          },
+          {
+            "slug": "布局",
+            "depth": 2,
+            "value": "布局"
+          },
+          {
+            "slug": "动态渲染",
+            "depth": 2,
+            "value": "动态渲染"
+          },
+          {
+            "slug": "监听错误信息",
+            "depth": 2,
+            "value": "监听错误信息"
+          },
+          {
+            "slug": "jsx-属性",
+            "depth": 2,
+            "value": "JSX 属性"
+          }
+        ]
+      }
+    },
+    {
       "key": "src/mdx/component/form.mdx",
       "value": {
         "name": "Form",
@@ -169,72 +235,6 @@
       }
     },
     {
-      "key": "src/mdx/component/form-item.mdx",
-      "value": {
-        "name": "FormItem与Item",
-        "route": "/nopage/component/form-item",
-        "menu": "表单组件",
-        "order": 2,
-        "menuOrder": 3,
-        "id": "51d6e01286df34bc2abbe5b9bee3d2ef",
-        "filepath": "src/mdx/component/form-item.mdx",
-        "link": "",
-        "slug": "src-mdx-component-form-item",
-        "headings": [
-          {
-            "slug": "formitem与item",
-            "depth": 1,
-            "value": "FormItem与Item"
-          },
-          {
-            "slug": "formitem是什么",
-            "depth": 2,
-            "value": "FormItem是什么"
-          },
-          {
-            "slug": "item是什么",
-            "depth": 2,
-            "value": "Item是什么"
-          },
-          {
-            "slug": "作用",
-            "depth": 2,
-            "value": "作用"
-          },
-          {
-            "slug": "引入方式",
-            "depth": 2,
-            "value": "引入方式"
-          },
-          {
-            "slug": "演示",
-            "depth": 2,
-            "value": "演示"
-          },
-          {
-            "slug": "布局",
-            "depth": 2,
-            "value": "布局"
-          },
-          {
-            "slug": "动态渲染",
-            "depth": 2,
-            "value": "动态渲染"
-          },
-          {
-            "slug": "监听错误信息",
-            "depth": 2,
-            "value": "监听错误信息"
-          },
-          {
-            "slug": "jsx-属性",
-            "depth": 2,
-            "value": "JSX 属性"
-          }
-        ]
-      }
-    },
-    {
       "key": "src/mdx/component/standard.mdx",
       "value": {
         "name": "自定义组件",
@@ -302,72 +302,6 @@
             "slug": "修改样式-styleless",
             "depth": 2,
             "value": "修改样式 style.less"
-          }
-        ]
-      }
-    },
-    {
-      "key": "src/mdx/getStart/fusion.mdx",
-      "value": {
-        "name": "Fusion-Next最佳实践",
-        "route": "/nopage/get-start/fusion-best-practise",
-        "menu": "Getting Started",
-        "order": 5,
-        "menuOrder": 1,
-        "id": "8cfe2f9ca59f6e6d381511f57389d50c",
-        "filepath": "src/mdx/getStart/fusion.mdx",
-        "link": "",
-        "slug": "src-mdx-get-start-fusion",
-        "headings": [
-          {
-            "slug": "fusion-next最佳实践",
-            "depth": 1,
-            "value": "Fusion-Next最佳实践"
-          },
-          {
-            "slug": "安装和初始化",
-            "depth": 2,
-            "value": "安装和初始化"
-          },
-          {
-            "slug": "新建项目",
-            "depth": 2,
-            "value": "新建项目"
-          },
-          {
-            "slug": "引入antd和noform",
-            "depth": 2,
-            "value": "引入antd和NoForm"
-          },
-          {
-            "slug": "配置优化",
-            "depth": 2,
-            "value": "配置优化"
-          },
-          {
-            "slug": "加载scss样式",
-            "depth": 2,
-            "value": "加载scss样式"
-          },
-          {
-            "slug": "编写配置",
-            "depth": 2,
-            "value": "编写配置"
-          },
-          {
-            "slug": "脚本更新",
-            "depth": 2,
-            "value": "脚本更新"
-          },
-          {
-            "slug": "重新启动",
-            "depth": 2,
-            "value": "重新启动"
-          },
-          {
-            "slug": "wow",
-            "depth": 2,
-            "value": "Wow"
           }
         ]
       }
@@ -475,6 +409,72 @@
       }
     },
     {
+      "key": "src/mdx/getStart/fusion.mdx",
+      "value": {
+        "name": "Fusion-Next最佳实践",
+        "route": "/nopage/get-start/fusion-best-practise",
+        "menu": "Getting Started",
+        "order": 5,
+        "menuOrder": 1,
+        "id": "8cfe2f9ca59f6e6d381511f57389d50c",
+        "filepath": "src/mdx/getStart/fusion.mdx",
+        "link": "",
+        "slug": "src-mdx-get-start-fusion",
+        "headings": [
+          {
+            "slug": "fusion-next最佳实践",
+            "depth": 1,
+            "value": "Fusion-Next最佳实践"
+          },
+          {
+            "slug": "安装和初始化",
+            "depth": 2,
+            "value": "安装和初始化"
+          },
+          {
+            "slug": "新建项目",
+            "depth": 2,
+            "value": "新建项目"
+          },
+          {
+            "slug": "引入antd和noform",
+            "depth": 2,
+            "value": "引入antd和NoForm"
+          },
+          {
+            "slug": "配置优化",
+            "depth": 2,
+            "value": "配置优化"
+          },
+          {
+            "slug": "加载scss样式",
+            "depth": 2,
+            "value": "加载scss样式"
+          },
+          {
+            "slug": "编写配置",
+            "depth": 2,
+            "value": "编写配置"
+          },
+          {
+            "slug": "脚本更新",
+            "depth": 2,
+            "value": "脚本更新"
+          },
+          {
+            "slug": "重新启动",
+            "depth": 2,
+            "value": "重新启动"
+          },
+          {
+            "slug": "wow",
+            "depth": 2,
+            "value": "Wow"
+          }
+        ]
+      }
+    },
+    {
       "key": "src/mdx/getStart/usage.mdx",
       "value": {
         "name": "安装及使用",
@@ -501,6 +501,27 @@
             "slug": "初使用",
             "depth": 1,
             "value": "初使用"
+          }
+        ]
+      }
+    },
+    {
+      "key": "src/mdx/core/interceptor.mdx",
+      "value": {
+        "name": "拦截器",
+        "route": "/nopage/core/interceptor",
+        "menu": "FormCore 表单核心",
+        "order": 8,
+        "menuOrder": 2,
+        "id": "61e9f6b4db0430588ba83abdf2e7b76e",
+        "filepath": "src/mdx/core/interceptor.mdx",
+        "link": "",
+        "slug": "src-mdx-core-interceptor",
+        "headings": [
+          {
+            "slug": "拦截器-interceptor",
+            "depth": 1,
+            "value": "拦截器 interceptor"
           }
         ]
       }
@@ -608,22 +629,37 @@
       }
     },
     {
-      "key": "src/mdx/core/interceptor.mdx",
+      "key": "src/mdx/core/reset.mdx",
       "value": {
-        "name": "拦截器",
-        "route": "/nopage/core/interceptor",
+        "name": "重置值",
+        "route": "/nopage/core/reset",
         "menu": "FormCore 表单核心",
-        "order": 8,
+        "order": 7,
         "menuOrder": 2,
-        "id": "61e9f6b4db0430588ba83abdf2e7b76e",
-        "filepath": "src/mdx/core/interceptor.mdx",
+        "id": "0bb3e9bd80cf673a54aa7c355cc1422e",
+        "filepath": "src/mdx/core/reset.mdx",
         "link": "",
-        "slug": "src-mdx-core-interceptor",
+        "slug": "src-mdx-core-reset",
         "headings": [
           {
-            "slug": "拦截器-interceptor",
+            "slug": "reset",
             "depth": 1,
-            "value": "拦截器 interceptor"
+            "value": "Reset"
+          },
+          {
+            "slug": "清空所有值",
+            "depth": 2,
+            "value": "清空所有值"
+          },
+          {
+            "slug": "批量清空",
+            "depth": 2,
+            "value": "批量清空"
+          },
+          {
+            "slug": "清空到默认值",
+            "depth": 2,
+            "value": "清空到默认值"
           }
         ]
       }
@@ -681,42 +717,6 @@
             "slug": "内置校验规则",
             "depth": 1,
             "value": "内置校验规则"
-          }
-        ]
-      }
-    },
-    {
-      "key": "src/mdx/core/reset.mdx",
-      "value": {
-        "name": "重置值",
-        "route": "/nopage/core/reset",
-        "menu": "FormCore 表单核心",
-        "order": 7,
-        "menuOrder": 2,
-        "id": "0bb3e9bd80cf673a54aa7c355cc1422e",
-        "filepath": "src/mdx/core/reset.mdx",
-        "link": "",
-        "slug": "src-mdx-core-reset",
-        "headings": [
-          {
-            "slug": "reset",
-            "depth": 1,
-            "value": "Reset"
-          },
-          {
-            "slug": "清空所有值",
-            "depth": 2,
-            "value": "清空所有值"
-          },
-          {
-            "slug": "批量清空",
-            "depth": 2,
-            "value": "批量清空"
-          },
-          {
-            "slug": "清空到默认值",
-            "depth": 2,
-            "value": "清空到默认值"
           }
         ]
       }
@@ -1028,82 +1028,6 @@
       }
     },
     {
-      "key": "src/mdx/repeater/basic.mdx",
-      "value": {
-        "name": "基本使用",
-        "route": "/nopage/repeater/usage",
-        "menu": "Repeater 重复表单",
-        "order": 1,
-        "menuOrder": 4,
-        "id": "0a65aaacb4bcd2ef202d8f819db86126",
-        "filepath": "src/mdx/repeater/basic.mdx",
-        "link": "",
-        "slug": "src-mdx-repeater-basic",
-        "headings": [
-          {
-            "slug": "repeater-重复表单",
-            "depth": 1,
-            "value": "Repeater 重复表单"
-          },
-          {
-            "slug": "引入",
-            "depth": 2,
-            "value": "引入"
-          },
-          {
-            "slug": "用法",
-            "depth": 2,
-            "value": "用法"
-          },
-          {
-            "slug": "初体验",
-            "depth": 2,
-            "value": "初体验"
-          },
-          {
-            "slug": "tablerepeater",
-            "depth": 2,
-            "value": "TableRepeater"
-          },
-          {
-            "slug": "inlinerepeater",
-            "depth": 2,
-            "value": "InlineRepeater"
-          },
-          {
-            "slug": "inlinerepeatermultiple",
-            "depth": 2,
-            "value": "InlineRepeater(multiple)"
-          },
-          {
-            "slug": "selectify--repeater",
-            "depth": 2,
-            "value": "Selectify + Repeater"
-          },
-          {
-            "slug": "数据结构变更",
-            "depth": 3,
-            "value": "数据结构变更"
-          },
-          {
-            "slug": "demo",
-            "depth": 3,
-            "value": "Demo"
-          },
-          {
-            "slug": "jsx-属性",
-            "depth": 2,
-            "value": "JSX 属性"
-          },
-          {
-            "slug": "repeater下的formitem-jsx-属性",
-            "depth": 2,
-            "value": "Repeater下的FormItem JSX 属性"
-          }
-        ]
-      }
-    },
-    {
       "key": "src/mdx/repeater/config.mdx",
       "value": {
         "name": "配置",
@@ -1186,6 +1110,82 @@
             "slug": "基于item-render实现与外界组件联动",
             "depth": 2,
             "value": "基于Item render实现与外界组件联动"
+          }
+        ]
+      }
+    },
+    {
+      "key": "src/mdx/repeater/basic.mdx",
+      "value": {
+        "name": "基本使用",
+        "route": "/nopage/repeater/usage",
+        "menu": "Repeater 重复表单",
+        "order": 1,
+        "menuOrder": 4,
+        "id": "0a65aaacb4bcd2ef202d8f819db86126",
+        "filepath": "src/mdx/repeater/basic.mdx",
+        "link": "",
+        "slug": "src-mdx-repeater-basic",
+        "headings": [
+          {
+            "slug": "repeater-重复表单",
+            "depth": 1,
+            "value": "Repeater 重复表单"
+          },
+          {
+            "slug": "引入",
+            "depth": 2,
+            "value": "引入"
+          },
+          {
+            "slug": "用法",
+            "depth": 2,
+            "value": "用法"
+          },
+          {
+            "slug": "初体验",
+            "depth": 2,
+            "value": "初体验"
+          },
+          {
+            "slug": "tablerepeater",
+            "depth": 2,
+            "value": "TableRepeater"
+          },
+          {
+            "slug": "inlinerepeater",
+            "depth": 2,
+            "value": "InlineRepeater"
+          },
+          {
+            "slug": "inlinerepeatermultiple",
+            "depth": 2,
+            "value": "InlineRepeater(multiple)"
+          },
+          {
+            "slug": "selectify--repeater",
+            "depth": 2,
+            "value": "Selectify + Repeater"
+          },
+          {
+            "slug": "数据结构变更",
+            "depth": 3,
+            "value": "数据结构变更"
+          },
+          {
+            "slug": "demo",
+            "depth": 3,
+            "value": "Demo"
+          },
+          {
+            "slug": "jsx-属性",
+            "depth": 2,
+            "value": "JSX 属性"
+          },
+          {
+            "slug": "repeater下的formitem-jsx-属性",
+            "depth": 2,
+            "value": "Repeater下的FormItem JSX 属性"
           }
         ]
       }
