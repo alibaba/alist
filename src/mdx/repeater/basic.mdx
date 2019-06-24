@@ -278,13 +278,13 @@ const SelectInlineRepeater = Selectify(InlineRepeater);
 | dialogAddText | 弹窗添加标题 | 字符串 | Add/添加 |
 | dialogUpdateText | 弹窗更新标题 | 字符串 | Update/更新 |
 | dialogDeleteText | 弹窗删除标题 | 字符串 | Delete/删除 |
-| filter | [过滤搜索函数](/form/repeater/config#搜索) | (v) => array[any] | noop |
-| renderOper | [自定义操作按钮](/form/repeater/config#自定义操作按钮渲染) | (btnList, core) => JSX | noop |
-| dialogConfig | [自定义弹窗表单内容](/form/repeater/config#自定义tablerepeater的弹窗表单内容) | {} | {} |
+| filter | [过滤搜索函数](repeater/config#搜索) | (v) => array[any] | noop |
+| renderOper | [自定义操作按钮](repeater/config#自定义操作按钮渲染) | (btnList, core) => JSX | noop |
+| dialogConfig | [自定义弹窗表单内容](repeater/config#自定义tablerepeater的弹窗表单内容) | {} | {} |
 
 ## Repeater下的FormItem JSX 属性
 
 | 属性名 | 作用 | 类型 | 默认值 |
 | ------ | ------ | ------ | ----- |
-| renderCell | [自定义展示字段](/form/repeater/config#自定义展示字段) | (value, payload: { values, id, core, index } ) => JSX | noop |
+| renderCell | [自定义展示字段](repeater/config#自定义展示字段) | (value, payload: { values, id, core, index } ) => JSX | noop |
 | multiple | 是否用于展示多字段 | 布尔值 | false |

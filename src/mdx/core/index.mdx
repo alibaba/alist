@@ -19,7 +19,7 @@ import 'nowrapper/dist/antd/index.css';
 
 ** Core是表单的抽象概念，它包含了表单的所有数据。**
 
-在NoForm的定义中，表单数据分为 [**值(values)**](/form/core/value)，[**状态(status)**](/form/core/index#获取修改错误信息error)，[**错误(errors)**](/form/core/errors)， [**属性(props)**](/form/core/props)， 同时它提供了一系列的API去控制这些数据。
+在NoForm的定义中，表单数据分为 [**值(values)**](/core/value)，[**状态(status)**](/core/index#获取修改错误信息error)，[**错误(errors)**](/core/errors)， [**属性(props)**](/core/props)， 同时它提供了一系列的API去控制这些数据。
 
 因此表单就变成两部分，**View 视图层** 和 **Core 数据层**，View视图层对逻辑无感知，仅仅单纯显示 Core 的数据。 因此通过对Core的操作就能完成视图的变更。
 
@@ -40,7 +40,7 @@ import Form, { FormCore } from 'noform';
 const core = new FormCore();
 return <Form core={core}>
     ...
-</Form>
+<>
 ```
 
 2. 内置生成: 通过 `onMount`获取内置构建的核心
@@ -48,7 +48,7 @@ return <Form core={core}>
 const onMount = (core) => {}
 return <Form onMount={onMount}>
     ...
-</Form>
+<>
 ```
 
 
@@ -75,12 +75,12 @@ const core = new FormCore({ // 参数列表
 | errors | 初始错误信息集合 | 对象 | {} |
 | props | 初始props集合 | 对象 | {} |
 | globalStatus | 初始全局状态 | ENUM ['edit', 'preview', 'disabled'] | 'edit' |
-| validateConfig | 校验规则 | 参考[校验](/form/core/validate)一节， 规则与[async-validator](https://github.com/yiminghe/async-validator)一致 | {} |
+| validateConfig | 校验规则 | 参考[校验](/core/validate)一节， 规则与[async-validator](https://github.com/yiminghe/async-validator)一致 | {} |
 | onChange | 监听值变更 | 方法(firekeys, values, core) | noop |
 | onBlur | 监听焦点变更 | 方法(key) | noop |
 | onFocus | 监听焦点变更 | 方法(key) | noop |
 | onEvent | 监听以上三种事件 | 方法(paylaod: { fireKey, fn, args }) | noop |
-| interceptor | 拦截器 | 参考[拦截器](/form/core/interceptor)一节 | {} |
+| interceptor | 拦截器 | 参考[拦截器](/core/interceptor)一节 | {} |
 
 ## API
 

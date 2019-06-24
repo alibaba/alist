@@ -31,6 +31,21 @@ import 'nowrapper/dist/antd/index.css';
 1. **List** 中会有 **核心listCore** 负责请求的发送，以及请求前和请求返回的格式化：`formatBefore` 和 `formatAfter`。
 2. **核心listCore** 会将返回后的数据（已标准化后），自动按照属性注入 **Table** 和 **Pagination**。
 
+## 标准数据格式
+
+```json
+{
+  code: 0, // 代表成功
+  data: {
+    dataList: [], // 列表数据
+    total: 2, // 总条目数
+    totalPage: 2, // 总页数
+    pageSize: 10, // 分页标准
+    currentPage: 1, // 当前所在页数（从1开始）
+  }
+}
+```
+
 ## 如何使用
 
 #### 引入方式
@@ -80,7 +95,7 @@ const App = () => <List  url="/docs/mock.json" onMount={onMount}>
 
             const url = 'https://easy-mock.com/mock/5d0c959c21fecc1d80b2a8bc/list/list';
             return <List url={url} onMount={onMount} defaultFilterValues={{ id: '123' }}>
-                <Any render={(core) => {
+                <Any listenFilterChange render={(core) => {
                     const filterData = core.getFilterData();
                     const pageData = core.getPageData();
                     return <div>
@@ -175,17 +190,25 @@ const App = () => <List  url="/docs/mock.json" onMount={onMount}>
 | url | 请求url，默认GET | string | null |
 | handleError | 请求发生错误时回调 | 函数 | noop |
 | onMount | 挂载成功回调，获取列表核心 | 函数 | noop |
-| formatFilter | 修改请求前搜索数据 | 函数 | noop |
 | formatBefore | 修改请求前数据 | 函数 | noop |
 | formatAfter | 修改请求完成后数据 | 函数 | noop |
 | query | 自定义请求 | () => Promise | noop |
+| defaultFilterValues | 初始化请求数据 | Object | null |
+| defaultPage | 初始化页数 | number | 1 |
+| autoLoad | 是否初始化完成立即加载请求 | boolean | true |
+| params | 页面参数信息 | Object | null |
+| filterConfig | 同[FormCore构建参数](/core/index#构建参数) | Object | null |
 
 ## Filter 属性
 
 | 参数名 | 作用 | 类型 | 默认值 |
 | ------ | ------ | ------ | ----- |
-| noDefaultLayout | 取消默认布局 | 布尔值 | false |
+| noDefaultLayout | 取消默认布局 | boolean | false |
 | cols | 布局列数 | number | 3 |
+| onSubmit | 点击提交时的回调 | function | noop |
+| onReset | 点击清空时的回调 | function | noop |
+
+其余参数与 **Form** 完全一致
 
 ## Filter.Item 属性
 
@@ -193,8 +216,13 @@ const App = () => <List  url="/docs/mock.json" onMount={onMount}>
 | ------ | ------ | ------ | ----- |
 | colSpan | 默认占列数 | number | 1 |
 
+其余参数与 **FormItem** 完全一致
+
 ## Any 属性
 
 | 参数名 | 作用 | 类型 | 默认值 |
 | ------ | ------ | ------ | ----- |
 | render | 自定义渲染列表相关数据 | (core) => jsx | noop |
+| listenFilterChange | 是否监听搜索区域更新 | boolean | false |
+
+

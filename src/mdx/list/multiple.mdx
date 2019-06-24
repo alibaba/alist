@@ -1,0 +1,91 @@
+---
+name: 3. 多实例列表
+route: /list/multiple
+menu: 5. NoList 列表
+---
+
+import { Playground } from 'docz'
+import react from 'react';
+import { Input, Radio, Button } from 'nowrapper/lib/antd';
+import List, { Any, Filter, Table, Pagination } from 'nolist/lib/wrapper/antd';
+import 'antd/dist/antd.css';
+import 'nolist/dist/index.css';
+import 'nowrapper/dist/antd/index.css';
+
+# 多实例列表请求控制
+
+首先需要配置的 **multiple** 为 `true`, 其次需要对数据格式进行转换，可以通过 **query** 或 **formatAfter**。
+
+```jsx
+const formatAfter = () => {
+    return  {
+        code: 0,
+        data: { // 自定义
+            ...
+        }
+    };
+}
+<List multiple formatAfter={formatAfter} /> 
+```
+
+通过 **Any** 链接数据和 **Table**
+
+```jsx
+<List multiple formatAfter={formatAfter}>
+    <Any render={(grid) => {
+        const multipleData = grid.getMultipleData(); // formatAfter的data
+        if (!multipleData) return null;
+
+        const { sectionA, sectionB } = multipleData;
+        return <div>
+            <Table dataSource={sectionA} />
+            <Table dataSource={sectionB} />
+        </div>
+    }} />
+</List>
+```
+
+# 分页多实例
+
+多实例列表的分页通常是静态分页，即切换页面时都在本地执行而不会请求远程服务。
+
+<Playground>
+    {
+        () => {
+            const formatAfter = (data) => {
+                const [one, two, three, four] = data;
+                return {
+                    sectionA: [one, two],
+                    sectionB: [three, four],
+                };
+            };
+
+            const url = 'https://easy-mock.com/mock/5d0c959c21fecc1d80b2a8bc/list/list';
+            return <List multiple url={url} formatAfter={formatAfter}>
+                <Any render={(grid) => {
+                    const multipleData = grid.getMultipleData(); // formatAfter的data
+                    if (!multipleData) return null;
+
+                    const { sectionA, sectionB } = multipleData;
+                    return <div>
+                        <List dataSource={sectionA} pageSize={2}>
+                            <Table>
+                                <Table.Column title="id" dataIndex="id" />
+                                <Table.Column title="username" dataIndex="username" />
+                            </Table>
+                            <Pagination />
+                        </List>
+
+                        <List dataSource={sectionB} pageSize={2}>
+                            <Table>
+                                <Table.Column title="id" dataIndex="id" />
+                                <Table.Column title="username" dataIndex="username" />
+                            </Table>
+                            <Pagination />
+                        </List>
+                    </div>
+                }} />
+            </List>
+        }
+    }
+</Playground>

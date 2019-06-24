@@ -1,0 +1,50 @@
+---
+name: 2. 自定义请求
+route: /list/query
+menu: 5. NoList 列表
+---
+
+import { Playground } from 'docz'
+import react from 'react';
+import { Input, Radio, Button } from 'nowrapper/lib/antd';
+import List, { Any, Filter, Table, Pagination } from 'nolist/lib/wrapper/antd';
+import 'antd/dist/antd.css';
+import 'nolist/dist/index.css';
+import 'nowrapper/dist/antd/index.css';
+
+# 自定义请求数据 formatBefore
+
+此方法会在请求发出**前**格式化请求数据
+
+```jsx
+<DataGrid formatBefore={formatBefore} />
+```
+
+# 自定义请求数据 formatAfter
+
+此方法会在请求发出，**接受到数据后**，对返回数据进行格式化。
+
+```jsx
+<DataGrid formatAfter={formatAfter} />
+```
+
+# 自定义完整请求 query
+
+此方法返回**Promise**, **Promise**的返回值为[标准数据格式](/list/basic#标准数据格式)。
+
+如果抛出异常，则认为是失败，会触发 **onError**。
+
+```jsx
+const query = async () => {
+    const result = await someTask(); // do some async task here
+    return {
+        dataList: [], // 列表数据
+        total: 2, // 总条目数
+        totalPage: 2, // 总页数
+        pageSize: 10, // 分页标准
+        currentPage: 1, // 当前所在页数（从1开始）
+    }
+};
+
+<DataGrid query={query} />
+```
