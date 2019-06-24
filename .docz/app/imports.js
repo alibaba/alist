@@ -19,49 +19,17 @@ export const imports = {
     import(
       /* webpackPrefetch: true, webpackChunkName: "src-mdx-component-standard" */ 'src/mdx/component/standard.mdx'
     ),
-  'src/mdx/core/index.mdx': () =>
-    import(
-      /* webpackPrefetch: true, webpackChunkName: "src-mdx-core-index" */ 'src/mdx/core/index.mdx'
-    ),
-  'src/mdx/core/interceptor.mdx': () =>
-    import(
-      /* webpackPrefetch: true, webpackChunkName: "src-mdx-core-interceptor" */ 'src/mdx/core/interceptor.mdx'
-    ),
-  'src/mdx/core/props.mdx': () =>
-    import(
-      /* webpackPrefetch: true, webpackChunkName: "src-mdx-core-props" */ 'src/mdx/core/props.mdx'
-    ),
-  'src/mdx/core/reset.mdx': () =>
-    import(
-      /* webpackPrefetch: true, webpackChunkName: "src-mdx-core-reset" */ 'src/mdx/core/reset.mdx'
-    ),
-  'src/mdx/core/status.mdx': () =>
-    import(
-      /* webpackPrefetch: true, webpackChunkName: "src-mdx-core-status" */ 'src/mdx/core/status.mdx'
-    ),
-  'src/mdx/core/validate.mdx': () =>
-    import(
-      /* webpackPrefetch: true, webpackChunkName: "src-mdx-core-validate" */ 'src/mdx/core/validate.mdx'
-    ),
   'src/mdx/getStart/antd.mdx': () =>
     import(
       /* webpackPrefetch: true, webpackChunkName: "src-mdx-get-start-antd" */ 'src/mdx/getStart/antd.mdx'
     ),
-  'src/mdx/core/validate-inner.mdx': () =>
+  'src/mdx/getStart/antd-pro.mdx': () =>
     import(
-      /* webpackPrefetch: true, webpackChunkName: "src-mdx-core-validate-inner" */ 'src/mdx/core/validate-inner.mdx'
-    ),
-  'src/mdx/core/value.mdx': () =>
-    import(
-      /* webpackPrefetch: true, webpackChunkName: "src-mdx-core-value" */ 'src/mdx/core/value.mdx'
+      /* webpackPrefetch: true, webpackChunkName: "src-mdx-get-start-antd-pro" */ 'src/mdx/getStart/antd-pro.mdx'
     ),
   'src/mdx/getStart/fusion.mdx': () =>
     import(
       /* webpackPrefetch: true, webpackChunkName: "src-mdx-get-start-fusion" */ 'src/mdx/getStart/fusion.mdx'
-    ),
-  'src/mdx/getStart/antd-pro.mdx': () =>
-    import(
-      /* webpackPrefetch: true, webpackChunkName: "src-mdx-get-start-antd-pro" */ 'src/mdx/getStart/antd-pro.mdx'
     ),
   'src/mdx/getStart/overview.mdx': () =>
     import(
@@ -83,12 +51,48 @@ export const imports = {
     import(
       /* webpackPrefetch: true, webpackChunkName: "src-mdx-repeater-config" */ 'src/mdx/repeater/config.mdx'
     ),
+  'src/mdx/repeater/view.mdx': () =>
+    import(
+      /* webpackPrefetch: true, webpackChunkName: "src-mdx-repeater-view" */ 'src/mdx/repeater/view.mdx'
+    ),
   'src/mdx/repeater/dynamic.mdx': () =>
     import(
       /* webpackPrefetch: true, webpackChunkName: "src-mdx-repeater-dynamic" */ 'src/mdx/repeater/dynamic.mdx'
     ),
-  'src/mdx/repeater/view.mdx': () =>
+  'src/mdx/core/index.mdx': () =>
     import(
-      /* webpackPrefetch: true, webpackChunkName: "src-mdx-repeater-view" */ 'src/mdx/repeater/view.mdx'
+      /* webpackPrefetch: true, webpackChunkName: "src-mdx-core-index" */ 'src/mdx/core/index.mdx'
+    ),
+  'src/mdx/core/interceptor.mdx': () =>
+    import(
+      /* webpackPrefetch: true, webpackChunkName: "src-mdx-core-interceptor" */ 'src/mdx/core/interceptor.mdx'
+    ),
+  'src/mdx/core/props.mdx': () =>
+    import(
+      /* webpackPrefetch: true, webpackChunkName: "src-mdx-core-props" */ 'src/mdx/core/props.mdx'
+    ),
+  'src/mdx/core/reset.mdx': () =>
+    import(
+      /* webpackPrefetch: true, webpackChunkName: "src-mdx-core-reset" */ 'src/mdx/core/reset.mdx'
+    ),
+  'src/mdx/core/status.mdx': () =>
+    import(
+      /* webpackPrefetch: true, webpackChunkName: "src-mdx-core-status" */ 'src/mdx/core/status.mdx'
+    ),
+  'src/mdx/core/validate-inner.mdx': () =>
+    import(
+      /* webpackPrefetch: true, webpackChunkName: "src-mdx-core-validate-inner" */ 'src/mdx/core/validate-inner.mdx'
+    ),
+  'src/mdx/core/value.mdx': () =>
+    import(
+      /* webpackPrefetch: true, webpackChunkName: "src-mdx-core-value" */ 'src/mdx/core/value.mdx'
+    ),
+  'src/mdx/core/validate.mdx': () =>
+    import(
+      /* webpackPrefetch: true, webpackChunkName: "src-mdx-core-validate" */ 'src/mdx/core/validate.mdx'
+    ),
+  'src/mdx/list/index.mdx': () =>
+    import(
+      /* webpackPrefetch: true, webpackChunkName: "src-mdx-list-index" */ 'src/mdx/list/index.mdx'
     ),
 }

@@ -1,0 +1,200 @@
+---
+name: 1. 基础使用
+route: /list/basic
+menu: 5. NoList 列表
+---
+
+import { Playground } from 'docz'
+import react from 'react';
+import { Input, Radio, Button } from 'nowrapper/lib/antd';
+import List, { Any, Filter, Table, Pagination } from 'nolist/lib/wrapper/antd';
+import 'antd/dist/antd.css';
+import 'nolist/dist/index.css';
+import 'nowrapper/dist/antd/index.css';
+
+# 设计背景
+
+**NoList**的用法非常简单，但真正属于 **"NoList"** 的东西非常少，剥去UI外壳，也只剩下一个纯数据逻辑的 **ListCore** 了。
+
+之所以这样设计的原因是在于，业界诸如 **Ant-Design** 或 **Fusion-Next** 的 `Table` 已经很强大了。
+
+因此引入了在 **NoForm** 中已经采用的**适配器机制(nowrapper)**，花费小的代价就能面向各大组件库进行开发，任意切换。
+
+
+# 基础使用
+
+## 简明示意
+
+<img src="https://img.alicdn.com/tfs/TB1RKj2dCSD3KVjSZFKXXb10VXa-671-693.png" style={{ width: '400px', marginBottom: '16px' }} />
+
+
+1. **List** 中会有 **核心listCore** 负责请求的发送，以及请求前和请求返回的格式化：`formatBefore` 和 `formatAfter`。
+2. **核心listCore** 会将返回后的数据（已标准化后），自动按照属性注入 **Table** 和 **Pagination**。
+
+## 如何使用
+
+#### 引入方式
+
+```jsx
+import List, { Any, Filter, Table, Pagination } from 'nolist/lib/wrapper/antd';
+import 'antd/dist/antd.css';
+import 'nolist/dist/index.css'; // lib/index.scss
+import 'nowrapper/dist/antd/index.css'; // lib/antd/index.scss
+```
+
+注意，这里的 **Any**, **Filter**, **Table**, **Pagination** 在List下都做了自动获取数据的能力，反之，原生的则不具备此效果。
+
+## 初体验
+
+通过 **onMount** 可以获取到列表核心，进行各类操作，如 刷新，跳转页面等，更多请查看API一节。
+
+```jsx
+// 支持 antd 和 next
+// import List, { Any, Filter, Table, Pagination } from 'nolist/lib/wrapper/next';
+import List, { Any, Filter, Table, Pagination } from 'nolist/lib/wrapper/antd';
+import { Input } from 'nowrapper/lib/antd';
+
+const onMount = (core) => {
+    window.listCore = core;
+}
+
+const App = () => <List  url="/docs/mock.json" onMount={onMount}>
+    <Filter >
+      <Filter.Item label="username" name="username"><Input /></Filter.Item>
+    </Filter>
+    <Table>
+      <Table.Column title="username" dataIndex="username" />
+    </Table>
+    <Pagination />
+</List>
+```
+
+#### 简单示例
+
+<Playground>
+    {
+        () => {
+            const onMount = (core) => {
+                window.listCore = core;
+            }
+
+            const url = 'https://easy-mock.com/mock/5d0c959c21fecc1d80b2a8bc/list/list';
+            return <List url={url} onMount={onMount} defaultFilterValues={{ id: '123' }}>
+                <Any render={(core) => {
+                    const filterData = core.getFilterData();
+                    const pageData = core.getPageData();
+                    return <div>
+                        <div>列表搜索数据: {JSON.stringify(filterData)}</div>
+                        <div>列表返回数据: {JSON.stringify(pageData)}</div>
+                    </div>
+                }} />
+                <Filter>
+                    <Filter.Item label="id" name="id"><Input /></Filter.Item>
+                    <Filter.Item label="username" name="username"><Input /></Filter.Item>
+                    <Filter.Item label="age" name="age"><Input /></Filter.Item>
+                </Filter>
+                <Table>
+                    <Table.Column title="id" dataIndex="id" />
+                    <Table.Column title="username" dataIndex="username" />
+                </Table>
+                <Pagination />
+            </List>
+        }
+    }
+</Playground>
+
+#### 多列布局
+
+* **Filter** 默认是3列布局，可以通过 `cols` 改变
+* **Filter.Item** 默认是占1列，可以通过 `colSpan` 改变
+
+以下例子就是 id搜索框 独占一行(colSpan=4), username 和 age 平分(colSpan=2)
+
+<Playground>
+    {
+        () => {
+            const onMount = (core) => {
+                window.listCore = core;
+            }
+
+            const url = 'https://easy-mock.com/mock/5d0c959c21fecc1d80b2a8bc/list/list';
+            return <List onMount={onMount}>
+                <Filter cols={4}>
+                    <Filter.Item colSpan={4} label="id" name="id"><Input /></Filter.Item>
+                    <Filter.Item colSpan={2} label="username" name="username"><Input /></Filter.Item>
+                    <Filter.Item colSpan={2} label="age" name="age"><Input /></Filter.Item>
+                </Filter>
+                <Table>
+                    <Table.Column title="id" dataIndex="id" />
+                    <Table.Column title="username" dataIndex="username" />
+                </Table>
+                <Pagination />
+            </List>
+        }
+    }
+</Playground>
+
+### 自定义布局
+
+* 传入 `noDefaultLayout` 到 **Filter**， 这一属性会使得默认的布局消失（查询和清理按钮也会消失）
+* 通过 **Filter.Search** 和 **Filter.Clear** 进行自定义操作按钮定制。
+
+<Playground>
+    {
+        () => {
+            const onMount = (core) => {
+                window.listCore = core;
+            }
+
+            const url = 'https://easy-mock.com/mock/5d0c959c21fecc1d80b2a8bc/list/list';
+            return <List onMount={onMount}>
+                <Filter noDefaultLayout>
+                    <Filter.Item label="id" name="id"><Input /></Filter.Item>
+                    <Filter.Item label="username" name="username"><Input /></Filter.Item>
+                    <Filter.Search style={{ marginRight: '8px' }}>
+                        <Button type="primary">搜索</Button>
+                    </Filter.Search>
+                    <Filter.Clear>
+                        <Button>清空</Button>
+                    </Filter.Clear>
+                </Filter>
+                <Table>
+                    <Table.Column title="id" dataIndex="id" />
+                    <Table.Column title="username" dataIndex="username" />
+                </Table>
+                <Pagination />
+            </List>
+        }
+    }
+</Playground>
+
+## List 属性
+
+| 参数名 | 作用 | 类型 | 默认值 |
+| ------ | ------ | ------ | ----- |
+| url | 请求url，默认GET | string | null |
+| handleError | 请求发生错误时回调 | 函数 | noop |
+| onMount | 挂载成功回调，获取列表核心 | 函数 | noop |
+| formatFilter | 修改请求前搜索数据 | 函数 | noop |
+| formatBefore | 修改请求前数据 | 函数 | noop |
+| formatAfter | 修改请求完成后数据 | 函数 | noop |
+| query | 自定义请求 | () => Promise | noop |
+
+## Filter 属性
+
+| 参数名 | 作用 | 类型 | 默认值 |
+| ------ | ------ | ------ | ----- |
+| noDefaultLayout | 取消默认布局 | 布尔值 | false |
+| cols | 布局列数 | number | 3 |
+
+## Filter.Item 属性
+
+| 参数名 | 作用 | 类型 | 默认值 |
+| ------ | ------ | ------ | ----- |
+| colSpan | 默认占列数 | number | 1 |
+
+## Any 属性
+
+| 参数名 | 作用 | 类型 | 默认值 |
+| ------ | ------ | ------ | ----- |
+| render | 自定义渲染列表相关数据 | (core) => jsx | noop |
