@@ -19,7 +19,7 @@
     "indexHtml": "./index.html",
     "public": "./public",
     "hashRouter": true,
-    "base": "",
+    "base": "nopage",
     "plugins": [
       {},
       {},
@@ -34,7 +34,7 @@
       "key": "src/mdx/component/dialog.mdx",
       "value": {
         "name": "弹窗表单",
-        "route": "/component/dialog",
+        "route": "nopage/component/dialog",
         "menu": "表单组件",
         "order": 5,
         "menuOrder": 3,
@@ -77,10 +77,102 @@
       }
     },
     {
+      "key": "src/mdx/component/form.mdx",
+      "value": {
+        "name": "Form",
+        "route": "nopage/component/form",
+        "menu": "表单组件",
+        "order": 1,
+        "menuOrder": 3,
+        "id": "20a12953bd6d20d576f2babd11192970",
+        "filepath": "src/mdx/component/form.mdx",
+        "link": "",
+        "slug": "src-mdx-component-form",
+        "headings": [
+          {
+            "slug": "form",
+            "depth": 1,
+            "value": "Form"
+          },
+          {
+            "slug": "form是什么",
+            "depth": 2,
+            "value": "Form是什么"
+          },
+          {
+            "slug": "引入方式",
+            "depth": 2,
+            "value": "引入方式"
+          },
+          {
+            "slug": "如何使用",
+            "depth": 2,
+            "value": "如何使用"
+          },
+          {
+            "slug": "布局",
+            "depth": 2,
+            "value": "布局"
+          },
+          {
+            "slug": "作为组件使用",
+            "depth": 2,
+            "value": "作为组件使用"
+          },
+          {
+            "slug": "jsx属性",
+            "depth": 2,
+            "value": "JSX属性"
+          }
+        ]
+      }
+    },
+    {
+      "key": "src/mdx/component/if.mdx",
+      "value": {
+        "name": "If",
+        "route": "nopage/component/if",
+        "menu": "表单组件",
+        "order": 3,
+        "menuOrder": 3,
+        "id": "78a9a14506e647e965bd53ca566f3fda",
+        "filepath": "src/mdx/component/if.mdx",
+        "link": "",
+        "slug": "src-mdx-component-if",
+        "headings": [
+          {
+            "slug": "if",
+            "depth": 1,
+            "value": "If"
+          },
+          {
+            "slug": "引入方式",
+            "depth": 2,
+            "value": "引入方式"
+          },
+          {
+            "slug": "使用方式",
+            "depth": 2,
+            "value": "使用方式"
+          },
+          {
+            "slug": "实例演示",
+            "depth": 2,
+            "value": "实例演示"
+          },
+          {
+            "slug": "demo",
+            "depth": 2,
+            "value": "DEMO"
+          }
+        ]
+      }
+    },
+    {
       "key": "src/mdx/component/form-item.mdx",
       "value": {
         "name": "FormItem与Item",
-        "route": "/component/form-item",
+        "route": "nopage/component/form-item",
         "menu": "表单组件",
         "order": 2,
         "menuOrder": 3,
@@ -143,51 +235,10 @@
       }
     },
     {
-      "key": "src/mdx/component/if.mdx",
-      "value": {
-        "name": "If",
-        "route": "/component/if",
-        "menu": "表单组件",
-        "order": 3,
-        "menuOrder": 3,
-        "id": "78a9a14506e647e965bd53ca566f3fda",
-        "filepath": "src/mdx/component/if.mdx",
-        "link": "",
-        "slug": "src-mdx-component-if",
-        "headings": [
-          {
-            "slug": "if",
-            "depth": 1,
-            "value": "If"
-          },
-          {
-            "slug": "引入方式",
-            "depth": 2,
-            "value": "引入方式"
-          },
-          {
-            "slug": "使用方式",
-            "depth": 2,
-            "value": "使用方式"
-          },
-          {
-            "slug": "实例演示",
-            "depth": 2,
-            "value": "实例演示"
-          },
-          {
-            "slug": "demo",
-            "depth": 2,
-            "value": "DEMO"
-          }
-        ]
-      }
-    },
-    {
       "key": "src/mdx/component/standard.mdx",
       "value": {
         "name": "自定义组件",
-        "route": "/component/standard",
+        "route": "nopage/component/standard",
         "menu": "表单组件",
         "order": 4,
         "menuOrder": 3,
@@ -215,61 +266,10 @@
       }
     },
     {
-      "key": "src/mdx/component/form.mdx",
-      "value": {
-        "name": "Form",
-        "route": "/component/form",
-        "menu": "表单组件",
-        "order": 1,
-        "menuOrder": 3,
-        "id": "20a12953bd6d20d576f2babd11192970",
-        "filepath": "src/mdx/component/form.mdx",
-        "link": "",
-        "slug": "src-mdx-component-form",
-        "headings": [
-          {
-            "slug": "form",
-            "depth": 1,
-            "value": "Form"
-          },
-          {
-            "slug": "form是什么",
-            "depth": 2,
-            "value": "Form是什么"
-          },
-          {
-            "slug": "引入方式",
-            "depth": 2,
-            "value": "引入方式"
-          },
-          {
-            "slug": "如何使用",
-            "depth": 2,
-            "value": "如何使用"
-          },
-          {
-            "slug": "布局",
-            "depth": 2,
-            "value": "布局"
-          },
-          {
-            "slug": "作为组件使用",
-            "depth": 2,
-            "value": "作为组件使用"
-          },
-          {
-            "slug": "jsx属性",
-            "depth": 2,
-            "value": "JSX属性"
-          }
-        ]
-      }
-    },
-    {
       "key": "src/mdx/core/index.mdx",
       "value": {
         "name": "了解核心",
-        "route": "/core/index",
+        "route": "nopage/core/index",
         "menu": "FormCore 表单核心",
         "order": 1,
         "menuOrder": 2,
@@ -335,7 +335,7 @@
       "key": "src/mdx/core/interceptor.mdx",
       "value": {
         "name": "拦截器",
-        "route": "/core/interceptor",
+        "route": "nopage/core/interceptor",
         "menu": "FormCore 表单核心",
         "order": 8,
         "menuOrder": 2,
@@ -356,7 +356,7 @@
       "key": "src/mdx/core/props.mdx",
       "value": {
         "name": "属性控制",
-        "route": "/core/props",
+        "route": "nopage/core/props",
         "menu": "FormCore 表单核心",
         "order": 4,
         "menuOrder": 2,
@@ -392,7 +392,7 @@
       "key": "src/mdx/core/reset.mdx",
       "value": {
         "name": "重置值",
-        "route": "/core/reset",
+        "route": "nopage/core/reset",
         "menu": "FormCore 表单核心",
         "order": 7,
         "menuOrder": 2,
@@ -425,31 +425,10 @@
       }
     },
     {
-      "key": "src/mdx/core/validate-inner.mdx",
-      "value": {
-        "name": "内置校验规则",
-        "route": "/core/validate-inner",
-        "menu": "FormCore 表单核心",
-        "order": 6,
-        "menuOrder": 2,
-        "id": "c01700f92e5382b46dac7689310ab5ae",
-        "filepath": "src/mdx/core/validate-inner.mdx",
-        "link": "",
-        "slug": "src-mdx-core-validate-inner",
-        "headings": [
-          {
-            "slug": "内置校验规则",
-            "depth": 1,
-            "value": "内置校验规则"
-          }
-        ]
-      }
-    },
-    {
       "key": "src/mdx/core/status.mdx",
       "value": {
         "name": "状态控制",
-        "route": "/core/status",
+        "route": "nopage/core/status",
         "menu": "FormCore 表单核心",
         "order": 3,
         "menuOrder": 2,
@@ -482,10 +461,31 @@
       }
     },
     {
+      "key": "src/mdx/core/validate-inner.mdx",
+      "value": {
+        "name": "内置校验规则",
+        "route": "nopage/core/validate-inner",
+        "menu": "FormCore 表单核心",
+        "order": 6,
+        "menuOrder": 2,
+        "id": "c01700f92e5382b46dac7689310ab5ae",
+        "filepath": "src/mdx/core/validate-inner.mdx",
+        "link": "",
+        "slug": "src-mdx-core-validate-inner",
+        "headings": [
+          {
+            "slug": "内置校验规则",
+            "depth": 1,
+            "value": "内置校验规则"
+          }
+        ]
+      }
+    },
+    {
       "key": "src/mdx/core/validate.mdx",
       "value": {
         "name": "校验",
-        "route": "/core/validate",
+        "route": "nopage/core/validate",
         "menu": "FormCore 表单核心",
         "order": 5,
         "menuOrder": 2,
@@ -570,8 +570,8 @@
     {
       "key": "src/mdx/core/value.mdx",
       "value": {
-        "name": "2. 值控制",
-        "route": "/core/value",
+        "name": "值控制",
+        "route": "nopage/core/value",
         "menu": "FormCore 表单核心",
         "order": 2,
         "menuOrder": 2,
@@ -599,51 +599,10 @@
       }
     },
     {
-      "key": "src/mdx/getStart/antd-pro.mdx",
-      "value": {
-        "name": "Ant-Design-Pro最佳实践",
-        "route": "/get-start/antd-pro-best-practise",
-        "menu": "Getting Started",
-        "order": 4,
-        "menuOrder": 1,
-        "id": "daf7dfe225a53f1a855d08d4b82e56a7",
-        "filepath": "src/mdx/getStart/antd-pro.mdx",
-        "link": "",
-        "slug": "src-mdx-get-start-antd-pro",
-        "headings": [
-          {
-            "slug": "拉取实例项目",
-            "depth": 2,
-            "value": "拉取实例项目"
-          },
-          {
-            "slug": "安装",
-            "depth": 2,
-            "value": "安装"
-          },
-          {
-            "slug": "运行",
-            "depth": 2,
-            "value": "运行"
-          },
-          {
-            "slug": "牛刀小试",
-            "depth": 2,
-            "value": "牛刀小试"
-          },
-          {
-            "slug": "修改样式-styleless",
-            "depth": 2,
-            "value": "修改样式 style.less"
-          }
-        ]
-      }
-    },
-    {
       "key": "src/mdx/getStart/antd.mdx",
       "value": {
         "name": "Ant-Design最佳实践",
-        "route": "/get-start/antd-best-practise",
+        "route": "nopage/get-start/antd-best-practise",
         "menu": "Getting Started",
         "order": 3,
         "menuOrder": 1,
@@ -709,7 +668,7 @@
       "key": "src/mdx/getStart/fusion.mdx",
       "value": {
         "name": "Fusion-Next最佳实践",
-        "route": "/get-start/fusion-best-practise",
+        "route": "nopage/get-start/fusion-best-practise",
         "menu": "Getting Started",
         "order": 5,
         "menuOrder": 1,
@@ -772,10 +731,51 @@
       }
     },
     {
+      "key": "src/mdx/getStart/antd-pro.mdx",
+      "value": {
+        "name": "Ant-Design-Pro最佳实践",
+        "route": "nopage/get-start/antd-pro-best-practise",
+        "menu": "Getting Started",
+        "order": 4,
+        "menuOrder": 1,
+        "id": "daf7dfe225a53f1a855d08d4b82e56a7",
+        "filepath": "src/mdx/getStart/antd-pro.mdx",
+        "link": "",
+        "slug": "src-mdx-get-start-antd-pro",
+        "headings": [
+          {
+            "slug": "拉取实例项目",
+            "depth": 2,
+            "value": "拉取实例项目"
+          },
+          {
+            "slug": "安装",
+            "depth": 2,
+            "value": "安装"
+          },
+          {
+            "slug": "运行",
+            "depth": 2,
+            "value": "运行"
+          },
+          {
+            "slug": "牛刀小试",
+            "depth": 2,
+            "value": "牛刀小试"
+          },
+          {
+            "slug": "修改样式-styleless",
+            "depth": 2,
+            "value": "修改样式 style.less"
+          }
+        ]
+      }
+    },
+    {
       "key": "src/mdx/getStart/overview.mdx",
       "value": {
         "name": "概述",
-        "route": "/",
+        "route": "nopage/",
         "menu": "Getting Started",
         "order": 1,
         "menuOrder": 1,
@@ -811,7 +811,7 @@
       "key": "src/mdx/getStart/usage.mdx",
       "value": {
         "name": "安装及使用",
-        "route": "/get-start/usage",
+        "route": "nopage/get-start/usage",
         "menu": "Getting Started",
         "order": 2,
         "menuOrder": 1,
@@ -842,7 +842,7 @@
       "key": "src/mdx/list/index.mdx",
       "value": {
         "name": "基础使用",
-        "route": "/list/basic",
+        "route": "nopage/list/basic",
         "menu": "NoList 列表",
         "order": 1,
         "menuOrder": 5,
@@ -928,7 +928,7 @@
       "key": "src/mdx/list/multiple.mdx",
       "value": {
         "name": "多实例列表",
-        "route": "/list/multiple",
+        "route": "nopage/list/multiple",
         "menu": "NoList 列表",
         "order": 3,
         "menuOrder": 5,
@@ -954,7 +954,7 @@
       "key": "src/mdx/list/query.mdx",
       "value": {
         "name": "自定义请求",
-        "route": "/list/query",
+        "route": "nopage/list/query",
         "menu": "NoList 列表",
         "order": 2,
         "menuOrder": 5,
@@ -985,7 +985,7 @@
       "key": "src/mdx/repeater/async-handler.mdx",
       "value": {
         "name": "AsyncHandler 钩子",
-        "route": "/repeater/async-handler",
+        "route": "nopage/repeater/async-handler",
         "menu": "Repeater 重复表单",
         "order": 4,
         "menuOrder": 4,
@@ -1031,7 +1031,7 @@
       "key": "src/mdx/repeater/basic.mdx",
       "value": {
         "name": "基本使用",
-        "route": "/repeater/usage",
+        "route": "nopage/repeater/usage",
         "menu": "Repeater 重复表单",
         "order": 1,
         "menuOrder": 4,
@@ -1107,7 +1107,7 @@
       "key": "src/mdx/repeater/config.mdx",
       "value": {
         "name": "配置",
-        "route": "/repeater/config",
+        "route": "nopage/repeater/config",
         "menu": "Repeater 重复表单",
         "order": 2,
         "menuOrder": 4,
@@ -1165,36 +1165,10 @@
       }
     },
     {
-      "key": "src/mdx/repeater/dynamic.mdx",
-      "value": {
-        "name": "与外界联动",
-        "route": "/repeater/dynamic",
-        "menu": "Repeater 重复表单",
-        "order": 5,
-        "menuOrder": 4,
-        "id": "eb096ac8898ec1175ce4b4ca4fe78449",
-        "filepath": "src/mdx/repeater/dynamic.mdx",
-        "link": "",
-        "slug": "src-mdx-repeater-dynamic",
-        "headings": [
-          {
-            "slug": "repeater-与外界联动",
-            "depth": 1,
-            "value": "Repeater 与外界联动"
-          },
-          {
-            "slug": "基于item-render实现与外界组件联动",
-            "depth": 2,
-            "value": "基于Item render实现与外界组件联动"
-          }
-        ]
-      }
-    },
-    {
       "key": "src/mdx/repeater/view.mdx",
       "value": {
         "name": "完全自定义渲染",
-        "route": "/repeater/view",
+        "route": "nopage/repeater/view",
         "menu": "Repeater 重复表单",
         "order": 3,
         "menuOrder": 4,
@@ -1227,6 +1201,32 @@
             "slug": "actionbutton-类型",
             "depth": 2,
             "value": "ActionButton 类型"
+          }
+        ]
+      }
+    },
+    {
+      "key": "src/mdx/repeater/dynamic.mdx",
+      "value": {
+        "name": "与外界联动",
+        "route": "nopage/repeater/dynamic",
+        "menu": "Repeater 重复表单",
+        "order": 5,
+        "menuOrder": 4,
+        "id": "eb096ac8898ec1175ce4b4ca4fe78449",
+        "filepath": "src/mdx/repeater/dynamic.mdx",
+        "link": "",
+        "slug": "src-mdx-repeater-dynamic",
+        "headings": [
+          {
+            "slug": "repeater-与外界联动",
+            "depth": 1,
+            "value": "Repeater 与外界联动"
+          },
+          {
+            "slug": "基于item-render实现与外界组件联动",
+            "depth": 2,
+            "value": "基于Item render实现与外界组件联动"
           }
         ]
       }

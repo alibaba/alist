@@ -3,21 +3,21 @@ export const imports = {
     import(
       /* webpackPrefetch: true, webpackChunkName: "src-mdx-component-dialog" */ 'src/mdx/component/dialog.mdx'
     ),
-  'src/mdx/component/form-item.mdx': () =>
+  'src/mdx/component/form.mdx': () =>
     import(
-      /* webpackPrefetch: true, webpackChunkName: "src-mdx-component-form-item" */ 'src/mdx/component/form-item.mdx'
+      /* webpackPrefetch: true, webpackChunkName: "src-mdx-component-form" */ 'src/mdx/component/form.mdx'
     ),
   'src/mdx/component/if.mdx': () =>
     import(
       /* webpackPrefetch: true, webpackChunkName: "src-mdx-component-if" */ 'src/mdx/component/if.mdx'
     ),
+  'src/mdx/component/form-item.mdx': () =>
+    import(
+      /* webpackPrefetch: true, webpackChunkName: "src-mdx-component-form-item" */ 'src/mdx/component/form-item.mdx'
+    ),
   'src/mdx/component/standard.mdx': () =>
     import(
       /* webpackPrefetch: true, webpackChunkName: "src-mdx-component-standard" */ 'src/mdx/component/standard.mdx'
-    ),
-  'src/mdx/component/form.mdx': () =>
-    import(
-      /* webpackPrefetch: true, webpackChunkName: "src-mdx-component-form" */ 'src/mdx/component/form.mdx'
     ),
   'src/mdx/core/index.mdx': () =>
     import(
@@ -35,13 +35,13 @@ export const imports = {
     import(
       /* webpackPrefetch: true, webpackChunkName: "src-mdx-core-reset" */ 'src/mdx/core/reset.mdx'
     ),
-  'src/mdx/core/validate-inner.mdx': () =>
-    import(
-      /* webpackPrefetch: true, webpackChunkName: "src-mdx-core-validate-inner" */ 'src/mdx/core/validate-inner.mdx'
-    ),
   'src/mdx/core/status.mdx': () =>
     import(
       /* webpackPrefetch: true, webpackChunkName: "src-mdx-core-status" */ 'src/mdx/core/status.mdx'
+    ),
+  'src/mdx/core/validate-inner.mdx': () =>
+    import(
+      /* webpackPrefetch: true, webpackChunkName: "src-mdx-core-validate-inner" */ 'src/mdx/core/validate-inner.mdx'
     ),
   'src/mdx/core/validate.mdx': () =>
     import(
@@ -51,10 +51,6 @@ export const imports = {
     import(
       /* webpackPrefetch: true, webpackChunkName: "src-mdx-core-value" */ 'src/mdx/core/value.mdx'
     ),
-  'src/mdx/getStart/antd-pro.mdx': () =>
-    import(
-      /* webpackPrefetch: true, webpackChunkName: "src-mdx-get-start-antd-pro" */ 'src/mdx/getStart/antd-pro.mdx'
-    ),
   'src/mdx/getStart/antd.mdx': () =>
     import(
       /* webpackPrefetch: true, webpackChunkName: "src-mdx-get-start-antd" */ 'src/mdx/getStart/antd.mdx'
@@ -62,6 +58,10 @@ export const imports = {
   'src/mdx/getStart/fusion.mdx': () =>
     import(
       /* webpackPrefetch: true, webpackChunkName: "src-mdx-get-start-fusion" */ 'src/mdx/getStart/fusion.mdx'
+    ),
+  'src/mdx/getStart/antd-pro.mdx': () =>
+    import(
+      /* webpackPrefetch: true, webpackChunkName: "src-mdx-get-start-antd-pro" */ 'src/mdx/getStart/antd-pro.mdx'
     ),
   'src/mdx/getStart/overview.mdx': () =>
     import(
@@ -95,12 +95,12 @@ export const imports = {
     import(
       /* webpackPrefetch: true, webpackChunkName: "src-mdx-repeater-config" */ 'src/mdx/repeater/config.mdx'
     ),
-  'src/mdx/repeater/dynamic.mdx': () =>
-    import(
-      /* webpackPrefetch: true, webpackChunkName: "src-mdx-repeater-dynamic" */ 'src/mdx/repeater/dynamic.mdx'
-    ),
   'src/mdx/repeater/view.mdx': () =>
     import(
       /* webpackPrefetch: true, webpackChunkName: "src-mdx-repeater-view" */ 'src/mdx/repeater/view.mdx'
+    ),
+  'src/mdx/repeater/dynamic.mdx': () =>
+    import(
+      /* webpackPrefetch: true, webpackChunkName: "src-mdx-repeater-dynamic" */ 'src/mdx/repeater/dynamic.mdx'
     ),
 }
