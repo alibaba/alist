@@ -2,7 +2,7 @@
   "name": "docz-noform",
   "scripts": {
     "start": "father doc dev -p 9001 --websocketPort=8738",
-    "build": "father doc build --base .",
+    "build": "father doc build --base /",
     "deploy": "father doc deploy"
   },
   "homepage": "./",
