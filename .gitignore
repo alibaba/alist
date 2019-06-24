@@ -7,7 +7,6 @@
 /build
 /.eslintcache
 coverage
-dist
 /.package.json
 package-lock.json
 
