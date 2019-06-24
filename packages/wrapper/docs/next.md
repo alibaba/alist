@@ -138,6 +138,11 @@ class App extends React.Component {
                 <FormItem label="AutoComplete" name="AutoComplete"><AutoComplete placeholder="abcdefg" dataSource={dataSource} /></FormItem>                
                 <FormItem label="TextArea" name="TextArea"><TextArea placeholder="abcdefg" /></FormItem>
                 <FormItem label="select" name="select"><Select dataSource={dataSource} placeholder="abcdefg"/></FormItem>
+                <FormItem label="select" name="select">
+                    <Select placeholder="abcdefg">
+                        <Select.Option value="M">男</Select.Option>
+                    </Select>
+                </FormItem>
                 <FormItem label="Checkbox" name="Checkbox"><Checkbox >Selected</Checkbox></FormItem>
                 <FormItem label="Radio" name="Radio"><Radio >Selected</Radio></FormItem>
                 <FormItem label="Switch" name="Switch"><Switch /></FormItem>
