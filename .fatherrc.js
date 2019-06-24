@@ -11,6 +11,6 @@ export default {
       indexHtml: './index.html',
       public: './public',
       hashRouter: true,
-      base: "nopage",
+      base: "/nopage",
     },
 };
