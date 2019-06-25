@@ -51,7 +51,7 @@ export default class DataGrid extends React.Component {
     componentWillReceiveProps(nextProps) {
         const { dataSource } = nextProps;
         const { core } = this.state;
-        if (deepEqual(this.props.dataSource, dataSource)) {
+        if (core.mode === 'dataSource' && deepEqual(this.props.dataSource, dataSource)) {
             core.setDataSource(dataSource);
         }
     }

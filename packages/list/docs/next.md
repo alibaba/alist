@@ -57,7 +57,27 @@ const renderOperation = (a, b, c) => {
 };
 
 class NoList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedKeys: [],
+      selectedRecords: []
+    };
+  }
   render() {
+    const selectionProps = {
+      rowSelection: {
+        onChange: (selectedKeys, selectedRecords) => {
+            console.log('onRowChange', selectedKeys, selectedRecords);
+            this.setState({
+                selectedKeys,
+                selectedRecords
+            });
+        },
+        selectedRowKeys: this.state.selectedKeys,
+      }
+    }
+
     return (
       <div style={{ margin: '24px' }}>
         <List  url="/docs/mock.json" onError={handleError} onMount={onMount}>
@@ -73,7 +93,7 @@ class NoList extends React.Component {
                   </React.Fragment>
               </Filter.Item>
             </Filter>
-            <Table>
+            <Table {...selectionProps}>
               <Table.Column title="id" dataIndex="id" />
               <Table.Column title="username" dataIndex="username" />
               <Table.Column title="age" dataIndex="age" />
