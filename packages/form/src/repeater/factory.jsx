@@ -98,7 +98,7 @@ export default function CreateRepeater(bindSource, type, source) {
             }
 
             if (onMount) {
-                onMount(this.repeaterCore);
+                onMount(this.repeaterCore, this);
             }
         }
 
