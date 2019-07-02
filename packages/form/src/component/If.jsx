@@ -29,11 +29,14 @@ class If extends Component {
         const {
             when, form, ifCore, name, core: customCore,
         } = props;
+
         const upperForm = customCore || form;
         this.form = upperForm;
         this.core = this.form.addField({ when, name, isIf: true });
         this.core.jsx = this;
-        this.core.parentIf = ifCore;
+        if (!customCore) {
+            this.core.parentIf = ifCore;
+        }        
     }
 
     componentDidMount() {

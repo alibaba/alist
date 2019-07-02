@@ -49,8 +49,8 @@ class BaseFormItem extends React.Component {
 
     constructor(props) {
         super(props);
-        const { form, ifCore, core } = props;
-        const upperCore = core || form;
+        const { form, ifCore, core: customCore } = props;
+        const upperCore = customCore || form;
         if (!upperCore) {
             return this;
         }
@@ -76,7 +76,10 @@ class BaseFormItem extends React.Component {
         this.labelElement = React.createRef();
         this.fullElement = React.createRef();
 
-        this.ifCore = ifCore;
+        if (!customCore) {
+            this.ifCore = ifCore;
+        }
+        
         this.id = this.core.id || `__noform__item__${genId()}`;
 
         if (props.name) {
@@ -350,7 +353,7 @@ class BaseFormItem extends React.Component {
         };
 
         // 上有if item
-        if (ifCore) {
+        if (ifCore && !customForm) {
             option.when = ifCore.when;
             option.parentIf = ifCore.parentIf;
         }
@@ -466,6 +469,10 @@ class BaseFormItem extends React.Component {
             errorRender, className = '', name, style = {}, status: propStatus,
         } = itemProps;
         const status = name ? this.form.getItemStatus(name) : propStatus; // 动态status        
+
+        if (name === 'serviceType') {
+            debugger;
+        }
 
         // 状态隐藏
         if (status === HIDDEN) {
