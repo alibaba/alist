@@ -470,10 +470,6 @@ class BaseFormItem extends React.Component {
         } = itemProps;
         const status = name ? this.form.getItemStatus(name) : propStatus; // 动态status        
 
-        if (name === 'serviceType') {
-            debugger;
-        }
-
         // 状态隐藏
         if (status === HIDDEN) {
             return null;
