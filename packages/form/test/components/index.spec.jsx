@@ -126,7 +126,7 @@ describe('component/form basic function', () => {
         });
         await sleep(500);
         form.mount();        
-        expect(form.find('FormItem[name="username"] BaseFormItem').instance().fullElement.current.className).toEqual('no-form-item-content no-form-full');
+        expect(form.find('FormItem[name="username"] BaseFormItem').instance().fullElement.current.className).toEqual('no-form-item-content no-form-item-content-full');
     });
 
     it('should support label', () => {

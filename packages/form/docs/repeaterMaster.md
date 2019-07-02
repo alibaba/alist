@@ -17,7 +17,7 @@ import wrapper from '../src/wrapper/antd';
 import dialogWrapper from '../src/dialog/antd';
 import "./repeater.scss";
 
-const { Button, Input, Radio, Checkbox, Select, InputNumber }  = wrapper(Antd);
+const { Table, Button, Input, Radio, Checkbox, Select, InputNumber }  = wrapper(Antd);
 const Dialog = dialogWrapper(Antd)
 const { TableRepeater, InlineRepeater, Selectify, ActionButton } = repeater({ Dialog, Button, Input, Checkbox, Radio });
 
@@ -56,8 +56,8 @@ class Example extends React.Component {
                     { username: 1 }
                 ],
                 inlineRepeater: [
-                    { s1: 's1', s2: 's2', s3: 's3', source: 1, },
-                    { s1: 's1...', s2: 's2...', s3: 's3...', source: 2 }
+                    { username: 'username1', s1: 's1', s2: 's2', s3: 's3', source: 1, },
+                    // { username: 'username2',s1: 's1...', s2: 's2...', s3: 's3...', source: 2 }
                 ],
                 products: [
                     { name: 123}
@@ -71,7 +71,7 @@ class Example extends React.Component {
             },
             onChange: (fireKeys, values, ctx) => {
                 const { currentEventOpts } = ctx;
-                const { type } = currentEventOpts;
+                const { type } = currentEventOpts || {};
                 setTimeout(() => {
                     const withRender = type !== 'add';
                     ctx.validateItem('inlineRepeater', undefined, { withRender });
@@ -234,14 +234,42 @@ class Example extends React.Component {
     }
 
     renderView = (_, ctx) => {
-        const formList = ctx.getCoreList();
-        return formList.map((core) => {
-            return <Form core={core}>
-                <FormItem label="source" name="source">
+        const dataSource = ctx.getDataSource(); // 获取Repeater当前数据源
+        const coreList = ctx.getCoreList(); // 获取Repeater form核心列表
+        const isLoading = ctx.getLoading(); // 获取loading状态, 通过setLoading更改
+        // return coreList.map((core) => {
+        //     return <Form core={core}>
+        //         <FormItem label="source" name="source">
+        //             <Input />
+        //         </FormItem>
+        //     </Form>
+        // });
+
+        const cellProps = (rowIndex, colIndex) => {
+            console.log('===>', rowIndex, colIndex);
+            if (rowIndex === 0 && colIndex === 0) {
+                return {
+                    colSpan: 1,
+                    rowSpan: dataSource.length
+                };
+            }
+        };
+
+        return <Table dataSource={dataSource} cellProps={cellProps}>
+            <Table.Column title="username" dataIndex="username"/>
+            <Table.Column title="source" render={(_, record, index) => {
+                window.xc = coreList[index];
+                return <FormItem name="source" core={coreList[index]}>
                     <Input />
                 </FormItem>
-            </Form>
-        });
+            }} />
+            <Table.Column title="validate" render={(_, record, index) => {
+                return <Button onClick={() => {
+                    coreList[index].validate();
+                }}>validate</Button>
+            }} />
+        </Table> 
+        
     }
 
     render() {

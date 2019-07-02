@@ -49,12 +49,13 @@ class BaseFormItem extends React.Component {
 
     constructor(props) {
         super(props);
-        const { form, ifCore } = props;
-        if (!form) {
+        const { form, ifCore, core } = props;
+        const upperCore = core || form;
+        if (!upperCore) {
             return this;
         }
 
-        this.form = form;
+        this.form = upperCore;
         this.compProps = {};
         this.eventProps = {};
         this.predictChildForm = this.handlePredictForm(props, (component) => {
@@ -221,7 +222,7 @@ class BaseFormItem extends React.Component {
 
     getSuperFormProps = () => {
         let formProps = {};
-        if (this.core.form && this.core.form.jsx.props) {
+        if (this.core.form && this.core.form.jsx && this.core.form.jsx.props) {
             const {
                 defaultMinWidth, full, inline, inset, layout, colon,
             } = this.core.form.jsx.props;
@@ -237,7 +238,7 @@ class BaseFormItem extends React.Component {
     getWrapperClassName = () => {
         const isFlex = this.getIsFlexMode();
         const { name, error: propError } = this.props;
-        const inset = this.props.inset || this.form.jsx.props.inset;
+        const inset = this.props.inset || (this.form.jsx && this.form.jsx.props.inset);
         let error = this.form.getItemError(name); // 动态error
         if (!name) {
             error = propError;
@@ -267,7 +268,7 @@ class BaseFormItem extends React.Component {
         const props = this.form.getItemProps(name) || {}; // 动态props
         const status = name ? this.form.getItemStatus(name) : propStatus; // 动态status
         const layoutProps = {
-            ...this.form.jsx.props,
+            ...(this.form.jsx ? this.form.jsx.props : {}),
             ...this.props,
         };
 
@@ -285,7 +286,7 @@ class BaseFormItem extends React.Component {
 
     getDirectionClassName = () => {
         const isFlex = this.getIsFlexMode();
-        const direction = this.props.direction || this.form.jsx.props.direction || 'vertical';
+        const direction = this.props.direction || (this.form.jsx ? this.form.jsx.props.direction : null) || 'vertical';
 
         const directionCls = `${formItemPrefix}-item-direction-${direction}`;
         return `${directionCls}`;
@@ -305,7 +306,7 @@ class BaseFormItem extends React.Component {
 
         // 处理布局
         const { inset = false, full: jsxFull } = {
-            ...this.form.jsx.props,
+            ...(this.form.jsx ? this.form.jsx.props : {}),
             ...this.props,
         };
 
@@ -332,9 +333,10 @@ class BaseFormItem extends React.Component {
     }
 
     initialCore = (props, componentProps = {}) => {
+        // customForm 优先级大于 form
         const {
             name, error, props: itemProps, status,
-            form, ifCore,
+            core: customForm, form, ifCore,
         } = props;
 
         const value = getValue(props);        
@@ -382,7 +384,7 @@ class BaseFormItem extends React.Component {
         });
 
 
-        const core = form.addField(option);
+        const core = (customForm || form).addField(option);
         return core;
     }
 
@@ -414,6 +416,7 @@ class BaseFormItem extends React.Component {
             }
             return listenKeys.indexOf(key) !== -1;
         }
+
         return this.core.name === key;
     }
 
@@ -421,6 +424,7 @@ class BaseFormItem extends React.Component {
         // value, props, error, status
         const { listenError = false, listenProps = false } = this.props;
         const hitListen = this.hitListenKeys(name);
+
         const canUpdate = this.didMount &&
             hitListen && !silent;
         if (canUpdate) {            
@@ -474,7 +478,7 @@ class BaseFormItem extends React.Component {
             labelWidth,
             defaultMinWidth = true,
         } = {
-            ...this.form.jsx.props,
+            ...(this.form.jsx ? this.form.jsx.props : {}),
             ...itemProps,
         };
 
@@ -495,7 +499,11 @@ class BaseFormItem extends React.Component {
 
         // 以下组件的渲染不与formItem公用，避免重复渲染(label, top, suffix, prefix, help, required, full)
         // error比较特殊, 需要考虑自定义errorRender
-        const sectionValue = { form: this.form, ...itemProps, core: this.core };
+        const sectionValue = { ...itemProps,
+            // 优先级：customCore > form > 本地core
+            form: itemProps.core || itemProps.form || this.form,
+            core: this.core
+        };
         delete sectionValue.className;
         const labelElement = <Section type="props" field="label" {...sectionValue} pure />;
         const prefixElement = <Section type="props" field="prefix" className={`${formItemPrefix}-item-content-prefix`} {...sectionValue} />;

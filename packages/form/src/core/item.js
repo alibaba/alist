@@ -318,7 +318,7 @@ class Item {
         if (!silent) {
             this.emit(BASIC_EVENT[type], this.name, ftValue);
             this.emit(ANY_CHANGE, type, this.name, ftValue);
-        }     
+        }
         return true;
     }
 }
