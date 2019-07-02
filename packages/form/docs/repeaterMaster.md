@@ -263,6 +263,15 @@ class Example extends React.Component {
                     <Input />
                 </FormItem>
             }} />
+            <Table.Column title="conditional" render={(_, record, index) => {
+                return <If core={coreList[index]} when={(v) => {
+                    return v.source === 'a';
+                }}>
+                    <FormItem name="cond" core={coreList[index]}>
+                        <Input />
+                    </FormItem>
+                </If>
+            }} />
             <Table.Column title="validate" render={(_, record, index) => {
                 return <Button onClick={() => {
                     coreList[index].validate();
@@ -324,34 +333,19 @@ class Example extends React.Component {
                     </TableRepeater>
                 </FormItem>
             }} /> */}
-            <FormItem label="dynamic repeater" name="inlineRepeater">
-                <InlineRepeater multiple formConfig={{
-                    validateConfig: {
-                        source: { required: true, message: 'rrrr' },
-                        autoValidate: true,
-                    }
-                }}
-                view={this.renderView}
-                >
-                    <FormItem label="source" name="source">
-                        <Input />
-                    </FormItem>
-                    {/* <FormItem label="view" multiple>
-                        <FormItem render={(values, ctx) => {
-                            return values.source + ' | ' + values.result;
-                        }} />
-                    </FormItem>
-                    <FormItem label="result" multiple>
-                        <FormItem render={(values, ctx) => {
-                            return <Input
-                                placeholder={values.source || ''}
-                                onChange={e => ctx.setItemValue('result', e.target.value)}
-                                value={values.result}
-                            />
-                        }} />
-                    </FormItem> */}
-                </InlineRepeater>
-            </FormItem>
+            <FormItem name="out1"><Input /></FormItem>
+            <If when={(v) => v.out1 === 'a'}>
+                <FormItem label="dynamic repeater" name="inlineRepeater">
+                    <InlineRepeater multiple formConfig={{
+                        validateConfig: {
+                            source: { required: true, message: 'rrrr' },
+                            autoValidate: true,
+                        }
+                    }}
+                    view={this.renderView}
+                    />
+                </FormItem>
+            </If>            
             {/* public source */}
             {/* <FormItem label="Public Country Repeater" name="countryRepeater">
                 <InlineRepeater asyncHandler={this.publicHandler} multiple>

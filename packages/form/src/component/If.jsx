@@ -27,10 +27,11 @@ class If extends Component {
     constructor(props) {
         super(props);
         const {
-            when, form, ifCore, name,
+            when, form, ifCore, name, core: customCore,
         } = props;
-        this.form = form;
-        this.core = form.addField({ when, name, isIf: true });
+        const upperForm = customCore || form;
+        this.form = upperForm;
+        this.core = this.form.addField({ when, name, isIf: true });
         this.core.jsx = this;
         this.core.parentIf = ifCore;
     }
