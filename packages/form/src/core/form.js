@@ -1,6 +1,6 @@
 import AsyncValidator from 'async-validator';
 import EventEmitter from 'events';
-import { FOCUS, BLUR, ON_EVENT, VALUE_CHANGE, CHANGE, ANY_CHANGE, BASIC_EVENT, INITIALIZED } from '../static';
+import { FOCUS, BLUR, ON_EVENT, VALUE_CHANGE, CHANGE, ANY_CHANGE, BASIC_EVENT, INITIALIZED, REPEATER_IF_CHANGE } from '../static';
 import ItemCore from './item';
 import genId from '../util/random';
 import scroll from '../util/scroll';
@@ -79,6 +79,13 @@ class Form {
         this.on(ON_EVENT, this.onEvent);
         this.on(FOCUS, this.onFocus);
         this.on(BLUR, this.onBlur);
+        this.on(REPEATER_IF_CHANGE, this.handleRepeaterIfChange)
+    }
+
+    // repeater if change
+    handleRepeaterIfChange = (name) => {
+        this.onChange([name], this.value, this);
+        this.emit(CHANGE, this.value, [name], this);
     }
 
     // 上报change事件到JSX

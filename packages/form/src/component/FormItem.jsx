@@ -76,9 +76,7 @@ class BaseFormItem extends React.Component {
         this.labelElement = React.createRef();
         this.fullElement = React.createRef();
 
-        if (!customCore) {
-            this.ifCore = ifCore;
-        }
+        this.ifCore = this.hasSameIfOrigin(ifCore) ? ifCore : null;
         
         this.id = this.core.id || `__noform__item__${genId()}`;
 
@@ -129,6 +127,16 @@ class BaseFormItem extends React.Component {
     componentWillUnmount() { // 解绑
         this.form.removeListener(ANY_CHANGE, this.update);
         this.didMount = false;
+    }
+
+    hasSameIfOrigin = (ifCore) => {
+        let result = false;
+        if (ifCore) {
+            if (ifCore.form && (ifCore.form.id === this.form.id)) {
+                result = true;
+            }
+        }
+        return result;
     }
 
     onChange = (...args) => {        
@@ -353,7 +361,7 @@ class BaseFormItem extends React.Component {
         };
 
         // 上有if item
-        if (ifCore && !customForm) {
+        if (ifCore && this.hasSameIfOrigin(ifCore)) {
             option.when = ifCore.when;
             option.parentIf = ifCore.parentIf;
         }

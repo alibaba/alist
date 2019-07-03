@@ -1,6 +1,6 @@
 import AsyncValidator from 'async-validator';
 import deepEqual from 'deep-equal';
-import { ANY_CHANGE, BASIC_EVENT, STATUS_ENUMS } from '../static';
+import { ANY_CHANGE, BASIC_EVENT, STATUS_ENUMS, REPEATER_IF_CHANGE } from '../static';
 import genId from '../util/random';
 import { isPromise } from '../util/is';
 
@@ -188,6 +188,11 @@ class Item {
             this.set('status', status);
         } else if (whenResultFlag === false) {
             this.set('status', 'hidden');
+        }
+
+        // repeater中的if                
+        if (this.form.repeaterRowCore && this.isIf) {            
+            this.form.emit(REPEATER_IF_CHANGE, this.name);
         }
     }
 

@@ -62,14 +62,15 @@ export default function CreateRepeater(bindSource, type, source) {
             const {
                 value, status, formConfig, asyncHandler, core, item, multiple,
             } = props;
-            this.value = value || [];
+            const propsValue = value || [];
+            this.value = propsValue;
             this.status = status;
             this.multiple = multiple;
             this.formConfig = formConfig || {};
             this.asyncHandler = asyncHandler || {};
             this.manualEvent = this.genManualEvent();
             this.repeaterCore = core || new RepeaterCore({
-                value: this.value,
+                value: propsValue,
                 status: this.status,
                 formConfig: this.formConfig,
                 asyncHandler: this.asyncHandler,
@@ -248,11 +249,12 @@ export default function CreateRepeater(bindSource, type, source) {
                 core.$focus = true;
                 if (!core.settingChangeHandler) {
                     core.on('change', (v, fireKeys, ctx) => {
+                        const changedValues = ctx.getValues();
                         this.repeaterCore.updateMultiple((index) => {
                             this.sync({
                                 type: 'update', index, multiple: true, changeKeys: fireKeys,
                             });
-                        })(v, fireKeys, ctx);
+                        })(changedValues, fireKeys, ctx);
                     });
                     core.settingChangeHandler = true;
                 }

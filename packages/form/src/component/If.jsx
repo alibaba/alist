@@ -78,6 +78,7 @@ class If extends Component {
         const contextValue = {
             if: this.core,
         };
+
         if (React.isValidElement(children)) {
             const child = React.Children.only(children);
             return (<IfContext.Provider value={contextValue}>

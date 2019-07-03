@@ -1,6 +1,9 @@
 // 组件变更
 const ANY_CHANGE = 'ANY_CHANGE';
 
+// IF组件在Repeater里面变更
+const REPEATER_IF_CHANGE = 'REPEATER_IF_CHANGE';
+
 // 组件属性
 const CHANGE = 'change';
 const FOCUS = 'FOCUS';
@@ -46,4 +49,5 @@ export {
     HIDDEN,
     INITIALIZED,
     ON_EVENT,
+    REPEATER_IF_CHANGE,
 };
