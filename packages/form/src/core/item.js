@@ -303,7 +303,7 @@ class Item {
 
         // interceptor一般为function, 在类型为value时处理
         if (type === 'value' && typeof this.interceptor === 'function') {
-            const ftResult = this.interceptor(value, this.form[type][this.name]);
+            const ftResult = this.interceptor(value, this.form[type][this.name], this.form);
             if (isPromise(ftResult)) {
                 const ftValTmp = await ftResult;
                 if (ftValTmp !== undefined) ftValue = ftValTmp;
