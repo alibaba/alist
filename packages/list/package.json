@@ -1,6 +1,6 @@
 {
   "name": "nolist",
-  "version": "1.2.40",
+  "version": "1.2.41",
   "description": "nolist",
   "builder": {
     "entry": [
@@ -23,8 +23,8 @@
     "@alifd/next": "^1.11.3",
     "antd": "3.x",
     "events": "^3.0.0",
-    "noform": "^1.3.21",
-    "nowrapper": "^1.2.37",
+    "noform": "^1.3.22",
+    "nowrapper": "^1.2.38",
     "prop-types": "^15.6.2",
     "react": "16.x",
     "react-dom": "16.x",
