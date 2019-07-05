@@ -49,6 +49,7 @@ export const customizeFormType = {
   }
 };
 
+
 let children = [
 // (() => {
 //     const propKeys = ['inline', 'defaultMinWidth', 'colon', 'full', 'inset'];
@@ -131,76 +132,90 @@ let children = [
 //         </FormItem>
 //     </Form>
 // })(),
-(() => {
-    const propKeys = ['inline', 'defaultMinWidth', 'colon', 'full', 'inset'];
-    const core = new FormCore({
-        onChange: (fireKeys, values, ctx) => {
-            const { direction, props } = values;
-            if (fireKeys.includes('direction')) {
-                core.setItemProps('form', { direction });
-            } else if (fireKeys.includes('props')) { // 选中为true，没选为false
-                const prop = {};                        
-                propKeys.forEach(k => prop[k] = props.includes(k));
-                core.setItemProps('form', prop);
-            } else if (fireKeys.includes('layout-label')) {
-                core.setItemValue('layout-control', 24 - values['layout-label']);
-                core.setItemProps('form', { layout: { label: values['layout-label'], control: 24 - values['layout-label'] } });
-            } else if (fireKeys.includes('layout-control')) {
-                core.setItemValue('layout-label', 24 - values['layout-control']);
-                core.setItemProps('form', { layout: { label: 24- values['layout-control'], control: values['layout-control'] } });
-            }
-        }
-    });
+// (() => {
+//     const propKeys = ['inline', 'defaultMinWidth', 'colon', 'full', 'inset'];
+//     const core = new FormCore({
+//         onChange: (fireKeys, values, ctx) => {
+//             const { direction, props } = values;
+//             if (fireKeys.includes('direction')) {
+//                 core.setItemProps('form', { direction });
+//             } else if (fireKeys.includes('props')) { // 选中为true，没选为false
+//                 const prop = {};                        
+//                 propKeys.forEach(k => prop[k] = props.includes(k));
+//                 core.setItemProps('form', prop);
+//             } else if (fireKeys.includes('layout-label')) {
+//                 core.setItemValue('layout-control', 24 - values['layout-label']);
+//                 core.setItemProps('form', { layout: { label: values['layout-label'], control: 24 - values['layout-label'] } });
+//             } else if (fireKeys.includes('layout-control')) {
+//                 core.setItemValue('layout-label', 24 - values['layout-control']);
+//                 core.setItemProps('form', { layout: { label: 24- values['layout-control'], control: values['layout-control'] } });
+//             }
+//         }
+//     });
 
-    return <Form core={core}>
-        <div style={{ color: '#999' }}>点击一次改变属性，再点一次清空改变</div>
-        <FormItem label="direction" name="direction" defaultValue="vertical">
-            <Radio.Group>
-                <Radio.Button value="vertical">vertical</Radio.Button>
-                <Radio.Button value="horizontal">horizontal</Radio.Button>
-                <Radio.Button value="vertical-top">vertical-top</Radio.Button>
-            </Radio.Group>
-        </FormItem>
+//     return <Form core={core}>
+//         <div style={{ color: '#999' }}>点击一次改变属性，再点一次清空改变</div>
+//         <FormItem label="direction" name="direction" defaultValue="vertical">
+//             <Radio.Group>
+//                 <Radio.Button value="vertical">vertical</Radio.Button>
+//                 <Radio.Button value="horizontal">horizontal</Radio.Button>
+//                 <Radio.Button value="vertical-top">vertical-top</Radio.Button>
+//             </Radio.Group>
+//         </FormItem>
 
-        <FormItem label="props" name="props" defaultValue={['full', 'colon']}>
-            <Checkbox.Group
-                options={propKeys.map(k => ({ label: k, value: k }))}
-            />
-        </FormItem>
+//         <FormItem label="props" name="props" defaultValue={['full', 'colon']}>
+//             <Checkbox.Group
+//                 options={propKeys.map(k => ({ label: k, value: k }))}
+//             />
+//         </FormItem>
 
-        <If when={(values => values.direction === 'vertical')}>
-            <FormItem label="layout">
-                <div>
-                    <FormItem defaultValue="6" label="label" name="layout-label" inline>
-                        <InputNumber />
-                    </FormItem>
-                    <FormItem style={{ marginLeft: '8px' }} defaultValue="18" label="control" name="layout-control" inline>
-                        <InputNumber />
-                    </FormItem>
-                </div>
-            </FormItem>
-        </If>
+//         <If when={(values => values.direction === 'vertical')}>
+//             <FormItem label="layout">
+//                 <div>
+//                     <FormItem defaultValue="6" label="label" name="layout-label" inline>
+//                         <InputNumber />
+//                     </FormItem>
+//                     <FormItem style={{ marginLeft: '8px' }} defaultValue="18" label="control" name="layout-control" inline>
+//                         <InputNumber />
+//                     </FormItem>
+//                 </div>
+//             </FormItem>
+//         </If>
 
-        <Item listenProps render={(values, ctx) => {
-            const props = ctx.getItemProps('form') || {};
-            return <div style={{ marginTop: '16px' }}>
-                <Form layout={{ label: 6, control: 18 }} {...props} >
-                    <FormItem label="name" name="name"><Input /></FormItem>
-                    <FormItem label="age" name="age"><Input /></FormItem>
-                </Form>
-            </div>
-        }} />
-    </Form>
-})(),
+//         <Item listenProps render={(values, ctx) => {
+//             const props = ctx.getItemProps('form') || {};
+//             return <div style={{ marginTop: '16px' }}>
+//                 <Form layout={{ label: 6, control: 18 }} {...props} >
+//                     <FormItem label="name" name="name"><Input /></FormItem>
+//                     <FormItem label="age" name="age"><Input /></FormItem>
+//                 </Form>
+//             </div>
+//         }} />
+//     </Form>
+// })(),
+// (() => {
+//     return <Form>
+//         <FormItem label="inline1" name="inline1" direction="vertical-top" inline>
+//             <Input />
+//         </FormItem>
+
+//         <FormItem label="inline2" name="inline2" direction="vertical-top" inline>
+//             <Input />
+//         </FormItem>
+//     </Form>
+// })(),
 (() => {
     return <Form>
-        <FormItem label="inline1" name="inline1" direction="vertical-top" inline>
+        <FormItem label="source" name="source">
             <Input />
         </FormItem>
-
-        <FormItem label="inline2" name="inline2" direction="vertical-top" inline>
-            <Input />
-        </FormItem>
+        <Item render={(values) => {
+            const { source } = values;
+            console.log('source', source);
+            return <FormItem name="b-source" label="b-source" value={source}>
+                <Input />
+            </FormItem>
+        }} />
     </Form>
 })(),
 ]

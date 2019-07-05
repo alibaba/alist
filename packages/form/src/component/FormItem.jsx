@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import BaseItem from './BaseItem';
 import { ANY_CHANGE, EDIT, HIDDEN, FOCUS, BLUR, STATUS_ENUMS, ON_EVENT } from '../static';
 import genId from '../util/random';
+import deepEqual from 'react-fast-compare';
 import { isObject, isFunction } from '../util/is';
 import FormContext from '../context/form';
 import IfContext from '../context/if';
@@ -121,6 +122,10 @@ class BaseFormItem extends React.Component {
             const value = this.form.getAll('value');
             const silent = true;
             this.core.consistStatus(value, silent);
+        }
+
+        if (('value' in this.props) && !deepEqual(this.core.value, nextProps.value)) {
+            this.core.set('value', nextProps.value);
         }
     }
 
