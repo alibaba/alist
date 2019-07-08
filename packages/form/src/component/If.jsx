@@ -30,13 +30,12 @@ class If extends Component {
             when, form, ifCore, name, core: customCore,
         } = props;
 
-        const upperForm = customCore || form;
+        const parentIf = customCore ? null : ifCore;
+        const upperForm = parentIf ? parentIf.form : (customCore || form);
         this.form = upperForm;
         this.core = this.form.addField({ when, name, isIf: true });
-        this.core.jsx = this;
-        if (!customCore) {
-            this.core.parentIf = ifCore;
-        }        
+        this.core.jsx = this;       
+        this.core.parentIf = parentIf;
     }
 
     componentDidMount() {
@@ -95,7 +94,12 @@ class If extends Component {
 const ConnectIf = props => (<FormContext.Consumer>
     {(formContext) => {
         const { form } = formContext;
-        return <If {...props} form={form} />;
+        return <IfContext.Consumer>
+            {(ifContext) => {
+                const { if: ifCore = null } = ifContext || {};
+                return <If {...props} form={form} ifCore={ifCore} />;
+            }}
+        </IfContext.Consumer>
     }}
 </FormContext.Consumer>);
 
