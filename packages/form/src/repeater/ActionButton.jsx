@@ -70,7 +70,7 @@ class InnerActionButton extends Component {
         const { core, repeaterCore, type, children, getText, render } = this.props;
         const {
             addText, updateText, saveText, cancelText, deleteText,
-        } = getText();
+        } = getText(core, repeaterCore);
 
         let ele = null;
         let btnContent = children;

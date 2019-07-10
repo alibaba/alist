@@ -188,7 +188,7 @@ export default function CreateRepeater(bindSource, type, source) {
 
         getDialogConfig = (core, props) => {
             const { dialogConfig, selectRepeater } = this.props;
-            const { okText, cancelText } = this.getText();
+            const { okText, cancelText } = this.getText(core, this.repeaterCore);
             const { title, custom, ...otherDialogProps } = dialogConfig || {};
             const { type: dialogType, content } = props;
             core.selectRepeater = selectRepeater;
@@ -221,14 +221,18 @@ export default function CreateRepeater(bindSource, type, source) {
         }
 
         // 获取多语言文案的方法
-        getText = () => {
+        getText = (core, repeaterCore) => {
             const { locale } = this.props;
             const map = localeMap[locale];
             const textMap = {};
 
             Object.keys(map).forEach((key) => {
                 if ((key in this.props) && this.props[key]) {
-                    textMap[key] = this.props[key];
+                    if (typeof this.props[key] === 'function') {
+                        textMap[key] = this.props[key](core, repeaterCore);
+                    } else {
+                        textMap[key] = this.props[key];
+                    }
                 } else {
                     textMap[key] = map[key];
                 }
@@ -366,7 +370,7 @@ export default function CreateRepeater(bindSource, type, source) {
 
         doDelete = async (core, id) => {
             const { hasDeleteConfirm = true } = this.props;
-            const textMap = this.getText();
+            const textMap = this.getText(core, this.repeaterCore);
             const index = this.repeaterCore.formList.findIndex(rp => rp.id === id);
             const currentDelete = this.repeaterCore.formList.find(rp => rp.id === id);
             const event = { type: 'delete', index, item: currentDelete };
@@ -394,7 +398,7 @@ export default function CreateRepeater(bindSource, type, source) {
 
 
         doAddDialog = async (core) => {
-            const textMap = this.getText();
+            const textMap = this.getText(core, this.repeaterCore);
             const dialogConfig = this.getDialogConfig(core, {
                 title: textMap.dialogAddText,
                 onOk: async (_, hide) => {
@@ -416,7 +420,7 @@ export default function CreateRepeater(bindSource, type, source) {
         }
 
         doUpdateDialog = async (core, id) => {
-            const textMap = this.getText();
+            const textMap = this.getText(core, this.repeaterCore);
             const dialogConfig = this.getDialogConfig(core, {
                 title: textMap.dialogUpdateText,
                 type: 'update',

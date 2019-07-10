@@ -237,14 +237,13 @@ export default function bind(type, source) {
                 formProps,
                 getText,
                 renderOper,
-            } = this.props;
-
-            const {
-                updateText, deleteText, saveText, cancelText,
-            } = getText();
+            } = this.props;            
 
             const { formList } = repeaterCore;
             const rowList = formList.map((core, index) => {
+                const {
+                    updateText, deleteText, saveText, cancelText,
+                } = getText(core, repeaterCore);
                 const values = core.getValues();
                 const { id } = core;
 
@@ -365,7 +364,7 @@ export default function bind(type, source) {
                 full = false,
             } = this.props;
 
-            const { addText, operateText } = getText();            
+            const { addText, operateText } = getText(null, repeaterCore);            
 
             const editable = status === 'edit';
             const cellCls = `repeater-table-cell-wrapper repeater-table-cell-wrapper-${itemAlign}`;

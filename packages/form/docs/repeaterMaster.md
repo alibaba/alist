@@ -307,8 +307,11 @@ class Example extends React.Component {
             <FormItem label="int2" name="int2" status="preview">
                 <Input />
             </FormItem> */}
-            {/* <FormItem label="dynamic repeater" name="inlineRepeater">
-                <InlineRepeater multiple>
+            <FormItem label="dynamic repeater" name="inlineRepeater">
+                <InlineRepeater multiple maxLength={2} addText={(currentCore, rptCore) => {
+                    const len = rptCore.formList.length;
+                        return <div>当前长度l：{len}</div>
+                }}>
                     <FormItem label="s1" name="s1" status="preview">
                         <Input />
                     </FormItem>
@@ -321,7 +324,7 @@ class Example extends React.Component {
                         <Input />
                     </FormItem>
                 </InlineRepeater>
-            </FormItem> */}
+            </FormItem>
             {/* <FormItem label="dynamic repeater" name="inlineRepeater">
                 <InlineRepeater multiple view={this.handleView} />
             </FormItem> */}
