@@ -67,23 +67,27 @@ class InnerActionButton extends Component {
     }
 
     renderBtn = () => {
-        const { type, children, getText } = this.props;
+        const { core, repeaterCore, type, children, getText, render } = this.props;
         const {
             addText, updateText, saveText, cancelText, deleteText,
         } = getText();
 
         let ele = null;
+        let btnContent = children;
+        if (render && typeof render === 'function') {
+            btnContent = render(core, repeaterCore);
+        }
 
         switch (type) {
-        case 'add': ele = <button className="repeater-action-btn repeater-add" onClick={this.handleAdd}>{children || addText}</button>; break;
-        case 'addInline': ele = <button className="repeater-action-btn repeater-add" onClick={this.handleAddInline}>{children || addText}</button>; break;
-        case 'addMultipleInline': ele = <button className="repeater-action-btn repeater-add" onClick={this.handleAddMultipleInline}>{children || addText}</button>; break;
-        case 'update': ele = <button className="repeater-action-btn repeater-update" onClick={this.handleUpdate}>{children || updateText}</button>; break;
-        case 'updateInline': ele = <button className="repeater-action-btn repeater-update" onClick={this.handleUpdateInline}>{children || updateText}</button>; break;
-        case 'save': ele = <button className="repeater-action-btn repeater-save" onClick={this.handleSave}>{children || saveText}</button>; break;
-        case 'cancel': ele = <button className="repeater-action-btn repeater-cancel" onClick={this.handleCancel}>{children || cancelText}</button>; break;
+        case 'add': ele = <button className="repeater-action-btn repeater-add" onClick={this.handleAdd}>{btnContent || addText}</button>; break;
+        case 'addInline': ele = <button className="repeater-action-btn repeater-add" onClick={this.handleAddInline}>{btnContent || addText}</button>; break;
+        case 'addMultipleInline': ele = <button className="repeater-action-btn repeater-add" onClick={this.handleAddMultipleInline}>{btnContent || addText}</button>; break;
+        case 'update': ele = <button className="repeater-action-btn repeater-update" onClick={this.handleUpdate}>{btnContent || updateText}</button>; break;
+        case 'updateInline': ele = <button className="repeater-action-btn repeater-update" onClick={this.handleUpdateInline}>{btnContent || updateText}</button>; break;
+        case 'save': ele = <button className="repeater-action-btn repeater-save" onClick={this.handleSave}>{btnContent || saveText}</button>; break;
+        case 'cancel': ele = <button className="repeater-action-btn repeater-cancel" onClick={this.handleCancel}>{btnContent || cancelText}</button>; break;
         case 'remove':
-        case 'delete': ele = <button className="repeater-action-btn repeater-delete" onClick={this.handleDelete}>{children || deleteText}</button>; break;
+        case 'delete': ele = <button className="repeater-action-btn repeater-delete" onClick={this.handleDelete}>{btnContent || deleteText}</button>; break;
         default: break;
         }
 

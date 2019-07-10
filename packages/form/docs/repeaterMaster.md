@@ -266,9 +266,15 @@ class Example extends React.Component {
                 </If>
             }} />
             <Table.Column title="validate" render={(_, record, index) => {
-                return <Button onClick={() => {
-                    coreList[index].validate();
-                }}>validate</Button>
+                return <div>
+                    <Button onClick={() => {
+                        coreList[index].validate();
+                    }}>validate</Button>
+                    <ActionButton core={coreList[index]} type="addMultipleInline" render={(currentCore, rptCore) => {
+                        const len = rptCore.formList.length;
+                        return <div>当前长度：{len}</div>
+                    }}/>
+                </div>
             }} />
         </Table>
         
