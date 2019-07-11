@@ -26,6 +26,7 @@ const onMount = (list) => {
 
 const filterConfig = {
   onChange: (firekeys, values, ctx) => {
+    
     console.log(firekeys, values, ctx);
   }
 };
