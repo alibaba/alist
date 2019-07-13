@@ -172,7 +172,7 @@ export default function CreateRepeater(bindSource, type, source) {
 
         getSuperFormProps = (core) => {
             let formProps = {};
-            if (core.form && core.form.jsx.props) {
+            if (core.form && core.form.jsx && core.form.jsx.props) {
                 const {
                     defaultMinWidth, full, inline, inset, layout, colon,
                 } = core.form.jsx.props;
