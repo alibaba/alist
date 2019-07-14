@@ -59,6 +59,9 @@ class Example extends React.Component {
                     { username: 'username1', s1: 's1', s2: 's2', s3: 's3', source: 1, },
                     // { username: 'username2',s1: 's1...', s2: 's2...', s3: 's3...', source: 2 }
                 ],
+                inlineRepeater_a: [
+                    { source: 'hello', list: [ { username: 'tom' }] }
+                ],
                 products: [
                     { name: 123}
                 ],
@@ -307,7 +310,7 @@ class Example extends React.Component {
             <FormItem label="int2" name="int2" status="preview">
                 <Input />
             </FormItem> */}
-            <FormItem label="dynamic repeater" name="inlineRepeater">
+            {/* <FormItem label="dynamic repeater" name="inlineRepeater">
                 <InlineRepeater multiple maxLength={2} addText={(currentCore, rptCore) => {
                     const len = rptCore.formList.length;
                         return <div>当前长度l：{len}</div>
@@ -324,7 +327,7 @@ class Example extends React.Component {
                         <Input />
                     </FormItem>
                 </InlineRepeater>
-            </FormItem>
+            </FormItem> */}
             {/* <FormItem label="dynamic repeater" name="inlineRepeater">
                 <InlineRepeater multiple view={this.handleView} />
             </FormItem> */}
@@ -340,52 +343,79 @@ class Example extends React.Component {
                 </FormItem>
             }} /> */}
 
-            <Item listenKeys={['out1', 'out2']} render={() => {
-                return <div>
-                    <If when={(v, ctx) => {
-                        return v.out1 === 'a';
-                    }}>
-                        {/* <FormItem label="Public Country Repeater" name={`countryRepeater_a`}>
-                            <InlineRepeater multiple>
-                                <FormItem label="min" name="min"><InputNumber /></FormItem>
-                                <FormItem label="abb" name="abb"><InputNumber /></FormItem>
-                            </InlineRepeater>
-                        </FormItem> */}
-                        <FormItem label="dynamic repeater" name={`inlineRepeater_a`}>
-                            <InlineRepeater multiple formConfig={{
-                                validateConfig: {
-                                    source: { required: true, message: 'rrrr' },
-                                    autoValidate: true,
-                                }
-                            }}
-                            view={this.renderView}
-                            />
-                        </FormItem>
-                    </If>
-                    <If when={(v, ctx) => {
-                        return v.out2 === 'b';
-                    }}>
-                        {/* <FormItem label="Public Country Repeater" name={`countryRepeater_b`}>
-                            <InlineRepeater multiple>
-                                <FormItem label="min" name="min"><InputNumber /></FormItem>
-                                <FormItem label="abb" name="abb"><InputNumber /></FormItem>
-                            </InlineRepeater>
-                        </FormItem> */}
-                        <FormItem label="dynamic repeater" name={`inlineRepeater_b`}>
-                            <InlineRepeater multiple formConfig={{
-                                validateConfig: {
-                                    source: { required: true, message: 'rrrr' },
-                                    autoValidate: true,
-                                }
-                            }}
-                            view={this.renderView}
-                            />
-                        </FormItem>
-                    </If>
-                </div>
-            }} />            
-            <FormItem label="out1" name="out1"><Input /></FormItem>
-            <FormItem label="out2" name="out2"><Input /></FormItem>
+            <FormItem label="dynamic repeater" name={`inlineRepeater_a`}>
+                <InlineRepeater
+                    hasAdd={false}
+                    multiple
+                    formConfig={{
+                        validateConfig: {
+                            source: { required: true, message: 'source is required' },
+                            autoValidate: true,
+                        }
+                    }}
+                    asyncHandler={{
+                        add: () => ({
+                            success: true,
+                            item: {
+                                source: '',
+                                list: [{ username: '' }],
+                            }
+                        })
+                    }}
+                    view={(_, ctx) => {
+                        const dataSource = ctx.getDataSource(); // 获取Repeater当前数据源
+                        const coreList = ctx.getCoreList(); // 获取Repeater form核心列表
+
+                        console.log('ds', dataSource);
+
+                        return <Table dataSource={dataSource}>
+                            <Table.Column title="source" render={(_, record, index) => {
+                                return <FormItem name="source" core={coreList[index]}>
+                                    <Input />
+                                </FormItem>;
+                            }} />
+                            <Table.Column title="list" render={(_, record, index) => {
+                                return <FormItem name="list" core={coreList[index]}>
+                                    <InlineRepeater
+                                        hasAdd={false}
+                                        multiple
+                                        formConfig={{
+                                            validateConfig: {
+                                                username: { required: true, message: 'username is required' },
+                                                autoValidate: true,
+                                            }
+                                        }}
+                                        view={(_, ctx) => {
+                                            const dataSource = ctx.getDataSource(); // 获取Repeater当前数据源
+                                            const subCoreList = ctx.getCoreList(); // 获取Repeater form核心列表
+
+                                            return <Table dataSource={dataSource} >
+                                                <Table.Column title="username" render={(_, record, index) => {
+                                                    console.log('===>>>subCoreList username', subCoreList[index].id);
+                                                    return <FormItem name="username" core={subCoreList[index]}>
+                                                        <Input />
+                                                    </FormItem>;
+                                                }} />
+                                                <Table.Column title="operation" render={(_, record, index) => {
+                                                    return <div>
+                                                        <div>外部</div>
+                                                        <ActionButton core={coreList[index]} type="addMultipleInline">新增</ActionButton>
+                                                        <ActionButton core={coreList[index]} type="delete">删除</ActionButton>
+
+                                                        <div>本行</div>
+                                                        <ActionButton core={subCoreList[index]} type="addMultipleInline">新增</ActionButton>
+                                                        <ActionButton core={subCoreList[index]} type="delete">删除</ActionButton>
+                                                    </div>
+                                                }} />
+                                            </Table>
+                                        }}
+                                    />
+                                </FormItem>
+                            }}/>
+                        </Table>
+                    }}
+                />
+            </FormItem>
             {/* public source */}
             {/* <FormItem label="Public Country Repeater" name="countryRepeater">
                 <InlineRepeater asyncHandler={this.publicHandler} multiple>

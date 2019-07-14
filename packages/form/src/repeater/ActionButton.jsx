@@ -26,11 +26,12 @@ class InnerActionButton extends Component {
 
     getCore = () => {
         const { repeaterCore, findBy, core } = this.props;
-        return core || repeaterCore.formList.find(findBy);
+        return core || (findBy && repeaterCore.formList.find(findBy));
     }
 
     handleAddMultipleInline = async () => {
-        await this.props.doMultipleInline();
+        const core = this.getCore();
+        await this.props.doMultipleInline(core);
     }
 
     handleAddInline = async () => {
@@ -54,11 +55,13 @@ class InnerActionButton extends Component {
     }
 
     handleSave = async () => {
-        await this.props.doSave(this.getId());
+        const core = this.getCore();
+        await this.props.doSave(this.getId(), core);
     }
 
     handleCancel = async () => {
-        await this.props.doCancel(this.getId());
+        const core = this.getCore();
+        await this.props.doCancel(this.getId(), core);
     }
 
     handleAdd = async () => {

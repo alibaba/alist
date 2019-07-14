@@ -77,7 +77,14 @@ export default function CreateRepeater(bindSource, type, source) {
                 multiple,
                 multipleSyncHandler: this.handleCoreUpdate,
                 setLoadingSideEffect: this.setLoading,
+            });
 
+            this.repeaterCore.on('sync', (...args) => {
+                this.sync(...args);
+            });
+
+            this.repeaterCore.on('reRender', () => {
+                this.forceUpdate();
             });
 
             this.superFormProps = {};
@@ -188,7 +195,8 @@ export default function CreateRepeater(bindSource, type, source) {
 
         getDialogConfig = (core, props) => {
             const { dialogConfig, selectRepeater } = this.props;
-            const { okText, cancelText } = this.getText(core, this.repeaterCore);
+            const repeaterCore = this.getRepeaterByCore(core);
+            const { okText, cancelText } = this.getText(core, repeaterCore);
             const { title, custom, ...otherDialogProps } = dialogConfig || {};
             const { type: dialogType, content } = props;
             core.selectRepeater = selectRepeater;
@@ -254,8 +262,9 @@ export default function CreateRepeater(bindSource, type, source) {
                 if (!core.settingChangeHandler) {
                     core.on('change', (v, fireKeys, ctx) => {
                         const changedValues = ctx.getValues();
-                        this.repeaterCore.updateMultiple((index) => {
-                            this.sync({
+                        const repeaterCore = this.getRepeaterByCore(core);
+                        repeaterCore.updateMultiple((index) => {
+                            repeaterCore.emit('sync', {
                                 type: 'update', index, multiple: true, changeKeys: fireKeys,
                             });
                         })(changedValues, fireKeys, ctx);
@@ -308,61 +317,71 @@ export default function CreateRepeater(bindSource, type, source) {
             this.onChange(values, opts);
         }
 
-        doSave = async (id) => {
-            const success = await this.repeaterCore.saveInline(id);
+        doSave = async (id, core) => {
+            const repeaterCore = this.getRepeaterByCore(core);
+            const success = await repeaterCore.saveInline(id);
             if (success) {
-                const index = this.repeaterCore.formList.findIndex(core => core.id === id);
-                this.sync({ type: 'save', index });
-                this.forceUpdate();
+                const index = repeaterCore.formList.findIndex(core => core.id === id);
+                repeaterCore.emit('sync', { type: 'save', index });
+                repeaterCore.emit('reRender');
             }
         }
 
-        doCancel = async (id) => {
-            const index = this.repeaterCore.formList.findIndex(core => core.id === id);
-            await this.repeaterCore.cancelInline(id);
-            this.sync({ type: 'cancel', index });
-            this.forceUpdate();
+        getRepeaterByCore = (core) => {
+            return core && core.repeater ? core.repeater : this.repeaterCore;
+        }
+
+        doCancel = async (id, core) => {
+            const repeaterCore = this.getRepeaterByCore(core);
+            const index = repeaterCore.formList.findIndex(core => core.id === id);
+            await repeaterCore.cancelInline(id);
+            repeaterCore.emit('sync', { type: 'cancel', index });
+            repeaterCore.emit('reRender');
         }
 
         doAdd = async (core) => {
-            const { repeaterCore } = this;
+            const repeaterCore = this.getRepeaterByCore(core);
             let success = true;
             const addCore = (core instanceof FormCore) ? core : repeaterCore.generateCore(core);
             success = await repeaterCore.add(addCore);
             if (success) {
-                this.sync({ type: 'add', index: repeaterCore.formList.length - 1 });
+                repeaterCore.emit('sync', { type: 'add', index: repeaterCore.formList.length - 1 });
             }
 
             return success;
         }
 
-        doMultipleInline = async () => {
-            const canSync = await this.repeaterCore.addMultipleInline();
+        doMultipleInline = async (core) => {
+            const repeaterCore = this.getRepeaterByCore(core);
+            const canSync = await repeaterCore.addMultipleInline();
             if (canSync) {
-                this.sync({ type: 'add', multiple: true, index: this.repeaterCore.formList.length - 1 });
+                repeaterCore.emit('sync', { type: 'add', multiple: true, index: repeaterCore.formList.length - 1 });
             }
-            this.forceUpdate();
+            repeaterCore.emit('reRender');
         }
 
         doAddInline = async () => {
-            const canSync = await this.repeaterCore.addInline();
+            const repeaterCore = this.getRepeaterByCore();
+            const canSync = await repeaterCore.addInline();
             if (canSync) {
-                this.sync({ type: 'add', inline: true, index: this.repeaterCore.formList.length - 1 });
+                repeaterCore.emit('sync', { type: 'add', inline: true, index: repeaterCore.formList.length - 1 });
             }
 
-            this.forceUpdate();
+            repeaterCore.emit('reRender');
         }
 
         doUpdateInline = async (core, id) => {
-            await this.repeaterCore.updateInline(core, id);
-            this.forceUpdate();
+            const repeaterCore = this.getRepeaterByCore(core);
+            await repeaterCore.updateInline(core, id);
+            repeaterCore.emit('reRender');
         }
 
         doUpdate = async (core, id) => {
-            const success = await this.repeaterCore.update(core, id);
+            const repeaterCore = this.getRepeaterByCore(core);
+            const success = await repeaterCore.update(core, id);
             if (success) {
-                const index = this.repeaterCore.formList.findIndex(rp => rp.id === id);
-                this.sync({ type: 'update', index });
+                const index = repeaterCore.formList.findIndex(rp => rp.id === id);
+                repeaterCore.emit('sync', { type: 'update', index });
             }
 
             return success;
@@ -370,35 +389,37 @@ export default function CreateRepeater(bindSource, type, source) {
 
         doDelete = async (core, id) => {
             const { hasDeleteConfirm = true } = this.props;
-            const textMap = this.getText(core, this.repeaterCore);
-            const index = this.repeaterCore.formList.findIndex(rp => rp.id === id);
-            const currentDelete = this.repeaterCore.formList.find(rp => rp.id === id);
+            const repeaterCore = this.getRepeaterByCore(core);
+            const textMap = this.getText(core, repeaterCore);
+            const index = repeaterCore.formList.findIndex(rp => rp.id === id);
+            const currentDelete = repeaterCore.formList.find(rp => rp.id === id);
             const event = { type: 'delete', index, item: currentDelete };
             if (hasDeleteConfirm) {
                 const dialogConfig = this.getDialogConfig(core, {
                     title: textMap.dialogDeleteText,
                     content: <div style={{ minWidth: '280px' }}>{textMap.deleteConfirmText}</div>,
                     onOk: async (_, hide) => {
-                        const success = await this.repeaterCore.remove(core, id);
+                        const success = await repeaterCore.remove(core, id);
                         if (success) {
                             hide();
-                            this.sync(event);
+                            repeaterCore.emit('sync', event);
                         }
                     },
                     type: 'remove',
                 });
                 Dialog.show(dialogConfig);
             } else {
-                const success = await this.repeaterCore.remove(core, id);
+                const success = await repeaterCore.remove(core, id);
                 if (success) {
-                    this.sync(event);
+                    repeaterCore.emit('sync', event);
                 }
             }
         }
 
 
         doAddDialog = async (core) => {
-            const textMap = this.getText(core, this.repeaterCore);
+            const repeaterCore = this.getRepeaterByCore(core);
+            const textMap = this.getText(core, repeaterCore);
             const dialogConfig = this.getDialogConfig(core, {
                 title: textMap.dialogAddText,
                 onOk: async (_, hide) => {
@@ -408,7 +429,6 @@ export default function CreateRepeater(bindSource, type, source) {
                     }
 
                     const success = await this.doAdd(core.getValues());
-                    // const success = await this.doAdd(core);
                     if (success) {
                         hide();
                     }
@@ -420,7 +440,8 @@ export default function CreateRepeater(bindSource, type, source) {
         }
 
         doUpdateDialog = async (core, id) => {
-            const textMap = this.getText(core, this.repeaterCore);
+            const repeaterCore = this.getRepeaterByCore(core);
+            const textMap = this.getText(core, repeaterCore);
             const dialogConfig = this.getDialogConfig(core, {
                 title: textMap.dialogUpdateText,
                 type: 'update',

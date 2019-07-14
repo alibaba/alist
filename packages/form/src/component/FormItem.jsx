@@ -108,7 +108,12 @@ class BaseFormItem extends React.Component {
 
     componentWillReceiveProps = (nextProps) => {
         const { jsx_status, func_status } = this.core;
-        const { status } = nextProps;
+        const { status, core: nextFormCore } = nextProps;
+        if (nextFormCore && nextFormCore.id !== this.form.id) {
+            this.form = nextFormCore;
+            this.core = this.initialCore(nextProps, this.compProps);
+        }
+
         let needConsist = false;
         if (typeof status === 'function' && func_status !== status) {
             this.core.func_status = status;

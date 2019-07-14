@@ -1,3 +1,4 @@
+import EventEmitter from 'events';
 import FormCore from '../core/form';
 import { isPromise } from '../util/is';
 import genId from '../util/random';
@@ -19,11 +20,17 @@ class RepeaterCore {
         this.multiple = multiple;
         this.multipleSyncHandler = multipleSyncHandler || (x => x);
         this.setLoadingSideEffect = setLoadingSideEffect || (x => x);
+        this.emitter = new EventEmitter();
+        this.emitter.setMaxListeners(1000); // TODO: 最大值
 
         if (Array.isArray(value)) {
             this.formList = value.map(itemValues => this.generateCore(itemValues));
         }
     }
+
+    on(...args) { this.emitter.on(...args); }
+    emit(...args) { this.emitter.emit(...args); }
+    removeListener(...args) { this.emitter.removeListener(...args); }
 
     setLoading = (loading) => {
         this.loading = loading;
@@ -587,10 +594,9 @@ class RepeaterCore {
                 this.formList = valueArr.map((values) => {
                     const formValues = values || {};
                     const core = this.generateCore(formValues);
-
                     return core;
                 });
-            } else if (multiple) {
+            } else if (multiple) {                
                 this.formList = this.formList.map((old, idx) => {
                     if (type === 'update' && index === idx) {
                         // 处理同步修改，只修改动的值

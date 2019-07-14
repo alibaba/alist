@@ -458,7 +458,7 @@ const popupForm = () => {
 // const hasDelete = false;
 
 ReactDOM.render(<Form direction="vertical-top" defaultMinWidth={false} core={formCore} value={defaultValue}>
-    <FormItem name="tabledemo" defaultValue={[{ username: 'a' }, { username: 'b' }]}>
+    {/* <FormItem name="tabledemo" defaultValue={[{ username: 'a' }, { username: 'b' }]}>
         <TableRepeater hasDeleteConfirm={false} hasOrder filter={filterUsername} formConfig={formConfig}>
             <FormItem status="hidden" label="order" renderCell={(_, { index: order }) => <div>{order+1}</div> } />
             <FormItem label="username" name="username"><Input /></FormItem>
@@ -468,7 +468,7 @@ ReactDOM.render(<Form direction="vertical-top" defaultMinWidth={false} core={for
         <SelectRepeater selectMode="single" asyncHandler={asyncHandler} formConfig={formConfig}>
             <FormItem label="username" name="username" defaultValue="1234"><Input /></FormItem>
         </SelectRepeater>        
-    </FormItem>
+    </FormItem> */}
     {/* 
     <FormItem name="tabledemoff" defaultValue={[{ username: 'a' }, { username: 'b' }]}>
         <InlineRepeater hasOrder filter={filterUsername} formConfig={formConfig}>
@@ -503,7 +503,7 @@ ReactDOM.render(<Form direction="vertical-top" defaultMinWidth={false} core={for
             <FormItem label="拒绝原因" name="denyReason"><Input /></FormItem>
             <FormItem label="创建人" name="creatorName"><Input /></FormItem>
         </TableRepeater>
-    </Item>
+    </Item> */}
 
     <FormItem label="inlineRepeat" name="inlineRepeat">
         <InlineRepeater formConfig={formConfig} addPosition="bottom">
@@ -514,7 +514,7 @@ ReactDOM.render(<Form direction="vertical-top" defaultMinWidth={false} core={for
             <FormItem required label="拒绝原因" name="denyReason"><Input /></FormItem>
             <FormItem required label="创建人" name="creatorName"><Input /></FormItem>
         </InlineRepeater>
-    </FormItem> */}
+    </FormItem>
 
     {/* <FormItem required label="username" name="username"><Input /></FormItem>
     <If when={(values) => {
