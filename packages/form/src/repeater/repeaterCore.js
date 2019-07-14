@@ -1,5 +1,6 @@
 import FormCore from '../core/form';
 import { isPromise } from '../util/is';
+import genId from '../util/random';
 
 const noop = () => {};
 
@@ -11,6 +12,7 @@ class RepeaterCore {
         } = props;
         this.formList = [];
         this.loading = false;
+        this.id = 'repeater_' + genId();
         this.status = status || 'preview';
         this.formConfig = formConfig || {};
         this.asyncHandler = asyncHandler || {};
