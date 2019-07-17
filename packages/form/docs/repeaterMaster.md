@@ -350,8 +350,8 @@ class Example extends React.Component {
                     formConfig={{
                         validateConfig: {
                             source: { required: true, message: 'source is required' },
-                            autoValidate: true,
-                        }
+                        },
+                        autoValidate: true,
                     }}
                     asyncHandler={{
                         add: () => ({
@@ -366,7 +366,7 @@ class Example extends React.Component {
                         const dataSource = ctx.getDataSource(); // 获取Repeater当前数据源
                         const coreList = ctx.getCoreList(); // 获取Repeater form核心列表
 
-                        console.log('ds', dataSource);
+                        // console.log('ds', dataSource);s
 
                         return <Table dataSource={dataSource}>
                             <Table.Column title="source" render={(_, record, index) => {
@@ -374,16 +374,30 @@ class Example extends React.Component {
                                     <Input />
                                 </FormItem>;
                             }} />
-                            <Table.Column title="list" render={(_, record, index) => {
-                                return <FormItem name="list" core={coreList[index]}>
+                            <Table.Column title="list" render={(_, record, parentIndex) => {
+                                return <FormItem errorRender={(err, errInfo) => {
+                                    const {main, sub} = errInfo || {};
+                                    return sub ? <div style={{ color: 'red' }}>{sub}</div> : null;
+                                }} name="list" core={coreList[parentIndex]}>
                                     <InlineRepeater
+                                        onMount={(list) => {
+                                            window.list = list;
+                                        }}
                                         hasAdd={false}
                                         multiple
                                         formConfig={{
                                             validateConfig: {
                                                 username: { required: true, message: 'username is required' },
-                                                autoValidate: true,
-                                            }
+                                                // username: {
+                                                //     validator(rule, value, callback, source, options) {
+                                                //         if(value !== 'b'){
+                                                //             callback(['error']);
+                                                //         }
+                                                //         callback([])
+                                                //     }
+                                                // },
+                                            },
+                                            autoValidate: true,
                                         }}
                                         view={(_, ctx) => {
                                             const dataSource = ctx.getDataSource(); // 获取Repeater当前数据源
@@ -391,16 +405,23 @@ class Example extends React.Component {
 
                                             return <Table dataSource={dataSource} >
                                                 <Table.Column title="username" render={(_, record, index) => {
-                                                    console.log('===>>>subCoreList username', subCoreList[index].id);
                                                     return <FormItem name="username" core={subCoreList[index]}>
                                                         <Input />
                                                     </FormItem>;
                                                 }} />
+                                                {/* <Table.Column title="condition" render={(_, record, index) => {
+                                                    return <If core={subCoreList[index]} when={(values) => values.username === 'a'}>
+                                                        <FormItem name="cond" core={subCoreList[index]}>
+                                                            <Input />
+                                                        </FormItem>
+                                                    </If>;
+                                                }} /> */}
                                                 <Table.Column title="operation" render={(_, record, index) => {
+                                                    console.log('外部', coreList, parentIndex, coreList[parentIndex]);
                                                     return <div>
                                                         <div>外部</div>
-                                                        <ActionButton core={coreList[index]} type="addMultipleInline">新增</ActionButton>
-                                                        <ActionButton core={coreList[index]} type="delete">删除</ActionButton>
+                                                        <ActionButton core={coreList[parentIndex]} type="addMultipleInline">新增111</ActionButton>
+                                                        <ActionButton core={coreList[parentIndex]} type="delete">删除111</ActionButton>
 
                                                         <div>本行</div>
                                                         <ActionButton core={subCoreList[index]} type="addMultipleInline">新增</ActionButton>

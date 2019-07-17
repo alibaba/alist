@@ -87,12 +87,7 @@ export default function CreateRepeater(bindSource, type, source) {
                 this.forceUpdate();
             });
 
-            this.superFormProps = {};
-            if (item) {
-                this.contextItem = item;
-                this.contextItem.addSubField(this.repeaterCore);
-                this.superFormProps = this.getSuperFormProps(item);
-            }
+            this.initUpperCore(props);
         }
 
         componentDidMount() {
@@ -111,9 +106,13 @@ export default function CreateRepeater(bindSource, type, source) {
         }
 
         async componentWillReceiveProps(nextProps) {
+            const { item: nextItem } = nextProps;
             const { filter, asyncHandler, formConfig } = this.props;
             const manualEvent = this.genManualEvent();
 
+            if (nextItem && this.contextItem && nextItem.id !== this.contextItem.id) {
+                this.initUpperCore(nextProps);
+            }
             if (deepEqual(this.props, nextProps) && !manualEvent.type) {
                 return;
             }
@@ -136,11 +135,22 @@ export default function CreateRepeater(bindSource, type, source) {
                 forceRegenerate = true;
             }
 
-            // 是否强制刷新所有core
+            // 嵌套repeater
+            let avoidRender= false;
+            if (this.contextItem && this.contextItem.form && this.contextItem.form.repeater) {
+                const values = this.repeaterCore.getValues();
+                if (deepEqual(values, nextProps.value)) {
+                    avoidRender = true;
+                }
+            }
+
             manualEvent.forceRegenerate = forceRegenerate;
-            this.repeaterCore.updateValue(this.value, manualEvent);
-            this.forceUpdate();
+            if (!avoidRender) {                
+                this.repeaterCore.updateValue(this.value, manualEvent);
+                this.forceUpdate();
+            }            
             this.manualEvent = {};
+           
         }
 
         onChange = (val, opts) => {
@@ -175,6 +185,16 @@ export default function CreateRepeater(bindSource, type, source) {
             }
 
             this.props.onChange(value, opts);
+        }
+
+        initUpperCore = (props) => {
+            const { item } = props;
+            this.superFormProps = {};
+            if (item) {
+                this.contextItem = item;
+                this.contextItem.addSubField(this.repeaterCore);
+                this.superFormProps = this.getSuperFormProps(item);
+            }
         }
 
         getSuperFormProps = (core) => {
@@ -314,6 +334,8 @@ export default function CreateRepeater(bindSource, type, source) {
         sync = (opts) => {
             this.manualEvent = opts || {};
             const values = this.repeaterCore.getValues();
+            this.repeaterCore.manualEvent = this.manualEvent;
+            console.log('sync paylaod', values, opts);
             this.onChange(values, opts);
         }
 
@@ -366,7 +388,6 @@ export default function CreateRepeater(bindSource, type, source) {
             if (canSync) {
                 repeaterCore.emit('sync', { type: 'add', inline: true, index: repeaterCore.formList.length - 1 });
             }
-
             repeaterCore.emit('reRender');
         }
 

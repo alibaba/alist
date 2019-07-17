@@ -12,6 +12,7 @@ class RepeaterCore {
             multipleSyncHandler, setLoadingSideEffect,
         } = props;
         this.formList = [];
+        this.isRepeater = true;
         this.loading = false;
         this.id = 'repeater_' + genId();
         this.status = status || 'preview';
@@ -590,10 +591,10 @@ class RepeaterCore {
         } = event || {};
 
         if (Array.isArray(valueArr)) {
-            if (!type || forceRegenerate) {
-                this.formList = valueArr.map((values) => {
+            if ((!type || forceRegenerate)) {
+                this.formList = valueArr.map((values, formIndex) => {
                     const formValues = values || {};
-                    const core = this.generateCore(formValues);
+                    const core = this.generateCore(formValues);                    
                     return core;
                 });
             } else if (multiple) {                
@@ -605,6 +606,7 @@ class RepeaterCore {
                             changeKeys.forEach((ck) => {
                                 changedValues[ck] = valueArr[index][ck];
                             });
+
                             old.setValues(changedValues);
                         } else {
                             old.setValues(valueArr[index]);

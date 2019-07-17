@@ -23,6 +23,15 @@ class Section extends React.Component {
         this.didMount = false;
     }
 
+    componentWillReceiveProps(nextProps) {
+        const { core: nextCore, form } = nextProps;
+        if (nextCore && nextCore.id !== this.core.id) {
+            this.form = form;
+            this.core = nextCore;
+            this.forceUpdate();
+        }
+    }
+
     update = (type, name, value, silent = false) => {
         if (type === this.type && this.didMount && this.core.name === name && !silent) {
             this.forceUpdate();
@@ -53,6 +62,8 @@ class Section extends React.Component {
         } else {
             error = propsError;
         }
+
+        console.log('renderErrorItem name', name, error);
 
         let errInfo = error;
         let hasError = !!errInfo;

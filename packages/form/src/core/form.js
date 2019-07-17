@@ -116,7 +116,7 @@ class Form {
         const arrName = [].concat(name);
         const validators = [];
         const validatorIdxMap = {};
-        const childList = [];
+        const childList = [];        
         this.children.forEach((child) => {
             if (arrName.indexOf(child.name) !== -1) {
                 validatorIdxMap[child.name] = validators.length;
@@ -128,9 +128,9 @@ class Form {
         this.validatng = true;
         const errs = await Promise.all(validators);
         this.validatng = false;
-
+        
         const { success, errors4Setting, errors4User } = this.handleErrors(errs, childList);
-
+       
         if (withRender) {
             this.setError(errors4Setting);
         }

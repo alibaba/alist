@@ -36,7 +36,7 @@ class Item {
         // 需要判断是否有更下层的校验(组件层面)
         let subValidator = null;
         let hasSubPromise = false;
-
+        
         if (subField) {
             errors = { // 错误需要增加一个维度，才能满足子项校验
                 main: null,
@@ -79,7 +79,7 @@ class Item {
         }
 
         // 处理子项是promise的情况
-        const subPromiseHandler = () => Promise.resolve(subValidator).then((subErr) => {
+        const subPromiseHandler = () => Promise.resolve(subValidator).then((subErr) => {            
             errors.sub = subErr;
             return errors;
         }).then(cb);

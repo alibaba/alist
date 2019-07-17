@@ -26,6 +26,33 @@ class If extends Component {
     };
     constructor(props) {
         super(props);
+        this.initialCore(props);
+    }
+
+    componentDidMount() {
+        this.didMount = true;
+        this.forceUpdate();
+        this.core.on(ANY_CHANGE, this.update);
+    }
+
+    componentWillReceiveProps = (nextProps) => {
+        const { core: nextFormCore } = nextProps;
+        if (nextFormCore && nextFormCore.id !== this.form.id) {
+            this.form = nextFormCore;
+            if (this.core) {
+                this.core.removeListener(ANY_CHANGE, this.update);
+            }
+            this.initialCore(nextProps);
+        }
+    }
+
+    componentWillUnmount() {
+        this.didMount = false;
+        this.core.removeListener(ANY_CHANGE, this.update);
+    }
+
+
+    initialCore = (props) => {
         const {
             when, form, ifCore, name, core: customCore,
         } = props;
@@ -36,17 +63,9 @@ class If extends Component {
         this.core = this.form.addField({ when, name, isIf: true });
         this.core.jsx = this;       
         this.core.parentIf = parentIf;
+        return this.core;
     }
 
-    componentDidMount() {
-        this.didMount = true;
-        this.forceUpdate();
-        this.core.on(ANY_CHANGE, this.update);
-    }
-    componentWillUnmount() {
-        this.didMount = false;
-        this.core.removeListener(ANY_CHANGE, this.update);
-    }
     update = (type, name) => {
         const hit = this.hitListenKeys(name);
         if (this.didMount && (type === 'value' || type === 'status') && hit) {

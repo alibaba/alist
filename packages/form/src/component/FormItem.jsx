@@ -522,7 +522,8 @@ class BaseFormItem extends React.Component {
         // error比较特殊, 需要考虑自定义errorRender
         const sectionValue = { ...itemProps,
             // 优先级：customCore > form > 本地core
-            form: itemProps.core || itemProps.form || this.form,
+            form: this.form,
+            // form: itemProps.core || itemProps.form || this.form,
             core: this.core
         };
         delete sectionValue.className;
