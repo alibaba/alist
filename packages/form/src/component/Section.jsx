@@ -63,8 +63,6 @@ class Section extends React.Component {
             error = propsError;
         }
 
-        console.log('renderErrorItem name', name, error);
-
         let errInfo = error;
         let hasError = !!errInfo;
         let hasMainError = !!errInfo;

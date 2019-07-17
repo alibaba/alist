@@ -335,7 +335,6 @@ export default function CreateRepeater(bindSource, type, source) {
             this.manualEvent = opts || {};
             const values = this.repeaterCore.getValues();
             this.repeaterCore.manualEvent = this.manualEvent;
-            console.log('sync paylaod', values, opts);
             this.onChange(values, opts);
         }
 
