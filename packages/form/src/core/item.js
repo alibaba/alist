@@ -3,6 +3,7 @@ import deepEqual from 'deep-equal';
 import { ANY_CHANGE, BASIC_EVENT, STATUS_ENUMS, REPEATER_IF_CHANGE } from '../static';
 import genId from '../util/random';
 import { isPromise } from '../util/is';
+import { log4set } from './log';
 
 function isFunction(func) {
     return typeof func === 'function';
@@ -135,9 +136,11 @@ class Item {
         const {
             id, interceptor, name, value, props, error,
             status, when = null, validateConfig, parentIf,
-            func_status, func_props, jsx_status,
+            func_status, func_props, jsx_status, render, label
         } = option;
 
+        this.label = label;
+        this.render = render;
         this.isIf = !!isIf;
         this.name = name;
         this.value = value;
@@ -319,6 +322,17 @@ class Item {
         this.form[type][this.name] = ftValue;
         this[type] = ftValue;
         this.form.escape[this.name] = escape;
+        
+        if (this.form.currentEventType === 'manual') {
+            log4set(this.form.logger, {
+                type,
+                batch: false,
+                triggerType: 'manual',
+                change: ftValue,
+                data: ftValue,
+                fields: [this.name],
+            });
+        }        
 
         if (!silent) {
             this.emit(BASIC_EVENT[type], this.name, ftValue);

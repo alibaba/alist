@@ -176,11 +176,13 @@ class BaseFormItem extends React.Component {
         this.form.currentCore = this.core;
         this.form.currentEventOpts = opts;
         this.form.currentEventType = 'manual';
+        this.form.currentEventId = genId();
         this.core.set('value', val, escape);
         Promise.resolve().then(() => {
             this.form.currentCore = null;
             this.form.currentEventOpts = null;
             this.form.currentEventType = 'api';
+            this.form.currentEventId = null;
         });
 
         const { onChange } = this.props;
@@ -358,8 +360,9 @@ class BaseFormItem extends React.Component {
         const {
             name, error, props: itemProps, status,
             core: customForm, form, ifCore,
+            label, render,
         } = props;
-
+        
         const value = getValue(props);        
         const defaultValue = getDefaultValue(props);
 
@@ -368,7 +371,12 @@ class BaseFormItem extends React.Component {
             value,
             name,
             defaultValue,
+            render,
         };
+
+        if (typeof label === 'string') {
+            option.label = label;
+        }
 
         // 上有if item
         if (ifCore && this.hasSameIfOrigin(ifCore)) {

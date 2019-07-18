@@ -5,6 +5,7 @@ import ItemCore from './item';
 import genId from '../util/random';
 import scroll from '../util/scroll';
 import { isPromise, isObject, isInvalidVal, isSingleItemSet } from '../util/is';
+import { log4set, log4mount, log4validate } from './log';
 
 const genName = () => `__anonymouse__${genId()}`;
 const noop = () => {};
@@ -21,8 +22,10 @@ class Form {
             initValues,
             exts,
             repeaterRowCore = false,
+            logger,
         } = option || {};
 
+        this.logger = logger;
         this.onChange = onChange || noop;
         this.children = [];
         this.childrenMap = {};
@@ -75,11 +78,16 @@ class Form {
 
         // 处理item的setValue事件
         this.on(VALUE_CHANGE, this.handleChange);
-        this.on(INITIALIZED, this.initialized);
+        this.on(INITIALIZED, this.handleInitialized);
         this.on(ON_EVENT, this.onEvent);
         this.on(FOCUS, this.onFocus);
         this.on(BLUR, this.onBlur);
         this.on(REPEATER_IF_CHANGE, this.handleRepeaterIfChange)
+    }
+
+    handleInitialized = (...args) => {
+        log4mount(this.logger, this.children);
+        this.initialized(...args);
     }
 
     // repeater if change
@@ -94,6 +102,7 @@ class Form {
             const relatedKeys = this.settingBatchKeys || [name];
             if (this.autoValidate) { // 按需校验
                 const opts = this.currentEventOpts || {};
+                opts.triggerType = 'manual';
                 this.validateItem(relatedKeys, undefined, opts);
             }
 
@@ -112,7 +121,7 @@ class Form {
 
     // 检验单项
     async validateItem(name, cb = x => x, opts = {}) {
-        const { withRender = true } = opts || {};
+        const { withRender = true, triggerType = 'api' } = opts || {};
         const arrName = [].concat(name);
         const validators = [];
         const validatorIdxMap = {};
@@ -130,10 +139,18 @@ class Form {
         this.validatng = false;
         
         const { success, errors4Setting, errors4User } = this.handleErrors(errs, childList);
+
+        log4validate(this.logger, {
+            fields: arrName,
+            success,
+            withRender,
+            error: errors4Setting,
+            triggerType,
+        });
        
         if (withRender) {
             this.setError(errors4Setting);
-        }
+        }        
         
         if (success) {
             return cb(null);
@@ -281,6 +298,15 @@ class Form {
             }
         }
 
+        log4set(this.logger, {
+            type,
+            batch: false,
+            triggerType: 'api',
+            change: formatValue,
+            data: formatValue,
+            fields: [name],
+        });
+
         this.isSetting = false;
         this.hasEmitted = false;
     }
@@ -362,7 +388,7 @@ class Form {
                 };
             });
         }
-
+        
         this[type] = {
             ...this[type],
             ...formatValue,
@@ -388,6 +414,18 @@ class Form {
                 });
             }
         }
+
+        log4set(this.logger, {
+            type,
+            batch: true,
+            triggerType: 'api',
+            change: formatValue,
+            data: {
+                ...this[type],
+                ...formatValue,
+            },
+            fields: [...(this.settingBatchKeys || [])],
+        });
 
         this.isSetting = false;
         this.hasEmitted = false;
@@ -468,7 +506,7 @@ class Form {
             const mrOption = Object.assign({}, option);
             const {
                 value, name, status, error, props, func_status, defaultValue = null,
-                interceptor: localInterceptor,
+                interceptor: localInterceptor, label, render,
             } = option;
 
             if (this.childrenMap[name]) {
@@ -478,6 +516,8 @@ class Form {
             // name特殊处理
             if (typeof name === 'number') mrOption.name = `${name}`;
             if (!name) mrOption.name = genName();
+            this.label = label;
+            this.render = render;
 
             // JSX 属性 > core默认值 > 默认属性(globalStatus) > 空值
             mrOption.jsx_status = status || func_status;

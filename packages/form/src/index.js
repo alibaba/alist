@@ -3,6 +3,7 @@ import FormItem from './component/FormItem';
 import Item from './component/Item';
 import If from './component/If';
 import FormCore from './core/form';
+import Logger from './core/logger';
 import RepeaterCore from './repeater/repeaterCore';
 
 export {
@@ -12,4 +13,5 @@ export {
     If,
     FormCore,
     RepeaterCore,
+    Logger,
 };
