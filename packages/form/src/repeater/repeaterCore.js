@@ -587,37 +587,39 @@ class RepeaterCore {
     // 更新value
     updateValue = async (valueArr, event) => {
         const {
-            type, index, multiple, inline, changeKeys, forceRegenerate,
+            type, index, multiple, inline, changeKeys, forceRegenerate, avoidRender,
         } = event || {};
 
         if (Array.isArray(valueArr)) {
-            if ((!type || forceRegenerate)) {
-                this.formList = valueArr.map((values, formIndex) => {
-                    const formValues = values || {};
-                    const core = this.generateCore(formValues);                    
-                    return core;
-                });
-            } else if (multiple) {                
-                this.formList = this.formList.map((old, idx) => {
-                    if (type === 'update' && index === idx) {
-                        // 处理同步修改，只修改动的值
-                        if (Array.isArray(changeKeys)) {
-                            const changedValues = {};
-                            changeKeys.forEach((ck) => {
-                                changedValues[ck] = valueArr[index][ck];
-                            });
-
-                            old.setValues(changedValues);
-                        } else {
-                            old.setValues(valueArr[index]);
+            if (!avoidRender) {
+                if ((!type || forceRegenerate)) {
+                    this.formList = valueArr.map((values, formIndex) => {
+                        const formValues = values || {};
+                        const core = this.generateCore(formValues);                    
+                        return core;
+                    });
+                } else if (multiple) {                
+                    this.formList = this.formList.map((old, idx) => {
+                        if (type === 'update' && index === idx) {
+                            // 处理同步修改，只修改动的值
+                            if (Array.isArray(changeKeys)) {
+                                const changedValues = {};
+                                changeKeys.forEach((ck) => {
+                                    changedValues[ck] = valueArr[index][ck];
+                                });
+    
+                                old.setValues(changedValues);
+                            } else {
+                                old.setValues(valueArr[index]);
+                            }
                         }
-                    }
-
-                    // old = cb(old);
-
-                    return old;
-                });
-            }
+    
+                        // old = cb(old);
+    
+                        return old;
+                    });
+                }
+            }            
 
             if (this.asyncHandler.afterSetting) {
                 this.asyncHandler.afterSetting(event, this);

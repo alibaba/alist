@@ -383,6 +383,11 @@ class Example extends React.Component {
                                         onMount={(list) => {
                                             window.list = list;
                                         }}
+                                        asyncHandler={{
+                                            afterSetting: () => {
+
+                                            }
+                                        }}
                                         hasAdd={false}
                                         multiple
                                         formConfig={{
@@ -409,13 +414,13 @@ class Example extends React.Component {
                                                         <Input />
                                                     </FormItem>;
                                                 }} />
-                                                {/* <Table.Column title="condition" render={(_, record, index) => {
+                                                <Table.Column title="condition" render={(_, record, index) => {
                                                     return <If core={subCoreList[index]} when={(values) => values.username === 'a'}>
                                                         <FormItem name="cond" core={subCoreList[index]}>
                                                             <Input />
                                                         </FormItem>
                                                     </If>;
-                                                }} /> */}
+                                                }} />
                                                 <Table.Column title="operation" render={(_, record, index) => {
                                                     console.log('外部', coreList, parentIndex, coreList[parentIndex]);
                                                     return <div>
