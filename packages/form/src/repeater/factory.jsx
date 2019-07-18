@@ -145,8 +145,9 @@ export default function CreateRepeater(bindSource, type, source) {
             }
 
             manualEvent.forceRegenerate = forceRegenerate;
-            if (!avoidRender) {                
-                this.repeaterCore.updateValue(this.value, manualEvent);
+            manualEvent.avoidRender = avoidRender;
+            this.repeaterCore.updateValue(this.value, manualEvent);
+            if (!avoidRender) {
                 this.forceUpdate();
             }            
             this.manualEvent = {};
