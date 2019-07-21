@@ -32,7 +32,8 @@ class Section extends React.Component {
         }
     }
 
-    update = (type, name, value, silent = false) => {
+    update = (type, name, value, payload) => {
+        const { silent = false } = payload || {};
         if (type === this.type && this.didMount && this.core.name === name && !silent) {
             this.forceUpdate();
         }

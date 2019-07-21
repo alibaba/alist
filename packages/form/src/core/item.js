@@ -247,7 +247,7 @@ class Item {
                     statusResult.then((dynamicResult) => {
                         if (dynamicResult && STATUS_ENUMS.has(dynamicResult) && canConsistWhen) {
                         // if (dynamicResult && STATUS_ENUMS.has(dynamicResult) && when === null) {
-                            this.set('status', dynamicResult, escape, silent);
+                            this.set('status', dynamicResult, { escape, silent });
                         }
                     });
                 }
@@ -257,7 +257,7 @@ class Item {
 
             // if (syncSetting && statusResult && STATUS_ENUMS.has(statusResult) && when === null) {
             if (syncSetting && statusResult && STATUS_ENUMS.has(statusResult) && canConsistWhen) {
-                this.set('status', statusResult, escape, silent);
+                this.set('status', statusResult, { escape, silent });
             }            
         }
 
@@ -301,7 +301,8 @@ class Item {
         return this.form[type][this.name];
     }
 
-    async set(type, value, escape = false, silent = false) {
+    async set(type, value, payload) {
+        const { eventId, eventType, escape = false, silent = false } = payload || {};
         let ftValue = value;
 
         // interceptor一般为function, 在类型为value时处理
@@ -323,11 +324,11 @@ class Item {
         this[type] = ftValue;
         this.form.escape[this.name] = escape;
         
-        if (this.form.currentEventType === 'manual') {
-            log4set(this.form.logger, {
+        if (eventType === 'manual') {
+            log4set(this.form.logger, eventId, {
                 type,
                 batch: false,
-                triggerType: 'manual',
+                triggerType: eventType,
                 change: ftValue,
                 data: ftValue,
                 fields: [this.name],
@@ -335,8 +336,8 @@ class Item {
         }        
 
         if (!silent) {
-            this.emit(BASIC_EVENT[type], this.name, ftValue);
-            this.emit(ANY_CHANGE, type, this.name, ftValue);
+            this.emit(BASIC_EVENT[type], this.name, ftValue, payload);
+            this.emit(ANY_CHANGE, type, this.name, ftValue, payload);
         }
         return true;
     }

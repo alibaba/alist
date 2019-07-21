@@ -16,11 +16,12 @@ class Logger {
     // 记录当前域名，页面名称，环境信息等
     log4load() {
         const { host, href, pathname, protocol, search } = location;
-        this.log('load', {
+        this.log('env', {
             env: {
                 host, href, pathname, protocol, search,
                 title: document && document.title,
-            },            
+            },
+            eventId: genId(),
         });
     }
 

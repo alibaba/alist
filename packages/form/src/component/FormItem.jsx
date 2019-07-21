@@ -176,13 +176,12 @@ class BaseFormItem extends React.Component {
         this.form.currentCore = this.core;
         this.form.currentEventOpts = opts;
         this.form.currentEventType = 'manual';
-        this.form.currentEventId = genId();
-        this.core.set('value', val, escape);
+        const eventId = genId();
+        this.core.set('value', val, { escape, eventId, eventType: 'manual' });
         Promise.resolve().then(() => {
             this.form.currentCore = null;
             this.form.currentEventOpts = null;
             this.form.currentEventType = 'api';
-            this.form.currentEventId = null;
         });
 
         const { onChange } = this.props;
@@ -449,7 +448,8 @@ class BaseFormItem extends React.Component {
         return this.core.name === key;
     }
 
-    update = (type, name, value, silent = false) => {
+    update = (type, name, value, payload) => {
+        const { silent = false } = payload || {};
         // value, props, error, status
         const { listenError = false, listenProps = false } = this.props;
         const hitListen = this.hitListenKeys(name);

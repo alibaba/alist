@@ -20,7 +20,8 @@ class BaseItem extends React.Component {
         this.didMount = false;
     }
 
-    update = (type, name, value, silent = false) => {
+    update = (type, name, value, payload) => {
+        const { silent = false } = payload || {};
         if (['value', 'props'].indexOf(type) !== -1 &&
             this.didMount &&
             this.name === name && !silent) {

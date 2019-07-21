@@ -30,6 +30,7 @@ class Form {
         this.children = [];
         this.childrenMap = {};
         this.currentEventType = 'api';
+        this.setPayload = null;
         this.autoValidate = autoValidate || false;
         this.exts = exts || {};
         this.enableReceiveProps = enableReceiveProps || false; // breakChange 下个y位升级
@@ -61,13 +62,19 @@ class Form {
         this.emitter.setMaxListeners(1000); // TODO: 最大值
 
         Array.from(['Value', 'Status', 'Error', 'Props', 'Public']).forEach((name) => {
+            const lowerName = name.toLowerCase();
             // 多字段
-            this[`set${name}`] = this.set.bind(this, name.toLowerCase());
-            this[`get${name}`] = this.get.bind(this, name.toLowerCase());
+            this[`set${name}`] = this.set.bind(this, lowerName);
+            this[`get${name}`] = this.get.bind(this, lowerName);
+            this[`set${name}WithPayload`] = (data, payload = {}) => {
+                this.setPayload = payload;
+                this.set(lowerName, data, payload);
+                this.setPayload = null;
+            };
 
             // 单字段
-            this[`setItem${name}`] = this.setItem.bind(this, name.toLowerCase());
-            this[`getItem${name}`] = this.get.bind(this, name.toLowerCase());
+            this[`setItem${name}`] = this.setItem.bind(this, lowerName);
+            this[`getItem${name}`] = this.get.bind(this, lowerName);
         });
 
         this.initialized = initialized || noop;
@@ -86,7 +93,7 @@ class Form {
     }
 
     handleInitialized = (...args) => {
-        log4mount(this.logger, this.children);
+        log4mount(this.logger, genId(), this.children);
         this.initialized(...args);
     }
 
@@ -97,12 +104,14 @@ class Form {
     }
 
     // 上报change事件到JSX
-    handleChange = (name) => {
+    handleChange = (name, value, payload) => {
+        const { eventType = 'api', eventId = genId() } = payload || {};
         if (!this.silent && !this.hasEmitted) { // 变化的keys必须为数组
             const relatedKeys = this.settingBatchKeys || [name];
             if (this.autoValidate) { // 按需校验
                 const opts = this.currentEventOpts || {};
-                opts.triggerType = 'manual';
+                opts.eventType = eventType;
+                opts.eventId = eventId;
                 this.validateItem(relatedKeys, undefined, opts);
             }
 
@@ -121,7 +130,7 @@ class Form {
 
     // 检验单项
     async validateItem(name, cb = x => x, opts = {}) {
-        const { withRender = true, triggerType = 'api' } = opts || {};
+        const { withRender = true, eventType = 'api', eventId = genId() } = opts || {};
         const arrName = [].concat(name);
         const validators = [];
         const validatorIdxMap = {};
@@ -140,16 +149,16 @@ class Form {
         
         const { success, errors4Setting, errors4User } = this.handleErrors(errs, childList);
 
-        log4validate(this.logger, {
+        log4validate(this.logger, eventId, {
             fields: arrName,
             success,
             withRender,
             error: errors4Setting,
-            triggerType,
+            triggerType: eventType,
         });
        
         if (withRender) {
-            this.setError(errors4Setting);
+            this.setError(errors4Setting, { eventType, eventId });
         }        
         
         if (success) {
@@ -272,7 +281,8 @@ class Form {
     }
 
     // 设置单子段
-    setItem(type, name, value) {
+    setItem(type, name, value, payload) {
+        const { eventId = genId(), eventType = 'api' } = payload || {};
         this.isSetting = true;
         let formatValue = value;
 
@@ -298,10 +308,10 @@ class Form {
             }
         }
 
-        log4set(this.logger, {
+        log4set(this.logger, eventId, {
             type,
             batch: false,
-            triggerType: 'api',
+            triggerType: eventType,
             change: formatValue,
             data: formatValue,
             fields: [name],
@@ -353,10 +363,12 @@ class Form {
     }
 
     // 设置多字段
-    set(type, value) {
+    set(type, value, payload) {
+        const { eventType = 'api', eventId = genId() } = payload || {};
+
         // 设置单字段
         if (isSingleItemSet(arguments)) {
-            this.setItem(type, value, arguments[2]);
+            this.setItem(...arguments);
             return;
         }
 
@@ -400,7 +412,7 @@ class Form {
 
         const childNames = [];
         this.children.forEach((child) => {
-            child.set(type, this[type][child.name]);
+            child.set(type, this[type][child.name], { eventType, eventId });
             childNames.push(child.name);
         });
 
@@ -415,10 +427,10 @@ class Form {
             }
         }
 
-        log4set(this.logger, {
+        log4set(this.logger, eventId, {
             type,
             batch: true,
-            triggerType: 'api',
+            triggerType: eventType,
             change: formatValue,
             data: {
                 ...this[type],
