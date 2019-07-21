@@ -139,8 +139,13 @@ export default function CreateRepeater(bindSource, type, source) {
             let avoidRender= false;
             if (this.contextItem && this.contextItem.form && this.contextItem.form.repeater) {
                 const values = this.repeaterCore.getValues();
+                const { type: manualType } = manualEvent;
                 if (deepEqual(values, nextProps.value)) {
                     avoidRender = true;
+                }
+
+                if (['add', 'delete'].includes(manualType)) {
+                    avoidRender = false;
                 }
             }
 
