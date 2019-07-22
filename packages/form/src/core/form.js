@@ -109,7 +109,15 @@ class Form {
         if (!this.silent && !this.hasEmitted) { // 变化的keys必须为数组
             const relatedKeys = this.settingBatchKeys || [name];
             if (this.autoValidate) { // 按需校验
-                const opts = this.currentEventOpts || {};
+                let opts = {};                
+                if (Object.prototype.toString.call(this.currentEventOpts) === '[object Object]') {
+                    opts = {
+                        ...(this.currentEventOpts || {})
+                    }
+                } else {
+                    opts.originOpts = this.currentEventOpts;
+                }
+
                 opts.eventType = eventType;
                 opts.eventId = eventId;
                 this.validateItem(relatedKeys, undefined, opts);

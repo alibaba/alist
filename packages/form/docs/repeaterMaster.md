@@ -451,7 +451,7 @@ class Example extends React.Component {
                                                                 return <Table dataSource={dataSource} >
                                                                     <Table.Column title="subname" render={(_, record, index) => {
                                                                         return <FormItem name="subname" core={deepCoreList[index]}>
-                                                                            <Input />
+                                                                            <Select options={[{ label: 'a', value: 'a' }]} />
                                                                         </FormItem>;
                                                                     }} />
                                                                     <Table.Column title="operation" render={(_, record, index) => {
