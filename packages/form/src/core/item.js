@@ -187,15 +187,23 @@ class Item {
             whenResultFlag = false;
         }
 
+        const lastFlag = this.get('status');
+        let change = false;
         if (whenResultFlag === true) {
+            if (lastFlag !== status) {
+                change = true;    
+            }
             this.set('status', status);
         } else if (whenResultFlag === false) {
+            if (lastFlag !== 'hidden') {
+                change = true;    
+            }
             this.set('status', 'hidden');
         }
 
         // repeater中的if                
-        if (this.form.repeaterRowCore && this.isIf) {            
-            this.form.emit(REPEATER_IF_CHANGE, this.name);
+        if (this.form.repeaterRowCore && this.isIf && change) {            
+            this.form.emit(REPEATER_IF_CHANGE, this.name, { isIf: true, });
         }
     }
 

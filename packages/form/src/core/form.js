@@ -115,8 +115,8 @@ class Form {
                 this.validateItem(relatedKeys, undefined, opts);
             }
 
-            this.onChange(relatedKeys, this.value, this);
-            this.emit(CHANGE, this.value, relatedKeys, this);
+            this.onChange(relatedKeys, this.value, this, payload);
+            this.emit(CHANGE, this.value, relatedKeys, this, payload);
         }
 
         if (this.silent) this.hasEmitted = false;

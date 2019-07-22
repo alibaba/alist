@@ -60,7 +60,7 @@ class Example extends React.Component {
                     // { username: 'username2',s1: 's1...', s2: 's2...', s3: 's3...', source: 2 }
                 ],
                 inlineRepeater_a: [
-                    { source: 'hello', list: [ { username: 'tom' }] }
+                    { source: 'hello', list: [ { username: 'tom', sublist: [{ subname: '111' }] }] }
                 ],
                 products: [
                     { name: 123}
@@ -433,6 +433,39 @@ class Example extends React.Component {
                                                         <ActionButton core={subCoreList[index]} type="delete">删除</ActionButton>
                                                     </div>
                                                 }} />
+                                                <Table.Column title="sublist" render={(_, record, parentIndex) => {
+                                                    return <FormItem name="sublist" core={subCoreList[parentIndex]}>
+                                                        <InlineRepeater
+                                                            hasAdd={false}
+                                                            multiple
+                                                            formConfig={{
+                                                                validateConfig: {
+                                                                    subname: { required: true, message: 'subname is required' },
+                                                                },
+                                                                autoValidate: true,
+                                                            }}
+                                                            view={(_, ctx) => {
+                                                                const dataSource = ctx.getDataSource(); // 获取Repeater当前数据源
+                                                                const deepCoreList = ctx.getCoreList(); // 获取Repeater form核心列表
+
+                                                                return <Table dataSource={dataSource} >
+                                                                    <Table.Column title="subname" render={(_, record, index) => {
+                                                                        return <FormItem name="subname" core={deepCoreList[index]}>
+                                                                            <Input />
+                                                                        </FormItem>;
+                                                                    }} />
+                                                                    <Table.Column title="operation" render={(_, record, index) => {
+                                                                        return <div>                                                                            
+                                                                            <div>本行</div>
+                                                                            <ActionButton core={deepCoreList[index]} type="addMultipleInline">新增</ActionButton>
+                                                                            <ActionButton core={deepCoreList[index]} type="delete">删除</ActionButton>
+                                                                        </div>
+                                                                    }} />
+                                                                </Table>
+                                                            }}
+                                                        />
+                                                    </FormItem>
+                                                }}/>
                                             </Table>
                                         }}
                                     />
