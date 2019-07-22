@@ -58,11 +58,12 @@ class Form extends Component {
 
     constructor(props) {
         super(props);
-        const { item, value, onChange, repeaterRow, validate: propValidate } = props;
+        const { logger, item, value, onChange, repeaterRow, validate: propValidate } = props;
 
         // 初始化core
         if (props.core) {
             this.core = props.core;
+            this.core.logger = logger;
         } else {
             // 无core则自定义生成不需要处理onChange, 使用jsx上的
             const mrProps = { ...props };

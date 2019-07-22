@@ -137,7 +137,28 @@ export default function CreateRepeater(bindSource, type, source) {
 
             // 嵌套repeater
             let avoidRender= false;
-            if (this.contextItem && this.contextItem.form && this.contextItem.form.repeater) {
+            // if (this.contextItem && this.contextItem.form && this.contextItem.form.repeater) {
+            //     const values = this.repeaterCore.getValues();
+            //     const { type: manualType } = manualEvent;
+            //     if (deepEqual(values, nextProps.value)) {
+            //         avoidRender = true;
+            //     }
+
+            //     if (['add', 'delete'].includes(manualType)) {
+            //         avoidRender = false;
+            //     }
+            // }
+
+            const { nestedPayload, eventId } = manualEvent;
+            if (Array.isArray(nestedPayload)) {
+                const currentEventSep = nestedPayload.findIndex(item => item.eventId === eventId);
+                if (currentEventSep > 0) { // 不是源头
+                    const { multiple, type } = nestedPayload[currentEventSep - 1] || {};
+                    if (multiple && type === 'update') {
+                        avoidRender = true;
+                    }
+                }
+            } else {
                 const values = this.repeaterCore.getValues();
                 const { type: manualType } = manualEvent;
                 if (deepEqual(values, nextProps.value)) {
@@ -286,13 +307,22 @@ export default function CreateRepeater(bindSource, type, source) {
             if (multiple) {
                 core.$focus = true;
                 if (!core.settingChangeHandler) {
-                    core.on('change', (v, fireKeys, ctx) => {
+                    core.on('change', (v, fireKeys, ctx, payload) => {
                         const changedValues = ctx.getValues();
                         const repeaterCore = this.getRepeaterByCore(core);
-                        repeaterCore.updateMultiple((index) => {
-                            repeaterCore.emit('sync', {
+                        repeaterCore.updateMultiple((index) => {                            
+                            const eventPayload = {
                                 type: 'update', index, multiple: true, changeKeys: fireKeys,
-                            });
+                                nestedPayload: null,
+                                coreId: core.id,
+                                core,
+                            };
+
+                            // 如果有嵌套
+                            const { nestedPayload } = payload || {};
+                            eventPayload.nestedPayload = nestedPayload ? [...nestedPayload, eventPayload] : [eventPayload];
+
+                            repeaterCore.emit('sync', eventPayload);
                         })(changedValues, fireKeys, ctx);
                     });
                     core.settingChangeHandler = true;

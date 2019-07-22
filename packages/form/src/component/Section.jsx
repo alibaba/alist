@@ -26,13 +26,24 @@ class Section extends React.Component {
     componentWillReceiveProps(nextProps) {
         const { core: nextCore, form } = nextProps;
         if (nextCore && nextCore.id !== this.core.id) {
+            this.unmountListener(this.form);
             this.form = form;
+            this.registerListener(this.form);
             this.core = nextCore;
             this.forceUpdate();
         }
     }
 
-    update = (type, name, value, silent = false) => {
+    registerListener = (form) => {
+        form.on(ANY_CHANGE, this.update);
+    }
+
+    unmountListener = (form) => {
+        form.removeListener(ANY_CHANGE, this.update);
+    }
+
+    update = (type, name, value, payload) => {
+        const { silent = false } = payload || {};
         if (type === this.type && this.didMount && this.core.name === name && !silent) {
             this.forceUpdate();
         }

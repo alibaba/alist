@@ -3,6 +3,7 @@ import deepEqual from 'deep-equal';
 import { ANY_CHANGE, BASIC_EVENT, STATUS_ENUMS, REPEATER_IF_CHANGE } from '../static';
 import genId from '../util/random';
 import { isPromise } from '../util/is';
+import { log4set } from './log';
 
 function isFunction(func) {
     return typeof func === 'function';
@@ -135,9 +136,11 @@ class Item {
         const {
             id, interceptor, name, value, props, error,
             status, when = null, validateConfig, parentIf,
-            func_status, func_props, jsx_status,
+            func_status, func_props, jsx_status, render, label
         } = option;
 
+        this.label = label;
+        this.render = render;
         this.isIf = !!isIf;
         this.name = name;
         this.value = value;
@@ -184,15 +187,23 @@ class Item {
             whenResultFlag = false;
         }
 
+        const lastFlag = this.get('status');
+        let change = false;
         if (whenResultFlag === true) {
+            if (lastFlag !== status) {
+                change = true;    
+            }
             this.set('status', status);
         } else if (whenResultFlag === false) {
+            if (lastFlag !== 'hidden') {
+                change = true;    
+            }
             this.set('status', 'hidden');
         }
 
         // repeater中的if                
-        if (this.form.repeaterRowCore && this.isIf) {            
-            this.form.emit(REPEATER_IF_CHANGE, this.name);
+        if (this.form.repeaterRowCore && this.isIf && change) {            
+            this.form.emit(REPEATER_IF_CHANGE, this.name, { isIf: true, });
         }
     }
 
@@ -244,7 +255,7 @@ class Item {
                     statusResult.then((dynamicResult) => {
                         if (dynamicResult && STATUS_ENUMS.has(dynamicResult) && canConsistWhen) {
                         // if (dynamicResult && STATUS_ENUMS.has(dynamicResult) && when === null) {
-                            this.set('status', dynamicResult, escape, silent);
+                            this.set('status', dynamicResult, { escape, silent });
                         }
                     });
                 }
@@ -254,7 +265,7 @@ class Item {
 
             // if (syncSetting && statusResult && STATUS_ENUMS.has(statusResult) && when === null) {
             if (syncSetting && statusResult && STATUS_ENUMS.has(statusResult) && canConsistWhen) {
-                this.set('status', statusResult, escape, silent);
+                this.set('status', statusResult, { escape, silent });
             }            
         }
 
@@ -298,7 +309,8 @@ class Item {
         return this.form[type][this.name];
     }
 
-    async set(type, value, escape = false, silent = false) {
+    async set(type, value, payload) {
+        const { eventId, eventType, escape = false, silent = false } = payload || {};
         let ftValue = value;
 
         // interceptor一般为function, 在类型为value时处理
@@ -319,10 +331,21 @@ class Item {
         this.form[type][this.name] = ftValue;
         this[type] = ftValue;
         this.form.escape[this.name] = escape;
+        
+        if (eventType === 'manual') {
+            log4set(this.form.logger, eventId, {
+                type,
+                batch: false,
+                triggerType: eventType,
+                change: ftValue,
+                data: ftValue,
+                fields: [this.name],
+            });
+        }        
 
         if (!silent) {
-            this.emit(BASIC_EVENT[type], this.name, ftValue);
-            this.emit(ANY_CHANGE, type, this.name, ftValue);
+            this.emit(BASIC_EVENT[type], this.name, ftValue, payload);
+            this.emit(ANY_CHANGE, type, this.name, ftValue, payload);
         }
         return true;
     }
