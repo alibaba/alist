@@ -149,6 +149,26 @@ class App extends React.Component {
                 <FormItem label="CheckboxGroup" name="CheckboxGroup"><CheckboxGroup dataSource={dataSource} /></FormItem>
                 <FormItem label="RadioGroup" name="RadioGroup"><RadioGroup dataSource={boolOpts} /></FormItem>
 
+
+                <FormItem name="ngo">
+                    <RadioGroup dataSource={[
+                        { label: 'n1', value: 1 },
+                        { label: 'n0', value: 0 },
+                    ]} />
+                </FormItem>
+                <FormItem name="ngo2">
+                    <RadioGroup dataSource={[
+                        { label: 's1', value: '1' },
+                        { label: 's0', value: '0' },
+                    ]} />
+                </FormItem>
+                <FormItem name="ngo3">
+                    <RadioGroup dataSource={[
+                        { label: 'b1', value: true },
+                        { label: 'b0', value: false },
+                    ]} />
+                </FormItem>
+
                 <FormItem label="RadioGroupRaw" name="RadioGroupRaw">
                     <RadioGroup>
                         {dataSource.map(item => <Radio value={item.value} >

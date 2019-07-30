@@ -28,6 +28,11 @@ const getDefaultValue = (jsxProps) => {
     return null;
 };
 
+const isReactComponent = (com) => {
+    const { $$typeof, type } = com || {};
+    return !!$$typeof && !!type;
+};
+
 class BaseFormItem extends React.Component {
     static propTypes = {
         name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -56,15 +61,18 @@ class BaseFormItem extends React.Component {
             return this;
         }
 
+        if (props.name) {
+            this.name = props.name;
+        }
         this.form = upperCore;
         this.compProps = {};
         this.eventProps = {};
         this.predictChildForm = this.handlePredictForm(props, (component) => {
             const { props: comProps = {} } = component || {};
-            // 自动获取jsx组件属性，下个y位版本自动升级
-            if (this.form.enableReceiveProps) {
-                this.compProps = this.pickupComponentProps(comProps);
-            }
+            this.compProps = this.pickupComponentProps(comProps, props, {
+                enableReceiveProps: this.form.enableReceiveProps,
+                upperProps: this.form.props[this.name]
+            });
         });
 
         this.core = this.initialCore(props, this.compProps);
@@ -80,20 +88,19 @@ class BaseFormItem extends React.Component {
         this.ifCore = this.hasSameIfOrigin(ifCore) ? ifCore : null;
         
         this.id = this.core.id || `__noform__item__${genId()}`;
-
-        if (props.name) {
-            this.name = props.name;
-        }
     }
 
     componentDidMount() { // 绑定set事件就会执行更新 TODO：优化渲染
         this.form.on(ANY_CHANGE, this.update);
         const { childForm } = this.core;
         if (childForm && !childForm.disabledSyncChildForm) {
-            this.form.setValueSilent(this.core.name, childForm.getAll('value'));
-            this.form.setProps(this.core.name, childForm.getAll('props'));
-            this.form.setStatus(this.core.name, childForm.getAll('status'));
-            this.form.setError(this.core.name, childForm.getAll('error'));
+            // 嵌套表单，需要初始化上报这些信息
+            this.form.setValueSilent(this.core.name, childForm.getAll('value'), { initialize: true });
+            this.form.setProps(this.core.name, childForm.getAll('props'), { initialize: true });
+            this.form.setStatus(this.core.name, childForm.getAll('status'), { initialize: true });
+            this.form.setError(this.core.name, childForm.getAll('error'), { initialize: true });
+            
+            
             childForm.on(ANY_CHANGE, (type) => {
                 if (type === 'value') {
                     return;
@@ -125,8 +132,7 @@ class BaseFormItem extends React.Component {
 
         if (needConsist) {
             const value = this.form.getAll('value');
-            const silent = true;
-            this.core.consistStatus(value, silent);
+            this.core.consistStatus(value, { silent: true });
         }
 
         if (('value' in this.props) && !deepEqual(this.core.value, nextProps.value)) {
@@ -176,8 +182,8 @@ class BaseFormItem extends React.Component {
         this.form.currentCore = this.core;
         this.form.currentEventOpts = opts;
         this.form.currentEventType = 'manual';
-        const eventId = genId();
-        this.core.set('value', val, { ...(opts || {}), escape, eventId, eventType: 'manual' });
+        const groupId = genId();
+        this.core.set('value', val, { ...(opts || {}), escape, groupId, eventType: 'manual' });
         Promise.resolve().then(() => {
             this.form.currentCore = null;
             this.form.currentEventOpts = null;
@@ -336,21 +342,41 @@ class BaseFormItem extends React.Component {
         return `${formItemPrefix}-item-content ${full ? `${formItemPrefix}-item-content-full` : ''}`;
     }
 
-    pickupComponentProps = (props) => {
+    pickupComponentProps = (componentProps, props, { enableReceiveProps = false, upperProps = {} }) => {
         const reservedWords = [
-            'name', 'value', 'error', 'props',
-            'label', 'required', 'suffix', 'prefix', 'top', 'help',
+            'name', 'value', 'error', 'props',            
             'onChange', 'onBlur', 'onFocus', 'key',
             'children',
         ];
-
+        
         const comp = {};
-        Object.keys(props || {}).forEach((key) => {
-            if (reservedWords.indexOf(key) === -1) {
-                comp[key] = props[key];
+        // 组件字段
+        Object.keys(componentProps || {}).forEach((key) => {
+            // 保留字不允许提交
+            if (!reservedWords.includes(key)) {
+                // 组件属性字段无法穷尽，尤其是大数据组件，还有很多jsx属性，嵌套类型，处理不方便
+                if (enableReceiveProps) {
+                    if (typeof componentProps[key] !== 'function' &&
+                        !isReactComponent(componentProps[key])) {
+                        comp[key] = componentProps[key];
+                    }
+                }
             }
         });
 
+        // FormItem字段
+        Object.keys(props || {}).forEach((key) => {
+            const isUpperSetted = upperProps[key] !== undefined;                       
+            if (['label', 'required', 'suffix', 'prefix', 'top', 'help'].includes(key)) {
+                if (!isUpperSetted || enableReceiveProps) {                    
+                    if (typeof props[key] !== 'function' &&
+                        !isReactComponent(props[key])) {
+                        comp[key] = props[key];
+                    }
+                }
+            }
+        });
+        
         return comp;
     }
 

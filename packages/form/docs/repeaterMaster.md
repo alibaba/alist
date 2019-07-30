@@ -60,7 +60,7 @@ class Example extends React.Component {
                     // { username: 'username2',s1: 's1...', s2: 's2...', s3: 's3...', source: 2 }
                 ],
                 inlineRepeater_a: [
-                    { source: 'hello', list: [ { username: 'tom', sublist: [{ subname: '111' }] }] }
+                    { source: false, list: [ { username: 'tom', sublist: [{ subname: '111' }] }] }
                 ],
                 products: [
                     { name: 123}
@@ -345,36 +345,81 @@ class Example extends React.Component {
 
             <FormItem label="dynamic repeater" name={`inlineRepeater_a`}>
                 <InlineRepeater
-                    hasAdd={false}
+                    // hasAdd={false}
+                    hasAdd
                     multiple
                     formConfig={{
                         validateConfig: {
                             source: { required: true, message: 'source is required' },
                         },
                         autoValidate: true,
+                        onChange: (fireKeys, currentValues, ctx) => {
+                            
+                        },
                     }}
                     asyncHandler={{
-                        add: () => ({
-                            success: true,
-                            item: {
-                                source: '',
-                                list: [{ username: '' }],
+                        // add: () => ({
+                        //     success: true,
+                        //     item: {
+                        //         source: '',
+                        //         list: [{ username: '' }],
+                        //     }
+                        // }),
+                        afterSetting: (event, repeater) => {
+                            const { changeKeys, type, index, core } = event;
+                            if (type === 'update' && changeKeys.length === 1 && changeKeys.includes('source')) {
+                                const { source } = core.getValues();
+                                const values = repeater.getValues();
+
+                                // if (source === 'a') {
+                                //     const arr = [...values, { source: 'b' }];
+                                //     this.core.setItemValue('inlineRepeater_a', arr);
+                                // }
+
+                                // if (source === 'a') {
+                                //     this.core.setItemValue('inlineRepeater_a', [
+                                //         { source: 'a', dep: '123', dep2: '456' }
+                                //     ]);
+                                // }
                             }
-                        })
+                        }
                     }}
                     view={(_, ctx) => {
                         const dataSource = ctx.getDataSource(); // 获取Repeater当前数据源
                         const coreList = ctx.getCoreList(); // 获取Repeater form核心列表
 
-                        // console.log('ds', dataSource);s
-
                         return <Table dataSource={dataSource}>
                             <Table.Column title="source" render={(_, record, index) => {
-                                return <FormItem name="source" core={coreList[index]}>
-                                    <Input />
-                                </FormItem>;
+                                return <div>  
+                                        <FormItem name="source" core={coreList[index]}>
+                                            <Radio.Group options={[
+                                                { label: '000', value: false },
+                                                { label: '111', value: true }
+                                            ]} />
+                                        </FormItem>
+                                </div>;
                             }} />
-                            <Table.Column title="list" render={(_, record, parentIndex) => {
+                            {/* <Table.Column title="if" render={(_, record, index) => {
+                                return <If core={coreList[index]} when={values => values.source === true}>
+                                    <div>
+                                        <FormItem name="dep" core={coreList[index]}>
+                                            <Radio.Group options={[
+                                                { label: '000', value: false },
+                                                { label: '111', value: true }
+                                            ]} />
+                                        </FormItem>
+                                        
+                                    </div>
+                                </If>;
+                            }} />
+                            <Table.Column title="if2" render={(_, record, index) => {
+                                return <If core={coreList[index]} when={values => values.dep === false}>
+                                    <FormItem name="dep2" core={coreList[index]}>
+                                        <Input />
+                                    </FormItem>
+                                </If>;
+                            }} /> */}
+                            {/* <Table.Column title="list" render={(_, record, parentIndex) => {
                                 return <FormItem errorRender={(err, errInfo) => {
                                     const {main, sub} = errInfo || {};
                                     return sub ? <div style={{ color: 'red' }}>{sub}</div> : null;
@@ -470,7 +515,7 @@ class Example extends React.Component {
                                         }}
                                     />
                                 </FormItem>
-                            }}/>
+                            }}/> */}
                         </Table>
                     }}
                 />

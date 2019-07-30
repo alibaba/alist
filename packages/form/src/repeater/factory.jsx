@@ -60,7 +60,7 @@ export default function CreateRepeater(bindSource, type, source) {
         constructor(props) {
             super(props);
             const {
-                value, status, formConfig, asyncHandler, core, item, multiple,
+                value, status, formConfig, asyncHandler, core, multiple,
             } = props;
             const propsValue = value || [];
             this.value = propsValue;
@@ -136,27 +136,18 @@ export default function CreateRepeater(bindSource, type, source) {
             }
 
             // 嵌套repeater
-            let avoidRender= false;
-            // if (this.contextItem && this.contextItem.form && this.contextItem.form.repeater) {
-            //     const values = this.repeaterCore.getValues();
-            //     const { type: manualType } = manualEvent;
-            //     if (deepEqual(values, nextProps.value)) {
-            //         avoidRender = true;
-            //     }
+            let avoidRender = false;
 
-            //     if (['add', 'delete'].includes(manualType)) {
-            //         avoidRender = false;
-            //     }
-            // }
-
-            const { nestedPayload, eventId } = manualEvent;
+            const { nestedPayload, groupId, isIf } = manualEvent;
             if (Array.isArray(nestedPayload)) {
-                const currentEventSep = nestedPayload.findIndex(item => item.eventId === eventId);
+                const currentEventSep = nestedPayload.findIndex(item => item.groupId === groupId);
                 if (currentEventSep > 0) { // 不是源头
-                    const { multiple, type } = nestedPayload[currentEventSep - 1] || {};
-                    if (multiple && type === 'update') {
+                    const { multiple, type: nestedType } = nestedPayload[currentEventSep - 1] || {};
+                    if (multiple && nestedType === 'update') {
                         avoidRender = true;
                     }
+                } else if (isIf) { // 第一级源头，if改变，仅改变值，不重新渲染
+                    avoidRender = true;
                 }
             } else {
                 const values = this.repeaterCore.getValues();
@@ -175,9 +166,8 @@ export default function CreateRepeater(bindSource, type, source) {
             this.repeaterCore.updateValue(this.value, manualEvent);
             if (!avoidRender) {
                 this.forceUpdate();
-            }            
+            }
             this.manualEvent = {};
-           
         }
 
         onChange = (val, opts) => {
@@ -212,16 +202,6 @@ export default function CreateRepeater(bindSource, type, source) {
             }
 
             this.props.onChange(value, opts);
-        }
-
-        initUpperCore = (props) => {
-            const { item } = props;
-            this.superFormProps = {};
-            if (item) {
-                this.contextItem = item;
-                this.contextItem.addSubField(this.repeaterCore);
-                this.superFormProps = this.getSuperFormProps(item);
-            }
         }
 
         getSuperFormProps = (core) => {
@@ -296,10 +276,23 @@ export default function CreateRepeater(bindSource, type, source) {
             return textMap;
         }
 
+
+        getRepeaterByCore = core => (core && core.repeater ? core.repeater : this.repeaterCore)
         genManualEvent = () => {
             const currentEvent = this.manualEvent || {};
             const { multiple } = this.props;
             return { ...currentEvent, multiple };
+        }
+
+
+        initUpperCore = (props) => {
+            const { item } = props;
+            this.superFormProps = {};
+            if (item) {
+                this.contextItem = item;
+                this.contextItem.addSubField(this.repeaterCore);
+                this.superFormProps = this.getSuperFormProps(item);
+            }
         }
 
         handleCoreUpdate = (core) => {
@@ -310,16 +303,21 @@ export default function CreateRepeater(bindSource, type, source) {
                     core.on('change', (v, fireKeys, ctx, payload) => {
                         const changedValues = ctx.getValues();
                         const repeaterCore = this.getRepeaterByCore(core);
-                        repeaterCore.updateMultiple((index) => {                            
+                        // 如果有嵌套
+                        const { nestedPayload, isIf = false } = payload || {};
+
+                        repeaterCore.updateMultiple((index) => {
                             const eventPayload = {
-                                type: 'update', index, multiple: true, changeKeys: fireKeys,
+                                type: 'update',
+                                index,
+                                multiple: true,
+                                changeKeys: fireKeys,
                                 nestedPayload: null,
                                 coreId: core.id,
                                 core,
+                                isIf,
                             };
 
-                            // 如果有嵌套
-                            const { nestedPayload } = payload || {};
                             eventPayload.nestedPayload = nestedPayload ? [...nestedPayload, eventPayload] : [eventPayload];
 
                             repeaterCore.emit('sync', eventPayload);
@@ -378,19 +376,15 @@ export default function CreateRepeater(bindSource, type, source) {
             const repeaterCore = this.getRepeaterByCore(core);
             const success = await repeaterCore.saveInline(id);
             if (success) {
-                const index = repeaterCore.formList.findIndex(core => core.id === id);
+                const index = repeaterCore.formList.findIndex(c => c.id === id);
                 repeaterCore.emit('sync', { type: 'save', index });
                 repeaterCore.emit('reRender');
             }
         }
 
-        getRepeaterByCore = (core) => {
-            return core && core.repeater ? core.repeater : this.repeaterCore;
-        }
-
         doCancel = async (id, core) => {
             const repeaterCore = this.getRepeaterByCore(core);
-            const index = repeaterCore.formList.findIndex(core => core.id === id);
+            const index = repeaterCore.formList.findIndex(c => c.id === id);
             await repeaterCore.cancelInline(id);
             repeaterCore.emit('sync', { type: 'cancel', index });
             repeaterCore.emit('reRender');

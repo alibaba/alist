@@ -3,7 +3,6 @@ import deepEqual from 'deep-equal';
 import { ANY_CHANGE, BASIC_EVENT, STATUS_ENUMS, REPEATER_IF_CHANGE } from '../static';
 import genId from '../util/random';
 import { isPromise } from '../util/is';
-import { log4set } from './log';
 
 function isFunction(func) {
     return typeof func === 'function';
@@ -15,7 +14,7 @@ class Item {
         this.option = option;
         this.initWith(option);
         this.on(ANY_CHANGE, () => {
-            if (!this.consistenting) {                
+            if (!this.consistenting) {
                 this.selfConsistent();
             }
         });
@@ -37,7 +36,7 @@ class Item {
         // 需要判断是否有更下层的校验(组件层面)
         let subValidator = null;
         let hasSubPromise = false;
-        
+
         if (subField) {
             errors = { // 错误需要增加一个维度，才能满足子项校验
                 main: null,
@@ -80,7 +79,7 @@ class Item {
         }
 
         // 处理子项是promise的情况
-        const subPromiseHandler = () => Promise.resolve(subValidator).then((subErr) => {            
+        const subPromiseHandler = () => Promise.resolve(subValidator).then((subErr) => {
             errors.sub = subErr;
             return errors;
         }).then(cb);
@@ -112,7 +111,6 @@ class Item {
     }
 
     bindForm = (childForm) => {
-        // console.log('item inner exec bindForm ...');
         this.childForm = childForm;
     }
 
@@ -125,7 +123,7 @@ class Item {
 
     initWith(option) {
         const {
-            form, on, emit, removeListener, isIf
+            form, on, emit, removeListener, isIf,
         } = option;
 
         this.form = form;
@@ -136,7 +134,7 @@ class Item {
         const {
             id, interceptor, name, value, props, error,
             status, when = null, validateConfig, parentIf,
-            func_status, func_props, jsx_status, render, label
+            func_status, func_props, jsx_status, render, label,
         } = option;
 
         this.label = label;
@@ -162,7 +160,7 @@ class Item {
             this.jsxValidate = true;
         }
 
-        this.selfConsistent();
+        this.selfConsistent({ initialize: true });
     }
 
     consistValidate() {
@@ -191,19 +189,19 @@ class Item {
         let change = false;
         if (whenResultFlag === true) {
             if (lastFlag !== status) {
-                change = true;    
+                change = true;
             }
             this.set('status', status);
         } else if (whenResultFlag === false) {
             if (lastFlag !== 'hidden') {
-                change = true;    
+                change = true;
             }
             this.set('status', 'hidden');
         }
 
-        // repeater中的if                
-        if (this.form.repeaterRowCore && this.isIf && change) {            
-            this.form.emit(REPEATER_IF_CHANGE, this.name, { isIf: true, });
+        // repeater中的if
+        if (this.form.repeaterRowCore && this.isIf && change) {
+            this.form.emit(REPEATER_IF_CHANGE, this.name, { isIf: true });
         }
     }
 
@@ -228,13 +226,13 @@ class Item {
         return whenResult;
     }
 
-    consistStatus(value, silent = false) {
+    consistStatus(value, payload) {
+        const { silent = false, initialize = false } = payload || {};
         const {
             form, func_status, when, jsx_status,
-            calulateWhen,
         } = this;
 
-        let syncSetting = true;        
+        let syncSetting = true;
         const escape = false;
         const whenResult = when ? this.calulateWhen(value, when) : false;
         const canConsistWhen = when === null || whenResult;
@@ -255,7 +253,7 @@ class Item {
                     statusResult.then((dynamicResult) => {
                         if (dynamicResult && STATUS_ENUMS.has(dynamicResult) && canConsistWhen) {
                         // if (dynamicResult && STATUS_ENUMS.has(dynamicResult) && when === null) {
-                            this.set('status', dynamicResult, { escape, silent });
+                            this.set('status', dynamicResult, { escape, silent, initialize });
                         }
                     });
                 }
@@ -265,14 +263,15 @@ class Item {
 
             // if (syncSetting && statusResult && STATUS_ENUMS.has(statusResult) && when === null) {
             if (syncSetting && statusResult && STATUS_ENUMS.has(statusResult) && canConsistWhen) {
-                this.set('status', statusResult, { escape, silent });
-            }            
+                this.set('status', statusResult, { escape, silent, initialize });
+            }
         }
 
         return statusResult;
     }
 
-    consistProps() {
+    consistProps(payload) {
+        const { initialize = false } = payload || {};
         const { form, func_props } = this;
         if (isFunction(func_props)) {
             const props = form.getAll('props', this.name);
@@ -280,23 +279,22 @@ class Item {
 
             if (isPromise(propsResult)) {
                 propsResult.then((dynamicPropResult) => {
-                    this.set('props', dynamicPropResult);
+                    this.set('props', dynamicPropResult, initialize);
                 });
             } else {
-                this.set('props', propsResult);
+                this.set('props', propsResult, initialize);
             }
         }
     }
 
     // 自我调整
-    selfConsistent() {
+    selfConsistent(payload) {
         this.consistenting = true; // debounce
         const value = this.form.getAll('value');
-
-        const status = this.consistStatus(value); // 调整状态
+        const status = this.consistStatus(value, payload); // 调整状态s
         this.consistValidate(); // 调整校验规则
         this.consistWhen(value, status); // 调整联动判断
-        this.consistProps(); // 调整属性
+        this.consistProps(payload); // 调整属性
 
         this.consistenting = false;
     }
@@ -310,7 +308,9 @@ class Item {
     }
 
     async set(type, value, payload) {
-        const { eventId, eventType, escape = false, silent = false } = payload || {};
+        const {
+            groupId, eventType, escape = false, silent = false,
+        } = payload || {};
         let ftValue = value;
 
         // interceptor一般为function, 在类型为value时处理
@@ -327,21 +327,21 @@ class Item {
         if (deepEqual(this[type], ftValue)) {
             return false;
         }
-        
+
         this.form[type][this.name] = ftValue;
         this[type] = ftValue;
         this.form.escape[this.name] = escape;
-        
+
         if (eventType === 'manual') {
-            log4set(this.form.logger, eventId, {
-                type,
-                batch: false,
-                triggerType: eventType,
-                change: ftValue,
-                data: ftValue,
-                fields: [this.name],
-            });
-        }        
+            if (this.form.logInstance) {
+                this.form.logInstance.logSet(groupId, {
+                    type,
+                    triggerType: eventType,
+                    data: ftValue,
+                    field: this.name,
+                });
+            }
+        }
 
         if (!silent) {
             this.emit(BASIC_EVENT[type], this.name, ftValue, payload);

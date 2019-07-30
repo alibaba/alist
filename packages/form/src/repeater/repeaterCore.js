@@ -14,7 +14,7 @@ class RepeaterCore {
         this.formList = [];
         this.isRepeater = true;
         this.loading = false;
-        this.id = 'repeater_' + genId();
+        this.id = `repeater_${  genId()}`;
         this.status = status || 'preview';
         this.formConfig = formConfig || {};
         this.asyncHandler = asyncHandler || {};
@@ -63,7 +63,7 @@ class RepeaterCore {
         return err;
     }
 
-    validate = (cb = e => e, opts) => {        
+    validate = (cb = e => e, opts) => {
         const { changeKeys = null, index = -1, withRender = true } = opts || {};
         let hasPromise = false;
         const promiseValidator = [];
@@ -84,7 +84,7 @@ class RepeaterCore {
                 } else {
                     result = item.validateWithoutRender();
                 }
-                
+
                 if (isPromise(result)) {
                     hasPromise = true;
                 }
@@ -595,10 +595,10 @@ class RepeaterCore {
                 if ((!type || forceRegenerate)) {
                     this.formList = valueArr.map((values, formIndex) => {
                         const formValues = values || {};
-                        const core = this.generateCore(formValues);                    
+                        const core = this.generateCore(formValues);
                         return core;
                     });
-                } else if (multiple) {                
+                } else if (multiple) {
                     this.formList = this.formList.map((old, idx) => {
                         if (type === 'update' && index === idx) {
                             // 处理同步修改，只修改动的值
@@ -607,19 +607,19 @@ class RepeaterCore {
                                 changeKeys.forEach((ck) => {
                                     changedValues[ck] = valueArr[index][ck];
                                 });
-    
+
                                 old.setValues(changedValues);
                             } else {
                                 old.setValues(valueArr[index]);
                             }
                         }
-    
+
                         // old = cb(old);
-    
+
                         return old;
                     });
                 }
-            }            
+            }
 
             if (this.asyncHandler.afterSetting) {
                 this.asyncHandler.afterSetting(event, this);

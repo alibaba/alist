@@ -52,26 +52,50 @@ export const customizeFormType = {
 
 let children = [
 (() => {
+    // const logger = new Logger({ url: '' });
+    const logger = new Logger();
     const core = new FormCore({
+        // enableReceiveProps: true,
+        logger,
         autoValidate: true,
         validateConfig: {            
             source: { required: true, message: 'source is required' }
+        },
+        values: {
+            source: '123',
         }
     });
-    const logger = new Logger();
+    
     window.logger = logger;
     window.core = core;
+
+    // const taskLog = logger.logTask({ url: 'https://scm.alibaba.com/express/calculateFreight.json?id=123' });
+    // setTimeout(() => {
+    //     taskLog.success({
+    //         code: 0,
+    //         data: 123
+    //     });
+    // }, 1000);
+
+
     return <Form logger={logger} core={core}>
-        <FormItem label="source" name="source">
+        {/* <FormItem label="source" name="source">
             <Input />
+        </FormItem> */}
+        <FormItem label="abcd" name="abcd">
+            <Form>
+                <FormItem label="inner" name="inner">
+                    <Input />
+                </FormItem>
+            </Form>
         </FormItem>
-        <Item render={(values) => {
+        {/* <Item render={(values) => {
             const { source } = values;
             console.log('source', source);
             return <FormItem name="b-source" label="b-source">
                 <Input />
             </FormItem>
-        }} />
+        }} /> */}
     </Form>
 })(),
 ]

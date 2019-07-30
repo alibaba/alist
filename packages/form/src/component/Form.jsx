@@ -94,6 +94,8 @@ class Form extends Component {
             if (!this.item.predictChildForm) {
                 // this.core.value = this.item.value; // 补齐
             }
+
+            this.item.bindForm(this.core);
         }
 
         this.core.top = this.getTopForm();
@@ -126,10 +128,11 @@ class Form extends Component {
             this.core.setValueSilent({});
         }
 
+        // change: didmount太晚了，如果可以提前绑定，节省一部分不必要的渲染
         // 嵌套绑定当前form
-        if (this.item) {
-            this.item.bindForm(this.core);
-        }
+        // if (this.item) {
+        //     this.item.bindForm(this.core);
+        // }
 
         // 强制渲染一次
         this.forceUpdate();

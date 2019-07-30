@@ -4,8 +4,7 @@ import { FOCUS, BLUR, ON_EVENT, VALUE_CHANGE, CHANGE, ANY_CHANGE, BASIC_EVENT, I
 import ItemCore from './item';
 import genId from '../util/random';
 import scroll from '../util/scroll';
-import { isPromise, isObject, isInvalidVal, isSingleItemSet } from '../util/is';
-import { log4set, log4mount, log4validate } from './log';
+import { isObject, isInvalidVal, isSingleItemSet } from '../util/is';
 
 const genName = () => `__anonymouse__${genId()}`;
 const noop = () => {};
@@ -13,7 +12,8 @@ const noop = () => {};
 class Form {
     constructor(option = {}) {
         const {
-            validateConfig, onChange, props, value, values, status, globalStatus, interceptor, uniqueId,
+            validateConfig, onChange, props, value, values, status,
+            globalStatus, interceptor, uniqueId,
             onEvent, onFocus, onBlur,
             initialized,
             autoValidate,
@@ -25,7 +25,7 @@ class Form {
             logger,
         } = option || {};
 
-        this.logger = logger;
+        this.logInstance = logger;
         this.onChange = onChange || noop;
         this.children = [];
         this.childrenMap = {};
@@ -86,40 +86,59 @@ class Form {
         // 处理item的setValue事件
         this.on(VALUE_CHANGE, this.handleChange);
         this.on(INITIALIZED, this.handleInitialized);
-        this.on(ON_EVENT, this.onEvent);
-        this.on(FOCUS, this.onFocus);
-        this.on(BLUR, this.onBlur);
-        this.on(REPEATER_IF_CHANGE, this.handleRepeaterIfChange)
+        this.on(ON_EVENT, this.handleOnEvent);
+        this.on(FOCUS, this.handleFocus);
+        this.on(BLUR, this.handleBlur);
+        this.on(REPEATER_IF_CHANGE, this.handleRepeaterIfChange);
+    }
+
+    handleOnEvent = (payload) => {
+        const { fireKey, args, fn } = payload;
+        this.onEvent(fireKey);
+
+        // 之前已经有独立记录了，这里需要排除掉通用event里面的这几个事件
+        if (!['onFocus', 'onBlur', 'onChange'].includes(fn)) {
+            if (this.logInstance) {
+                this.logInstance.logOnEvent(fireKey, fn, args);
+            }
+        }
+    }
+
+    handleFocus = (key) => {
+        this.onFocus(key);
+    }
+
+    handleBlur = (key) => {
+        this.onBlur(key);
     }
 
     handleInitialized = (...args) => {
-        log4mount(this.logger, genId(), this.children);
         this.initialized(...args);
     }
 
     // repeater if change
-    handleRepeaterIfChange = (name) => {
-        this.onChange([name], this.value, this);
-        this.emit(CHANGE, this.value, [name], this);
+    handleRepeaterIfChange = (name, payload) => {
+        this.onChange([name], this.value, this, payload);
+        this.emit(CHANGE, this.value, [name], this, payload);
     }
 
     // 上报change事件到JSX
     handleChange = (name, value, payload) => {
-        const { eventType = 'api', eventId = genId() } = payload || {};
+        const { eventType = 'api', groupId = genId() } = payload || {};
         if (!this.silent && !this.hasEmitted) { // 变化的keys必须为数组
             const relatedKeys = this.settingBatchKeys || [name];
             if (this.autoValidate) { // 按需校验
-                let opts = {};                
+                let opts = {};
                 if (Object.prototype.toString.call(this.currentEventOpts) === '[object Object]') {
                     opts = {
-                        ...(this.currentEventOpts || {})
-                    }
+                        ...(this.currentEventOpts || {}),
+                    };
                 } else {
                     opts.originOpts = this.currentEventOpts;
                 }
 
                 opts.eventType = eventType;
-                opts.eventId = eventId;
+                opts.groupId = groupId;
                 this.validateItem(relatedKeys, undefined, opts);
             }
 
@@ -138,11 +157,11 @@ class Form {
 
     // 检验单项
     async validateItem(name, cb = x => x, opts = {}) {
-        const { withRender = true, eventType = 'api', eventId = genId() } = opts || {};
+        const { withRender = true, eventType = 'api', groupId = genId() } = opts || {};
         const arrName = [].concat(name);
         const validators = [];
         const validatorIdxMap = {};
-        const childList = [];        
+        const childList = [];
         this.children.forEach((child) => {
             if (arrName.indexOf(child.name) !== -1) {
                 validatorIdxMap[child.name] = validators.length;
@@ -154,33 +173,32 @@ class Form {
         this.validatng = true;
         const errs = await Promise.all(validators);
         this.validatng = false;
-        
+
         const { success, errors4Setting, errors4User } = this.handleErrors(errs, childList);
 
-        log4validate(this.logger, eventId, {
-            fields: arrName,
-            success,
-            withRender,
-            error: errors4Setting,
-            triggerType: eventType,
-        });
-       
+        if (this.logInstance) {
+            this.logInstance.logValidate(groupId, {
+                fields: arrName,
+                success,
+                withRender,
+                error: errors4Setting,
+                triggerType: eventType,
+            });
+        }
+
         if (withRender) {
-            this.setError(errors4Setting, { eventType, eventId });
-        }        
-        
+            this.setError(errors4Setting, { eventType, groupId });
+        }
+
         if (success) {
             return cb(null);
-        } else {
-            return cb(errors4User);
         }
+        return cb(errors4User);
     }
 
     // 纯净的校验方法, ui无关，不会涉及页面error 展示
     // 有别于validate方法是，不进行挂载，直接校验值
-    validateAll = (cb = x => x) => {
-        return this.validatePure(this.value, cb);
-    }
+    validateAll = (cb = x => x) => this.validatePure(this.value, cb)
 
     // 纯净的校验方法, ui无关，不会涉及页面error 展示
     // 有别于validate方法是，不进行挂载，直接校验值
@@ -220,7 +238,7 @@ class Form {
         return this.validateBase(cb, false);
     }
     // 表单校验,返回错误对象
-    validate(cb = x => x) {        
+    validate(cb = x => x) {
         return this.validateBase(cb, true);
     }
 
@@ -290,7 +308,7 @@ class Form {
 
     // 设置单子段
     setItem(type, name, value, payload) {
-        const { eventId = genId(), eventType = 'api' } = payload || {};
+        const { groupId = genId(), eventType = 'api', initialize = false } = payload || {};
         this.isSetting = true;
         let formatValue = value;
 
@@ -316,14 +334,16 @@ class Form {
             }
         }
 
-        log4set(this.logger, eventId, {
-            type,
-            batch: false,
-            triggerType: eventType,
-            change: formatValue,
-            data: formatValue,
-            fields: [name],
-        });
+        if (!initialize) {
+            if (this.logInstance) {
+                this.logInstance.logSet(groupId, {
+                    type,
+                    triggerType: eventType,
+                    data: value,
+                    field: name,
+                });
+            }
+        }
 
         this.isSetting = false;
         this.hasEmitted = false;
@@ -347,7 +367,7 @@ class Form {
             emptyValue = {
                 ...emptyValue,
                 ...this.initValues,
-            }
+            };
         }
 
         this.setValue(emptyValue);
@@ -355,7 +375,7 @@ class Form {
 
     // 重置错误信息
     resetError(keys) {
-        let emptyValue = {};
+        const emptyValue = {};
         let resetKeys = [];
         if (Array.isArray(keys)) {
             resetKeys = keys;
@@ -372,7 +392,7 @@ class Form {
 
     // 设置多字段
     set(type, value, payload) {
-        const { eventType = 'api', eventId = genId() } = payload || {};
+        const { eventType = 'api', groupId = genId() } = payload || {};
 
         // 设置单字段
         if (isSingleItemSet(arguments)) {
@@ -408,7 +428,7 @@ class Form {
                 };
             });
         }
-        
+
         this[type] = {
             ...this[type],
             ...formatValue,
@@ -420,7 +440,7 @@ class Form {
 
         const childNames = [];
         this.children.forEach((child) => {
-            child.set(type, this[type][child.name], { eventType, eventId });
+            child.set(type, this[type][child.name], { eventType, groupId });
             childNames.push(child.name);
         });
 
@@ -435,17 +455,14 @@ class Form {
             }
         }
 
-        log4set(this.logger, eventId, {
-            type,
-            batch: true,
-            triggerType: eventType,
-            change: formatValue,
-            data: {
-                ...this[type],
-                ...formatValue,
-            },
-            fields: [...(this.settingBatchKeys || [])],
-        });
+        if (this.logInstance) {
+            this.logInstance.logSetMultiple(groupId, {
+                type,
+                triggerType: eventType,
+                change: formatValue,
+                fields: [...(this.settingBatchKeys || Object.keys(formatValue) || [])],
+            });
+        }
 
         this.isSetting = false;
         this.hasEmitted = false;
