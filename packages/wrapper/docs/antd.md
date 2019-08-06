@@ -255,6 +255,7 @@ class App extends React.Component {
                 <FormItem label="CheckboxGroup" name="CheckboxGroup"><CheckboxGroup options={dataSource} /></FormItem>
                 <FormItem label="RadioGroup" name="RadioGroup"><RadioGroup options={dataSource} /></FormItem>
                 <FormItem label="Slider" name="Slider"><Slider /></FormItem>
+                <FormItem defaultValue={[20, 50]} label="SliderRange" name="SliderRange"><Slider range/></FormItem>
                 <FormItem label="Rate" name="Rate"><Rate /></FormItem>
                 <FormItem label="RangePicker" name="RangePicker"><RangePicker placeholder={["start","end"]} showTime format="YYYY-MM-DD HH:mm:ss" /></FormItem>
 

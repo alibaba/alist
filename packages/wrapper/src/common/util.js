@@ -87,6 +87,11 @@ function formatArray(value) {
     return value;
 }
 
+function formatArrayNumber(value) {
+    if (isEmpty(value)) return [];
+    return value.map(item => formatNumber(item));
+}
+
 function formatBoolValue(value) {
     if (isEmpty(value)) return undefined;
     if (`${value}` === 'true') {
@@ -120,6 +125,7 @@ export {
     formatValue,
     formatArray,
     formatBoolValue,
+    formatArrayNumber,
     getValueProps,
     formatDate,
     log,

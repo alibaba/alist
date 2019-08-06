@@ -60,7 +60,15 @@ class Example extends React.Component {
                     // { username: 'username2',s1: 's1...', s2: 's2...', s3: 's3...', source: 2 }
                 ],
                 inlineRepeater_a: [
-                    { source: false, list: [ { username: 'tom', sublist: [{ subname: '111' }] }] }
+                    // { hidValidate: null, source: false, dep: false, list: [ { username: 'tom', sublist: [{ subname: '111' }] }] }
+                    // { triggerDiscount: false, discount: 100 },
+                    {
+                        source2: '2',
+                        source3: '3',
+                        target: 'helloworld',
+                        triggerIsNormal: false,
+                        isNormal: true,
+                    }
                 ],
                 products: [
                     { name: 123}
@@ -351,36 +359,58 @@ class Example extends React.Component {
                     formConfig={{
                         validateConfig: {
                             source: { required: true, message: 'source is required' },
+                            hidValidate: { required: true, message: 'hidValidate is required' },
                         },
                         autoValidate: true,
                         onChange: (fireKeys, currentValues, ctx) => {
-                            
+                            if (fireKeys.length === 1) {
+                                const [fk] = fireKeys;
+                                if (['source1', 'source2', 'source3'].includes(fk)) {
+                                    ctx.repeater.formList.forEach(f => {
+                                        f.setItemValue('target', '');
+                                    });
+                                }
+                            }
+                        },
+                        interceptor: {
+                            source1: (newValue, oldValue, ctx) => {
+                                if (oldValue !== undefined &&
+                                    newValue !== oldValue) {
+                                    return new Promise((resolve) => {
+                                        const ins = Dialog.show({
+                                            title: '提示',
+                                            content: <div>确定更改</div>,
+                                            onOk: () => {
+                                                resolve(newValue);
+                                                ins.hide();
+                                            },
+                                            cancel: () => {
+                                                resolve(oldValue);
+                                                ins.hide();
+                                            }
+                                        });
+                                    });
+                                } else {
+                                    return newValue;
+                                }
+                            }
                         },
                     }}
                     asyncHandler={{
-                        // add: () => ({
-                        //     success: true,
-                        //     item: {
-                        //         source: '',
-                        //         list: [{ username: '' }],
-                        //     }
-                        // }),
                         afterSetting: (event, repeater) => {
                             const { changeKeys, type, index, core } = event;
-                            if (type === 'update' && changeKeys.length === 1 && changeKeys.includes('source')) {
-                                const { source } = core.getValues();
-                                const values = repeater.getValues();
-
-                                // if (source === 'a') {
-                                //     const arr = [...values, { source: 'b' }];
-                                //     this.core.setItemValue('inlineRepeater_a', arr);
-                                // }
-
-                                // if (source === 'a') {
-                                //     this.core.setItemValue('inlineRepeater_a', [
-                                //         { source: 'a', dep: '123', dep2: '456' }
-                                //     ]);
-                                // }
+                            if (type === 'update' && changeKeys.length === 1 && changeKeys.includes('target')) {
+                                const { target } = core.getValues();
+                                // const values = repeater.getValues();
+                                const values = [];
+                                repeater.formList.forEach(item => {
+                                    values.push(item.getAll('value'));
+                                });
+                                const sortedValues = [...values];
+                                if (target === 'abc') {
+                                    sortedValues.push({ target: 'def', isNormal: true, });
+                                }                                
+                                window.core.setItemValue('inlineRepeater_a', sortedValues);
                             }
                         }
                     }}
@@ -391,30 +421,68 @@ class Example extends React.Component {
                         return <Table dataSource={dataSource}>
                             <Table.Column title="source" render={(_, record, index) => {
                                 return <div>  
-                                        <FormItem name="source" core={coreList[index]}>
+                                    <FormItem name="source1" core={coreList[index]}>
+                                        <Radio.Group options={[
+                                                { label: 'false', value: false },
+                                                { label: 'true', value: true }
+                                        ]} />
+                                    </FormItem>
+                                    <If core={coreList[index]} when={values => values.source1 === true}>
+                                        <div>
+                                            <FormItem name="followSource1" core={coreList[index]}>
+                                                <Input />
+                                            </FormItem>
+                                        </div>
+                                    </If>
+                                    <FormItem name="source2" core={coreList[index]}>
+                                        <Input />
+                                    </FormItem>
+                                    <FormItem name="source3" core={coreList[index]}>
+                                        <Input />
+                                    </FormItem>
+                                </div>;
+                            }} />
+                            <Table.Column title="target" render={(_, record, index) => {
+                                return <div>  
+                                    <FormItem name="target" core={coreList[index]}>
+                                        <Input />
+                                    </FormItem>
+                                </div>;
+                            }} />
+                            <Table.Column title="triggerIsNormal" render={(_, record, index) => {
+                                return <div>  
+                                        <FormItem name="triggerIsNormal" core={coreList[index]}>
                                             <Radio.Group options={[
-                                                { label: '000', value: false },
-                                                { label: '111', value: true }
+                                                { label: 'false', value: false },
+                                                { label: 'true', value: true }
                                             ]} />
                                         </FormItem>
                                 </div>;
                             }} />
-                            {/* <Table.Column title="if" render={(_, record, index) => {
-                                return <If core={coreList[index]} when={values => values.source === true}>
+                            <Table.Column title="isNormal" render={(_, record, index) => {
+                                return <If core={coreList[index]} when={values => values.triggerIsNormal === true}>
                                     <div>
-                                        <FormItem name="dep" core={coreList[index]}>
+                                        <FormItem name="isNormal" core={coreList[index]}>
                                             <Radio.Group options={[
-                                                { label: '000', value: false },
-                                                { label: '111', value: true }
+                                                { label: 'false', value: false },
+                                                { label: 'true', value: true }
                                             ]} />
                                         </FormItem>
-                                        
                                     </div>
                                 </If>;
                             }} />
-                            <Table.Column title="if2" render={(_, record, index) => {
+                            <Table.Column title="deepUsage" render={(_, record, index) => {
+                                return <If core={coreList[index]} when={values => values.isNormal === true}>
+                                    <div>
+                                        <FormItem name="deepUsage" core={coreList[index]}>
+                                            <Input />
+                                        </FormItem>
+                                    </div>
+                                </If>;
+                            }} />
+                            {/* <Table.Column title="if2" render={(_, record, index) => {
                                 return <If core={coreList[index]} when={values => values.dep === false}>
-                                    <FormItem name="dep2" core={coreList[index]}>
+                                    <FormItem name="hidValidate" core={coreList[index]}>
                                         <Input />
                                     </FormItem>
                                 </If>;

@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     renderValue, renderOption, insetify, 
-    formatValue, formatArray, formatBoolValue, formatNumber,
+    formatValue, formatArray, formatBoolValue, formatNumber, formatArrayNumber,
     getValueProps, getCleanProps,
 } from '../common/util';
 import { moment2value } from '../common/moment';
@@ -110,6 +110,21 @@ const Range = (Com, props, opts) => {
     const otherProps = getCleanProps(props);
     const valueProps = getValueProps(props, {
         format: formatNumber,
+    });
+
+    if (status === 'preview') {
+        return <Com className={`${className || ''} ${previewClass}`} {...otherProps} disabled {...valueProps} />;
+    }
+
+    return <Com {...otherProps} {...valueProps} />;
+};
+
+const RangeSlider = (Com, props, opts) => {
+    const { status, className = '' } = props;
+    const { previewClass = '' } = opts || {};
+    const otherProps = getCleanProps(props);
+    const valueProps = getValueProps(props, {
+        format: formatArrayNumber,
     });
 
     if (status === 'preview') {
@@ -253,6 +268,7 @@ export {
     Switch,
     Radio,
     Range,
+    RangeSlider,
     Rate,
     Checkbox,
     CheckboxGroup,

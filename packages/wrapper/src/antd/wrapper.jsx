@@ -1,7 +1,7 @@
 import React from 'react';
 import { insetify, getValueProps, getCleanProps } from '../common/util';
 import { Text, CheckboxGroup, RadioGroup, Radio, Checkbox,
-    Switch, Range, AutoComplete, CascaderSelect,
+    Switch, Range, AutoComplete, CascaderSelect, RangeSlider,
     Upload, Rate, NumberPicker, Select,
     TimePicker, DatePicker, SubDatePicker
 } from '../common/wrapper';
@@ -69,7 +69,12 @@ class WrapperClass {
     }
 
     Slider = (props) => {
-        return Range(this.Antd.Slider, props, { previewClass: `${prefix}-preview-slider` })
+        const { range = false } = props;
+        if (range) {
+            return RangeSlider(this.Antd.Slider, props, { previewClass: `${prefix}-preview-slider` });
+        } else {
+            return Range(this.Antd.Slider, props, { previewClass: `${prefix}-preview-slider` });
+        }
     }
 
     InputNumber = (props) => {
