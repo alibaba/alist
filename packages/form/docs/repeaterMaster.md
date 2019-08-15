@@ -399,17 +399,20 @@ class Example extends React.Component {
                     asyncHandler={{
                         afterSetting: (event, repeater) => {
                             const { changeKeys, type, index, core } = event;
-                            if (type === 'update' && changeKeys.length === 1 && changeKeys.includes('target')) {
-                                const { target } = core.getValues();
-                                // const values = repeater.getValues();
-                                const values = [];
-                                repeater.formList.forEach(item => {
-                                    values.push(item.getAll('value'));
-                                });
+                            if (type === 'update' && changeKeys.length === 1 && changeKeys.includes('target') || 
+                                type === 'delete') {
+                                
+                                const values = repeater.getValues();
                                 const sortedValues = [...values];
-                                if (target === 'abc') {
-                                    sortedValues.push({ target: 'def', isNormal: true, });
-                                }                                
+
+                                if (type === 'update') {
+                                    const { target } = core.getValues();
+                                    if (target === 'abc') {
+                                        sortedValues.push({ target: 'def', isNormal: true, });
+                                    }
+                                }
+                                
+
                                 window.core.setItemValue('inlineRepeater_a', sortedValues);
                             }
                         }
@@ -417,6 +420,18 @@ class Example extends React.Component {
                     view={(_, ctx) => {
                         const dataSource = ctx.getDataSource(); // 获取Repeater当前数据源
                         const coreList = ctx.getCoreList(); // 获取Repeater form核心列表
+
+                        return dataSource.map((item, index) => {                            
+                            return <div>
+                                <FormItem label="target" name="target" core={coreList[index]}>
+                                    <Input />
+                                </FormItem>
+                                { index === 0 ? <FormItem label="other" name="other" core={coreList[index]}>
+                                    <Input />
+                                </FormItem> : null }
+                                <ActionButton core={coreList[index]} type="delete">删除111</ActionButton>
+                            </div>
+                        });
 
                         return <Table dataSource={dataSource}>
                             <Table.Column title="source" render={(_, record, index) => {
