@@ -62,7 +62,7 @@ function getCleanProps(props) {
 function getValueProps(props, opts = {}) {
     const valueProps = {};
     const { keyname = 'value', format = noop } = opts;
-    const defaultValue = 'defaultValue' in opts ? defaultValue : '';
+    const defaultValue = 'defaultValue' in opts ? opts.defaultValue : '';
     if ('value' in props) {
         const propVal = props.value;
         if ([null, undefined].indexOf(propVal) !== -1) {
