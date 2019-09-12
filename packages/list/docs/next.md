@@ -52,7 +52,6 @@ const editForm = (val, index, record) => {
 };
 
 const renderOperation = (a, b, c) => {
-  console.log('a', a, 'b', b, 'c', c);
   return <a href="javascript:void(0)" onClick={editForm}>编辑</a>
 };
 
