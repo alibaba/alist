@@ -17,7 +17,7 @@ export default class GridCore {
         }
         this.filterCore = new FormCore(formConfig); // 搜索的核心，基于noform实现
         this.emitter = new EventEmitter(); // 全局的事件总线
-        this.emitter.setMaxListeners(1000); // TODO: 最大值
+        this.emitter.setMaxListeners(1000);
 
         const { onChange = noop } = formConfig;
         this.filterCore.onChange = (fireKeys, values, ctx) => {
