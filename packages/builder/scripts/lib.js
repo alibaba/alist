@@ -1,3 +1,4 @@
+const chalk = require('chalk');
 const libBase = require('./libBase');
 
 libBase(process.cwd()).catch((err) => {

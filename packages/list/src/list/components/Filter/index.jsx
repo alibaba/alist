@@ -57,9 +57,11 @@ class Filter extends React.Component {
             window.grid = grid;
         }
         const {
-            noDefaultLayout = false, children, render, ...otherParent,
+            noDefaultLayout = false, children, render, 
             searchText = '查询', clearText = '重置筛选条件',
+            ...otherParent,            
         } = this.props;
+
         const { cols, autoWidth } = this.state;
         const core = gridCore.filterCore;
         const FilterBuiltin = (props) => {
