@@ -57,7 +57,8 @@ class Filter extends React.Component {
             window.grid = grid;
         }
         const {
-            noDefaultLayout = false, children, render, ...otherParent
+            noDefaultLayout = false, children, render, ...otherParent,
+            searchText = '查询', clearText = '重置筛选条件',
         } = this.props;
         const { cols, autoWidth } = this.state;
         const core = gridCore.filterCore;
@@ -113,8 +114,8 @@ class Filter extends React.Component {
         return (<div className="filter-wrapper">
             {builtin}
             <div className="filter-control">
-                <button className="filter-control-query" onClick={this.search}>查询</button>
-                <button className="filter-control-clear" onClick={this.clear}>重置筛选条件</button>
+                <button className="filter-control-query" onClick={this.search}>{searchText}</button>
+                <button className="filter-control-clear" onClick={this.clear}>{clearText}</button>
             </div>
         </div>);
     }

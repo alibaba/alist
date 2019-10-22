@@ -48,6 +48,12 @@ export default class DataGrid extends React.Component {
         onMount(core);
     }
 
+    componentWillUnmount() {
+        const { core } = this.state;
+        core.emitter = null; 
+        this.setState({ core: null })
+    }
+
     componentWillReceiveProps(nextProps) {
         const { dataSource } = nextProps;
         const { core } = this.state;
