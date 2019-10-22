@@ -1,6 +1,6 @@
 {
   "name": "nobuilder",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "nobuilder",
   "bin": {
     "nobuilder": "bin/index.js"
