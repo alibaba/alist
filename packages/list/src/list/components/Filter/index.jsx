@@ -59,7 +59,7 @@ class Filter extends React.Component {
         const {
             noDefaultLayout = false, children, render, 
             searchText = '查询', clearText = '重置筛选条件',
-            ...otherParent,            
+            ...otherParent
         } = this.props;
 
         const { cols, autoWidth } = this.state;
