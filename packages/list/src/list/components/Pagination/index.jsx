@@ -13,9 +13,18 @@ class InnerPg extends React.Component {
     componentDidMount = () => {
         const { core } = this.grid;
         if (core && core.emitter) {
-            core.emitter.on('pagination_refresh', () => {
-                this.forceUpdate();
-            });
+            core.emitter.on('pagination_refresh', this.update);
+        }
+    }
+
+    update = () => {
+        this.forceUpdate();
+    }
+
+    componentWillUnmount = () => {
+        const { core } = this.grid;        
+        if (core && core.emitter) {
+            core.emitter.removeListener('pagination_refresh', this.update);
         }
     }
 

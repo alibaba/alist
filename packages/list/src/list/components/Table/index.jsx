@@ -18,12 +18,20 @@ class InnerGrid extends React.Component {
     componentDidMount = () => {
         const { core } = this.grid;
         if (core && core.emitter) {
-            core.emitter.on('refresh', () => {
-                this.forceUpdate();
-            });
-            core.emitter.on('grid_props_update', () => {
-                this.forceUpdate();
-            });
+            core.emitter.on('refresh', this.update);
+            core.emitter.on('grid_props_update', this.update);
+        }
+    }
+
+    update = () => {
+        this.forceUpdate();
+    }
+
+    componentWillUnmount = () => {
+        const { core } = this.grid;
+        if (core && core.emitter) {
+            core.emitter.removeListener('refresh', this.update);
+            core.emitter.removeListener('grid_props_update', this.update);
         }
     }
 
