@@ -133,9 +133,17 @@ class Form extends Component {
         // if (this.item) {
         //     this.item.bindForm(this.core);
         // }
+        
 
         // 强制渲染一次
         this.forceUpdate();
+    }
+
+    componentWillUnmount() { // 解绑
+        this.core.removeListener(CHANGE, this.onChange);
+        this.core.removeListener(FOCUS, this.props.onFocus);
+        this.core.removeListener(BLUR, this.props.onBlur);
+        this.core.removeListener(ON_EVENT, this.props.onEvent)
     }
 
     componentWillReceiveProps(nextProps) {

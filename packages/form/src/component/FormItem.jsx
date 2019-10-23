@@ -101,13 +101,7 @@ class BaseFormItem extends React.Component {
             this.form.setError(this.core.name, childForm.getAll('error'), { initialize: true });
             
             
-            childForm.on(ANY_CHANGE, (type) => {
-                if (type === 'value') {
-                    return;
-                }
-
-                this.form.set(type, this.core.name, childForm.getAll(type));
-            });
+            childForm.on(ANY_CHANGE, this.updateChildForm);
         }
         this.didMount = true;
         this.forceUpdate();
@@ -143,6 +137,19 @@ class BaseFormItem extends React.Component {
     componentWillUnmount() { // 解绑
         this.form.removeListener(ANY_CHANGE, this.update);
         this.didMount = false;
+        const { childForm } = this.core;
+        if (childForm && !childForm.disabledSyncChildForm) {
+            childForm.removeListener(ANY_CHANGE, this.updateChildForm);
+        }
+    }
+
+    updateChildForm = (type) => {
+        const { childForm } = this.core;
+        if (type === 'value') {
+            return;
+        }
+
+        this.form.set(type, this.core.name, childForm.getAll(type));
     }
 
     hasSameIfOrigin = (ifCore) => {
