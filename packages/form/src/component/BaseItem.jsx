@@ -37,19 +37,19 @@ class BaseItem extends React.Component {
             eventProps = {},
         } = this.props;
 
-        if (render) {
-            if (!didMount) {
-                return null;
-            }
-            const values = form.getValue();
-            return render(values, form, { value, onChange });
-        }
-
         const itemProps = {
             value: form.getItemValue(name),
             status: form.getItemStatus(name),
             error: form.getItemError(name),
         };
+
+        if (render) {
+            if (!didMount) {
+                return null;
+            }
+            const values = form.getValue();
+            return render(values, form, { value: itemProps.value, onChange });
+        }
 
         const { status } = itemProps;
         if (didMount && status === 'hidden') {
