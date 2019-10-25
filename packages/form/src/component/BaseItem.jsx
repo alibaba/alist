@@ -42,7 +42,7 @@ class BaseItem extends React.Component {
                 return null;
             }
             const values = form.getValue();
-            return render(values, form);
+            return render(values, form, { value, onChange });
         }
 
         const itemProps = {
