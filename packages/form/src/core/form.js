@@ -619,7 +619,7 @@ class Form {
                 if (child.name in config) {
                     child.setValidateConfig(config[child.name]);
                 } else if (replace) {
-                    child.setValidateConfig({});
+                    child.setValidateConfig(undefined);
                 }
             });
         }
