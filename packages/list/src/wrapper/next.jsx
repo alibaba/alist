@@ -9,21 +9,18 @@ const next = {
     Pagination: NextPagination,
 };
 
-const component = {
-    Table: (props) => {
-        const ListTable = TableWrapper(NextTable);
-        return <ListTable isZebra={true} hasBorder={false} {...props} pagination={false} />;
-    },
-    Pagination: (props) => {
-        // 由于antd和nolist的参数基本一致(currentPage, pageSize, total) 因此这里只展示有差异的
-        const HOCPagination = (hocProps) => {
-            const { currentPage, ...others } = hocProps;
-            return <NextPagination current={currentPage} {...others} />;
-        };
+const ListTable = TableWrapper(NextTable);
 
-        const ListPagination = PaginationWrapper(HOCPagination);
-        return <ListPagination {...props} />;
-    },
+// 由于antd和nolist的参数基本一致(currentPage, pageSize, total) 因此这里只展示有差异的
+const HOCPagination = (hocProps) => {
+    const { currentPage, ...others } = hocProps;
+    return <NextPagination current={currentPage} {...others} />;
+};
+const ListPagination = PaginationWrapper(HOCPagination);
+
+const component = {
+    Table: (props) => <ListTable isZebra={true} hasBorder={false} {...props} pagination={false} />,
+    Pagination: (props) => <ListPagination {...props} />,
 };
 
 Object.keys(component).forEach((key) => {
