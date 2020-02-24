@@ -1,0 +1,32 @@
+{
+  "name": "@alist/core",
+  "version": "1.0.0-alpha.25",
+  "description": "desc",
+  "main": "lib",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "rm -rf lib && tsc --declaration"
+  },
+  "devDependencies": {
+    "typescript": "^3.5.2"
+  },
+  "author": "guishu.zc",
+  "license": "MIT",
+  "dependencies": {
+    "events": "^3.0.0",
+    "whatwg-fetch": "^3.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.alibaba-inc.com:a-lib/alist.git"
+  },
+  "keywords": [
+    "list"
+  ]
+}

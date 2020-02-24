@@ -1,0 +1,35 @@
+{
+  "name": "@alist/react",
+  "version": "1.0.0-alpha.39",
+  "main": "lib",
+  "types": "lib/index.d.ts",
+  "engines": {
+    "npm": ">=3.0.0"
+  },
+  "scripts": {
+    "build": "rm -rf lib && tsc --declaration"
+  },
+  "devDependencies": {
+    "typescript": "^3.5.2"
+  },
+  "dependencies": {
+    "@alist/core": "^1.0.0-alpha.25",
+    "react-eva": "^1.1.7",
+    "styled-components": "^4.4.1"
+  },
+  "peerDependencies": {
+    "@babel/runtime": "^7.4.4",
+    "@types/react": "^16.8.23",
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.alibaba-inc.com:a-lib/alist.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "gitHead": "76f2ae551cdfe1a87e86f21b8647cfa46edc507a"
+}

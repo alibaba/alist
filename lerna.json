@@ -2,13 +2,18 @@
   "packages": [
     "packages/*"
   ],
+  "version": "1.0.0-beta.2",
   "command": {
     "bootstrap": {
-      "npmClientArgs": ["--registry=https://registry.npm.taobao.org"]      
+      "npmClientArgs": [
+        "--no-package-lock"
+      ]
     },
     "publish": {
-      "npmClientArgs": ["--registry=https://registry.npmjs.org"]
+      "allowBranch": "master",
+      "ignoreChanges": [
+        "*.md"
+      ]
     }
-  },
-  "version": "independent"
+  }
 }
