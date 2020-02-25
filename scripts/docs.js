@@ -6,6 +6,10 @@ const HEAD_HTML = `
 <script>
 window.codeSandBoxDependencies = {
   '@alifd/next': 'latest',
+  '@formily/next': 'latest',
+  '@formily/next-components': 'latest',
+  '@formily/antd': 'latest',
+  '@formily/antd-components': 'latest',
   '@alist/core': 'latest',
   '@alist/next': 'latest',
   '@alist/antd': 'latest',

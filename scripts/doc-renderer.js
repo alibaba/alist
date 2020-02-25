@@ -7,7 +7,7 @@ export default ({ docs }) => {
       logo={
         <img
           style={{ height: 46 }}
-          src="//img.alicdn.com/tfs/TB1_5.5MCzqK1RjSZFjXXblCFXa-186-97.png"
+          src="//img.alicdn.com/tfs/TB1U7s3wXY7gK0jSZKzXXaikpXa-380-196.png"
         />
       }
       docs={docs}
