@@ -40,7 +40,7 @@ npm install --save @alifd/next @alist/next
 
 ## 文档
 
-官网及文档正在建设中，敬请期待。
+https://alistjs.netlify.com/
 
 
 ## LICENSE
