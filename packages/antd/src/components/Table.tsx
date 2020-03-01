@@ -30,7 +30,7 @@ const RecursionTable = (props) => {
         ...others
     } = props
     const hasExtraRow = (dataSource || []).find(item => Array.isArray(item.children) && item.children.length > 0)
-    const { openRowKeys, toggle, toggleAll, toggleState } = useToggle(props)
+    const { enableHookCrtl, openRowKeys, toggle, toggleAll, toggleState } = useToggle({...props, toggleeKey: 'expandedRowKeys' })
     const expandProps: any = {};
     
     const list: any = useContext(ListContext)
@@ -59,12 +59,16 @@ const RecursionTable = (props) => {
         }
     }
 
+    if (enableHookCrtl) {
+        expandProps.expandedRowKeys = props.expandedRowKeys || openRowKeys
+    }
+
     return <ToggleContext.Provider value={{ toggle, toggleAll, toggleState, openRowKeys }}>
         <Table
+            className={`${props.className || ''} ${isLoop ? '.alist-recursion-loop' : ''}`}
             dataSource={loopDataSource}
             {...expandProps}
             {...others}
-            expandedRowKeys={openRowKeys}
         />
     </ToggleContext.Provider>
 }
@@ -75,16 +79,20 @@ const TableStyledWrapper = styled((props) => {
     margin-bottom: 16px;
 
     .alist-recursion-table {
-        table {
-            .ant-table-row-expand-icon-cell,
-            .ant-table-expand-icon-th,
-            .ant-table-expand-icon-col {
-                display: none;
-            }
+        .alist-recursion-loop {
+            table {
+                .ant-table-row-expand-icon-cell,
+                .ant-table-expand-icon-th,
+                .ant-table-expand-icon-col {
+                    display: none;
+                }
 
-            .ant-table-expanded-row > td:first-child {
-                display: none;
+                .ant-table-expanded-row > td:first-child {
+                    display: none;
+                }
             }
+        }
+        table {
             .ant-table-expanded-row {        
                 td {
                     border-width: ${(props) => ((props.bordered === undefined ? false : !!props.bordered) ? 1 : 0)}px;

@@ -1,5 +1,7 @@
 import { Consumer } from '@alist/react';
+import { registerListComponent } from '@alist/react-schema-renderer';
 import List from './components/List';
+import SchemaList from './components/SchemaList';
 import Filter from './components/Filter';
 import Table from './components/Table';
 import Pagination from './components/Pagination';
@@ -15,4 +17,18 @@ import { createAntdListActions, createAntdAsyncListActions } from './shared';
 import './fields';
 export * from '@formily/antd';
 export * from '@alist/react';
-export { Selection, ExpandContainer, ExpandTrigger, ToggleTrigger, List, Filter, Table, Pagination, Clear, Layout, createAntdListActions as createListActions, createAntdAsyncListActions as createAsyncListActions, Consumer, Search, Reset };
+registerListComponent({
+    List: List,
+    Table: Table,
+    Filter: Filter,
+    Clear: Clear,
+    Search: Search,
+    Layout: Layout,
+    Pagination: Pagination,
+    ToggleTrigger: ToggleTrigger,
+    ExpandTrigger: ExpandTrigger,
+    ExpandContainer: ExpandContainer,
+    Selection: Selection,
+    Consumer: Consumer
+});
+export { Selection, ExpandContainer, ExpandTrigger, ToggleTrigger, List, SchemaList, Filter, Table, Pagination, Clear, Layout, createAntdListActions as createListActions, createAntdAsyncListActions as createAsyncListActions, Consumer, Search, Reset };

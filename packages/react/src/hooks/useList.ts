@@ -1,13 +1,15 @@
-import { useRef, useMemo } from 'react'
+import { useRef, useMemo, useContext } from 'react'
 import createList, { ListLifeCycle, ListLifeCycleTypes } from '@alist/core'
 import { useEva } from "react-eva";
 import { IList } from '@alist/core/lib/types'
+import ListDomain from '../context/listDomain'
 import { createListEffects, createListActions } from '../shared'
 import { IListUIProps } from '../types'
 
 const useList = (options: IListUIProps): IList & { actions: any } => {
     const optionsRef = useRef<IListUIProps>(options)
     const actionsRef = useRef<any>(options.actions)
+    const listDomain = useContext(ListDomain)
     actionsRef.current = actionsRef.current || createListActions()
 
     // 延迟实现
@@ -32,6 +34,10 @@ const useList = (options: IListUIProps): IList & { actions: any } => {
             implementActions(actions)
             actionsRef.current.addAPI = (name, fn) => {
               actionsRef.current[name] = fn
+            }
+
+            if (listDomain) {
+              listDomain.setContext({ actions })
             }
           }
         )

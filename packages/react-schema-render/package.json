@@ -10,14 +10,14 @@
     "build": "rm -rf lib && tsc --declaration"
   },
   "devDependencies": {
-    "typescript": "^3.5.2"
+    "typescript": "^3.5.2",
+    "@alifd/next": "1.x"
   },
   "dependencies": {
-    "@alist/core": "^1.0.0-alpha.25",
-    "react-eva": "^1.1.7",
-    "styled-components": "^4.4.1"
+    "@alist/react": "^1.0.0-alpha.39"
   },
   "peerDependencies": {
+    "@alist/react": "^1.0.0-alpha.39",
     "@babel/runtime": "^7.4.4",
     "@types/react": "^16.8.23",
     "react": ">=16.8.0",

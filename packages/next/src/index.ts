@@ -1,4 +1,6 @@
 import { Consumer } from '@alist/react'
+import SchemaList from './components/SchemaList'
+import { registerListComponent } from '@alist/react-schema-renderer'
 import List from './components/List'
 import Filter from './components/Filter'
 import Table from './components/Table'
@@ -15,22 +17,40 @@ import ToggleTrigger from './components/ToggleTrigger'
 import { createNextListActions, createNextAsyncListActions } from './shared'
 import './fields'
 
+export * from '@alist/react-schema-renderer'
 export * from '@formily/next-components'
 export * from '@formily/next'
 export * from '@alist/react'
+
+// 传入默认组件
+registerListComponent({
+  List,
+  Table,
+  Filter,
+  Clear,
+  Search,
+  Layout,
+  Pagination,
+  ToggleTrigger,
+  ExpandTrigger,
+  ExpandContainer,
+  Selection,
+  Consumer
+})
 
 export {
   List,
   Selection,
   Sorter,
+  Layout,
   ExpandContainer,
   ExpandTrigger,
+  SchemaList,
   ToggleTrigger,
   Filter,
   Table,
   Pagination,
   Clear,
-  Layout,
   createNextListActions as createListActions,
   createNextAsyncListActions as createAsyncListActions,
   Consumer,

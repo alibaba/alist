@@ -14,6 +14,7 @@ window.codeSandBoxDependencies = {
   '@alist/next': 'latest',
   '@alist/antd': 'latest',
   '@alist/react': 'latest',
+  '@alist/react-schema-renderer': 'latest',
   '@babel/runtime':'latest',
   antd: 'latest'
 }

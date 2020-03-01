@@ -21,7 +21,8 @@
   },
   "dependencies": {
     "@alist/react": "^1.0.0-alpha.39",
-    "@formily/antd": "^1.0.0",
+    "@alist/react-schema-renderer": "^1.0.0-alpha.39",
+    "@formily/antd": "^1.0.0",    
     "@formily/antd-components": "^1.0.0",
     "@types/classnames": "^2.2.9",
     "@types/styled-components": "^4.4.0"

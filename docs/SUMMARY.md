@@ -1,12 +1,33 @@
+- [首页](./home.tsx)
 - 开发指南
-   - [AList 是什么?](./README.md)
-   - API 文档
-     - [Antd扩展库](../packages/antd/README.zh-cn.md)
-     - [Fusion Next扩展库](../packages/next/README.zh-cn.md)
-     - [React核心库](../packages/react/README.zh-cn.md)
-     - [核心库](../packages/core/README.zh-cn.md)
-- 场景案例
-  - Fusion Next
-     - [简单场景](./Examples/next/Sample.md)
-  - Ant Design
-     - [简单场景](./Examples/antd/Sample.md)
+   - [介绍](./README.md)
+   - [快速开始](./quickStart.md)
+   - 概念/术语理解
+      - [理解请求规范](./interface/query.md)
+      - [理解列表生命周期](./interface/lifecycle.md)
+      - [理解actions/effects](./interface/actions.md)
+      - [搜索区域组件](./interface/fields.md)
+      - [搜索区域布局](./interface/layout.md)      
+      - [理解多实例列表](./interface/multiple.md)
+      - [理解组件间通信机制](./interface/communicate.md)
+      - [理解Schema](./schema/index.md)
+   - 实践教程
+      - [三种数据模式](./demo/mode.md)
+      - [搜索布局](./demo/layout.md)
+      - [搜索区域展开收起](./demo/expand.md)
+      - [Table区域展开收起](./demo/expandTable.md)
+      - [同步URL参数](./demo/syncParams.md)
+      - [自定义消费组件](./demo/consumer.md)
+      - [通过Schema渲染](./schema/practise.md)
+      - Hooks结合Formily使用
+   - 进阶教程
+      - [实现自定义请求组件](./advanced/query.md)
+      - [实现自定义布局组件](./advanced/layout.md)
+      - [实现自定义静默埋点](./advanced/dot.md)
+- API手册
+   - Ant Design
+      - antd
+   - Fusion Next
+      - next
+   - API列表
+- [GITHUB](https://github.com/alibaba/AList)

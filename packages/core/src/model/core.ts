@@ -309,11 +309,22 @@ export default class ListCore extends EventEmitter {
     }
 
     // 设置搜索数据
-    setFilterData = (filterData: IListFilterData, slient?: boolean) => {    
-        this.filterInstance && this.filterInstance.setFormState(state => {
-            state.values = filterData
-        }, slient)
+    setFilterData = (filterData: IListFilterData, slient?: boolean) => {
+        if (this.filterInstance) {
+            this.filterInstance.setFormState(state => {
+                state.values = {
+                    ...state.values,
+                    ...filterData,
+                }
+            }, slient)
+        }        
     }
+
+    // 透传
+    setFormState = (...args) => (this.filterInstance && this.filterInstance.setFormState(...args))
+    getFormState = (...args) => (this.filterInstance && this.filterInstance.getFormState(...args))
+    setFieldState = (...args) => (this.filterInstance && this.filterInstance.setFieldState(...args))
+    getFieldState = (...args) => (this.filterInstance && this.filterInstance.getFieldState(...args))
 
     // 获取搜索数据
     getFilterData = (enableInvalid?: boolean) => {

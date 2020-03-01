@@ -14,13 +14,15 @@ import Layout from './components/Layout'
 import LayoutContext from './context/layoutContext'
 import ListContext from './context/index'
 import ToggleContext from './context/toggle'
+import ListDomainContext from './context/listDomain'
 import Toggle from './components/Toggle'
 
 import {
   createListActions,
   createAsyncListActions,
   ListEffectHooks,
-  createListEffectHook
+  createListEffectHook,
+  ListDomain
 } from './shared'
 
 export * from 'react-eva'
@@ -31,6 +33,7 @@ export {
   ListContext,
   Toggle,
   ToggleContext,
+  ListDomainContext,
   ToggleProvider,
   ExpandTrigger,
   createExpandContainer,
@@ -48,5 +51,6 @@ export {
   createAsyncListActions,
   ListEffectHooks,
   createListEffectHook,
-  LayoutContext
+  LayoutContext,
+  ListDomain,
 }

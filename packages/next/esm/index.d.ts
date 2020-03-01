@@ -1,4 +1,5 @@
 import { Consumer } from '@alist/react';
+import SchemaList from './components/SchemaList';
 import List from './components/List';
 import Filter from './components/Filter';
 import Table from './components/Table';
@@ -14,7 +15,8 @@ import ExpandTrigger from './components/ExpandTrigger';
 import ToggleTrigger from './components/ToggleTrigger';
 import { createNextListActions, createNextAsyncListActions } from './shared';
 import './fields';
+export * from '@alist/react-schema-renderer';
 export * from '@formily/next-components';
 export * from '@formily/next';
 export * from '@alist/react';
-export { List, Selection, Sorter, ExpandContainer, ExpandTrigger, ToggleTrigger, Filter, Table, Pagination, Clear, Layout, createNextListActions as createListActions, createNextAsyncListActions as createAsyncListActions, Consumer, Search, Reset };
+export { List, Selection, Sorter, Layout, ExpandContainer, ExpandTrigger, SchemaList, ToggleTrigger, Filter, Table, Pagination, Clear, createNextListActions as createListActions, createNextAsyncListActions as createAsyncListActions, Consumer, Search, Reset };

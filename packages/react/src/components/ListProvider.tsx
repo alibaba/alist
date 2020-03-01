@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import ListContext from '../context'
 import useList from '../hooks/useList'
 import { ListLifeCycleTypes } from '@alist/core';
 
 const ListProvider: React.FC<any> = (props = {}) => {
   const { className, children, style, ...others } = props || {}
-  const list = useList(others)
+  const reuseList = useContext(ListContext)
+  const list = reuseList || useList(others)
   let element
   if (typeof children === 'function') {
       element = children(list)

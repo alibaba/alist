@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@alist/react": "^1.0.0-alpha.39",
+    "@alist/react-schema-renderer": "^1.0.0-alpha.39",
     "@formily/next": "^1.0.0",
     "@formily/next-components": "^1.0.0",
     "@types/classnames": "^2.2.9",

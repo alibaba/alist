@@ -73,6 +73,8 @@ const useNextList = (props: ITableProps = {}): ITableHook => {
             }
         })
     }, [])
+
+    return actionsRef.current
 }
 
 export default useNextList

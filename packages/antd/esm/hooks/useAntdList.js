@@ -20,13 +20,15 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
-import { ListLifeCycleTypes, useEva } from '@alist/react';
+import { useContext } from 'react';
+import { ListLifeCycleTypes, useEva, ListContext } from '@alist/react';
 import { useMemo, useRef } from 'react';
 import { createAntdListActions, setSelectionsByInstance } from '../shared';
 var useAntdList = function (props) {
     if (props === void 0) { props = {}; }
     var actionsRef = useRef(null);
-    actionsRef.current = actionsRef.current || props.actions || createAntdListActions();
+    var reuseList = useContext(ListContext);
+    actionsRef.current = actionsRef.current || props.actions || reuseList || createAntdListActions();
     var implementActions = useEva({
         actions: actionsRef.current
     }).implementActions;
@@ -81,5 +83,6 @@ var useAntdList = function (props) {
             }
         });
     }, []);
+    return actionsRef.current;
 };
 export default useAntdList;

@@ -164,6 +164,7 @@ export enum ModeType {
 }
 
 export enum ListLifeCycleTypes {
+  ON_LIST_FILTER_MOUNT = 'onListFilterMount',
   ON_LIST_FILTER_ITEM_EXPAND = 'onListFilterItemExpand',
   ON_LIST_FILTER_ITEM_COLLAPSE = 'onListFilterItemCollapse',
   ON_LIST_DATASOURCE_FILTER = 'onListDatasourceFilter',
@@ -225,6 +226,10 @@ export interface IListSelections {
 export type ExpandStatus = 'expand' | 'collapse'
 
 export interface IList {
+  setFormState(cb?: (state: any) => any, silent?: boolean): void
+  getFormState(cb?: (state: any) => any): any
+  setFieldState(path: any, cb?: (state: any) => void, silent?: boolean): void
+  getFieldState(path: any, cb?: (state: any) => any): any
   setSortConfig: (sortConfig?: IListSortConfig) => void,
   getSortConfig: () => IListSortConfig,
   getSelectionConfig: () => IListSelectionConfig

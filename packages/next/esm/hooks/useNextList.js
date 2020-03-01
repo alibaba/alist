@@ -81,5 +81,6 @@ var useNextList = function (props) {
             }
         });
     }, []);
+    return actionsRef.current;
 };
 export default useNextList;

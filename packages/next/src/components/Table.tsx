@@ -25,13 +25,13 @@ const VerCenterTitle = styled((props) => <div {...props} />)`
 
 const RecursionTable = (props) => {
     const { dataSource,
-        hasExpandedRowCtrl = false, expandedRowIndent,
+        hasExpandedRowCtrl = true, expandedRowIndent,
         isLoop = false, loopProps = {},
         isRoot,
         ...others
     } = props
     const hasExtraRow = (dataSource || []).find(item => Array.isArray(item.children) && item.children.length > 0)
-    const { openRowKeys, toggle, toggleAll, toggleState } = useToggle(props)
+    const { enableHookCrtl, openRowKeys, toggle, toggleAll, toggleState } = useToggle({...props, toggleeKey: 'openRowKeys' })
     const expandProps: any = {};
     
     const list: any = useContext(ListContext)
@@ -58,13 +58,15 @@ const RecursionTable = (props) => {
         }
     }
 
+    if (enableHookCrtl) {
+        expandProps.openRowKeys = props.openRowKeys || openRowKeys
+    }
 
     return <ToggleContext.Provider value={{ toggle, openRowKeys, toggleAll, toggleState }}>
         <Table
             dataSource={dataSource}
             {...expandProps}
             {...others}
-            openRowKeys={openRowKeys}
             hasExpandedRowCtrl={hasExpandedRowCtrl}
             expandedRowIndent={expandedRowIndent || defaultExpandedRowIndent}
         />

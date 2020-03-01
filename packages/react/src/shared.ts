@@ -11,6 +11,15 @@ export const env = {
   currentActions: null
 }
 
+export class ListDomain {
+  constructor() {}
+  setContext(ctx) {
+      Object.keys(ctx).forEach(k => {
+          this[k] = ctx[k]
+      })
+  }
+}
+
 export const apiList = [
   'addAPI',
   'getSelectionConfig',

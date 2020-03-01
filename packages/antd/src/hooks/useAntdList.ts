@@ -1,10 +1,12 @@
-import { ListLifeCycleTypes, useEva, ITableProps, ITableHook, IListSelectionConfig } from '@alist/react'
+import { useContext } from 'react'
+import { ListLifeCycleTypes, useEva, ITableProps, ITableHook, IListSelectionConfig, ListContext } from '@alist/react'
 import { useMemo, useRef } from 'react'
 import { createAntdListActions, setSelectionsByInstance } from '../shared'
 
 const useAntdList = (props: ITableProps = {}): ITableHook => {
     const actionsRef = useRef<any>(null)
-    actionsRef.current = actionsRef.current || props.actions || createAntdListActions()
+    const reuseList = useContext(ListContext)
+    actionsRef.current = actionsRef.current || props.actions || reuseList || createAntdListActions()
 
     const { implementActions } = useEva({
         actions: actionsRef.current
@@ -74,6 +76,8 @@ const useAntdList = (props: ITableProps = {}): ITableHook => {
             }
         })
     }, [])
+
+    return actionsRef.current
 }
 
 export default useAntdList

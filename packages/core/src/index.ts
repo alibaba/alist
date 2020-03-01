@@ -12,7 +12,6 @@ import {
   IListFilterData,
   IListMultipleDataParams,
   IListMultiplePageSize,
-  FilterType,
   IListSelectionConfig,
   ExpandStatus
 } from './types'
@@ -428,24 +427,18 @@ function createList(props: IListProps = {}): IList {
     }
   }
 
-  // 监听字段值改变, 如果命中paramsFields，就同步到url参数上
-  list.on(FilterType.ITEM_CHANGE, fieldState => {
-    const { name, value } = fieldState
-    if ([].concat(paramsFields).some(f => f === '*' || f === name)) {
-      // 设置filter当前命中的字段值
-      const nextTargetParams = { [name]: value }
-      lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_PARAMS_CHANGE, ctx: listAPI, payload: nextTargetParams })
-      setParams(nextTargetParams)
-    }
-  })
-
   // 适配搜索区域副作用
   const getFilterEffects = (props) => {
     const noop = () => {}
     const { effects = noop } = props
     return ($, actions) => {
+      // 搜索区域初始化完成
+      $('onFormMount').subscribe((state) => {    
+        lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_FILTER_MOUNT, ctx: listAPI, payload: state })
+      })
+
       // 搜索区域字段修改
-      $('onFieldValueChange').subscribe((state) => {          
+      $('onFieldValueChange').subscribe((state) => {    
         lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_FILTER_ITEM_CHANGE, ctx: listAPI, payload: state })
       })
 
@@ -542,6 +535,10 @@ function createList(props: IListProps = {}): IList {
     getFilterProps: list.getFilterProps, // 设置搜索框数据
     getFilterInstance: list.getFilterInstance,
     setFilterInstance: list.setFilterInstance,
+    setFormState: list.setFormState,
+    getFormState: list.getFormState,
+    setFieldState: list.setFieldState,
+    getFieldState: list.getFieldState,
     getDataSource: list.getDataSource, // 获取页面数据
     setDataSource, // 动态更新dataSource
     getMultipleData: list.getMultipleData, // 获取多实例数据
@@ -562,7 +559,9 @@ function createList(props: IListProps = {}): IList {
   // 静默设置到filter上，避免重复通知死循环
   if (Object.keys(syncFilterData).length > 0) {
     lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_INIT_PARAMS_SET, ctx: listAPI, payload: syncFilterData })
-    list.setFilterData(syncFilterData, true)
+    listAPI.subscribe(ListLifeCycleTypes.ON_LIST_FILTER_MOUNT, () => {
+      list.setFilterData(syncFilterData)
+    })    
   }
 
   if (params) {
@@ -584,6 +583,18 @@ function createList(props: IListProps = {}): IList {
   listAPI.subscribe(ListLifeCycleTypes.ON_LIST_MOUNTED, () => {
     if (autoLoad && [ModeType.QUERY, ModeType.URL].indexOf(mode) !== -1) {
       fetch()
+    }
+  })
+
+  // 监听字段值改变, 如果命中paramsFields，就同步到url参数上
+  listAPI.subscribe(ListLifeCycleTypes.ON_LIST_FILTER_ITEM_CHANGE, (fieldChangeData) => {
+    const { payload: fieldState } = fieldChangeData
+    const { name, value } = fieldState
+    if ([].concat(paramsFields).some(f => f === '*' || f === name)) {
+      // 设置filter当前命中的字段值
+      const nextTargetParams = { [name]: value }
+      lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_PARAMS_CHANGE, ctx: listAPI, payload: nextTargetParams })
+      setParams(nextTargetParams)
     }
   })
 

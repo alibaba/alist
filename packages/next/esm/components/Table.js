@@ -42,9 +42,9 @@ var pickInitialTableProps = function (props) {
 };
 var VerCenterTitle = styled(function (props) { return React.createElement("div", __assign({}, props)); })(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n    display: flex;\n    align-items: center;\n"], ["\n    display: flex;\n    align-items: center;\n"])));
 var RecursionTable = function (props) {
-    var dataSource = props.dataSource, _a = props.hasExpandedRowCtrl, hasExpandedRowCtrl = _a === void 0 ? false : _a, expandedRowIndent = props.expandedRowIndent, _b = props.isLoop, isLoop = _b === void 0 ? false : _b, _c = props.loopProps, loopProps = _c === void 0 ? {} : _c, isRoot = props.isRoot, others = __rest(props, ["dataSource", "hasExpandedRowCtrl", "expandedRowIndent", "isLoop", "loopProps", "isRoot"]);
+    var dataSource = props.dataSource, _a = props.hasExpandedRowCtrl, hasExpandedRowCtrl = _a === void 0 ? true : _a, expandedRowIndent = props.expandedRowIndent, _b = props.isLoop, isLoop = _b === void 0 ? false : _b, _c = props.loopProps, loopProps = _c === void 0 ? {} : _c, isRoot = props.isRoot, others = __rest(props, ["dataSource", "hasExpandedRowCtrl", "expandedRowIndent", "isLoop", "loopProps", "isRoot"]);
     var hasExtraRow = (dataSource || []).find(function (item) { return Array.isArray(item.children) && item.children.length > 0; });
-    var _d = useToggle(props), openRowKeys = _d.openRowKeys, toggle = _d.toggle, toggleAll = _d.toggleAll, toggleState = _d.toggleState;
+    var _d = useToggle(__assign(__assign({}, props), { toggleeKey: 'openRowKeys' })), enableHookCrtl = _d.enableHookCrtl, openRowKeys = _d.openRowKeys, toggle = _d.toggle, toggleAll = _d.toggleAll, toggleState = _d.toggleState;
     var expandProps = {};
     var list = useContext(ListContext);
     useEffect(function () {
@@ -61,8 +61,11 @@ var RecursionTable = function (props) {
             expandProps.expandedRowRender = function (record) { return React.createElement(RecursionTable, __assign({ hasHeader: false, hasBorder: true, dataSource: record.children }, others, loopProps, { isLoop: true })); };
         }
     }
+    if (enableHookCrtl) {
+        expandProps.openRowKeys = props.openRowKeys || openRowKeys;
+    }
     return React.createElement(ToggleContext.Provider, { value: { toggle: toggle, openRowKeys: openRowKeys, toggleAll: toggleAll, toggleState: toggleState } },
-        React.createElement(Table, __assign({ dataSource: dataSource }, expandProps, others, { openRowKeys: openRowKeys, hasExpandedRowCtrl: hasExpandedRowCtrl, expandedRowIndent: expandedRowIndent || defaultExpandedRowIndent })));
+        React.createElement(Table, __assign({ dataSource: dataSource }, expandProps, others, { hasExpandedRowCtrl: hasExpandedRowCtrl, expandedRowIndent: expandedRowIndent || defaultExpandedRowIndent })));
 };
 var TableStyledWrapper = styled(function (props) {
     return React.createElement("div", __assign({}, props));
