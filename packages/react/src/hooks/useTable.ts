@@ -13,11 +13,14 @@ const useTable = (props: ITableProps = {}): ITableHook => {
     const loading = list ? list.getLoading() : props.loading
     let dataSource: any[]
 
+    let primaryKey: any
 
     useMemo(() => {
         // 初始化加载时收集tableProps相关信息
         if (typeof pickInitialTableProps === 'function') {
-            list.setTableProps(pickInitialTableProps(props))
+            const initialTableProps = pickInitialTableProps(props)
+            primaryKey = initialTableProps.primaryKey
+            list.setTableProps(initialTableProps)
         }
     }, [])
 
@@ -67,6 +70,7 @@ const useTable = (props: ITableProps = {}): ITableHook => {
         list,
         dataSource,
         loading,
+        primaryKey,
     }
 }
 

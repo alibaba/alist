@@ -5,7 +5,7 @@ import TableContext from '../context/table'
 
 const TableProvider: React.FC<any> = (props: ITableProps = {}) => {
     const { children } = props
-    const { loading, dataSource, list, tableProps } = useTable(props)
+    const { loading, dataSource, list, tableProps, primaryKey } = useTable(props)
     
     let element
     if (typeof children === 'function') {
@@ -14,7 +14,7 @@ const TableProvider: React.FC<any> = (props: ITableProps = {}) => {
         element = children || React.Fragment
     }
 
-    return <TableContext.Provider value={{ loading, dataSource, list, tableProps }}>
+    return <TableContext.Provider value={{ loading, dataSource, list, tableProps, primaryKey }}>
         {element}
     </TableContext.Provider>
 }

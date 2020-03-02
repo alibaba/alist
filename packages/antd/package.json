@@ -10,12 +10,12 @@
     "build": "ts-node --project ../../tsconfig.build.json build.ts"
   },
   "devDependencies": {
-    "antd": "^3.24.3",
+    "antd": "4.x",
     "typescript": "^3.5.2"
   },
   "peerDependencies": {
     "@babel/runtime": "^7.4.4",
-    "antd": "^3.24.3",
+    "antd": "4.x",
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0"
   },

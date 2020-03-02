@@ -21,6 +21,16 @@ const presetSearchStyle = component => {
   }
 }
 
+const acceptEnum = (component: React.JSXElementConstructor<any>) => {
+  return ({ dataSource, ...others }) => {
+    if (dataSource) {
+      return React.createElement(Select, { dataSource, ...others })
+    } else {
+      return React.createElement(component, others)
+    }
+  }
+}
+
 // 注册Cascader组件
 registerFormField(
   'cascaderSelect',
@@ -54,7 +64,7 @@ registerFormField(
   connect({
     getProps: mapStyledProps,
     getComponent: mapTextComponent
-  })(Select)
+  })(acceptEnum(Select))
 )
 
 const Preview = (props) => <p style={{ padding: 0, margin: 0, lineHeight: '28px' }} className="preview-text">

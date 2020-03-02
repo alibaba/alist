@@ -90,7 +90,7 @@ var momentify = function (val, propsMoment) {
     return val ? moment(isNaN(val) ? val : Number(val)).format(format) : null;
 };
 var Component = function (props) {
-    var children = props.children, columns = props.columns;
+    var children = props.children, columns = props.columns, others = __rest(props, ["children", "columns"]);
     var renderProps = {};
     if (children) {
         renderProps.children = React.Children.map(props.children, function (item) {
@@ -117,7 +117,7 @@ var Component = function (props) {
         });
     }
     return React.createElement(TableStyledWrapper, { bordered: props.bordered },
-        React.createElement(TableProvider, { pickInitialTableProps: pickInitialTableProps }, function (connectProps, list) {
+        React.createElement(TableProvider, __assign({ pickInitialTableProps: pickInitialTableProps }, others), function (connectProps, list) {
             return React.createElement(RecursionTable, __assign({ pagination: false }, connectProps, props, renderProps, { isRoot: true, onChange: function (_, filters, sorter) {
                     var _a;
                     var columnKey = sorter.columnKey, order = sorter.order;

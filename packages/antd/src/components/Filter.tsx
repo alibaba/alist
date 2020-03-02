@@ -132,6 +132,17 @@ const Filter: any = styled(props => {
             margin-right: 20px;
             vertical-align: top;
         }
+
+        .ant-form-item-control {
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .ant-form-item {
+            .ant-form-item-control {
+                line-height: 40px;
+            }
+        }
     }
 `
 

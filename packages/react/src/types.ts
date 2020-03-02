@@ -7,6 +7,7 @@ export interface IListEffect<Payload = any, Actions = any> {
 }
 
 export interface IListTableContext {
+  primaryKey: string,
   dataSource: any[],
   loading: boolean,
   list: IList,
@@ -72,6 +73,7 @@ export interface ILayoutContext {
 }
 
 export interface ITableProps {
+  primaryKey?: string
   pickInitialTableProps?: (props: ITableProps) => any
   children?: React.ReactElement | ((...args: any) => React.ReactElement)
   multipleId?: string
@@ -208,6 +210,7 @@ export interface IMultipleHook {
 }
 
 export interface ITableHook {
+  primaryKey: string
   tableProps: any
   list: IList
   dataSource: any[]

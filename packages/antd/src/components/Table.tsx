@@ -129,7 +129,7 @@ const momentify = (val, propsMoment) => {
 }
 
 const Component = props => {
-    const { children, columns } = props
+    const { children, columns, ...others } = props
     const renderProps: any = {}
     if (children) {
         renderProps.children = React.Children.map(props.children, (item) => {
@@ -160,7 +160,7 @@ const Component = props => {
     }
     
     return <TableStyledWrapper bordered={props.bordered}>
-        <TableProvider pickInitialTableProps={pickInitialTableProps}>
+        <TableProvider pickInitialTableProps={pickInitialTableProps} {...others}>
             {(connectProps, list) => {
                 return <RecursionTable
                     pagination={false}

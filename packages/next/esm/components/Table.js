@@ -73,7 +73,7 @@ var TableStyledWrapper = styled(function (props) {
     "\n                }\n            }\n        }\n    \n        .next-table.no-header table {\n            tr:first-child td {\n                border-top-width: 0;\n            }\n        }   \n    }\n\n    & > .next-table > table > .next-table-body > .next-table-expanded-row:last-child > td{\n        border-bottom-width: ", "px;\n    }\n"])), function (props) { return ((props.hasBorder === undefined ? true : !!props.hasBorder) ? 1 : 0); }, function (props) { return props.loopBackground && css(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n                        background: ", "\n                    "], ["\n                        background: ", "\n                    "])), props.loopBackground); }, function (props) { return ((props.hasBorder === undefined ? true : !!props.hasBorder) ? 1 : 0); });
 var noop = function () { };
 var Component = function (props) {
-    var _a = props.onSort, onSort = _a === void 0 ? noop : _a, _b = props.onFilter, onFilter = _b === void 0 ? noop : _b;
+    var _a = props.onSort, onSort = _a === void 0 ? noop : _a, _b = props.onFilter, onFilter = _b === void 0 ? noop : _b, others = __rest(props, ["onSort", "onFilter"]);
     var columns = React.Children.map(props.children, function (item) {
         var cloneProps = __assign({}, item.props);
         if (item.props.sortable || item.props.moment) {
@@ -98,7 +98,7 @@ var Component = function (props) {
         }
     });
     return React.createElement(TableStyledWrapper, { hasBorder: props.hasBorder, loopBackground: props.loopBackground },
-        React.createElement(TableProvider, { pickInitialTableProps: pickInitialTableProps }, function (connectProps, list) {
+        React.createElement(TableProvider, __assign({ pickInitialTableProps: pickInitialTableProps }, others), function (connectProps, list) {
             return React.createElement(RecursionTable, __assign({}, connectProps, props, { children: columns, isRoot: true, onFilter: function (filterParams) {
                     onFilter(filterParams);
                     list.notify(ListLifeCycleTypes.ON_LIST_FILTER, filterParams);

@@ -84,15 +84,15 @@ const App = () => {
       pageSize={5}
     >
         <Filter>
-          <Layout inset gap={[12, 16]} columns={4}>
+          <Layout inset gap={[12, 16]} columns={3}>
             <Filter.Item
-              required
+              // required
               type="input"
               title="input"
               name="input"
             />
             <Filter.Item
-              type="radio"
+              // type="radio"
               enum={['1', '2', '3', '4']}
               title="Radio"
               name="radio"
@@ -100,14 +100,14 @@ const App = () => {
             <Filter.Item
               type="select"
               enum={['1', '2', '3', '4']}
-              required
+              // required
               title="Select"
               name="select"
             />
             <Filter.Item
               type="checkbox"
               enum={['1', '2', '3', '4']}
-              required
+              // required
               title="Checkbox"
               name="checkbox"
             />

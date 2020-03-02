@@ -120,7 +120,7 @@ const TableStyledWrapper = styled((props) => {
 
 const noop = () => {}
 const Component = props => {
-    const { onSort = noop, onFilter = noop } = props
+    const { onSort = noop, onFilter = noop, ...others } = props
     const columns = React.Children.map(props.children, (item) => {
         const cloneProps = { ...item.props };
         if (item.props.sortable || item.props.moment) {
@@ -153,7 +153,7 @@ const Component = props => {
         hasBorder={props.hasBorder}
         loopBackground={props.loopBackground}
     >
-        <TableProvider pickInitialTableProps={pickInitialTableProps}>
+        <TableProvider pickInitialTableProps={pickInitialTableProps} {...others}>
             {(connectProps, list) => {
                 return <RecursionTable
                     {...connectProps}

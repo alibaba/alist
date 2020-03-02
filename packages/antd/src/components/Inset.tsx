@@ -76,6 +76,7 @@ const InsetFormItem = styled(props => {
             padding-left: 12px;
             align-items: center;
 
+            .ant-picker-input input,
             .ant-input-number,
             .ant-time-picker-input,
             .ant-select-selection,
@@ -83,11 +84,31 @@ const InsetFormItem = styled(props => {
                 border: none;
                 box-shadow: none;
             }
+
+            .ant-picker-range {
+                display: flex;
+                padding-right: 11px;
+                .ant-picker-input {
+                    flex: 1;
+                }
+            }
+
+            .ant-picker-input {
+                display: flex;
+                padding: 0 11px;
+                > input {
+                    flex: 1;
+                }
+
+                .ant-picker-suffix {
+                    flex: initial;
+                }
+            }
         `}
 
         .ant-form-item-control {
             line-height: 32px;
-        }        
+        }
 
         ${props => !props.asterisk && css `
             .ant-form-item-required::before {
