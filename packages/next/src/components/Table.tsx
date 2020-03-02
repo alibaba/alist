@@ -122,6 +122,7 @@ const noop = () => {}
 const Component = props => {
     const { onSort = noop, onFilter = noop, ...others } = props
     const columns = React.Children.map(props.children, (item) => {
+        if (!item) return item
         const cloneProps = { ...item.props };
         if (item.props.sortable || item.props.moment) {
             if (item.props.sortable) {

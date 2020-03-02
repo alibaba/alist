@@ -75,6 +75,8 @@ var noop = function () { };
 var Component = function (props) {
     var _a = props.onSort, onSort = _a === void 0 ? noop : _a, _b = props.onFilter, onFilter = _b === void 0 ? noop : _b, others = __rest(props, ["onSort", "onFilter"]);
     var columns = React.Children.map(props.children, function (item) {
+        if (!item)
+            return item;
         var cloneProps = __assign({}, item.props);
         if (item.props.sortable || item.props.moment) {
             if (item.props.sortable) {

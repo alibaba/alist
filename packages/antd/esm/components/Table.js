@@ -94,6 +94,8 @@ var Component = function (props) {
     var renderProps = {};
     if (children) {
         renderProps.children = React.Children.map(props.children, function (item) {
+            if (!item)
+                return item;
             var cloneProps = __assign({}, item.props);
             if (item.props.moment) {
                 if (item.props.moment) {
@@ -108,6 +110,8 @@ var Component = function (props) {
     }
     else {
         renderProps.columns = columns.map(function (item) {
+            if (!item)
+                return item;
             if (item.moment) {
                 return __assign(__assign({}, item), { render: function (val) { return momentify(val, item.moment); } });
             }

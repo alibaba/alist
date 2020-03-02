@@ -133,6 +133,7 @@ const Component = props => {
     const renderProps: any = {}
     if (children) {
         renderProps.children = React.Children.map(props.children, (item) => {
+            if (!item) return item
             const cloneProps = { ...item.props };
             if (item.props.moment) {
                 if (item.props.moment) {
@@ -148,6 +149,7 @@ const Component = props => {
         })
     } else {
         renderProps.columns = columns.map(item => {
+            if (!item) return item
             if (item.moment) {
                 return {
                     ...item,

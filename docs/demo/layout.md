@@ -137,6 +137,84 @@ const App = () => {
 ReactDOM.render(<App />, document.getElementById('root'))
 ```
 
+```jsx
+import React from 'react'
+import {
+  List, Table, Pagination,
+  createListActions, Filter,
+  Search, Clear,
+  Layout,
+  SchemaMarkupField,
+  FormBlock,
+  FormCard,
+  SchemaForm,
+} from '@alist/next'
+import'@alifd/next/dist/next.css'
+
+const actions = createListActions()
+const App = () => {  
+  const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
+
+  return <div>
+    <List
+      actions={actions}
+      url={url}
+      pageSize={5}
+    >
+        <Filter>
+          <Layout inset gap={[12, 16]} columns={3}>
+            <Filter.Item
+              // required
+              type="input"
+              title="input"
+              name="input"
+            />
+            <Filter.Item
+              // type="radio"
+              enum={['1', '2', '3', '4']}
+              title="Radio"
+              name="radio"
+            />
+            <Filter.Item
+              type="select"
+              enum={['1', '2', '3', '4']}
+              // required
+              title="Select"
+              name="select"
+            />
+            <Filter.Item
+              type="checkbox"
+              enum={['1', '2', '3', '4']}
+              // required
+              title="Checkbox"
+              name="checkbox"
+            />
+            <Filter.Item
+              span={2}
+              type="daterange"
+              title="日期范围"
+              default={['2018-12-19', '2018-12-19']}
+              name="daterange"
+            />
+            <Filter.Item type="number" title="数字选择" name="number" />
+            <Filter.Item type="boolean" title="开关选择" name="boolean" />
+            <Filter.Item type="date" title="日期选择" name="date" />            
+            <Filter.Item type="year" title="年份" name="year" />
+            <Filter.Item type="time" title="时间" name="time" />
+            <Filter.Item type="rating" title="等级" name="rating" />            
+          </Layout>
+          <Layout.ButtonGroup>
+              <Search>搜索</Search>
+              <Clear>重置</Clear>
+          </Layout.ButtonGroup>
+        </Filter>
+    </List>
+  </div>
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))
+```
+
 ### 纵向布局(默认布局)
 
 ```jsx

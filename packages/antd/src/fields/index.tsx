@@ -1,6 +1,6 @@
 import React from 'react'
-import { Select, Input, Icon, Cascader } from 'antd'
-import { setup } from '@formily/antd-components'
+import { Input, Icon, Cascader } from 'antd'
+import { setup, Select as ConnectedSelect } from '@formily/antd-components'
 import {
   registerFormField,
   mapStyledProps,
@@ -18,16 +18,6 @@ const presetSearchStyle = component => {
       innerBefore: <Icon type="search" style={{ margin: 4 }} />,
       ...props
     })
-  }
-}
-
-const acceptEnum = (component: React.JSXElementConstructor<any>) => {
-  return ({ dataSource, ...others }) => {
-    if (dataSource) {
-      return React.createElement(Select, { dataSource, ...others })
-    } else {
-      return React.createElement(component, others)
-    }
   }
 }
 
@@ -59,13 +49,7 @@ registerFormField(
 )
 
 // 注册select组件
-registerFormField(
-  'select',
-  connect({
-    getProps: mapStyledProps,
-    getComponent: mapTextComponent
-  })(acceptEnum(Select))
-)
+registerFormField('select', ConnectedSelect)
 
 const Preview = (props) => <p style={{ padding: 0, margin: 0, lineHeight: '28px' }} className="preview-text">
   {props.content}
