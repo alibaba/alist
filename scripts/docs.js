@@ -26,9 +26,15 @@ window.codeSandBoxPeerDependencies = {
 `
 
 const FOOTER_HTML = `
-<script src="//unpkg.com/moment/min/moment-with-locales.js"></script>
-<script src="//unpkg.com/antd/dist/antd.min.js"></script>
-<script src="//unpkg.com/@alifd/next/dist/next.min.js"></script>
+<script>
+[...document.getElementsByTagName('script')].filter(item => item.src.indexOf('unpkg.com') !== -1).forEach(item => item.remove())
+</script>
+<script src="//unpkg.zhimg.com/react/umd/react.production.min.js"></script>
+<script src="//unpkg.zhimg.com/react-dom/umd/react-dom.production.min.js"></script>
+<script src="//unpkg.zhimg.com/react-is/umd/react-is.production.min.js"></script>
+<script src="//unpkg.zhimg.com/moment/min/moment-with-locales.js"></script>
+<script src="//unpkg.zhimg.com/antd/dist/antd.min.js"></script>
+<script src="//unpkg.zhimg.com/@alifd/next/dist/next.min.js"></script>
 `
 
 const createDocs = async () => {
