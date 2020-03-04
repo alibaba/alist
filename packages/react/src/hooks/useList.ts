@@ -1,4 +1,4 @@
-import { useRef, useMemo, useContext } from 'react'
+import { useRef, useMemo, useContext, useEffect } from 'react'
 import createList, { ListLifeCycle, ListLifeCycleTypes } from '@alist/core'
 import { useEva } from "react-eva";
 import { IList } from '@alist/core/lib/types'
@@ -51,6 +51,13 @@ const useList = (options: IListUIProps): IList & { actions: any } => {
           actions: actionsRef.current,
         }
     }, [])
+
+    const { dataSource } = options || {}
+    useEffect(() => {
+      if ('dataSource' in options) {
+        list.setDataSource(dataSource)
+      }      
+    }, [dataSource])
     
     // 这里是为了在next/antd/其他顶层去实现搜索区域
     if (optionsRef.current.afterInitialized) {

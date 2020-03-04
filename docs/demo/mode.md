@@ -40,6 +40,52 @@ const App = () => {
 ReactDOM.render(<App />, document.getElementById('root'))
 ```
 
+```jsx
+import React, { useState, useEffect } from 'react'
+import {
+  List, Table, Pagination,
+  createListActions,
+} from '@alist/antd'
+
+const getDataSource = (len) => {
+  const dataSource = []
+  for ( let i = 0; i < len; i++ ) {
+    dataSource.push({ label: `id: #${Math.random().toString(36).slice(-8)}`, value: i })
+  }
+
+  return dataSource
+}
+
+const actions = createListActions()
+const App = () => {  
+  const [dataSource, setDs] = useState([])
+  useEffect(() => {      
+      setTimeout(() => {
+          const arr = getDataSource(20)
+          setDs(arr)
+      }, 500)        
+  }, [])
+        
+  return <div>
+    ds: {dataSource.length}
+    <List
+      actions={actions}
+      dataSource={dataSource}
+      pageSize={5}
+    >
+      <Table>
+        <Table.Column title="label" dataIndex="label" />
+        <Table.Column title="value" dataIndex="value" />
+      </Table>
+      <Pagination />
+    </List>
+  </div>
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))
+
+```
+
 ## 本地 dataSource 模式
 
 传入 `dataSource` 就会设置为 `本地DataSource模式`，并且会根据传入的分页大小自动完成数据分页。
