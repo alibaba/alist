@@ -581,7 +581,7 @@ function createList(props: IListProps = {}): IList {
 
   // 挂载完成，执行请求
   listAPI.subscribe(ListLifeCycleTypes.ON_LIST_MOUNTED, () => {
-    if (autoLoad && [ModeType.QUERY, ModeType.URL].indexOf(mode) !== -1) {
+    if (autoLoad && ModeType.URL === mode) {
       fetch()
     }
   })

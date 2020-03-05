@@ -40,7 +40,6 @@ export default class ListCore extends EventEmitter {
             totalPages = Math.ceil(total / pageSize)
         }
         if (props.url) mode = ModeType.URL
-        if (props.query) mode = ModeType.QUERY
 
         // 所有构建传入的实例参数都会在这里     
         this.state = {
