@@ -16,6 +16,7 @@
       - [搜索布局](./demo/layout.md)
       - [搜索区域展开收起](./demo/expand.md)
       - [Table区域展开收起](./demo/expandTable.md)
+      - [设置及消费筛选状态](./demo/selection.md)
       - [同步URL参数](./demo/syncParams.md)
       - [自定义消费组件](./demo/consumer.md)
       - [通过Schema渲染](./schema/practise.md)
@@ -25,9 +26,6 @@
       - [实现自定义布局组件](./advanced/layout.md)
       - [实现自定义静默埋点](./advanced/dot.md)
 - API手册
-   - Ant Design
-      - antd
-   - Fusion Next
-      - next
-   - API列表
+   - [API列表](./api/index.md)
+   - [组件列表](./api/component.md)
 - [GITHUB](https://github.com/alibaba/AList)
