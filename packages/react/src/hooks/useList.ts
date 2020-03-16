@@ -6,7 +6,7 @@ import ListDomain from '../context/listDomain'
 import { createListEffects, createListActions } from '../shared'
 import { IListUIProps } from '../types'
 
-const useList = (options: IListUIProps): IList & { actions: any } => {
+export const useList = (options: IListUIProps): IList & { actions: any } => {
     const optionsRef = useRef<IListUIProps>(options)
     const actionsRef = useRef<any>(options.actions)
     const listDomain = useContext(ListDomain)
@@ -27,6 +27,7 @@ const useList = (options: IListUIProps): IList & { actions: any } => {
         new ListLifeCycle(
           ListLifeCycleTypes.ON_LIST_WILL_INIT,
           ({ payload, ctx }) => {
+            debugger;
             const actions = {
               ...ctx,
               dispatch: ctx.notify

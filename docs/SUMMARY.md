@@ -20,7 +20,7 @@
       - [同步URL参数](./demo/syncParams.md)
       - [自定义消费组件](./demo/consumer.md)
       - [通过Schema渲染](./schema/practise.md)
-      - Hooks结合Formily使用
+      - [Hooks结合Formily使用](./demo/hooks.md)
    - 进阶教程
       - [实现自定义请求组件](./advanced/query.md)
       - [实现自定义布局组件](./advanced/layout.md)

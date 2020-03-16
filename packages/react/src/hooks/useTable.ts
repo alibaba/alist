@@ -1,13 +1,13 @@
 import { useContext, useEffect, useMemo } from 'react'
 import ListContext from '../context'
 import MultipleContext from '../context/multiple'
-import { ListLifeCycleTypes, IListKVMap, IListResponse } from '@alist/core'
+import { ListLifeCycleTypes, IListKVMap, IListResponse, IList } from '@alist/core'
 import useForceUpdate from './useForceUpdate'
 import { ITableProps, ITableHook } from '../types'
 
-const useTable = (props: ITableProps = {}): ITableHook => {
+export const useTable = (props: ITableProps = {}, propList?: IList): ITableHook => {
     const { pickInitialTableProps, multipleId: propsMultipleId } = props
-    const list = useContext(ListContext)
+    const list = propList || useContext(ListContext)
     const { id: contextMultipleId } = useContext(MultipleContext) || {}
     const multipleId = propsMultipleId || contextMultipleId
     const loading = list ? list.getLoading() : props.loading

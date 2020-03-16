@@ -4,10 +4,10 @@ import { ListLifeCycleTypes, IList } from '@alist/core'
 import useForceUpdate from './useForceUpdate'
 import { IConsumerProps } from '../types'
 
-const useConsumer = (props: IConsumerProps): IList => {
+export const useConsumer = (props: IConsumerProps, propsList?: IList): IList => {
     const { selector } = props
     const formatSelector = selector || ['*']
-    const list = useContext(ListContext)
+    const list = propsList || useContext(ListContext)
 
     const forceUpdate = useForceUpdate()
     const refresh = () => {

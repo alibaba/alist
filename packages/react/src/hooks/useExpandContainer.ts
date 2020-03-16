@@ -3,7 +3,7 @@ import ListContext from '../context'
 import { ListLifeCycleTypes } from '@alist/core'
 import { IExpandProps } from '../types'
 
-const useExpandContainer = (props: IExpandProps) => {
+export const useExpandContainer = (props: IExpandProps) => {
     const list = useContext(ListContext)
     const { targetPath } = props  
     const setDisplay = (display) => {

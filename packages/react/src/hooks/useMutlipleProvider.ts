@@ -4,7 +4,7 @@ import { ListLifeCycleTypes } from '@alist/core'
 import useForceUpdate from '../hooks/useForceUpdate'
 import { IMultipleProps, IMultipleHook } from '../types'
 
-const useMultipleProvider = (props: IMultipleProps): IMultipleHook => {
+export const useMultipleProvider = (props: IMultipleProps): IMultipleHook => {
     const { id, pageSize = 10 } = props
     const list = useContext(ListContext)
 

@@ -25,7 +25,7 @@
     "@formily/next": "^1.0.0",
     "@formily/next-components": "^1.0.0",
     "@types/classnames": "^2.2.9",
-    "@types/styled-components": "^4.4.0",
+    "@types/styled-components": "4.1.8",
     "styled-components": "^4.4.1"
   },
   "repository": {

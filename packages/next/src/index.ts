@@ -21,6 +21,7 @@ export * from '@alist/react-schema-renderer'
 export * from '@formily/next-components'
 export * from '@formily/next'
 export * from '@alist/react'
+export * from './hooks'
 
 // 传入默认组件
 registerListComponent({

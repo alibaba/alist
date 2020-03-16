@@ -14,7 +14,7 @@ const getValidateConfigByName = (validateConfig: any, name: string) => {
     return validateConfig[name]
 }
 
-const useFilterItem = (props: IFilterItemProps): IFilterItemHook => {
+export const useFilterItem = (props: IFilterItemProps): IFilterItemHook => {
     const { name } = props
     const list = useContext(ListContext)
     const formatName = getFormatName(name)

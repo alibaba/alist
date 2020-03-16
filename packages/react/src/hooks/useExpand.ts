@@ -4,7 +4,7 @@ import { ListLifeCycleTypes } from '@alist/core'
 import useForceUpdate from './useForceUpdate'
 import { IConsumerProps } from '../types'
 
-const useExpand = (props: IConsumerProps) => {
+export const useExpand = (props: IConsumerProps) => {
     const list = useContext(ListContext)
     const forceUpdate = useForceUpdate()
     const refresh = () => {

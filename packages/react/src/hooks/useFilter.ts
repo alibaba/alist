@@ -1,13 +1,13 @@
 import { useContext, useEffect, useRef } from 'react'
 import ListContext from '../context'
-import { ListLifeCycleTypes } from '@alist/core'
+import { ListLifeCycleTypes, IList } from '@alist/core'
 import useForceUpdate from '../hooks/useForceUpdate'
 import { IFilterHook, IFilterProps } from '../types'
 
-const useFilter = (props: IFilterProps): IFilterHook => {
+export const useFilter = (props: IFilterProps, propsList?: IList): IFilterHook => {
     const filterRef = useRef(props.form || null)
     const { useForm, effects } = props
-    const list = useContext(ListContext)
+    const list = propsList || useContext(ListContext)
     const filterProps = list.getFilterProps()
     const filterInstance = useForm({
         ...props,
