@@ -58,7 +58,8 @@ const App = () => {
 | ON_LIST_ERROR    |onListError                  | 列表请求失败 |
 | ON_LIST_EMPTY    |onListEmpty                  | 列表请求返回空数据 |
 | ON_LIST_SELECT    |onListSelect                  | 表格触发选择某一项 |
-| ON_LIST_SELECT_ALL    |onListSelect_all                  | 表格触发选择全部 |
+| ON_LIST_SELECT_ALL    |onListSelectAll                  | 表格触发选择全部 |
+| ON_LIST_SELECT_CHANGE    |onListSelectChange                  | 表格触发选择改变 |
 | ON_LIST_DATASOURCE_FILTER    |onListDatasourceFilter                  | 表格触发过滤 |
 | ON_LIST_DATASOURCE_SORT    |onListDatasourceSort                  | 表格触发选择排序 |
 | ON_LIST_SORT    |onListSort                  | 等价于`ON_LIST_DATASOURCE_SORT` |
@@ -68,7 +69,7 @@ const App = () => {
 | ON_LIST_FILTER_REFRESH    |onListFilterRefresh                  | 搜索区域触发重绘 |
 | ON_LIST_PAGINATION_REFRESH    |onListPaginationRefresh                  | 分页区域触发重绘 |
 | ON_LIST_TABLE_REFRESH    |onListTableRefresh                  | 表格区域触发重绘 |
-| ON_LIST_SELECTION_REFRESH    |onListSelectionRefresh                  | 表格筛选项发生变化 |
+| ON_LIST_SELECTION_REFRESH    |onListSelectionRefresh                  | 表格筛选项发生重绘 |
 | ON_LIST_CONSUMER_REFRESH    |onListConsumerRefresh                  | 自定义消费组件触发重绘 |
 
 
