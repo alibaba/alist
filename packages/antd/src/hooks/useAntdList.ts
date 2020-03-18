@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { ListLifeCycleTypes, useEva, ITableProps, ITableHook, IListSelectionConfig, ListContext } from '@alist/react'
+import { useList, ListLifeCycleTypes, useEva, ITableProps, ITableHook, IListSelectionConfig, ListContext } from '@alist/react'
 import { useMemo, useRef } from 'react'
 import { createAntdListActions, setSelectionsByInstance } from '../shared'
 
@@ -9,12 +9,12 @@ const useAntdList = (props: ITableProps = {}): ITableHook => {
     actionsRef.current = actionsRef.current || props.actions || reuseList || createAntdListActions()
 
     const { implementActions } = useEva({
-        actions: actionsRef.current
+        actions: actionsRef.current,
     })
 
     const hasRowSelectionCls = 'has-row-selection'
 
-    useMemo(() => {
+    const opts = useMemo(() => {
         implementActions({
             setSelections: (ids, records) => {
                 setSelectionsByInstance(actionsRef, ids, records)                
@@ -41,19 +41,22 @@ const useAntdList = (props: ITableProps = {}): ITableHook => {
                             selectedRowKeys: ids,
                             key: primaryKey,
                             onSelect: (record, selected, records) => {
-                                actionsRef.current.notify({ type: ListLifeCycleTypes.ON_LIST_SELECT, payload: {
+                                actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT, {
                                     selected, record, records
-                                } })
+                                })
                             },
                             onSelectAll: (selected, records) => {
-                                actionsRef.current.notify({ type: ListLifeCycleTypes.ON_LIST_SELECT_ALL, payload: {
+                                actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT_ALL, {
                                     selected, records
-                                } })
+                                })
                             },
                             onChange: (changeIds: string[], records: any[]) => {
                                 actionsRef.current.setSelectionConfig({
                                     ids: changeIds,
                                     records,
+                                })
+                                actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT_CHANGE, {
+                                    ids: changeIds, records
                                 })
                                 const { rowSelection } = actionsRef.current.getTableProps()
                                 actionsRef.current.setTableProps({
@@ -75,9 +78,21 @@ const useAntdList = (props: ITableProps = {}): ITableHook => {
                 }
             }
         })
+        const { effects } = props
+        return {
+            actions: actionsRef.current,
+            list: useList({
+                ...props,
+                effects: ($, actions) => {
+                    if (typeof effects === 'function') {
+                        effects($, actions)
+                    }
+                }
+            })
+        }
     }, [])
 
-    return actionsRef.current
+    return opts;
 }
 
 export default useAntdList

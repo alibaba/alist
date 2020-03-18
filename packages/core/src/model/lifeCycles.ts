@@ -5,6 +5,7 @@ import { isFn } from '../util'
 class ListLifeCycle extends EventEmitter {
     private handler: (opts: LifeCyclesOptions) => void
     id: string
+    type: string
     constructor(LifeCycleHandler: LifeCycleHandler<any>)
     constructor(type: ListLifeCycleTypes, handler: LifeCycleHandler<any>)
     constructor(handlerMap: { [type: string]: LifeCycleHandler<any> })
@@ -12,6 +13,9 @@ class ListLifeCycle extends EventEmitter {
         super()
         
         this.id = 'rd_' + `${Math.random()}`.slice(2)
+        if (params.length === 2) {
+            this.type = params[0]
+        }
         this.handler = (opts: LifeCyclesOptions) => {
             const { type, payload, ctx } = opts
             // '*' means god mode

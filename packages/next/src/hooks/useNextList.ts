@@ -1,4 +1,4 @@
-import { ListLifeCycleTypes, useEva, ITableProps, ITableHook, IListSelectionConfig } from '@alist/react'
+import { useList, ListLifeCycleTypes, useEva, ITableProps, ITableHook, IListSelectionConfig } from '@alist/react'
 import { useMemo, useRef } from 'react'
 import { createNextListActions, setSelectionsByInstance } from '../shared'
 
@@ -12,7 +12,7 @@ const useNextList = (props: ITableProps = {}): ITableHook => {
 
     const hasRowSelectionCls = 'has-row-selection'
 
-    useMemo(() => {
+    const opts = useMemo(() => {
         implementActions({
             setSelections: (ids, records) => {
                 setSelectionsByInstance(actionsRef.current, ids, records)
@@ -39,19 +39,22 @@ const useNextList = (props: ITableProps = {}): ITableHook => {
                             selectedRowKeys: ids,
                             primaryKey,
                             onSelect: (selected, record, records) => {
-                                actionsRef.current.notify({ type: ListLifeCycleTypes.ON_LIST_SELECT, payload: {
+                                actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT, {
                                     selected, record, records
-                                } })
+                                })
                             },
                             onSelectAll: (selected, records) => {
-                                actionsRef.current.notify({ type: ListLifeCycleTypes.ON_LIST_SELECT_ALL, payload: {
+                                actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT_ALL, {
                                     selected, records
-                                } })
+                                })
                             },
                             onChange: (changeIds: string[], records: any[]) => {
                                 actionsRef.current.setSelectionConfig({
                                     ids: changeIds,
                                     records,
+                                })
+                                actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT_CHANGE, {
+                                    ids: changeIds, records
                                 })
                                 const { rowSelection } = actionsRef.current.getTableProps()
                                 actionsRef.current.setTableProps({
@@ -72,9 +75,21 @@ const useNextList = (props: ITableProps = {}): ITableHook => {
                 }
             }
         })
+        const { effects } = props
+        return {
+            actions: actionsRef.current,
+            list: useList({
+                ...props,
+                effects: ($, actions) => {
+                    if (typeof effects === 'function') {
+                        effects($, actions)
+                    }
+                }
+            })
+        }
     }, [])
 
-    return actionsRef.current
+    return opts
 }
 
 export default useNextList

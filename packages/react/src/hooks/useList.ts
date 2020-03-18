@@ -27,7 +27,6 @@ export const useList = (options: IListUIProps): IList & { actions: any } => {
         new ListLifeCycle(
           ListLifeCycleTypes.ON_LIST_WILL_INIT,
           ({ payload, ctx }) => {
-            debugger;
             const actions = {
               ...ctx,
               dispatch: ctx.notify
@@ -45,8 +44,9 @@ export const useList = (options: IListUIProps): IList & { actions: any } => {
       ]
 
     optionsRef.current.lifeCycles = lifeCycles
+    const alreadyHaveList = !!optionsRef.current.list    
     const list = useMemo(() => {
-        const originList = createList(optionsRef.current)
+        const originList = alreadyHaveList ? optionsRef.current.list : createList(optionsRef.current)
         return {
           ...originList,
           actions: actionsRef.current,

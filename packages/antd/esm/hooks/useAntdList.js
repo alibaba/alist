@@ -67,6 +67,9 @@ var useAntdList = function (props) {
                                     ids: changeIds,
                                     records: records,
                                 });
+                                actionsRef.current.notify({ type: ListLifeCycleTypes.ON_LIST_SELECT_CHANGE, payload: {
+                                        ids: changeIds, records: records
+                                    } });
                                 var rowSelection = actionsRef.current.getTableProps().rowSelection;
                                 actionsRef.current.setTableProps({
                                     rowSelection: __assign(__assign({}, rowSelection), { selectedRowKeys: changeIds, selections: records })

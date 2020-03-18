@@ -20,6 +20,10 @@ const App = () => {
 
 通过 [Selection](#Selection) 消费筛选状态
 
+> 需要注意的是当没有启用筛选状态时，第一个参数为 `null`，需要做兼容处理。
+
+
+
 ```tsx
 
 import { Selection } from '@alist/antd'
@@ -27,8 +31,12 @@ import { Selection } from '@alist/antd'
 ```
 
 ```jsx
-import { createListActions, Consumer, List, Table, Pagination, Filter, Layout, Search, Clear } from '@alist/antd'
+import ReactDOM from 'react-dom'
+import React, { useEffect } from 'react'
+import { ListLifeCycleTypes, createListActions, Selection, List, Table, Pagination, Filter, Layout, Search, Clear } from '@alist/antd'
 import'antd/dist/antd.css'
+// import { ListLifeCycleTypes, createListActions, Selection, List, Table, Pagination, Filter, Layout, Search, Clear } from '@alist/next'
+// import '@alifd/next/dist/next.css'
 
 const actions = createListActions()
 
@@ -36,36 +44,37 @@ const App = props => {
   const { children, ...others } = props
   const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
 
+  useEffect(() => {
+    actions.setRowSelection() // 启用筛选模式
+  }, [])
+
   return (
-    <List actions={actions} url={url}>
-      <Consumer selector="*">
-        {list => {
-          const { currentPage, pageSize } = list.getPageData()
-          const filterData = list.getFilterData()
-          const paginationedData = list.getPaginationDataSource()
-          const originData = list.getDataSource()
-          return (
-            <div>
-              dataSource: {paginationedData.length} <br />
-              age: {filterData.age} <br />
-              username: {filterData.username} <br />
-              currentPage:{currentPage} <br />
-              pageSize:{pageSize} <br />
-            </div>
-          )
+    <List
+      actions={actions}
+      url={url}
+      effects={($, actions) => {
+        $(ListLifeCycleTypes.ON_LIST_INIT).subscribe((payload) => {
+          console.log('ON_LIST_INIT', payload)
+        });
+        $(ListLifeCycleTypes.ON_LIST_SELECTION_REFRESH).subscribe((payload) => {
+          console.log('ON_LIST_SELECTION_REFRESH', payload)
+        });
+        $(ListLifeCycleTypes.ON_LIST_SELECT).subscribe((payload) => {
+          console.log('ON_LIST_SELECT', payload)
+        });
+        $(ListLifeCycleTypes.ON_LIST_SELECT_CHANGE).subscribe((payload) => {
+          console.log('ON_LIST_SELECT_CHANGE', payload)
+        });
+      }}
+    >
+      <Selection>
+        {(opts, list) => {
+          const { allIds, ids, selectedAll, selectedNone, dataSource } = opts || {};
+          return <div>已选中 {(ids || []).length} 条结果</div>
         }}
-      </Consumer>
-      <Filter>
-        <Layout>
-          <Filter.Item type="input" name="username" title="username" />
-          <Filter.Item type="input" name="age" title="age" />
-        </Layout>
-          <Layout.ButtonGroup>
-            <Search>Search</Search>
-            <Clear>Clear</Clear>
-          </Layout.ButtonGroup>
-        </Filter>
-      <Table primaryKey="value">
+      </Selection>
+      <Table rowKey="value">
+      {/* <Table primaryKey="value"> */}
           <Table.Column title="label" dataIndex="label" />
           <Table.Column title="value" dataIndex="value" />
         </Table>

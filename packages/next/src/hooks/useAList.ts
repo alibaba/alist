@@ -3,7 +3,7 @@ import useNextList from './useNextList';
 
 export const useAList = (props) => {
     const { tableProps = {}, ...others } = props;
-    const actions = useNextList(others);
+    const { actions } = useNextList(others);
     // const table = useTable(tableProps, actions);
     // const pagination = usePagination({}, actions);
 

@@ -22,6 +22,7 @@ import {
   createAsyncListActions,
   ListEffectHooks,
   createListEffectHook,
+  createListEffects,
   ListDomain
 } from './shared'
 
@@ -48,6 +49,7 @@ export {
   Selection,
   Layout,
   createListActions,
+  createListEffects,
   createAsyncListActions,
   ListEffectHooks,
   createListEffectHook,
