@@ -22,7 +22,7 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 import { useContext } from 'react';
 import { useList, ListLifeCycleTypes, useEva, ListContext } from '@alist/react';
-import { useMemo, useRef } from 'react';
+import { useRef } from 'react';
 import { createAntdListActions, setSelectionsByInstance } from '../shared';
 var useAntdList = function (props) {
     if (props === void 0) { props = {}; }
@@ -33,68 +33,65 @@ var useAntdList = function (props) {
         actions: actionsRef.current,
     }).implementActions;
     var hasRowSelectionCls = 'has-row-selection';
-    var opts = useMemo(function () {
-        implementActions({
-            setSelections: function (ids, records) {
-                setSelectionsByInstance(actionsRef, ids, records);
-            },
-            disableRowSelection: function () {
-                var _a = actionsRef.current.getTableProps().className, className = _a === void 0 ? '' : _a;
-                actionsRef.current.setSelectionConfig(null);
+    implementActions({
+        setSelections: function (ids, records) {
+            setSelectionsByInstance(actionsRef, ids, records);
+        },
+        disableRowSelection: function () {
+            var _a = actionsRef.current.getTableProps().className, className = _a === void 0 ? '' : _a;
+            actionsRef.current.setSelectionConfig(null);
+            actionsRef.current.setTableProps({
+                className: className.replace(" " + hasRowSelectionCls, ''),
+                rowSelection: undefined
+            });
+        },
+        setRowSelection: function (selectionConfig) {
+            actionsRef.current.setSelectionConfig(selectionConfig);
+            var config = actionsRef.current.getSelectionConfig();
+            var _a = actionsRef.current.getTableProps().className, className = _a === void 0 ? '' : _a;
+            if (config) {
+                var mode = config.mode, ids = config.ids, primaryKey = config.primaryKey, getProps = config.getProps, others = __rest(config, ["mode", "ids", "primaryKey", "getProps"]);
+                actionsRef.current.setTableProps({
+                    className: className.indexOf(hasRowSelectionCls) !== -1 ? className : className + " " + hasRowSelectionCls,
+                    rowSelection: __assign(__assign({}, others), { type: mode === 'multiple' ? 'checkbox' : 'radio', selectedRowKeys: ids, key: primaryKey, onSelect: function (record, selected, records) {
+                            actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT, {
+                                selected: selected, record: record, records: records
+                            });
+                        }, onSelectAll: function (selected, records) {
+                            actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT_ALL, {
+                                selected: selected, records: records
+                            });
+                        }, onChange: function (changeIds, records) {
+                            actionsRef.current.setSelectionConfig({
+                                ids: changeIds,
+                                records: records,
+                            });
+                            actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT_CHANGE, {
+                                ids: changeIds, records: records
+                            });
+                            var rowSelection = actionsRef.current.getTableProps().rowSelection;
+                            actionsRef.current.setTableProps({
+                                rowSelection: __assign(__assign({}, rowSelection), { selectedRowKeys: changeIds, selections: records })
+                            });
+                        }, getCheckboxProps: getProps })
+                });
+            }
+            else {
                 actionsRef.current.setTableProps({
                     className: className.replace(" " + hasRowSelectionCls, ''),
                     rowSelection: undefined
                 });
-            },
-            setRowSelection: function (selectionConfig) {
-                actionsRef.current.setSelectionConfig(selectionConfig);
-                var config = actionsRef.current.getSelectionConfig();
-                var _a = actionsRef.current.getTableProps().className, className = _a === void 0 ? '' : _a;
-                if (config) {
-                    var mode = config.mode, ids = config.ids, primaryKey = config.primaryKey, getProps = config.getProps, others = __rest(config, ["mode", "ids", "primaryKey", "getProps"]);
-                    actionsRef.current.setTableProps({
-                        className: className.indexOf(hasRowSelectionCls) !== -1 ? className : className + " " + hasRowSelectionCls,
-                        rowSelection: __assign(__assign({}, others), { type: mode === 'multiple' ? 'checkbox' : 'radio', selectedRowKeys: ids, key: primaryKey, onSelect: function (record, selected, records) {
-                                actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT, {
-                                    selected: selected, record: record, records: records
-                                });
-                            }, onSelectAll: function (selected, records) {
-                                actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT_ALL, {
-                                    selected: selected, records: records
-                                });
-                            }, onChange: function (changeIds, records) {
-                                actionsRef.current.setSelectionConfig({
-                                    ids: changeIds,
-                                    records: records,
-                                });
-                                actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT_CHANGE, {
-                                    ids: changeIds, records: records
-                                });
-                                var rowSelection = actionsRef.current.getTableProps().rowSelection;
-                                actionsRef.current.setTableProps({
-                                    rowSelection: __assign(__assign({}, rowSelection), { selectedRowKeys: changeIds, selections: records })
-                                });
-                            }, getCheckboxProps: getProps })
-                    });
-                }
-                else {
-                    actionsRef.current.setTableProps({
-                        className: className.replace(" " + hasRowSelectionCls, ''),
-                        rowSelection: undefined
-                    });
-                }
             }
-        });
-        var effects = props.effects;
-        return {
-            actions: actionsRef.current,
-            list: useList(__assign(__assign({}, props), { effects: function ($, actions) {
-                    if (typeof effects === 'function') {
-                        effects($, actions);
-                    }
-                } }))
-        };
-    }, []);
-    return opts;
+        }
+    });
+    var effects = props.effects;
+    return {
+        actions: actionsRef.current,
+        list: useList(__assign(__assign({}, props), { effects: function ($, actions) {
+                if (typeof effects === 'function') {
+                    effects($, actions);
+                }
+            } }))
+    };
 };
 export default useAntdList;

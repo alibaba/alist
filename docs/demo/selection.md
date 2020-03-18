@@ -32,6 +32,7 @@ import { Selection } from '@alist/antd'
 
 ```jsx
 import ReactDOM from 'react-dom'
+import { Button } from 'antd'
 import React, { useEffect } from 'react'
 import { ListLifeCycleTypes, createListActions, Selection, List, Table, Pagination, Filter, Layout, Search, Clear } from '@alist/antd'
 import'antd/dist/antd.css'
@@ -47,7 +48,6 @@ const App = props => {
   useEffect(() => {
     actions.setRowSelection() // 启用筛选模式
   }, [])
-
   return (
     <List
       actions={actions}
@@ -73,8 +73,8 @@ const App = props => {
           return <div>已选中 {(ids || []).length} 条结果</div>
         }}
       </Selection>
-      <Table rowKey="value">
-      {/* <Table primaryKey="value"> */}
+      {/* <Table rowKey="value"> */}
+      <Table primaryKey="value">
           <Table.Column title="label" dataIndex="label" />
           <Table.Column title="value" dataIndex="value" />
         </Table>
