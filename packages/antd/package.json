@@ -1,6 +1,6 @@
 {
   "name": "@alist/antd",
-  "version": "1.0.0-beta.8",
+  "version": "1.0.0-beta.9",
   "main": "lib",
   "types": "lib/index.d.ts",
   "engines": {
@@ -20,8 +20,8 @@
     "react-dom": ">=16.8.0"
   },
   "dependencies": {
-    "@alist/react": "^1.0.0-beta.8",
-    "@alist/react-schema-renderer": "^1.0.0-beta.8",
+    "@alist/react": "^1.0.0-beta.9",
+    "@alist/react-schema-renderer": "^1.0.0-beta.9",
     "@formily/antd": "^1.0.0",
     "@formily/antd-components": "^1.0.0",
     "@types/classnames": "^2.2.9",
