@@ -13,7 +13,7 @@ import React from 'react';
 import { ListProvider } from '@alist/react';
 import useAntdList from '../hooks/useAntdList';
 var List = function (props) {
-    useAntdList(props);
-    return React.createElement(ListProvider, __assign({}, props));
+    var opts = useAntdList(props);
+    return React.createElement(ListProvider, __assign({}, props, opts));
 };
 export default List;

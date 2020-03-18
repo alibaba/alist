@@ -13,7 +13,7 @@ import React from 'react';
 import { ListProvider } from '@alist/react';
 import useNextList from '../hooks/useNextList';
 var List = function (props) {
-    useNextList(props);
-    return React.createElement(ListProvider, __assign({}, props));
+    var opts = useNextList(props);
+    return React.createElement(ListProvider, __assign({}, props, opts));
 };
 export default List;

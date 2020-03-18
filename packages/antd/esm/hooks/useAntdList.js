@@ -21,7 +21,7 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 import { useContext } from 'react';
-import { ListLifeCycleTypes, useEva, ListContext } from '@alist/react';
+import { useList, ListLifeCycleTypes, useEva, ListContext } from '@alist/react';
 import { useMemo, useRef } from 'react';
 import { createAntdListActions, setSelectionsByInstance } from '../shared';
 var useAntdList = function (props) {
@@ -30,10 +30,10 @@ var useAntdList = function (props) {
     var reuseList = useContext(ListContext);
     actionsRef.current = actionsRef.current || props.actions || reuseList || createAntdListActions();
     var implementActions = useEva({
-        actions: actionsRef.current
+        actions: actionsRef.current,
     }).implementActions;
     var hasRowSelectionCls = 'has-row-selection';
-    useMemo(function () {
+    var opts = useMemo(function () {
         implementActions({
             setSelections: function (ids, records) {
                 setSelectionsByInstance(actionsRef, ids, records);
@@ -55,21 +55,21 @@ var useAntdList = function (props) {
                     actionsRef.current.setTableProps({
                         className: className.indexOf(hasRowSelectionCls) !== -1 ? className : className + " " + hasRowSelectionCls,
                         rowSelection: __assign(__assign({}, others), { type: mode === 'multiple' ? 'checkbox' : 'radio', selectedRowKeys: ids, key: primaryKey, onSelect: function (record, selected, records) {
-                                actionsRef.current.notify({ type: ListLifeCycleTypes.ON_LIST_SELECT, payload: {
-                                        selected: selected, record: record, records: records
-                                    } });
+                                actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT, {
+                                    selected: selected, record: record, records: records
+                                });
                             }, onSelectAll: function (selected, records) {
-                                actionsRef.current.notify({ type: ListLifeCycleTypes.ON_LIST_SELECT_ALL, payload: {
-                                        selected: selected, records: records
-                                    } });
+                                actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT_ALL, {
+                                    selected: selected, records: records
+                                });
                             }, onChange: function (changeIds, records) {
                                 actionsRef.current.setSelectionConfig({
                                     ids: changeIds,
                                     records: records,
                                 });
-                                actionsRef.current.notify({ type: ListLifeCycleTypes.ON_LIST_SELECT_CHANGE, payload: {
-                                        ids: changeIds, records: records
-                                    } });
+                                actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT_CHANGE, {
+                                    ids: changeIds, records: records
+                                });
                                 var rowSelection = actionsRef.current.getTableProps().rowSelection;
                                 actionsRef.current.setTableProps({
                                     rowSelection: __assign(__assign({}, rowSelection), { selectedRowKeys: changeIds, selections: records })
@@ -85,7 +85,16 @@ var useAntdList = function (props) {
                 }
             }
         });
+        var effects = props.effects;
+        return {
+            actions: actionsRef.current,
+            list: useList(__assign(__assign({}, props), { effects: function ($, actions) {
+                    if (typeof effects === 'function') {
+                        effects($, actions);
+                    }
+                } }))
+        };
     }, []);
-    return actionsRef.current;
+    return opts;
 };
 export default useAntdList;

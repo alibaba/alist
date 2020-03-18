@@ -20,7 +20,7 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
-import { ListLifeCycleTypes, useEva } from '@alist/react';
+import { useList, ListLifeCycleTypes, useEva } from '@alist/react';
 import { useMemo, useRef } from 'react';
 import { createNextListActions, setSelectionsByInstance } from '../shared';
 var useNextList = function (props) {
@@ -31,7 +31,7 @@ var useNextList = function (props) {
         actions: actionsRef.current
     }).implementActions;
     var hasRowSelectionCls = 'has-row-selection';
-    useMemo(function () {
+    var opts = useMemo(function () {
         implementActions({
             setSelections: function (ids, records) {
                 setSelectionsByInstance(actionsRef.current, ids, records);
@@ -53,17 +53,20 @@ var useNextList = function (props) {
                     actionsRef.current.setTableProps({
                         className: className.indexOf(hasRowSelectionCls) !== -1 ? className : className + " " + hasRowSelectionCls,
                         rowSelection: __assign(__assign({}, others), { mode: mode, selectedRowKeys: ids, primaryKey: primaryKey, onSelect: function (selected, record, records) {
-                                actionsRef.current.notify({ type: ListLifeCycleTypes.ON_LIST_SELECT, payload: {
-                                        selected: selected, record: record, records: records
-                                    } });
+                                actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT, {
+                                    selected: selected, record: record, records: records
+                                });
                             }, onSelectAll: function (selected, records) {
-                                actionsRef.current.notify({ type: ListLifeCycleTypes.ON_LIST_SELECT_ALL, payload: {
-                                        selected: selected, records: records
-                                    } });
+                                actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT_ALL, {
+                                    selected: selected, records: records
+                                });
                             }, onChange: function (changeIds, records) {
                                 actionsRef.current.setSelectionConfig({
                                     ids: changeIds,
                                     records: records,
+                                });
+                                actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT_CHANGE, {
+                                    ids: changeIds, records: records
                                 });
                                 var rowSelection = actionsRef.current.getTableProps().rowSelection;
                                 actionsRef.current.setTableProps({
@@ -80,7 +83,16 @@ var useNextList = function (props) {
                 }
             }
         });
+        var effects = props.effects;
+        return {
+            actions: actionsRef.current,
+            list: useList(__assign(__assign({}, props), { effects: function ($, actions) {
+                    if (typeof effects === 'function') {
+                        effects($, actions);
+                    }
+                } }))
+        };
     }, []);
-    return actionsRef.current;
+    return opts;
 };
 export default useNextList;
