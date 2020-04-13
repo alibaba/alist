@@ -1,6 +1,6 @@
 {
   "name": "@alist/antd",
-  "version": "1.0.0-beta.10",
+  "version": "1.0.0-beta.11",
   "main": "lib",
   "types": "lib/index.d.ts",
   "engines": {
