@@ -25,6 +25,7 @@ const StyledLayout = styled((props) => {
 
         .ant-form-item-control {
             width: 100%;
+            flex: initial;
         }
     }
     

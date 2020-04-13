@@ -25,18 +25,6 @@ window.codeSandBoxPeerDependencies = {
 </script>
 `
 
-const FOOTER_HTML = `
-<script>
-[...document.getElementsByTagName('script')].filter(item => item.src.indexOf('unpkg.com') !== -1).forEach(item => item.remove())
-</script>
-<script src="//unpkg.zhimg.com/react/umd/react.production.min.js"></script>
-<script src="//unpkg.zhimg.com/react-dom/umd/react-dom.production.min.js"></script>
-<script src="//unpkg.zhimg.com/react-is/umd/react-is.production.min.js"></script>
-<script src="//unpkg.zhimg.com/moment/min/moment-with-locales.js"></script>
-<script src="//unpkg.zhimg.com/antd/dist/antd.min.js"></script>
-<script src="//unpkg.zhimg.com/@alifd/next/dist/next.min.js"></script>
-`
-
 const createDocs = async () => {
   const packagesDir = path.resolve(process.cwd(), './packages')
   const packages = await fs.readdir(packagesDir)
@@ -58,17 +46,9 @@ const createDocs = async () => {
       title: 'AList',
       renderer: path.resolve(__dirname, './doc-renderer.js'),
       header: HEAD_HTML,
-      footer: FOOTER_HTML
     },
     (webpackConfig, env) => {
       webpackConfig.devtool = 'none'
-      webpackConfig.externals = {
-        ...webpackConfig.externals,
-        '@alifd/next': 'Next',
-        antd: 'antd',
-        moment: 'moment'
-      }
-
       webpackConfig.module.rules = webpackConfig.module.rules.map(rule => {
         if (rule.test.test('.tsx')) {
           return {

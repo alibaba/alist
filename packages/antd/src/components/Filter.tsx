@@ -140,7 +140,7 @@ const Filter: any = styled(props => {
 
         .ant-form-item {
             .ant-form-item-control {
-                line-height: 40px;
+                line-height: 32px;
             }
         }
     }
