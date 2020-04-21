@@ -47,12 +47,12 @@ const injectFuncs = (props, funcs) => {
 // 有相当多的组件使用虚拟渲染（即分析JSX结构数据，实际并不会使用该JSX执行真正的渲染），因此不能通过包裹组件来做遍历
 // 递归仍然需要，不过需要直接返回类名之间操作（但是需要递归子组件）
 const renderSchema = (props, contextProps) => {
-  const { funcRegistry, componentsRegistry } = contextProps;
+  const { actions, funcRegistry, componentsRegistry } = contextProps;
   const { children, componentName, props: componentProps } = props;
   
   const schemaResult = {
     component: null,
-    props: {},
+    props: {} as any,
     children: null
   };
 
@@ -74,6 +74,11 @@ const renderSchema = (props, contextProps) => {
     schemaResult.component = _.get(componentsRegistry, componentName);
     schemaResult.props = injectFuncs((componentProps || {}), funcRegistry);
     schemaResult.children = childs;
+
+    // List主体，需要在这里完成actions握手
+    if (componentName === 'List' && actions) {
+      schemaResult.props.actions = actions
+    }
   }
 
   return schemaResult;
@@ -81,7 +86,7 @@ const renderSchema = (props, contextProps) => {
 
 const noop = () => ({});
 const SchemaSolver = (props) => {
-  const { schema, componentsRegistry = {}, funcRegistry = {}, generateContext = noop } = props
+  const { actions, schema, componentsRegistry = {}, funcRegistry = {}, generateContext = noop } = props
 
   // 拆分文案及其余配置
   const { componentsTree = [], i18n = {} } = schema
@@ -108,6 +113,7 @@ const SchemaSolver = (props) => {
       const localCtx = generateContext() || {}
 
       ctx.setContext({
+        actions,
         componentsRegistry: finalComponentsRegistry,
         funcRegistry: finalFuncRegistry,
         i18n,        

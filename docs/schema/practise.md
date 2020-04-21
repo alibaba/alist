@@ -5,9 +5,10 @@
 ```jsx
 import React, { createContext, useContext,
   useState, useEffect, useRef, useMemo } from 'react'
-import { SchemaList, List, Table } from '@alist/antd';
+import { createListActions, SchemaList, List, Table } from '@alist/antd';
 import'antd/dist/antd.css'
 
+const actions = createListActions()
 const schema = {
   componentsTree: [
     {
@@ -91,7 +92,7 @@ const funcRegistry = {
 
 const App = () => {
   return <SchemaList
-    schema={schema}
+    actions={actions}
     funcRegistry={funcRegistry}
     schema={schema}
   />
@@ -106,11 +107,12 @@ ReactDOM.render(<App />, document.getElementById('root'))
 直接使用 `formily` schema 来渲染
 
 ```jsx
-import React, { createContext, useContext,
+import React, { createContext, useContext,  
   useState, useEffect, useRef, useMemo } from 'react'
-import { SchemaList, List, Table } from '@alist/antd';
+import { createListActions, SchemaList, List, Table } from '@alist/antd';
 import'antd/dist/antd.css'
 
+const actions = createListActions()
 const schema = {
   componentsTree: [
     {
@@ -200,7 +202,7 @@ const funcRegistry = {
 
 const App = () => {
   return <SchemaList
-    schema={schema}
+    actions={actions}
     funcRegistry={funcRegistry}
     schema={schema}
   />
