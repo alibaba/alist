@@ -2,7 +2,6 @@
   "name": "@alist/next",
   "version": "1.0.0-beta.10",
   "main": "lib",
-  "types": "lib/index.d.ts",
   "engines": {
     "npm": ">=3.0.0"
   },
@@ -13,6 +12,7 @@
     "@alifd/next": "1.x",
     "typescript": "^3.5.2"
   },
+  "types": "esm/index.d.ts",
   "peerDependencies": {
     "@alifd/next": "1.x",
     "@babel/runtime": "^7.4.4",
