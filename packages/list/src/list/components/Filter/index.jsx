@@ -141,7 +141,8 @@ const FilterItem = (props) => {
     if (noLayout) {
         itemStyle.paddingRight = '0';
     } else if (cols && !autoWidth) { // priority: autoWidth > cols
-        const width = (1 / Number(cols)).toFixed(2) * 100;
+        // const width = (1 / Number(cols)).toFixed(2) * 100;
+        const width = ((1 / Number(cols))* 100).toFixed(2);
         const colWidth = (Number(colSpan) * width);
         itemStyle.width = `${colWidth}%`;
     }

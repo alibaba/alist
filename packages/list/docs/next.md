@@ -79,8 +79,8 @@ class NoList extends React.Component {
 
     return (
       <div style={{ margin: '24px' }}>
-        <List  url="/docs/mock.json" onError={handleError} onMount={onMount}>
-            <Filter >
+        <List url="/docs/mock.json" onError={handleError} onMount={onMount}>
+            <Filter cols={3}>
               <Filter.Item label="username" name="username"><Input /></Filter.Item>
               <Filter.Item label="age" name="age"><Input /></Filter.Item>
               <Filter.Item label="country" name="country"><Select dataSource={[]} /></Filter.Item>
