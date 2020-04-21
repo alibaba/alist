@@ -109,7 +109,7 @@ ReactDOM.render(<App />, document.getElementById('root'))
 ```jsx
 import React, { createContext, useContext,  
   useState, useEffect, useRef, useMemo } from 'react'
-import { createListActions, SchemaList, List, Table } from '@alist/antd';
+import { createListActions, SchemaList, List, Table, ListLifeCycleTypes } from '@alist/antd';
 import'antd/dist/antd.css'
 
 const actions = createListActions()
@@ -169,7 +169,7 @@ const schema = {
                 },
                 {
                   componentName: 'Table.Column',
-                  props: { dataIndex: 'name', title: 'name', sort: true },
+                  props: { dataIndex: 'name', title: 'name', sorter: true },
                 },
                 {
                   componentName: 'Table.Column',
@@ -200,8 +200,15 @@ const funcRegistry = {
   }
 }
 
+const effects = ($, actions) => {
+   $(ListLifeCycleTypes.ON_LIST_SORT).subscribe((payload) => {
+      console.log('ON_LIST_SORT', payload)
+    });
+}
+
 const App = () => {
   return <SchemaList
+    effects={effects}
     actions={actions}
     funcRegistry={funcRegistry}
     schema={schema}

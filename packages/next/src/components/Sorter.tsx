@@ -47,6 +47,7 @@ const Sorter = styled((props) => {
     vertical-align: middle;
     height: 1rem;
     cursor: pointer;
+    margin-top: -4px;
     
     .alist-sorter {
         transform: scale(0.91666667) rotate(0deg);

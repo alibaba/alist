@@ -16,6 +16,7 @@
       - [搜索布局](./demo/layout.md)
       - [搜索区域展开收起](./demo/expand.md)
       - [Table区域展开收起](./demo/expandTable.md)
+      - [Table排序](./demo/sorterTable.md)
       - [设置及消费筛选状态](./demo/selection.md)
       - [同步URL参数](./demo/syncParams.md)
       - [自定义消费组件](./demo/consumer.md)
