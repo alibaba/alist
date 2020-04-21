@@ -1,6 +1,6 @@
 {
   "name": "@alist/next",
-  "version": "1.0.0-beta.13",
+  "version": "1.0.0-beta.14",
   "main": "lib",
   "engines": {
     "npm": ">=3.0.0"
@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@alist/react": "^1.0.0-beta.9",
-    "@alist/react-schema-renderer": "^1.0.0-beta.13",
+    "@alist/react-schema-renderer": "^1.0.0-beta.14",
     "@formily/next": "^1.0.0",
     "@formily/next-components": "^1.0.0",
     "@types/classnames": "^2.2.9",
