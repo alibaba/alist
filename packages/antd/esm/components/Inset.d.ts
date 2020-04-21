@@ -1,2 +1,2 @@
-declare const InsetFormItem: import("styled-components").StyledComponent<(props: any) => JSX.Element, any, {}, never>;
+declare const InsetFormItem: any;
 export default InsetFormItem;
