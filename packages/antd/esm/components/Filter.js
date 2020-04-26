@@ -42,6 +42,7 @@ registerFormItemComponent(function (props) {
     var errors = props.errors, warnings = props.warnings, others = __rest(props, ["errors", "warnings"]);
     var contextProps = useContext(LayoutContext);
     var span = markupProps.span, _a = markupProps.hasBorder, hasBorderProps = _a === void 0 ? true : _a;
+    var xProps = (markupProps || {})['x-props'] || {};
     var inset = computeAttr(markupProps, contextProps, 'inset');
     var full = computeAttr(markupProps, contextProps, 'full');
     var labelAlign = computeAttr(markupProps, contextProps, 'labelAlign');
@@ -60,7 +61,7 @@ registerFormItemComponent(function (props) {
         formItemProps.errors = errors;
         formItemProps.warnings = warnings;
     }
-    var internalFormItem = React.createElement(InsetFormItem, __assign({ inset: inset, full: full, labelAlign: labelAlign, labelCol: labelCol, wrapperCol: wrapperCol, hasBorder: hasBorder, labelWidth: labelWidth, uniHeight: uniHeight }, insetProps), React.createElement(formItemComponent, __assign(__assign({}, others), formItemProps)));
+    var internalFormItem = React.createElement(InsetFormItem, __assign({}, xProps, { inset: inset, full: full, labelAlign: labelAlign, labelCol: labelCol, wrapperCol: wrapperCol, hasBorder: hasBorder, labelWidth: labelWidth, uniHeight: uniHeight }, insetProps), React.createElement(formItemComponent, __assign(__assign({}, others), formItemProps)));
     return React.createElement(Layout.Item, { span: span }, internalFormItem);
 });
 var pickupFieldProps = function (props) {
