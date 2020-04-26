@@ -43,7 +43,7 @@ registerFormItemComponent(function (props) {
     var contextProps = useContext(LayoutContext);
     var span = markupProps.span, _a = markupProps.hasBorder, hasBorderProps = _a === void 0 ? true : _a;
     var xProps = (markupProps || {})['x-props'] || {};
-    var _b = xProps.asterisk, asterisk = _b === void 0 ? false : _b;
+    var asterisk = xProps.asterisk;
     var inset = computeAttr(markupProps, contextProps, 'inset');
     var full = computeAttr(markupProps, contextProps, 'full');
     var labelAlign = computeAttr(markupProps, contextProps, 'labelAlign');
