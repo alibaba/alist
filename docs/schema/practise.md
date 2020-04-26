@@ -6,7 +6,7 @@
 import React, { createContext, useContext,
   useState, useEffect, useRef, useMemo } from 'react'
 import { createListActions, SchemaList, List, Table } from '@alist/antd';
-import'antd/dist/antd.css'
+import 'antd/dist/antd.css'
 
 const actions = createListActions()
 const schema = {
@@ -110,7 +110,7 @@ ReactDOM.render(<App />, document.getElementById('root'))
 import React, { createContext, useContext,  
   useState, useEffect, useRef, useMemo } from 'react'
 import { createListActions, SchemaList, List, Table, ListLifeCycleTypes } from '@alist/antd';
-import'antd/dist/antd.css'
+import 'antd/dist/antd.css'
 
 const actions = createListActions()
 const schema = {
