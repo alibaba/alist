@@ -1,6 +1,6 @@
 {
   "name": "@alist/antd",
-  "version": "1.0.0-beta.14",
+  "version": "1.0.0-beta.15",
   "main": "lib",
   "engines": {
     "npm": ">=3.0.0"
