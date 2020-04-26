@@ -18,6 +18,7 @@ registerFormItemComponent((props) => {
     const { errors, warnings, ...others } = props    
     const contextProps = useContext(LayoutContext)
     const { span, hasBorder: hasBorderProps = true } = markupProps
+    const xProps = (markupProps || {})['x-props'] || {}
 
     const inset = computeAttr(markupProps, contextProps, 'inset')
     const full = computeAttr(markupProps, contextProps, 'full')
@@ -39,6 +40,7 @@ registerFormItemComponent((props) => {
     }
 
     const internalFormItem = <InsetFormItem
+        {...xProps}
         inset={inset}
         full={full}
         labelAlign={labelAlign}
