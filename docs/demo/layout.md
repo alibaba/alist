@@ -164,7 +164,7 @@ const App = () => {
         <Filter>
           <Layout inset gap={[12, 16]} columns={3}>
             <Filter.Item
-              // required
+              required
               // asterisk
               // x-props={{ asterisk: true }}
               type="input"

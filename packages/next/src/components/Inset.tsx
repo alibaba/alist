@@ -37,7 +37,7 @@ const InsetFormItem = styled(props => {
         }
     }
 
-    ${props => !props.asterisk && css `
+    ${props => (props.asterisk === false) && css `
         .next-form-item-label label[required]:before {
             content: none;
         }

@@ -19,7 +19,7 @@ registerFormItemComponent((props) => {
     const contextProps = useContext(LayoutContext)
     const { span, hasBorder: hasBorderProps = true } = markupProps
     const xProps = (markupProps || {})['x-props'] || {}
-    const { asterisk = false } = xProps
+    const { asterisk } = xProps
 
     const inset = computeAttr(markupProps, contextProps, 'inset')
     const full = computeAttr(markupProps, contextProps, 'full')
