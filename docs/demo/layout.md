@@ -137,6 +137,54 @@ const App = () => {
 ReactDOM.render(<App />, document.getElementById('root'))
 ```
 
+### 按钮在同一行
+
+```jsx
+import React from 'react'
+import {
+  List, Table, Pagination,
+  createListActions, Filter,
+  Search, Clear,
+  Layout, FormSlot,
+  SchemaMarkupField,
+  FormBlock,
+  FormCard,
+  SchemaForm,
+} from '@alist/antd'
+import'antd/dist/antd.css'
+
+const actions = createListActions()
+const App = () => {  
+  const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
+
+  return <div>
+    <List
+      actions={actions}
+      url={url}
+      pageSize={5}
+    >
+        <Filter>
+          <Layout inset gap={[12, 16]} columns={3}>            
+            <Filter.Item type="number" title="数字选择" name="number" />
+            <Filter.Item type="boolean" title="开关选择" name="boolean" />
+            <Filter.Item type="date" title="日期选择" name="date" />            
+            <Filter.Item type="year" title="年份" name="year" />
+            <Filter.Item type="time" title="时间" name="time" />
+            <FormSlot>
+              <Layout.ButtonGroup style={{ flex: 1, margin: '8px 16px' }} align="right">
+                  <Search>搜索</Search>
+                  <Clear>重置</Clear>
+              </Layout.ButtonGroup>
+            </FormSlot>          
+          </Layout>          
+        </Filter>
+    </List>
+  </div>
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))
+```
+
 ```jsx
 import React from 'react'
 import {
