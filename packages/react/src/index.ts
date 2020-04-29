@@ -8,6 +8,7 @@ import ExpandTrigger from './components/ExpandTrigger'
 import createExpandContainer from './components/ExpandContainer'
 import Selection from './components/Selection'
 import SorterProvider from './components/SorterProvider'
+import ConnectProvider from './components/ConnectProvider'
 import ToggleProvider from './components/ToggleProvider'
 import Consumer from './components/Consumer'
 import Layout from './components/Layout'
@@ -43,6 +44,7 @@ export {
   FieldProvider,
   TableProvider,
   PaginationProvider,
+  ConnectProvider,
   MultipleProvider,
   SorterProvider,
   Consumer,

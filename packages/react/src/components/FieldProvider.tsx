@@ -15,9 +15,9 @@ const getValidateConfigByName = (validateConfig: any, name: string) => {
 }
 
 const FieldProvider: React.FC<any> = (props = {}) => {
-    const { children, name } = props
+    const { children, name, connectMode = false, defaultEmptyValue = null, searchOnChange = false } = props
     const list = useContext(ListContext)
-    const { mode } = useContext(FilterModeContext)
+    const { mode } = useContext(FilterModeContext) || {}
     const formatName = getFormatName(name)
     const formValidateConfig = list.getValidateConfig()
     const validateConfig = getValidateConfigByName(formValidateConfig, formatName)
@@ -29,8 +29,35 @@ const FieldProvider: React.FC<any> = (props = {}) => {
         }
     }
 
+    const clean = () => {
+        if (connectMode && name) {
+            list.setFilterData({ [name]: defaultEmptyValue })
+            refresh([name])
+        }
+    }
+
+    const setValue = (value) => {
+        if (connectMode && name) {
+            list.setFilterData({ [name]: value })
+            refresh([name])
+            if (searchOnChange) {                
+                list.refresh()
+            }
+        }
+    }
+
+    const filterData = list.getFilterData()
+    const value = name ? (filterData[name] === undefined ? defaultEmptyValue :filterData[name]) : defaultEmptyValue
+
     useEffect(() => {
         const id = list.subscribe(ListLifeCycleTypes.ON_LIST_FILTER_REFRESH, refresh)
+        return function cleanup() {
+            list.unSubscribe(id)
+        }
+    }, [])
+
+    useEffect(() => {
+        const id = list.subscribe(ListLifeCycleTypes.ON_LIST_CLEAR, clean)
         return function cleanup() {
             list.unSubscribe(id)
         }
@@ -41,6 +68,8 @@ const FieldProvider: React.FC<any> = (props = {}) => {
         element = children({
             validateConfig,
             mode,
+            setValue,
+            value,
         }, list)
     } else {
         element = children || React.Fragment
