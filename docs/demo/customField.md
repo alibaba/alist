@@ -1,5 +1,14 @@
 # 使用ConnectProvider(推荐)
 
+无须手动维护组件与AList的关系，简单包裹即可，方便在页面任何脱离搜索区域的地方使用改变搜索条件的组件。
+
+| 属性名       | 描述                             | 类型                 | 默认值                 |
+|:----------|:---------------------------------|:--------------------|:--------------------|
+| name    | 表单组件名                  | string |  |
+| searchOnChange    | 值改变时是否立即发起请求                  | boolean | false |
+| children    | 设置返回内容                  | ({ value, setValue }) |  |
+| defaultEmptyValue    | 设置默认空值                  | any | null |
+
 ```jsx
 import React, { useState } from 'react'
 import {
