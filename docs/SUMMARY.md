@@ -13,6 +13,7 @@
       - [理解Schema](./schema/index.md)
    - 实践教程
       - [三种数据模式](./demo/mode.md)
+      - [自定义搜索条件](./demo/customField.md)
       - [搜索布局](./demo/layout.md)
       - [搜索区域展开收起](./demo/expand.md)
       - [Table区域展开收起](./demo/expandTable.md)
