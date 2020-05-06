@@ -13,8 +13,8 @@
   "author": "guishu.zc",
   "license": "MIT",
   "dependencies": {
-    "events": "^3.0.0",
-    "whatwg-fetch": "^3.0.0"
+    "axios": "^0.19.2",
+    "events": "^3.0.0"
   },
   "publishConfig": {
     "access": "public"

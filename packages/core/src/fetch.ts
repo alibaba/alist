@@ -1,4 +1,4 @@
-import 'whatwg-fetch'
+import axios from 'axios'
 
 const dataTypes = ['json', 'html']
 
@@ -34,9 +34,9 @@ const beforeRequest = (url, data, dataType) => {
 }
 const afterRequest = (dataType, rawFetch) => {
   if (dataType === 'json') {
-    rawFetch = rawFetch.then(response => response.json())
+    rawFetch = rawFetch.then(response => response.data)
   } else if (dataType === 'html') {
-    rawFetch = rawFetch.then(response => response.text())
+    rawFetch = rawFetch.then(response => response.data)
   }
   return rawFetch
 }
@@ -48,15 +48,16 @@ const post = (
   _customHeader?: any
 ) => {
   ;({ url, data, dataType } = beforeRequest(url, data, dataType))
-  const rawFetch = fetch(url, {
+  const rawFetch = axios(url, {
     method: 'POST',
     headers: {
       Accept: 'application/json, text/plain, */*',
       'Content-Type': 'application/x-www-form-urlencoded charset=UTF-8',
       ...(_customHeader || {})
     },
-    credentials: 'include',
-    body: data
+    // credentials: 'include',
+    withCredentials: true,
+    data
   })
   return afterRequest(dataType, rawFetch)
 }
@@ -66,14 +67,16 @@ const get = (url: string, data, dataType: string, _customHeader: any) => {
   if (data) {
     url += (/\?/.test(url) ? '&' : '?') + data
   }
-  const rawFetch = fetch(url, {
+  const rawFetch = axios(url, {
     headers: {
       Accept: 'application/json, text/plain, */*',
       'Content-Type': 'application/x-www-form-urlencoded charset=UTF-8',
       ...(_customHeader || {})
     },
-    credentials: 'include'
+    // credentials: 'include'
+    withCredentials: true,
   })
+
   return afterRequest(dataType, rawFetch)
 }
 
