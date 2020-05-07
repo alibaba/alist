@@ -13,7 +13,7 @@
 import React, { useState } from 'react'
 import {
   List, Table, Pagination, Filter,
-  Layout, Search, Clear,
+  Layout, Search, Clear, Reset,
   createListActions, ConnectProvider
 } from '@alist/antd'
 import { Select } from 'antd'
@@ -24,13 +24,14 @@ const App = () => {
   const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
 
   return <div>
-    <List actions={actions} url={url}>
+    <List actions={actions} url={url} defaultFilterValues={{ username: 'hello' }}>
       <Filter inline>
         <Filter.Item type="input" name="username" title="username"/>
         <Filter.Item type="input" name="age" title="age"/>
         <Layout.ButtonGroup>
           <Search>搜索</Search>
-          <Clear>重置</Clear>
+          <Clear>清空</Clear>
+          <Reset>重置</Reset>
         </Layout.ButtonGroup>
       </Filter>
       <div>

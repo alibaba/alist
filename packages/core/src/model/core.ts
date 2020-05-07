@@ -52,7 +52,7 @@ export default class ListCore extends EventEmitter {
             total, // 总数据条目数
             totalPages, // 总页面数
             loading: false,// 当前加载数据状态: true | false
-            defaultFilterValues: props.defaultFilterValues || {},
+            defaultFilterValues: props.defaultFilterValues,
             validateConfig: props.validateConfig || {},
             filterValues: props.defaultFilterValues || {},     
             tableProps: {},       
@@ -166,7 +166,7 @@ export default class ListCore extends EventEmitter {
     getFilterProps = () => {
         const { defaultFilterValues, filterValues } = this.state
         return {
-            initialValues: defaultFilterValues,
+            initialValues: defaultFilterValues || {},
             values: filterValues,            
         }
     }
