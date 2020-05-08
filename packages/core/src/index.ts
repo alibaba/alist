@@ -376,7 +376,8 @@ function createList(props: IListProps = {}): IList {
     })
 
     const search = searchParams.toString()
-    const newUrl = `${location.origin}${location.pathname}${location.hash}${
+    const hashStr = (location.hash || '').split('?')[0]
+    const newUrl = `${location.origin}${location.pathname}${hashStr}${
       search ? '?' + search : ''
     }`
     window.history.replaceState(params, undefined, newUrl)

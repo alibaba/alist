@@ -48,25 +48,6 @@ const App = () => {
         <Layout.ButtonGroup>
           <Search>搜索</Search>
           <Clear>清空</Clear>
-          <Button onClick={() => setVisible(true)}>展示搜索区域镜像</Button>
-          <Drawer width={720} title="搜索区域镜像" visible={visible} onClose={() => setVisible(false)}>
-            <FormSpy>
-                {({ form }) => {
-                    return <Filter form={form}>
-                        <Layout gap={[12,16]} columns={3}>
-                            <Filter.Item type="input" name="username" title="username"/>
-                            <Filter.Item type="input" name="age" title="age"/>
-                            <Filter.Item type="input" name="gender" title="gender"/>
-                        </Layout>
-                        <Layout.ButtonGroup>
-                            <Search>搜索</Search>
-                            <Clear>清空</Clear>
-                            <Reset>重置</Reset>
-                        </Layout.ButtonGroup>
-                    </Filter>
-                }}
-            </FormSpy>            
-        </Drawer>
         </Layout.ButtonGroup>        
       </Filter>      
       <Table>
@@ -87,7 +68,7 @@ ReactDOM.render(<App />, document.getElementById('root'))
 常用于全量搜索场景
 
 ```jsx
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   List, Table, Pagination, Filter,
   Layout, Search, Clear, Reset,
@@ -112,8 +93,9 @@ for (let i = 0; i < 10; i++) {
 const actions = createListActions()
 const App = () => {  
   const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
+  const latestFields = useRef([])
   const [visible, setVisible] = useState(false)
-  const [displayFields, setDisplayFields] = useState(['1', '2', '3', '4'])
+  const [displayFields, setDisplayFields] = useState(['0', '1', '2', '3', '4'])
 
   return <div>
     <Transfer dataSource={fieldList} targetKeys={displayFields} onChange={setDisplayFields} render={item => item.label}/>
@@ -132,15 +114,26 @@ const App = () => {
         <Layout.ButtonGroup>
           <Search>搜索</Search>
           <Clear>清空</Clear>
-          <Button onClick={() => setVisible(true)}>展示搜索区域镜像</Button>
-          <Drawer width={720} title="搜索区域镜像" visible={visible} onClose={() => setVisible(false)}>
+          <Button onClick={() => {
+            setVisible(true)
+            latestFields.current = displayFields
+            setDisplayFields(fieldList.map(item => item.value))
+          }}>全量搜索</Button>
+          <Drawer width={720} title="搜索区域镜像" visible={visible} onClose={() => {
+            setVisible(false)
+            setDisplayFields(latestFields.current)
+          }}>
             <FormSpy>
                 {({ form }) => {
                     return <Filter form={form}>
                         <Layout gap={[12,16]} columns={3}>
-                            <Filter.Item type="input" name="username" title="username"/>
-                            <Filter.Item type="input" name="age" title="age"/>
-                            <Filter.Item type="input" name="gender" title="gender"/>
+                            {fieldList.map(field => {
+                              return <Filter.Item
+                                type="input"
+                                name={field.value}
+                                title={field.label}
+                              />
+                            })}
                         </Layout>
                         <Layout.ButtonGroup>
                             <Search>搜索</Search>
