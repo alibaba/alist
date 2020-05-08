@@ -107,11 +107,9 @@ var Component = function (props) {
                 }, className: (connectProps.className || '') + " " + (props.className || '') + " alist-recursion-table" }));
         }));
 };
-Object.assign(Component, {
-    Column: Table.Column,
-    ColumnGroup: Table.ColumnGroup,
-    GroupHeader: Table.GroupHeader,
-    GroupFooter: Table.GroupFooter,
-});
+Component.Column = Table.Column;
+Component.ColumnGroup = Table.ColumnGroup,
+    Component.GroupHeader = Table.GroupHeader;
+Component.GroupFooter = Table.GroupFooter;
 export default Component;
 var templateObject_1, templateObject_2, templateObject_3;

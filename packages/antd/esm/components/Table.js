@@ -134,9 +134,7 @@ var Component = function (props) {
                 }, className: (connectProps.className || '') + " " + (props.className || '') + " alist-recursion-table" }));
         }));
 };
-Object.assign(Component, {
-    Column: Table.Column,
-    ColumnGroup: Table.ColumnGroup,
-});
+Component.Column = Table.Column;
+Component.ColumnGroup = Table.ColumnGroup;
 export default Component;
 var templateObject_1;
