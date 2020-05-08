@@ -41,7 +41,7 @@ function createList(props: IListProps = {}): IList {
   // 请求相关
   let url = props.url // 请求url
   let params = props.params || {} // url的param
-  let paramsFields = props.paramsFields || []
+  let paramsFields = props.paramsFields
   let method = props.method || 'GET' // GET | POST | ...
   let query = props.query || defaultQuery // 自定义请求方法,默认适用url模式
   let autoLoad = props.autoLoad === undefined ? true : props.autoLoad
@@ -376,7 +376,7 @@ function createList(props: IListProps = {}): IList {
     })
 
     const search = searchParams.toString()
-    const newUrl = `${location.origin}${location.pathname}${
+    const newUrl = `${location.origin}${location.pathname}${location.hash}${
       search ? '?' + search : ''
     }`
     window.history.replaceState(params, undefined, newUrl)
@@ -551,7 +551,7 @@ function createList(props: IListProps = {}): IList {
   // 同步params到搜索区域上
   const syncFilterData = {}
   Object.keys(params || {}).forEach(paramField => {
-    if ([].concat(paramsFields).some(f => f === '*' || f === paramField)) {
+    if ([].concat(paramsFields || []).some(f => f === '*' || f === paramField)) {
       syncFilterData[paramField] = params[paramField]
     }
   })
@@ -563,8 +563,8 @@ function createList(props: IListProps = {}): IList {
       list.setFilterData(syncFilterData)
     })    
   }
-
-  if (params) {
+  
+  if (params && Object.keys(params).length) {
     setParams(params)
   }
 
@@ -590,7 +590,7 @@ function createList(props: IListProps = {}): IList {
   listAPI.subscribe(ListLifeCycleTypes.ON_LIST_FILTER_ITEM_CHANGE, (fieldChangeData) => {
     const { payload: fieldState } = fieldChangeData
     const { name, value } = fieldState
-    if ([].concat(paramsFields).some(f => f === '*' || f === name)) {
+    if ([].concat(paramsFields || []).some(f => f === '*' || f === name)) {
       // 设置filter当前命中的字段值
       const nextTargetParams = { [name]: value }
       lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_PARAMS_CHANGE, ctx: listAPI, payload: nextTargetParams })
