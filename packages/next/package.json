@@ -1,6 +1,6 @@
 {
   "name": "@alist/next",
-  "version": "1.0.0-beta.20",
+  "version": "1.0.0-beta.21",
   "main": "lib",
   "engines": {
     "npm": ">=3.0.0"
