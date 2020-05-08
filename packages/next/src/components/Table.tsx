@@ -1,10 +1,10 @@
-import React, { useEffect, useContext } from 'react'
-import { TableProvider, ListLifeCycleTypes, useToggle, ToggleContext, ListContext, useEva } from '@alist/react'
+import React, { useEffect, useContext, FC } from 'react'
+import { TableProvider, ListLifeCycleTypes, useToggle, ToggleContext, ListContext } from '@alist/react'
+import { TableProps } from '@alifd/next/types/table'
 import { Table } from '@alifd/next'
 import moment from 'moment'
 import styled, { css } from 'styled-components'
 import Sorter from './Sorter'
-
 
 // 遵循最小可用原则来采集初始化的table属性
 const pickInitialTableProps = (props) => {
@@ -118,10 +118,17 @@ const TableStyledWrapper = styled((props) => {
     }
 `
 
+type AListTable =  React.FunctionComponent<TableProps & { loopBackground?: boolean }> & {
+    Column: typeof Table.Column
+    ColumnGroup: typeof Table.ColumnGroup,
+    GroupHeader: typeof Table.GroupHeader,
+    GroupFooter: typeof Table.GroupFooter,
+}
+
 const noop = () => {}
-const Component = props => {
+const Component: AListTable = props => {
     const { onSort = noop, onFilter = noop, ...others } = props
-    const columns = React.Children.map(props.children, (item) => {
+    const columns = React.Children.map(props.children, (item: any) => {
         if (!item) return item
         const cloneProps = { ...item.props };
         if (item.props.sortable || item.props.moment) {
@@ -172,12 +179,9 @@ const Component = props => {
     </TableStyledWrapper>
 }
 
-
-Object.assign(Component, {
-    Column: Table.Column,
-    ColumnGroup: Table.ColumnGroup,
-    GroupHeader: Table.GroupHeader,
-    GroupFooter: Table.GroupFooter,
-})
+Component.Column = Table.Column;
+Component.ColumnGroup = Table.ColumnGroup,
+Component.GroupHeader = Table.GroupHeader;
+Component.GroupFooter = Table.GroupFooter;
 
 export default Component;

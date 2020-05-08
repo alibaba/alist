@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { TableProvider, ListLifeCycleTypes, useToggle, ToggleContext, ListContext } from '@alist/react'
 import { Table } from 'antd'
+import { TableProps } from 'antd/lib/table'
 import styled from 'styled-components'
 import moment from 'moment'
 
@@ -128,11 +129,16 @@ const momentify = (val, propsMoment) => {
     return val ? moment(isNaN(val) ? val : Number(val)).format(format) : null;
 }
 
-const Component = props => {
+type AListTable =  React.FunctionComponent<TableProps<any> & { loopBackground?: boolean }> & {
+    Column: typeof Table.Column
+    ColumnGroup: typeof Table.ColumnGroup,
+}
+
+const Component: AListTable = props => {
     const { children, columns, ...others } = props
     const renderProps: any = {}
     if (children) {
-        renderProps.children = React.Children.map(props.children, (item) => {
+        renderProps.children = React.Children.map(props.children, (item: any) => {
             if (!item) return item
             const cloneProps = { ...item.props };
             if (item.props.moment) {
@@ -148,7 +154,7 @@ const Component = props => {
             }
         })
     } else {
-        renderProps.columns = columns.map(item => {
+        renderProps.columns = columns.map((item: any) => {
             if (!item) return item
             if (item.moment) {
                 return {
@@ -186,9 +192,7 @@ const Component = props => {
     </TableStyledWrapper>
 }
 
-Object.assign(Component, {
-    Column: Table.Column,
-    ColumnGroup: Table.ColumnGroup,
-})
+Component.Column = Table.Column;
+Component.ColumnGroup = Table.ColumnGroup;
 
 export default Component;

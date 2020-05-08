@@ -14,6 +14,7 @@
    - 实践教程
       - [三种数据模式](./demo/mode.md)
       - [自定义搜索条件](./demo/customField.md)
+      - [定制搜索条件及镜像搜索区域](./demo/multiFilter.md)
       - [搜索布局](./demo/layout.md)
       - [搜索区域展开收起](./demo/expand.md)
       - [Table区域展开收起](./demo/expandTable.md)
