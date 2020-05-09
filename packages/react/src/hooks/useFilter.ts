@@ -6,18 +6,51 @@ import { IFilterHook, IFilterProps } from '../types'
 
 export const useFilter = (props: IFilterProps, propsList?: IList): IFilterHook => {
     const filterRef = useRef(props.form || null)
-    const { useForm, effects } = props
+    const { useForm, effects, mirror } = props
     const list = propsList || useContext(ListContext)
     const filterProps = list.getFilterProps()
+    const latestInstance = list.getFilterInstance()
+    const mirrorProps: any = mirror ? { value: latestInstance.getFormState(state => state.values) } : {}
+
     const filterInstance = useForm({
+        ...mirrorProps,
         ...props,
         ...filterProps,
         form: filterRef.current,
-        effects: list.getFilterEffects({ effects }),
+        effects: list.getFilterEffects({ effects: mirror ? latestInstance.originalEffects : effects }),
     })
 
+    if (mirror && !filterRef.current) {
+        list.appendMirrorFilterInstance(filterInstance)
+    }
+    
     filterRef.current = filterRef.current || filterInstance
-    list.setFilterInstance(filterInstance)
+    if (!latestInstance) {
+        filterInstance.originalEffects = effects
+        list.setFilterInstance(filterInstance)
+    }
+
+    useEffect(() => {
+        if (mirror) {
+            const idMirror = filterInstance.subscribe(({ type, payload }) => {
+                if (type === 'onFieldChange') {
+                    const fieldState = payload.getState()
+                    const { name, value, props, values, editable, visible, display } = fieldState
+                    latestInstance.setFieldState(name, state => {
+                        state.value = value
+                        state.values = values
+                        state.editable = editable
+                        state.visible = visible
+                        state.display = display
+                        state.props = props
+                    })
+                }
+            })
+            return function cleanup() {
+                filterInstance.unsubscribe(idMirror)
+            }
+        }        
+    }, [])
 
     const forceUpdate = useForceUpdate()
     const refresh = () => {

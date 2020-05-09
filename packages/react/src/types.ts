@@ -99,6 +99,7 @@ export interface IFilterItemProps {
 
 export interface IFilterProps {
   form?: any,
+  mirror?: boolean,
   effects?: (props: filterEffectsProps) => filterEffectsProps
   useForm?: (props: any) => any
   children?: React.ReactElement | ((...args: any) => React.ReactElement)

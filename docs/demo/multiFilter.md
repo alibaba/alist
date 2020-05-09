@@ -100,7 +100,13 @@ const App = () => {
   return <div>
     <Transfer dataSource={fieldList} targetKeys={displayFields} onChange={setDisplayFields} render={item => item.label}/>
     <List actions={actions} url={url} defaultFilterValues={{ username: 'hello' }}>
-      <Filter>
+      <Filter effects={($, filterActions) => {
+        onFieldChange$('0').subscribe(({ value }) => {
+          filterActions.setFieldState('1', (state) => {
+            state.value = '联动' + (value || '') 
+          })
+        })
+      }}>
         <Layout gap={[12,16]} columns={3}>
           {fieldList.map(field => {
             return <Filter.Item
@@ -116,36 +122,39 @@ const App = () => {
           <Clear>清空</Clear>
           <Button onClick={() => {
             setVisible(true)
-            latestFields.current = displayFields
-            setDisplayFields(fieldList.map(item => item.value))
-          }}>全量搜索</Button>
-          <Drawer width={720} title="搜索区域镜像" visible={visible} onClose={() => {
-            setVisible(false)
-            setDisplayFields(latestFields.current)
-          }}>
-            <FormSpy>
-                {({ form }) => {
-                    return <Filter form={form}>
-                        <Layout gap={[12,16]} columns={3}>
-                            {fieldList.map(field => {
-                              return <Filter.Item
-                                type="input"
-                                name={field.value}
-                                title={field.label}
-                              />
-                            })}
-                        </Layout>
-                        <Layout.ButtonGroup>
-                            <Search>搜索</Search>
-                            <Clear>清空</Clear>
-                            <Reset>重置</Reset>
-                        </Layout.ButtonGroup>
-                    </Filter>
-                }}
-            </FormSpy>            
-        </Drawer>
+          }}>全量搜索</Button>          
         </Layout.ButtonGroup>        
       </Filter>      
+
+      <Drawer destroyOnClose width={720} title="搜索区域镜像" visible={visible} onClose={() => {setVisible(false)}}>
+          <Filter mirror>
+              <Layout gap={[12,16]} columns={3}>
+                  {fieldList.map(field => {
+                    return <Filter.Item
+                      type="input"
+                      name={field.value}
+                      title={field.label}
+                    />
+                  })}
+              </Layout>
+              <Layout.ButtonGroup>
+                  <FormSpy>
+                    {({ form }) => {
+                      return <Button onClick={() => {
+                        form.setFieldState('1', state => {
+                          state.props['x-component-props'] = {
+                            disabled: true
+                          }
+                        })
+                      }}>设置props</Button>
+                    }}
+                  </FormSpy>
+                  <Search>搜索</Search>
+                  <Clear>清空</Clear>
+                  <Reset>重置</Reset>
+              </Layout.ButtonGroup>
+          </Filter>
+      </Drawer>
       <Table>
         <Table.Column title="label" dataIndex="label" sorter/>
         <Table.Column title="value" dataIndex="value"/>

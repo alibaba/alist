@@ -113,8 +113,8 @@ var Item = function (props) {
     });
 };
 var Filter = styled(function (props) {
-    var _a = props.mode, mode = _a === void 0 ? 'schema' : _a, children = props.children, effects = props.effects, others = __rest(props, ["mode", "children", "effects"]);
-    return React.createElement(FilterProvider, { mode: mode, useForm: useForm, effects: effects }, function (connectProps) {
+    var _a = props.mode, mode = _a === void 0 ? 'schema' : _a, children = props.children, effects = props.effects, mirror = props.mirror, others = __rest(props, ["mode", "children", "effects", "mirror"]);
+    return React.createElement(FilterProvider, { mirror: mirror, mode: mode, useForm: useForm, effects: effects }, function (connectProps) {
         var filterInstance = connectProps.filterInstance;
         return React.createElement(SchemaForm, __assign({ form: filterInstance }, others), children);
     });

@@ -176,6 +176,7 @@ export enum ListLifeCycleTypes {
   ON_LIST_FILTER_REFRESH = 'onListFilterRefresh',
   ON_LIST_SORT = 'onListSort',
   ON_LIST_FILTER = 'onListFilter',
+  ON_LIST_FILTER_CHANGE = 'onListFilterChange',
   ON_LIST_MULTIPLE_REFRESH = 'onListMultipleRefresh',
   ON_LIST_VALIDATE_CONFIG_REFRESH = 'onListValidateConfigRefresh',
   ON_LIST_SELECT = 'onListSelect',
@@ -197,7 +198,8 @@ export enum ListLifeCycleTypes {
   WILL_LIST_UPDATE = 'willListUpdate',
   DID_LIST_UPDATE = 'didListUpdate',
   ON_LIST_BEFORE_QUERY = 'onListBeforeQuery',
-  ON_LIST_AFTER_QUERY = 'onListAfterQuery'
+  ON_LIST_AFTER_QUERY = 'onListAfterQuery',
+  ON_LIST_FILTER_VALUES_CHANGE = 'onListFilterValuesChange',
 }
 
 export const LAZY_MOUNTED_SIGNAL = 'lazyMounted'
@@ -276,6 +278,8 @@ export interface IList {
   removeListener: (key: EventType, cb?: IListEvent) => void,
   getExpandStatus: () => ExpandStatus
   toggleExpandStatus: () => void,
+  appendMirrorFilterInstance: (form?: any) => void,
+  getMirrorFilterInstanceList: () => any[]
 }
 
 export interface IMultiple {

@@ -18,12 +18,14 @@ export default class ListCore extends EventEmitter {
     // 优先级：本地dataSource > url > 自定义query
     private state: IListState
     filterInstance: any
+    mirrorFilterInstance: any[]
 
     constructor(props: IListProps = {}) {        
         super()
 
         // 本地数据模式
         this.setMaxListeners(1000)
+        this.mirrorFilterInstance = []
         let total = Number(props.total || 0)
         let totalPages = Number(props.totalPages || 0)        
         let currentPage = Number(props.currentPage || 1)
@@ -179,6 +181,14 @@ export default class ListCore extends EventEmitter {
         this.filterInstance = filterInstance
     }
 
+    appendMirrorFilterInstance = (filterInstance) => {
+        this.mirrorFilterInstance.push(filterInstance)
+    }
+    
+    getMirrorFilterInstanceList = () => {
+        return this.mirrorFilterInstance
+    }
+
     setValidateConfig = (validateConfig?: IListKVMap<any>) => {
         this.state.validateConfig = validateConfig || {}
     }
@@ -300,11 +310,17 @@ export default class ListCore extends EventEmitter {
     // 清空搜索数据
     clearFilterData = () => {
         this.filterInstance && this.filterInstance.reset({ forceClear: true })
+        this.mirrorFilterInstance.map(mirrorFilterInstance => {
+            mirrorFilterInstance.reset({ forceClear: true })
+        })
     }
 
     // 重置搜索数据
     resetFilterData = () => {
         this.filterInstance && this.filterInstance.reset({ forceClear: false })
+        this.mirrorFilterInstance.map(mirrorFilterInstance => {
+            mirrorFilterInstance.reset({ forceClear: false })
+        })
     }
 
     // 设置搜索数据
@@ -316,6 +332,15 @@ export default class ListCore extends EventEmitter {
                     ...filterData,
                 }
             }, slient)
+
+            this.mirrorFilterInstance.map(mirrorFilterInstance => {
+                mirrorFilterInstance.setFormState(state => {
+                    state.values = {
+                        ...state.values,
+                        ...filterData,
+                    }
+                }, slient)
+            })
         }        
     }
 

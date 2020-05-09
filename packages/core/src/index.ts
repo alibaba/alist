@@ -438,6 +438,11 @@ function createList(props: IListProps = {}): IList {
         lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_FILTER_MOUNT, ctx: listAPI, payload: state })
       })
 
+      // 搜索区域values修改
+      $('onFormValuesChange').subscribe((state) => {    
+        lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_FILTER_VALUES_CHANGE, ctx: listAPI, payload: state })
+      })
+
       // 搜索区域字段修改
       $('onFieldValueChange').subscribe((state) => {    
         lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_FILTER_ITEM_CHANGE, ctx: listAPI, payload: state })
@@ -547,6 +552,8 @@ function createList(props: IListProps = {}): IList {
     setMultiplePageSize, // 设置多实例分页数据
     getExpandStatus,
     toggleExpandStatus,
+    appendMirrorFilterInstance: list.appendMirrorFilterInstance,
+    getMirrorFilterInstanceList: list.getMirrorFilterInstanceList,
   }
 
   // 同步params到搜索区域上
