@@ -35,13 +35,11 @@ export const useFilter = (props: IFilterProps, propsList?: IList): IFilterHook =
             const idMirror = filterInstance.subscribe(({ type, payload }) => {
                 if (type === 'onFieldChange') {
                     const fieldState = payload.getState()
-                    const { name, value, props, values, editable, visible, display } = fieldState
+                    const { name, value, props, values, editable } = fieldState
                     latestInstance.setFieldState(name, state => {
                         state.value = value
                         state.values = values
                         state.editable = editable
-                        state.visible = visible
-                        state.display = display
                         state.props = props
                     })
                 }
