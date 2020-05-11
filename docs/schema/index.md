@@ -92,7 +92,7 @@ registerListFuncs({
 
 // 预注册组件类型
 registerListComponent({
-  CustimComponent: (props) => <div>{props.children}</div>
+  CustomComponent: (props) => <div>{props.children}</div>
 })
 
 ```
