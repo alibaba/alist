@@ -17,6 +17,7 @@ import { createAntdListActions, createAntdAsyncListActions } from './shared'
 import './fields'
 export * from '@formily/antd'
 export * from '@alist/react'
+export * from '@alist/react-schema-renderer'
 
 // 传入默认组件
 registerListComponent({
