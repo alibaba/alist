@@ -16,4 +16,5 @@ import { createAntdListActions, createAntdAsyncListActions } from './shared';
 import './fields';
 export * from '@formily/antd';
 export * from '@alist/react';
+export * from '@alist/react-schema-renderer';
 export { Selection, ExpandContainer, ExpandTrigger, ToggleTrigger, List, SchemaList, Filter, Table, Pagination, Clear, Layout, createAntdListActions as createListActions, createAntdAsyncListActions as createAsyncListActions, Consumer, Search, Reset };

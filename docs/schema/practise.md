@@ -41,6 +41,14 @@ const schema = {
                         props: { type: 'input', name: 'age', title: 'age' }
                       }    
                     ]
+                  },
+                  {
+                    componentName: 'Layout.ButtonGroup',
+                    children: [
+                      { componentName: 'Search' },
+                      { componentName: 'Clear', children: '清空' },
+                      { componentName: 'Reset', children: '重置' }
+                    ]
                   }
                 ]
             },

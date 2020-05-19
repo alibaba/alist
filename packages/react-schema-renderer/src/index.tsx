@@ -60,8 +60,9 @@ const renderSchema = (props, contextProps) => {
     console.warn('componentName:', componentName, 'not found in componentsRegistry')
   } else {
     let childs = null
-    if (Array.isArray(children)) {
-      childs = children.map(item => {
+    const arrChilds = [...(children || [])]
+    if (Array.isArray(arrChilds) && arrChilds.length) {
+      childs = arrChilds.map(item => {
         if (typeof item === 'string') { // 纯文本提供一种通道可以直接发掉
           return item
         }

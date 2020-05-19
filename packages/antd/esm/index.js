@@ -17,12 +17,14 @@ import { createAntdListActions, createAntdAsyncListActions } from './shared';
 import './fields';
 export * from '@formily/antd';
 export * from '@alist/react';
+export * from '@alist/react-schema-renderer';
 registerListComponent({
     List: List,
     Table: Table,
     Filter: Filter,
     Clear: Clear,
     Search: Search,
+    Reset: Reset,
     Layout: Layout,
     Pagination: Pagination,
     ToggleTrigger: ToggleTrigger,

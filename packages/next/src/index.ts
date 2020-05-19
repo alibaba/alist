@@ -29,6 +29,7 @@ registerListComponent({
   Table,
   Filter,
   Clear,
+  Reset,
   Search,
   Layout,
   Pagination,

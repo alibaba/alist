@@ -26,6 +26,7 @@ registerListComponent({
   Filter,
   Clear,
   Search,
+  Reset,
   Layout,
   Pagination,
   ToggleTrigger,
