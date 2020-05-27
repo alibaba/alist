@@ -81,7 +81,7 @@ const App = () => {
     <List
       actions={actions}
       url={url}
-      pageSize={5}
+      pageSize={5}      
     >
         <Filter>
           <Layout inset gap={[12, 16]} columns={3}>
@@ -197,8 +197,10 @@ import {
   FormCard,
   SchemaForm,
 } from '@alist/next'
+import { DatePicker } from '@formily/next-components'
 import'@alifd/next/dist/next.css'
 
+const DateRangePicker = DatePicker.RangePicker
 const actions = createListActions()
 const App = () => {  
   const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
@@ -207,9 +209,9 @@ const App = () => {
     <List
       actions={actions}
       url={url}
-      pageSize={5}
+      pageSize={5}      
     >
-        <Filter>
+        <Filter components={{ DateRangePicker }}>
           <Layout inset gap={[12, 16]} columns={3}>
             <Filter.Item
               required
@@ -238,6 +240,13 @@ const App = () => {
               // required
               title="Checkbox"
               name="checkbox"
+            />
+            <Filter.Item
+              type="array<date>"
+              title="日期范围x"
+              default={['2018-12-19', '2018-12-19']}
+              name="daterangex"
+              x-component="DateRangePicker"
             />
             <Filter.Item
               span={2}
