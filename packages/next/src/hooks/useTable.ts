@@ -1,5 +1,7 @@
-import { useFusionTable } from 'ahooks'
+import { useFusionTable as useNextTable } from 'ahooks'
 
-const useTable = useFusionTable
+export const useFusionTable = (...args) => {
+  return useNextTable(...args)
+}
 
-export default useTable
+export default useFusionTable

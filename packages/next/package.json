@@ -26,7 +26,7 @@
     "@formily/next-components": "^1.0.0",
     "@types/classnames": "^2.2.9",
     "@types/styled-components": "4.1.8",
-    "ahooks": "^0.0.1",
+    "ahooks": "^1.0.0-beta.2",
     "styled-components": "^4.4.1"
   },
   "repository": {

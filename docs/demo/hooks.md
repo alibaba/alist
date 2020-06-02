@@ -17,7 +17,7 @@ import {
   Select,
   Icon
 } from '@alifd/next'
-import { useTable } from '@formily/next'
+import { useFusionTable } from '@alist/next';
 import '@alifd/next/dist/next.css'
 
 const getTableData = ({ current, pageSize }, formData) => {
