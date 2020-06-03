@@ -8,6 +8,7 @@
   "scripts": {
     "build": "ts-node --project ../../tsconfig.build.json build.ts"
   },
+  "stylePath": "style.js",
   "devDependencies": {
     "antd": "4.x",
     "typescript": "^3.5.2"
