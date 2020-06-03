@@ -1,0 +1,5 @@
+import '@alifd/next/lib/button/style'
+import '@alifd/next/lib/pagination/style'
+import '@alifd/next/lib/input/style'
+import '@alifd/next/lib/cascader-select/style'
+import '@alifd/next/lib/select/style'

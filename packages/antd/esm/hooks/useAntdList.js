@@ -67,8 +67,7 @@ var useAntdList = function (props) {
                                 records: records,
                             });
                             actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT_CHANGE, {
-                                ids: changeIds,
-                                records: records
+                                ids: changeIds, records: records
                             });
                             var rowSelection = actionsRef.current.getTableProps().rowSelection;
                             actionsRef.current.setTableProps({

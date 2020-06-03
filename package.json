@@ -50,6 +50,10 @@
     "scripts/**.@(ts|tsx|js)": [
       "npm run lint",
       "git add"
+    ],
+    "**/*.md": [
+      "prettier --write",
+      "git add"
     ]
   },
   "config": {
@@ -61,11 +65,12 @@
     }
   },
   "dependencies": {
-    "lodash": "^4.17.15",
-    "opencollective": "^1.0.3",
-    "opencollective-postinstall": "^2.0.2"
+    "@ant-design/icons": "^4.0.2"    
   },
   "devDependencies": {
+    "lodash": "^4.17.15",
+    "opencollective": "^1.0.3",
+    "opencollective-postinstall": "^2.0.2",
     "@alifd/next": "1.x",
     "@babel/cli": "^7.2.0",
     "@babel/core": "^7.3.3",
@@ -143,11 +148,11 @@
     "scheduler": "^0.15.0",
     "semver-regex": "^2.0.0",
     "staged-git-files": "^1.1.2",
-    "ts-import-plugin": "^1.6.1",
+    "ts-import-plugin": "1.6.1",
     "ts-jest": "^24.0.2",
     "ts-node": "^8.3.0",
     "tsconfig-paths-webpack-plugin": "^3.2.0",
-    "typescript": "^3.6.2",
+    "typescript": "~3.8.0",
     "unified": "^7.1.0",
     "user-event": "^1.4.4",
     "wait-for-expect": "^3.0.1",
