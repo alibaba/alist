@@ -18,13 +18,15 @@
     "@babel/runtime": "^7.4.4",
     "antd": "4.x",
     "react": ">=16.8.0",
-    "react-dom": ">=16.8.0"
+    "react-dom": ">=16.8.0",
+    "@formily/antd": "^1.2.0-beta.3",
+    "@formily/antd-components": "^1.2.0-beta.3"
   },
   "dependencies": {
     "@alist/react": "^1.0.0-beta.26",
     "@alist/react-schema-renderer": "^1.0.0-beta.27",
-    "@formily/antd": "^1.0.0",
-    "@formily/antd-components": "^1.0.0",
+    "@formily/antd": "^1.2.0-beta.3",
+    "@formily/antd-components": "^1.2.0-beta.3",
     "@types/classnames": "^2.2.9",
     "@types/styled-components": "^4.4.0"
   },

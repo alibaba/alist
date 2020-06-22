@@ -37,6 +37,7 @@ const RecursionTable = (props) => {
     const list: any = useContext(ListContext)
     useEffect(() => {
         if (isRoot) {
+            console.log('=======rgister========')
             list.actions.addAPI('toggle', toggle)
             list.actions.addAPI('toggleAll', toggleAll)
             list.actions.addAPI('getToggleState', () => toggleState)

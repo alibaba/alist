@@ -1,65 +1,16 @@
-import React, { useContext } from 'react'
-import { FilterProvider, FieldProvider, LayoutContext } from '@alist/react';
-import Layout from './Layout'
+import React from 'react'
+import { FilterProvider, FieldProvider } from '@alist/react';
+import { compatLayoutItemProps } from '@alist/react'
 import { InternalField as Field, FormItem as CompatAntdFormItem, useForm, SchemaForm, SchemaMarkupField, getRegistry, registerFormItemComponent } from '@formily/antd';
 import Search from './Search';
 import Reset from './Reset';
 import Clear from './Clear';
-import InsetFormItem from './Inset';
 import styled from 'styled-components';
-
-const computeAttr = (markupProps, contextProps, key) => {
-    return key in markupProps ? markupProps[key] : contextProps[key]
-}
 
 const { formItemComponent } = getRegistry();
 registerFormItemComponent((props) => {
-    const { props: markupProps } = props;
-    const { errors, warnings, ...others } = props    
-    const contextProps = useContext(LayoutContext)
-    const { span, hasBorder: hasBorderProps = true } = markupProps
-    const xProps = (markupProps || {})['x-props'] || {}
-
-    const inset = computeAttr(markupProps, contextProps, 'inset')
-    const full = computeAttr(markupProps, contextProps, 'full')
-    const labelAlign = computeAttr(markupProps, contextProps, 'labelAlign')
-    const labelWidth = computeAttr(markupProps, contextProps, 'labelWidth')
-    const labelCol = computeAttr(markupProps, contextProps, 'labelCol')
-    const wrapperCol = computeAttr(markupProps, contextProps, 'wrapperCol')
-    const uniHeight = computeAttr(markupProps, contextProps, 'uniHeight') || '28px'
-    const hasBorder = inset ? hasBorderProps : false
-
-    const formItemProps: any = {};
-    const insetProps: any = {};
-    if (inset) {
-        insetProps.errors = errors
-        insetProps.warnings = warnings        
-    } else {
-        formItemProps.errors = errors
-        formItemProps.warnings = warnings
-    }
-
-    const internalFormItem = <InsetFormItem
-        {...xProps}
-        inset={inset}
-        full={full}
-        labelAlign={labelAlign}
-        labelCol={labelCol}
-        wrapperCol={wrapperCol}
-        hasBorder={hasBorder}
-        labelWidth={labelWidth}
-        uniHeight={uniHeight}
-        {...insetProps}
-    >
-        {React.createElement(formItemComponent, {
-            ...others,
-            ...formItemProps,
-        })}
-    </InsetFormItem>
-
-    return <Layout.Item span={span}>
-        {internalFormItem}
-    </Layout.Item>
+    const compatProps = compatLayoutItemProps(props)
+    return React.createElement(formItemComponent, compatProps)
 })
 
 const pickupFieldProps = (props) => {

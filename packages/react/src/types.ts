@@ -56,22 +56,6 @@ export interface IFilterMode {
   mode?: 'schema' | 'compat'
 }
 
-export interface ILayoutContext {
-  flex?: boolean
-  mode?: string
-  labelCol?: number,
-  wrapperCol?: number,
-  full?: boolean
-  labelAlign?: string
-  uniHeight?: number | string
-  wrapperWidth?: number | string
-  labelWidth?: number | string
-  inset?: boolean
-  verticalGap?: number
-  horizontalGap?: number
-  columns?: number
-}
-
 export interface ITableProps {
   primaryKey?: string
   pickInitialTableProps?: (props: ITableProps) => any

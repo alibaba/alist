@@ -11,8 +11,6 @@ import SorterProvider from './components/SorterProvider'
 import ConnectProvider from './components/ConnectProvider'
 import ToggleProvider from './components/ToggleProvider'
 import Consumer from './components/Consumer'
-import Layout from './components/Layout'
-import LayoutContext from './context/layoutContext'
 import ListContext from './context/index'
 import ToggleContext from './context/toggle'
 import ListDomainContext from './context/listDomain'
@@ -27,9 +25,11 @@ import {
   ListDomain
 } from './shared'
 
+export * from './components/Layout'
 export * from 'react-eva'
 export * from '@alist/core'
 export * from './hooks'
+
 
 export {
   ListContext,
@@ -49,12 +49,10 @@ export {
   SorterProvider,
   Consumer,
   Selection,
-  Layout,
   createListActions,
   createListEffects,
   createAsyncListActions,
   ListEffectHooks,
   createListEffectHook,
-  LayoutContext,
   ListDomain,
 }

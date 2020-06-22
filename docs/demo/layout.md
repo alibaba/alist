@@ -9,6 +9,9 @@
 * 纵向布局（默认布局）
 * 行内布局，设置 `inline=true`
 
+> AList， Formily布局均基于 MegaLayout
+> 由于列表场景比较固定，可以理解 Layout 为 默认启用了 栅格模式(grid=true)及自动换行(autoRow=true)的MegaLayout
+
 ### （推荐）等分自动换行布局 Layout
 
 ```jsx
@@ -37,13 +40,13 @@ const App = () => {
     >
       <h4>等分自动换行布局</h4>
       <Filter >
-        <Layout gap={[12,16]} columns={4}>
+        <Layout columns={4}>
           <Filter.Item type="input" name="a" title="a"/>
-          <Filter.Item span={2} type="input" name="b" title="b"/>
+          <Filter.Item type="input" name="b" title="b" x-mega-props={{ span: 2 }}/>
           <Filter.Item type="input" name="c" title="c"/>
           <Filter.Item type="input" name="d" title="d"/>
-          <Filter.Item type="input" name="e" title="e" span={3} />
-          <Filter.Item type="input" name="f" title="f" span={2}/>
+          <Filter.Item type="input" name="e" title="e" x-mega-props={{ span: 3 }} />
+          <Filter.Item type="input" name="f" title="f" x-mega-props={{ span: 2 }}/>
         </Layout>
         <Layout.ButtonGroup>
           <Search>搜索</Search>
@@ -84,7 +87,7 @@ const App = () => {
       pageSize={5}      
     >
         <Filter>
-          <Layout inset gap={[12, 16]} columns={3}>
+          <Layout inset columns={3}>
             <Filter.Item
               // required
               type="input"
@@ -92,7 +95,7 @@ const App = () => {
               name="input"
             />
             <Filter.Item
-              // type="radio"
+              type="radio"
               enum={['1', '2', '3', '4']}
               title="Radio"
               name="radio"
@@ -112,14 +115,14 @@ const App = () => {
               name="checkbox"
             />
             <Filter.Item
-              span={2}
+              x-mega-props={{ span: 2 }}
               type="daterange"
               title="日期范围"
               default={['2018-12-19', '2018-12-19']}
               name="daterange"
             />
             <Filter.Item type="number" title="数字选择" name="number" />
-            <Filter.Item type="boolean" title="开关选择" name="boolean" />
+            <Filter.Item type="boolean" title="开关选择" name="boolean" x-mega-props={{ full: false }} />
             <Filter.Item type="date" title="日期选择" name="date" />            
             <Filter.Item type="year" title="年份" name="year" />
             <Filter.Item type="time" title="时间" name="time" />
@@ -164,9 +167,9 @@ const App = () => {
       pageSize={5}
     >
         <Filter>
-          <Layout inset gap={[12, 16]} columns={3}>            
+          <Layout inset columns={3}>            
             <Filter.Item type="number" title="数字选择" name="number" />
-            <Filter.Item type="boolean" title="开关选择" name="boolean" />
+            <Filter.Item type="boolean" title="开关选择" name="boolean" x-mega-props={{ full: false }} />
             <Filter.Item type="date" title="日期选择" name="date" />            
             <Filter.Item type="year" title="年份" name="year" />
             <Filter.Item type="time" title="时间" name="time" />
@@ -212,7 +215,7 @@ const App = () => {
       pageSize={5}      
     >
         <Filter components={{ DateRangePicker }}>
-          <Layout inset gap={[12, 16]} columns={3}>
+          <Layout inset columns={3} full>
             <Filter.Item
               required
               // asterisk
@@ -222,7 +225,7 @@ const App = () => {
               name="input"
             />
             <Filter.Item
-              // type="radio"
+              type="radio"
               enum={['1', '2', '3', '4']}
               title="Radio"
               name="radio"
@@ -242,21 +245,14 @@ const App = () => {
               name="checkbox"
             />
             <Filter.Item
-              type="array<date>"
-              title="日期范围x"
-              default={['2018-12-19', '2018-12-19']}
-              name="daterangex"
-              x-component="DateRangePicker"
-            />
-            <Filter.Item
-              span={2}
+              x-mega-props={{ span: 2 }}
               type="daterange"
               title="日期范围"
               default={['2018-12-19', '2018-12-19']}
               name="daterange"
             />
-            <Filter.Item type="number" title="数字选择" name="number" />
-            <Filter.Item type="boolean" title="开关选择" name="boolean" />
+            <Filter.Item type="number" title="数字选择" name="number"/>
+            <Filter.Item type="boolean" title="开关选择" name="boolean" x-mega-props={{ full: false }} />
             <Filter.Item type="date" title="日期选择" name="date" />            
             <Filter.Item type="year" title="年份" name="year" />
             <Filter.Item type="time" title="时间" name="time" />
@@ -351,6 +347,91 @@ const App = () => {
         </Layout.ButtonGroup>
       </Filter>
     </List>
+  </div>
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))
+```
+
+
+```jsx
+import React, { useEffect, useState } from 'react'
+import {
+  List, Table, Pagination,
+  createListActions, Filter,
+  Search, Clear,
+  Layout,
+  SchemaMarkupField,
+  FormBlock,
+  FormCard,
+  SchemaForm,
+} from '@alist/antd'
+import { Tabs, Button } from 'antd'
+import'antd/dist/antd.css'
+
+const { TabPane } = Tabs;
+
+const actions1 = createListActions()
+const actions2 = createListActions()
+const App = () => {  
+  const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
+  const [visible, setVisible] = useState(true)
+
+  const btn = <Button onClick={() => {
+      setVisible(!visible)
+    }}>show/hide</Button>
+  if (!visible) {
+    return btn
+  }
+
+  return <div>
+    {btn}
+    <Tabs defaultActiveKey="1">
+      <TabPane tab="Tab 1" key="1" forceRender>
+        <List
+          actions={actions1}
+          url={url}
+          pageSize={5}
+        >
+          <h4>#1</h4>
+          <Filter inline>
+            <Filter.Item type="input" name="username" title="username"/>
+            <Filter.Item type="input" name="age" title="age"/>
+            <Layout.ButtonGroup>
+              <Search>搜索</Search>
+              <Clear>重置</Clear>
+            </Layout.ButtonGroup>
+          </Filter>
+          <Table>
+            <Table.Column sortable title="label" dataIndex="label" sorter/>
+            <Table.Column title="value" dataIndex="value"/>
+          </Table>
+          <Pagination />
+        </List>
+      </TabPane>
+      <TabPane tab="Tab 2" key="2" forceRender>
+        <List
+          actions={actions2}
+          url={url}
+          pageSize={5}
+        >
+          <h4>#2</h4>
+          <Filter inline>
+            <Filter.Item type="input" name="username" title="username"/>
+            <Filter.Item type="input" name="age" title="age"/>
+            <Layout.ButtonGroup>
+              <Search>搜索</Search>
+              <Clear>重置</Clear>
+            </Layout.ButtonGroup>
+          </Filter>
+          <Table>
+            <Table.Column title="label" dataIndex="label" sorter/>
+            <Table.Column title="value" dataIndex="value"/>
+          </Table>
+          <Pagination />
+        </List>
+      </TabPane>
+    </Tabs>
   </div>
 }
 

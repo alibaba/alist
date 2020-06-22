@@ -82,6 +82,7 @@ const useAntdList = (props: ITableProps = {}): ITableHook => {
         actions: actionsRef.current,
         list: useList({
             ...props,
+            actions: actionsRef.current,
             effects: ($, actions) => {
                 if (typeof effects === 'function') {
                     effects($, actions)
