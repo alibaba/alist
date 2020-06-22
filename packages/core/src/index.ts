@@ -28,15 +28,27 @@ function createList(props: IListProps = {}): IList {
 
   // 通知UI重新渲染的方法
   const refreshTable = (notifyId?: string[]) =>
-    lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_TABLE_REFRESH, payload: { notifyId } })
+    lifeCycles.notify({
+      type: ListLifeCycleTypes.ON_LIST_TABLE_REFRESH,
+      payload: { notifyId }
+    })
   const refreshPagination = (notifyId?: string[]) =>
-    lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_PAGINATION_REFRESH, payload: { notifyId } })
+    lifeCycles.notify({
+      type: ListLifeCycleTypes.ON_LIST_PAGINATION_REFRESH,
+      payload: { notifyId }
+    })
   const refreshValidateConfig = (notifyId?: string[]) =>
-    lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_VALIDATE_CONFIG_REFRESH, payload: { notifyId } })
+    lifeCycles.notify({
+      type: ListLifeCycleTypes.ON_LIST_VALIDATE_CONFIG_REFRESH,
+      payload: { notifyId }
+    })
   // const refreshConsumer = () => lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_CONSUMER_REFRESH })
   // const refreshFilter = () => lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_FILTER_REFRESH })
   const refreshSelection = (notifyId?: string[]) =>
-    lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_SELECTION_REFRESH, payload: { notifyId } })
+    lifeCycles.notify({
+      type: ListLifeCycleTypes.ON_LIST_SELECTION_REFRESH,
+      payload: { notifyId }
+    })
 
   // 请求相关
   let url = props.url // 请求url
@@ -45,7 +57,8 @@ function createList(props: IListProps = {}): IList {
   let method = props.method || 'GET' // GET | POST | ...
   let query = props.query || defaultQuery // 自定义请求方法,默认适用url模式
   let autoLoad = props.autoLoad === undefined ? true : props.autoLoad
-  let expandStatus: ExpandStatus = props.expandStatus === undefined ? 'collapse' : 'expand' // 展开或收起搜索条件
+  let expandStatus: ExpandStatus =
+    props.expandStatus === undefined ? 'collapse' : 'expand' // 展开或收起搜索条件
 
   // 初始化搜索框的默认值, 用于重置
 
@@ -67,7 +80,7 @@ function createList(props: IListProps = {}): IList {
         return { errors: state.errors }
       })
       if (errors.length) {
-        return;
+        return
       }
     }
 
@@ -179,7 +192,7 @@ function createList(props: IListProps = {}): IList {
     } else {
       // 生命周期：返回空数据
       if (!dataList || (Array.isArray(dataList) && dataList.length === 0)) {
-        reqEmpty = true        
+        reqEmpty = true
       }
 
       list.setPaginationDataSource(dataList)
@@ -200,7 +213,7 @@ function createList(props: IListProps = {}): IList {
         result,
         empty: reqEmpty,
         hasError: reqErr !== null,
-        error: reqErr,
+        error: reqErr
       },
       ctx: listAPI
     })
@@ -391,7 +404,10 @@ function createList(props: IListProps = {}): IList {
     }
   }
 
-  const setSelectionConfig = (selectionConfig: IListSelectionConfig, fnOpts?: IListFunctionOptions) => {
+  const setSelectionConfig = (
+    selectionConfig: IListSelectionConfig,
+    fnOpts?: IListFunctionOptions
+  ) => {
     list.setSelectionConfig(selectionConfig)
     if (!fnOpts || fnOpts.withRender) {
       refreshTable()
@@ -429,42 +445,63 @@ function createList(props: IListProps = {}): IList {
   }
 
   // 适配搜索区域副作用
-  const getFilterEffects = (props) => {
+  const getFilterEffects = props => {
     const noop = () => {}
     const { effects = noop } = props
     return ($, actions) => {
       // 搜索区域初始化完成
-      $('onFormMount').subscribe((state) => {    
-        lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_FILTER_MOUNT, ctx: listAPI, payload: state })
+      $('onFormMount').subscribe(state => {
+        lifeCycles.notify({
+          type: ListLifeCycleTypes.ON_LIST_FILTER_MOUNT,
+          ctx: listAPI,
+          payload: state
+        })
       })
 
       // 搜索区域values修改
-      $('onFormValuesChange').subscribe((state) => {    
-        lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_FILTER_VALUES_CHANGE, ctx: listAPI, payload: state })
+      $('onFormValuesChange').subscribe(state => {
+        lifeCycles.notify({
+          type: ListLifeCycleTypes.ON_LIST_FILTER_VALUES_CHANGE,
+          ctx: listAPI,
+          payload: state
+        })
       })
 
       // 搜索区域字段修改
-      $('onFieldValueChange').subscribe((state) => {    
-        lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_FILTER_ITEM_CHANGE, ctx: listAPI, payload: state })
+      $('onFieldValueChange').subscribe(state => {
+        lifeCycles.notify({
+          type: ListLifeCycleTypes.ON_LIST_FILTER_ITEM_CHANGE,
+          ctx: listAPI,
+          payload: state
+        })
       })
 
       // 搜索区域校验开始
-      $('onFormSubmitValidateStart').subscribe(() => {          
-        lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_VALIDATE_START, ctx: listAPI })
+      $('onFormSubmitValidateStart').subscribe(() => {
+        lifeCycles.notify({
+          type: ListLifeCycleTypes.ON_LIST_VALIDATE_START,
+          ctx: listAPI
+        })
       })
 
       // 搜索区域校验失败
-      $('onFormSubmitValidateFailed').subscribe((state) => {
+      $('onFormSubmitValidateFailed').subscribe(state => {
         const { errors, warnings } = state
-        lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_VALIDATE_END, ctx: listAPI, payload:
-          { success: false, errors, warnings } })
+        lifeCycles.notify({
+          type: ListLifeCycleTypes.ON_LIST_VALIDATE_END,
+          ctx: listAPI,
+          payload: { success: false, errors, warnings }
+        })
       })
 
       // 搜索区域校验成功
-      $('onFormSubmitValidateSuccess').subscribe((state) => {        
-        const { errors, warnings } = state  
-        lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_VALIDATE_END, ctx: listAPI, payload:
-          { success: true, errors, warnings } })
+      $('onFormSubmitValidateSuccess').subscribe(state => {
+        const { errors, warnings } = state
+        lifeCycles.notify({
+          type: ListLifeCycleTypes.ON_LIST_VALIDATE_END,
+          ctx: listAPI,
+          payload: { success: true, errors, warnings }
+        })
       })
       effects($, actions)
     }
@@ -473,10 +510,16 @@ function createList(props: IListProps = {}): IList {
   const toggleExpandStatus = () => {
     if (expandStatus === 'expand') {
       expandStatus = 'collapse'
-      lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_FILTER_ITEM_COLLAPSE, ctx: listAPI })      
+      lifeCycles.notify({
+        type: ListLifeCycleTypes.ON_LIST_FILTER_ITEM_COLLAPSE,
+        ctx: listAPI
+      })
     } else {
       expandStatus = 'expand'
-      lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_FILTER_ITEM_EXPAND, ctx: listAPI })      
+      lifeCycles.notify({
+        type: ListLifeCycleTypes.ON_LIST_FILTER_ITEM_EXPAND,
+        ctx: listAPI
+      })
     }
   }
 
@@ -526,7 +569,7 @@ function createList(props: IListProps = {}): IList {
     disableSelectionConfig,
     getSelections: list.getSelections,
 
-    // 渲染取数相关    
+    // 渲染取数相关
     getTableProps: list.getTableProps,
     setTableProps,
     setPaginationDataSource: list.setPaginationDataSource,
@@ -553,25 +596,31 @@ function createList(props: IListProps = {}): IList {
     getExpandStatus,
     toggleExpandStatus,
     appendMirrorFilterInstance: list.appendMirrorFilterInstance,
-    getMirrorFilterInstanceList: list.getMirrorFilterInstanceList,
+    getMirrorFilterInstanceList: list.getMirrorFilterInstanceList
   }
 
   // 同步params到搜索区域上
   const syncFilterData = {}
   Object.keys(params || {}).forEach(paramField => {
-    if ([].concat(paramsFields || []).some(f => f === '*' || f === paramField)) {
+    if (
+      [].concat(paramsFields || []).some(f => f === '*' || f === paramField)
+    ) {
       syncFilterData[paramField] = params[paramField]
     }
   })
 
   // 静默设置到filter上，避免重复通知死循环
   if (Object.keys(syncFilterData).length > 0) {
-    lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_INIT_PARAMS_SET, ctx: listAPI, payload: syncFilterData })
+    lifeCycles.notify({
+      type: ListLifeCycleTypes.ON_LIST_INIT_PARAMS_SET,
+      ctx: listAPI,
+      payload: syncFilterData
+    })
     listAPI.subscribe(ListLifeCycleTypes.ON_LIST_FILTER_MOUNT, () => {
       list.setFilterData(syncFilterData)
-    })    
+    })
   }
-  
+
   if (params && Object.keys(params).length) {
     setParams(params)
   }
@@ -595,22 +644,29 @@ function createList(props: IListProps = {}): IList {
   })
 
   // 监听字段值改变, 如果命中paramsFields，就同步到url参数上
-  listAPI.subscribe(ListLifeCycleTypes.ON_LIST_FILTER_ITEM_CHANGE, (fieldChangeData) => {
-    const { payload: fieldState } = fieldChangeData
-    const { name, value } = fieldState
-    if ([].concat(paramsFields || []).some(f => f === '*' || f === name)) {
-      // 设置filter当前命中的字段值
-      const nextTargetParams = { [name]: value }
-      lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_PARAMS_CHANGE, ctx: listAPI, payload: nextTargetParams })
-      setParams(nextTargetParams)
+  listAPI.subscribe(
+    ListLifeCycleTypes.ON_LIST_FILTER_ITEM_CHANGE,
+    fieldChangeData => {
+      const { payload: fieldState } = fieldChangeData
+      const { name, value } = fieldState
+      if ([].concat(paramsFields || []).some(f => f === '*' || f === name)) {
+        // 设置filter当前命中的字段值
+        const nextTargetParams = { [name]: value }
+        lifeCycles.notify({
+          type: ListLifeCycleTypes.ON_LIST_PARAMS_CHANGE,
+          ctx: listAPI,
+          payload: nextTargetParams
+        })
+        setParams(nextTargetParams)
+      }
     }
-  })
+  )
 
   // 排序触发时，发起请求
   listAPI.subscribe(ListLifeCycleTypes.ON_LIST_SORT, ({ payload }) => {
     const { sorter } = payload
     list.setSortConfig({ sorter })
-    const { sortLocal, ...othersSortConfig } = list.getSortConfig()    
+    const { sortLocal, ...othersSortConfig } = list.getSortConfig()
     if (!isFn(sortLocal)) {
       fetch()
     } else {

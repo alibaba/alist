@@ -14,9 +14,9 @@ export const env = {
 export class ListDomain {
   constructor() {}
   setContext(ctx) {
-      Object.keys(ctx).forEach(k => {
-          this[k] = ctx[k]
-      })
+    Object.keys(ctx).forEach(k => {
+      this[k] = ctx[k]
+    })
   }
 }
 
@@ -127,26 +127,60 @@ export const ListEffectHooks = {
   onListInit$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_INIT),
   onListClear$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_CLEAR),
   onListReset$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_RESET),
-  onListAfterQuery$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_AFTER_QUERY),
-  onListBeforeQuery$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_BEFORE_QUERY),
+  onListAfterQuery$: createListEffectHook<any>(
+    ListLifeCycleTypes.ON_LIST_AFTER_QUERY
+  ),
+  onListBeforeQuery$: createListEffectHook<any>(
+    ListLifeCycleTypes.ON_LIST_BEFORE_QUERY
+  ),
   onListEmpty$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_EMPTY),
-  onListFilterMount$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_FILTER_MOUNT),
-  onListParamsChange$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_PARAMS_CHANGE),
+  onListFilterMount$: createListEffectHook<any>(
+    ListLifeCycleTypes.ON_LIST_FILTER_MOUNT
+  ),
+  onListParamsChange$: createListEffectHook<any>(
+    ListLifeCycleTypes.ON_LIST_PARAMS_CHANGE
+  ),
   onListMounted$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_MOUNTED),
   onListSelect$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_SELECT),
-  onListSelectionRefresh$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_SELECTION_REFRESH),
-  onListSelectAll$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_SELECT_ALL),
-  onListSelectChange$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_SELECT_CHANGE),
+  onListSelectionRefresh$: createListEffectHook<any>(
+    ListLifeCycleTypes.ON_LIST_SELECTION_REFRESH
+  ),
+  onListSelectAll$: createListEffectHook<any>(
+    ListLifeCycleTypes.ON_LIST_SELECT_ALL
+  ),
+  onListSelectChange$: createListEffectHook<any>(
+    ListLifeCycleTypes.ON_LIST_SELECT_CHANGE
+  ),
   onListSelectSort$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_SORT),
-  onListTableRefresh$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_TABLE_REFRESH),
-  onListDataSourceFilter$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_DATASOURCE_FILTER),
-  onListDataSourceSort$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_DATASOURCE_SORT),
-  onListFilterItemChange$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_FILTER_ITEM_CHANGE),
-  onListFilterItemCollapse$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_FILTER_ITEM_COLLAPSE),
-  onListFilterItemExpand$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_FILTER_ITEM_EXPAND),
-  onListFilterItemRefresh$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_FILTER_REFRESH),
-  onListInitParamsSet$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_INIT_PARAMS_SET),
+  onListTableRefresh$: createListEffectHook<any>(
+    ListLifeCycleTypes.ON_LIST_TABLE_REFRESH
+  ),
+  onListDataSourceFilter$: createListEffectHook<any>(
+    ListLifeCycleTypes.ON_LIST_DATASOURCE_FILTER
+  ),
+  onListDataSourceSort$: createListEffectHook<any>(
+    ListLifeCycleTypes.ON_LIST_DATASOURCE_SORT
+  ),
+  onListFilterItemChange$: createListEffectHook<any>(
+    ListLifeCycleTypes.ON_LIST_FILTER_ITEM_CHANGE
+  ),
+  onListFilterItemCollapse$: createListEffectHook<any>(
+    ListLifeCycleTypes.ON_LIST_FILTER_ITEM_COLLAPSE
+  ),
+  onListFilterItemExpand$: createListEffectHook<any>(
+    ListLifeCycleTypes.ON_LIST_FILTER_ITEM_EXPAND
+  ),
+  onListFilterItemRefresh$: createListEffectHook<any>(
+    ListLifeCycleTypes.ON_LIST_FILTER_REFRESH
+  ),
+  onListInitParamsSet$: createListEffectHook<any>(
+    ListLifeCycleTypes.ON_LIST_INIT_PARAMS_SET
+  ),
   onListError$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_ERROR),
-  onListMultipleRefresh$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_MULTIPLE_REFRESH),
-  onListPaginationRefresh$: createListEffectHook<any>(ListLifeCycleTypes.ON_LIST_PAGINATION_REFRESH),
+  onListMultipleRefresh$: createListEffectHook<any>(
+    ListLifeCycleTypes.ON_LIST_MULTIPLE_REFRESH
+  ),
+  onListPaginationRefresh$: createListEffectHook<any>(
+    ListLifeCycleTypes.ON_LIST_PAGINATION_REFRESH
+  )
 }

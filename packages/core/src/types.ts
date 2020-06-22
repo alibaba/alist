@@ -84,17 +84,17 @@ export interface IListFetchResponse {
 export type IListSelectionMode = 'single' | 'multiple'
 export type IListSortOrder = 'desc' | 'asc'
 
-export type IListSortConfig = {
-  mode?: IListSelectionMode,
-  sortLocal?: (dataSource: any, config: IListSortConfig) => any,
-  sorter?: IListKVMap<IListSortOrder>,
+export interface IListSortConfig {
+  mode?: IListSelectionMode
+  sortLocal?: (dataSource: any, config: IListSortConfig) => any
+  sorter?: IListKVMap<IListSortOrder>
 }
 
 export interface IListSelectionConfig {
-  getProps: (record: any) => Object
+  getProps: (record: any) => Record<string, any>
   mode: IListSelectionMode
   primaryKey: string
-  ids: Array<string|number>
+  ids: Array<string | number>
   records: Array<any>
 }
 
@@ -102,7 +102,7 @@ export interface IListSelectionConfig {
 export interface IListProps {
   sortConfig?: IListSortConfig
   expandStatus?: ExpandStatus
-  selectionConfig?:  IListSelectionConfig
+  selectionConfig?: IListSelectionConfig
   dataSource?: any
   validateConfig?: IListKVMap<any>
   url?: string
@@ -131,8 +131,8 @@ export type IListMode = ModeType.DATASOURCE | ModeType.URL | ModeType.QUERY
 
 // 列表核心实例运行时
 export interface IListState {
-  sortConfig: IListSortConfig | null,
-  selectionConfig: IListSelectionConfig | null,
+  sortConfig: IListSortConfig | null
+  selectionConfig: IListSelectionConfig | null
   mode: IListMode
   tableProps: IListKVMap<any>
   validateConfig: IListKVMap<any>
@@ -199,7 +199,7 @@ export enum ListLifeCycleTypes {
   DID_LIST_UPDATE = 'didListUpdate',
   ON_LIST_BEFORE_QUERY = 'onListBeforeQuery',
   ON_LIST_AFTER_QUERY = 'onListAfterQuery',
-  ON_LIST_FILTER_VALUES_CHANGE = 'onListFilterValuesChange',
+  ON_LIST_FILTER_VALUES_CHANGE = 'onListFilterValuesChange'
 }
 
 export const LAZY_MOUNTED_SIGNAL = 'lazyMounted'
@@ -217,12 +217,12 @@ export interface IFilterInitProps {
 
 export type filterEffects = ($: any, actions: any) => void
 
-export interface filterEffectsProps {
+export interface IFilterEffectsProps {
   effects?: filterEffects
 }
 
 export interface IListSelections {
-  ids: Array<number|string>
+  ids: Array<number | string>
   records: Array<any>
 }
 
@@ -233,13 +233,13 @@ export interface IList {
   getFormState(cb?: (state: any) => any): any
   setFieldState(path: any, cb?: (state: any) => void, silent?: boolean): void
   getFieldState(path: any, cb?: (state: any) => any): any
-  setSortConfig: (sortConfig?: IListSortConfig) => void,
-  getSortConfig: () => IListSortConfig,
+  setSortConfig: (sortConfig?: IListSortConfig) => void
+  getSortConfig: () => IListSortConfig
   getSelectionConfig: () => IListSelectionConfig
-  setSelectionConfig: (selectionConfig: IListSelectionConfig) => void,
-  disableSelectionConfig: () => void,
-  getSelections: () => IListSelections,
-  getFilterEffects: (filterProps: filterEffectsProps) => filterEffects,
+  setSelectionConfig: (selectionConfig: IListSelectionConfig) => void
+  disableSelectionConfig: () => void
+  getSelections: () => IListSelections
+  getFilterEffects: (filterProps: IFilterEffectsProps) => filterEffects
   getTableProps: () => IListKVMap<any>
   setTableProps: (data: IListKVMap<any>) => void
   getDataSource: () => IListDataSource
@@ -271,14 +271,17 @@ export interface IList {
   getParams: () => IListParams
   setCurrentPage: (currentPage: number, fnOpts?: IListFunctionOptions) => void
   setPageSize: (pageSize: number) => void
-  subscribe: (type: ListLifeCycleTypes, handler: LifeCycleHandler<any>) => string,
-  unSubscribe: (id: string) => void,
+  subscribe: (
+    type: ListLifeCycleTypes,
+    handler: LifeCycleHandler<any>
+  ) => string
+  unSubscribe: (id: string) => void
   on: (key: EventType, cb?: IListEvent) => void
   notify: (type: ListLifeCycleTypes, paylaod?: any) => void
-  removeListener: (key: EventType, cb?: IListEvent) => void,
+  removeListener: (key: EventType, cb?: IListEvent) => void
   getExpandStatus: () => ExpandStatus
-  toggleExpandStatus: () => void,
-  appendMirrorFilterInstance: (form?: any) => void,
+  toggleExpandStatus: () => void
+  appendMirrorFilterInstance: (form?: any) => void
   getMirrorFilterInstanceList: () => any[]
 }
 

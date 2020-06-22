@@ -74,7 +74,7 @@ const get = (url: string, data, dataType: string, _customHeader: any) => {
       ...(_customHeader || {})
     },
     // credentials: 'include'
-    withCredentials: true,
+    withCredentials: true
   })
 
   return afterRequest(dataType, rawFetch)

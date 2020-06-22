@@ -1,5 +1,10 @@
-import { mergeActions, createActions, createAsyncActions,
-  createListActions, createAsyncListActions } from '@alist/react'
+import {
+  mergeActions,
+  createActions,
+  createAsyncActions,
+  createListActions,
+  createAsyncListActions
+} from '@alist/react'
 
 export const createNextListActions = () =>
   mergeActions(
@@ -10,19 +15,23 @@ export const createNextListActions = () =>
 export const createNextAsyncListActions = () =>
   mergeActions(
     createAsyncListActions(),
-    createAsyncActions('setSelections', 'setRowSelection', 'disableRowSelection')
+    createAsyncActions(
+      'setSelections',
+      'setRowSelection',
+      'disableRowSelection'
+    )
   )
 
-  export const setSelectionsByInstance = (instance, ids, records) => {
-    const { rowSelection } = instance.getTableProps()
-    instance.setTableProps({
-        rowSelection: {
-            ...rowSelection,
-            selectedRowKeys: ids,
-        }
-    })
-    instance.setSelectionConfig({
-        ids,
-        records,
-    })
-  }
+export const setSelectionsByInstance = (instance, ids, records) => {
+  const { rowSelection } = instance.getTableProps()
+  instance.setTableProps({
+    rowSelection: {
+      ...rowSelection,
+      selectedRowKeys: ids
+    }
+  })
+  instance.setSelectionConfig({
+    ids,
+    records
+  })
+}

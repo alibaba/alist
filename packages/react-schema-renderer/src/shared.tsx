@@ -1,49 +1,49 @@
-import React from 'react';
+import React from 'react'
 
 let baseRegistry = {
-    'div': props => <div {...props} />,
+  div: props => <div {...props} />
 }
 
 let globalComponentsRegistry = {}
 let globalFuncs = {}
 
 export const getComponentsRegistry = () => ({
-    ...baseRegistry,
-    ...globalComponentsRegistry,
+  ...baseRegistry,
+  ...globalComponentsRegistry
 })
 
 export const getFuncsRegistry = () => ({
-    ...globalFuncs,
+  ...globalFuncs
 })
 
 export const registerListComponent = (...args) => {
-if (args.length === 1) {
+  if (args.length === 1) {
     Object.keys(args[0]).forEach(k => {
-    if (args[0][k]) {
+      if (args[0][k]) {
         globalComponentsRegistry[k] = args[0][k]
-    }      
+      }
     })
-} else {
+  } else {
     globalComponentsRegistry[args[0]] = args[1]
-}
+  }
 }
 
 export const registerListFuncs = (...args) => {
-if (args.length === 1) {
+  if (args.length === 1) {
     Object.keys(args[0]).forEach(k => {
-    if (args[0][k]) {
+      if (args[0][k]) {
         globalFuncs[k] = args[0][k]
-    }      
+      }
     })
-} else {
+  } else {
     globalFuncs[args[0]] = args[1]
-}
+  }
 }
 
 export const cleanListComponentRegistry = () => {
-    globalComponentsRegistry = {}
+  globalComponentsRegistry = {}
 }
 
 export const cleanListFunctionRegistry = () => {
-    globalFuncs = {}
+  globalFuncs = {}
 }

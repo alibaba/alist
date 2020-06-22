@@ -7,10 +7,10 @@ export interface IListEffect<Payload = any, Actions = any> {
 }
 
 export interface IListTableContext {
-  primaryKey: string,
-  dataSource: any[],
-  loading: boolean,
-  list: IList,
+  primaryKey: string
+  dataSource: any[]
+  loading: boolean
+  list: IList
   tableProps: any
 }
 
@@ -19,10 +19,10 @@ export interface IListEffectSelector<Payload = any> {
 }
 
 export interface IListToggleContext {
-  toggleState: string,
-  toggleAll: () => void,
-  toggle: (id: string | number) => void,
-  openRowKeys: Array<string | number>,
+  toggleState: string
+  toggleAll: () => void
+  toggle: (id: string | number) => void
+  openRowKeys: Array<string | number>
 }
 
 export type IListEffectExtendsEffectSelector<
@@ -49,7 +49,7 @@ import {
   ListLifeCycleTypes,
   IListEvent,
   IListParams,
-  filterEffectsProps
+  IFilterEffectsProps
 } from '@alist/core/lib/types'
 
 export interface IFilterMode {
@@ -82,9 +82,9 @@ export interface IFilterItemProps {
 }
 
 export interface IFilterProps {
-  form?: any,
-  mirror?: boolean,
-  effects?: (props: filterEffectsProps) => filterEffectsProps
+  form?: any
+  mirror?: boolean
+  effects?: (props: IFilterEffectsProps) => IFilterEffectsProps
   useForm?: (props: any) => any
   children?: React.ReactElement | ((...args: any) => React.ReactElement)
 }
