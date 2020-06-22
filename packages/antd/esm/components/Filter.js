@@ -24,45 +24,18 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
-import React, { useContext } from 'react';
-import { FilterProvider, FieldProvider, LayoutContext } from '@alist/react';
-import Layout from './Layout';
+import React from 'react';
+import { FilterProvider, FieldProvider } from '@alist/react';
+import { compatLayoutItemProps } from './Layout';
 import { InternalField as Field, FormItem as CompatAntdFormItem, useForm, SchemaForm, SchemaMarkupField, getRegistry, registerFormItemComponent } from '@formily/antd';
 import Search from './Search';
 import Reset from './Reset';
 import Clear from './Clear';
-import InsetFormItem from './Inset';
 import styled from 'styled-components';
-var computeAttr = function (markupProps, contextProps, key) {
-    return key in markupProps ? markupProps[key] : contextProps[key];
-};
 var formItemComponent = getRegistry().formItemComponent;
 registerFormItemComponent(function (props) {
-    var markupProps = props.props;
-    var errors = props.errors, warnings = props.warnings, others = __rest(props, ["errors", "warnings"]);
-    var contextProps = useContext(LayoutContext);
-    var span = markupProps.span, _a = markupProps.hasBorder, hasBorderProps = _a === void 0 ? true : _a;
-    var xProps = (markupProps || {})['x-props'] || {};
-    var inset = computeAttr(markupProps, contextProps, 'inset');
-    var full = computeAttr(markupProps, contextProps, 'full');
-    var labelAlign = computeAttr(markupProps, contextProps, 'labelAlign');
-    var labelWidth = computeAttr(markupProps, contextProps, 'labelWidth');
-    var labelCol = computeAttr(markupProps, contextProps, 'labelCol');
-    var wrapperCol = computeAttr(markupProps, contextProps, 'wrapperCol');
-    var uniHeight = computeAttr(markupProps, contextProps, 'uniHeight') || '28px';
-    var hasBorder = inset ? hasBorderProps : false;
-    var formItemProps = {};
-    var insetProps = {};
-    if (inset) {
-        insetProps.errors = errors;
-        insetProps.warnings = warnings;
-    }
-    else {
-        formItemProps.errors = errors;
-        formItemProps.warnings = warnings;
-    }
-    var internalFormItem = React.createElement(InsetFormItem, __assign({}, xProps, { inset: inset, full: full, labelAlign: labelAlign, labelCol: labelCol, wrapperCol: wrapperCol, hasBorder: hasBorder, labelWidth: labelWidth, uniHeight: uniHeight }, insetProps), React.createElement(formItemComponent, __assign(__assign({}, others), formItemProps)));
-    return React.createElement(Layout.Item, { span: span }, internalFormItem);
+    var compatProps = compatLayoutItemProps(props);
+    return React.createElement(formItemComponent, compatProps);
 });
 var pickupFieldProps = function (props) {
     var ignoreKeys = ['children'];

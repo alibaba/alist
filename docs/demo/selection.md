@@ -73,8 +73,8 @@ const App = props => {
           return <div>已选中 {(ids || []).length} 条结果</div>
         }}
       </Selection>
-      {/* <Table rowKey="value"> */}
-      <Table primaryKey="value">
+      <Table rowKey="value">
+      {/* <Table primaryKey="value"> */}
           <Table.Column title="label" dataIndex="label" />
           <Table.Column title="value" dataIndex="value" />
         </Table>

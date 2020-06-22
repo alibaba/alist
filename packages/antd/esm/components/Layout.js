@@ -1,7 +1,3 @@
-var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cooked, raw) {
-    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
-    return cooked;
-};
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -14,21 +10,18 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 import React from 'react';
-import { FormButtonGroup, FormItemGrid, createVirtualBox, } from '@formily/antd';
-import { Layout as InternalLayout } from '@alist/react';
-import styled from 'styled-components';
+import { FormButtonGroup, createVirtualBox, } from '@formily/antd';
+import { FormItemGrid, MegaLayout } from '@formily/antd-components';
+import { compatLayoutProps } from '@alist/react';
 var Layout;
-var StyledLayout = styled(function (props) {
-    return React.createElement(InternalLayout, __assign({ gap: props.gap || [16, 24] }, props, { uniHeight: props.uniHeight || '28px' }));
-})(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n    .base-layout-item-columns {\n        .ant-form-item {\n            margin-bottom: 0;\n        }\n\n        .ant-form-item-control {\n            width: 100%;\n            flex: initial;\n        }\n    }\n    \n    .base-layout-item-normal {\n        .ant-form-item {\n            margin-bottom: 0;\n        }\n    }\n\n    .base-layout-label {\n        color: #999;\n        padding-right: 12px;\n    }\n\n    .base-layout-description {\n        font-size: 12px;\n        line-height: 1.5;\n        color: #999999;\n    }\n"], ["\n    .base-layout-item-columns {\n        .ant-form-item {\n            margin-bottom: 0;\n        }\n\n        .ant-form-item-control {\n            width: 100%;\n            flex: initial;\n        }\n    }\n    \n    .base-layout-item-normal {\n        .ant-form-item {\n            margin-bottom: 0;\n        }\n    }\n\n    .base-layout-label {\n        color: #999;\n        padding-right: 12px;\n    }\n\n    .base-layout-description {\n        font-size: 12px;\n        line-height: 1.5;\n        color: #999999;\n    }\n"])));
+var CompatMegaLayout = function (props) {
+    var compatProps = compatLayoutProps(props);
+    return React.createElement(MegaLayout, __assign({}, compatProps));
+};
 Layout = (function () {
-    var LayoutExport = createVirtualBox('filter-flex-layout', StyledLayout);
-    LayoutExport.InternalLayout = InternalLayout;
-    LayoutExport.Item = InternalLayout.Item;
-    LayoutExport.normalizeGap = InternalLayout.normalizeGap;
+    var LayoutExport = createVirtualBox('filter-flex-layout', CompatMegaLayout);
     LayoutExport.ButtonGroup = FormButtonGroup;
     LayoutExport.Grid = FormItemGrid;
     return LayoutExport;
 })();
 export default Layout;
-var templateObject_1;
