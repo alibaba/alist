@@ -270,7 +270,8 @@ function createList(props: IListProps = {}): IList {
     }
 
     const filterInitialValues = list.getFormState(state => state.initialValues)
-    const defaultFilterValues = filterInitialValues || list.getState('defaultFilterValues')
+    const defaultFilterValues =
+      filterInitialValues || list.getState('defaultFilterValues')
     if (defaultFilterValues !== undefined) {
       list.setFilterData(defaultFilterValues)
     } else {
@@ -511,7 +512,7 @@ function createList(props: IListProps = {}): IList {
   const toggleExpandStatus = () => {
     const filterInstance = list.getFilterInstance()
     if (expandStatus === 'expand') {
-      expandStatus = 'collapse'      
+      expandStatus = 'collapse'
       filterInstance.notify(ListLifeCycleTypes.ON_LIST_FILTER_ITEM_COLLAPSE)
       lifeCycles.notify({
         type: ListLifeCycleTypes.ON_LIST_FILTER_ITEM_COLLAPSE,

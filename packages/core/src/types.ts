@@ -282,7 +282,7 @@ export interface IList {
   getExpandStatus: () => ExpandStatus
   toggleExpandStatus: () => void
   appendMirrorFilterInstance: (form?: any) => void
-  getMirrorFilterInstanceList: () => any[],
+  getMirrorFilterInstanceList: () => any[]
   initSyncFilterData: (executeNow?: boolean) => void
 }
 

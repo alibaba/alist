@@ -17,5 +17,5 @@ export * from './hooks'
 
 export {
   createNextListActions as createListActions,
-  createNextAsyncListActions as createAsyncListActions,
+  createNextAsyncListActions as createAsyncListActions
 }

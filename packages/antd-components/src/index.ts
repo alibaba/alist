@@ -16,5 +16,5 @@ export * from './hooks'
 
 export {
   createAntdListActions as createListActions,
-  createAntdAsyncListActions as createAsyncListActions,
+  createAntdAsyncListActions as createAsyncListActions
 }

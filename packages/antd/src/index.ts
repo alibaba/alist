@@ -13,7 +13,7 @@ import {
   InternalSearch as Search,
   InternalReset as Reset,
   createListActions,
-  createAsyncListActions,
+  createAsyncListActions
 } from '@alist/antd-components'
 
 import SchemaList from './components/SchemaList'

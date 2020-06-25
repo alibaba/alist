@@ -12,7 +12,6 @@ export const createNextListActions = () => {
     createActions('setSelections', 'setRowSelection', 'disableRowSelection')
   )
 }
-  
 
 export const createNextAsyncListActions = () =>
   mergeActions(
