@@ -5,22 +5,23 @@ import useForceUpdate from './useForceUpdate'
 import { IConsumerProps } from '../types'
 
 export const useExpand = (props: IConsumerProps) => {
+    const { form } = props
     const list = useContext(ListContext)
+    const formInstance = form || list.getFilterInstance()
     const forceUpdate = useForceUpdate()
     const refresh = () => {
         forceUpdate()
     }
-    useEffect(() => {
-        const idExpand = list.subscribe(ListLifeCycleTypes.ON_LIST_FILTER_ITEM_EXPAND, () => {
-            refresh()
-        })
-        const idCollapse = list.subscribe(ListLifeCycleTypes.ON_LIST_FILTER_ITEM_COLLAPSE, () => {
-            refresh()
-        })
 
+    useEffect(() => {
+        const fnRef = formInstance.subscribe(({ type }) => {
+            if ([ListLifeCycleTypes.ON_LIST_FILTER_ITEM_EXPAND,
+                ListLifeCycleTypes.ON_LIST_FILTER_ITEM_COLLAPSE].includes(type)) {
+                refresh()
+            }
+        })
         return function cleanup() {
-            list.unSubscribe(idExpand)
-            list.unSubscribe(idCollapse)
+            formInstance.unsubscribe(fnRef)
         }
     })
 

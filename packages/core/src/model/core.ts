@@ -120,10 +120,11 @@ export default class ListCore extends EventEmitter {
                 clearDataProps.records = []
             }
 
+            const { primaryKey: defaultPrimaryKey = 'id' } = this.getTableProps()
             const defaultSelectionConfig: IListSelectionConfig = {
                 getProps: () => ({}),
                 mode: 'multiple',
-                primaryKey: 'id',
+                primaryKey: defaultPrimaryKey,
                 ids: [],
                 records: [],
             }

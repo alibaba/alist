@@ -283,6 +283,7 @@ export interface IList {
   toggleExpandStatus: () => void
   appendMirrorFilterInstance: (form?: any) => void
   getMirrorFilterInstanceList: () => any[]
+  initSyncFilterData: (executeNow?: boolean) => void
 }
 
 export interface IMultiple {

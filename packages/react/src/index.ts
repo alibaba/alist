@@ -19,6 +19,10 @@ import Toggle from './components/Toggle'
 import {
   createListActions,
   createAsyncListActions,
+  mergeActions,
+  createAsyncActions,
+  createActions,
+  useEva,
   ListEffectHooks,
   createListEffectHook,
   createListEffects,
@@ -26,7 +30,6 @@ import {
 } from './shared'
 
 export * from './components/Layout'
-export * from 'react-eva'
 export * from '@alist/core'
 export * from './hooks'
 
@@ -48,6 +51,10 @@ export {
   SorterProvider,
   Consumer,
   Selection,
+  mergeActions,
+  createActions,
+  createAsyncActions,
+  useEva,
   createListActions,
   createListEffects,
   createAsyncListActions,

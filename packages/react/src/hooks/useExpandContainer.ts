@@ -5,29 +5,36 @@ import { IExpandProps } from '../types'
 
 export const useExpandContainer = (props: IExpandProps) => {
     const list = useContext(ListContext)
-    const { targetPath } = props  
+    const { targetPath, form, schema } = props
+    const componentProps = schema.getExtendsComponentProps()
+    const { expandStatus: propExpandStatus } = componentProps
     const setDisplay = (display) => {
-        const filterInstance = list.getFilterInstance()     
-        filterInstance.setFieldState(targetPath, state => {
+        form.setFieldState(targetPath, state => {
             state.display = display
         })
     }
 
     useEffect(() => {
-        const expandStatus = list.getExpandStatus()
+        let expandStatus
+        if (list) {
+            expandStatus = list.getExpandStatus()
+        } else if (form) {
+            expandStatus = propExpandStatus || 'collapse'
+        }
+        
         setDisplay(expandStatus === 'expand')
     }, [])
 
-    useEffect(() => {        
-        const idExpand = list.subscribe(ListLifeCycleTypes.ON_LIST_FILTER_ITEM_EXPAND, () => {      
-            setDisplay(true)
-        })
-        const idCollapse = list.subscribe(ListLifeCycleTypes.ON_LIST_FILTER_ITEM_COLLAPSE, () => {
-            setDisplay(false)
+    useEffect(() => {
+        const fnRef = form.subscribe(({ type }) => {
+            if (type === ListLifeCycleTypes.ON_LIST_FILTER_ITEM_EXPAND) {
+                setDisplay(true)
+            } else if (type === ListLifeCycleTypes.ON_LIST_FILTER_ITEM_COLLAPSE) {
+                setDisplay(false)
+            }
         })
         return function cleanup() {
-            list.unSubscribe(idExpand)
-            list.unSubscribe(idCollapse)
+            form.unsubscribe(fnRef)
         }
     })
 }

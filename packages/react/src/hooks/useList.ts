@@ -1,9 +1,8 @@
 import { useRef, useMemo, useContext, useEffect } from 'react'
 import createList, { ListLifeCycle, ListLifeCycleTypes } from '@alist/core'
-import { useEva } from "react-eva";
 import { IList } from '@alist/core/lib/types'
 import ListDomain from '../context/listDomain'
-import { createListEffects, createListActions } from '../shared'
+import { createListEffects, createListActions, useEva } from '../shared'
 import { IListUIProps } from '../types'
 
 export const useList = (options: IListUIProps): IList & { actions: any } => {
@@ -31,6 +30,7 @@ export const useList = (options: IListUIProps): IList & { actions: any } => {
               ...ctx,
               dispatch: ctx.notify
             }
+
             implementActions(actions)
             actionsRef.current.addAPI = (name, fn) => {
               actionsRef.current[name] = fn

@@ -30,14 +30,14 @@ import { Selection } from '@alist/antd'
 
 ```
 
+## 消费筛选状态例子（Ant-Design）
+
 ```jsx
 import ReactDOM from 'react-dom'
 import { Button } from 'antd'
 import React, { useEffect } from 'react'
 import { ListLifeCycleTypes, createListActions, Selection, List, Table, Pagination, Filter, Layout, Search, Clear } from '@alist/antd'
 import'antd/dist/antd.css'
-// import { ListLifeCycleTypes, createListActions, Selection, List, Table, Pagination, Filter, Layout, Search, Clear } from '@alist/next'
-// import '@alifd/next/dist/next.css'
 
 const actions = createListActions()
 
@@ -45,16 +45,13 @@ const App = props => {
   const { children, ...others } = props
   const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
 
-  useEffect(() => {
-    actions.setRowSelection() // 启用筛选模式
-  }, [])
   return (
     <List
-      actions={actions}
+      // actions={actions}
       url={url}
       effects={($, actions) => {
-        $(ListLifeCycleTypes.ON_LIST_INIT).subscribe((payload) => {
-          console.log('ON_LIST_INIT', payload)
+        $(ListLifeCycleTypes.ON_LIST_MOUNTED).subscribe((payload) => {
+          actions.setRowSelection() // 启用筛选模式
         });
         $(ListLifeCycleTypes.ON_LIST_SELECTION_REFRESH).subscribe((payload) => {
           console.log('ON_LIST_SELECTION_REFRESH', payload)

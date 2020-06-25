@@ -17,19 +17,18 @@
   "peerDependencies": {
     "@alifd/next": "1.x",
     "@babel/runtime": "^7.4.4",
-    "@formily/next": "^1.2.0-beta.3",
-    "@formily/next-components": "^1.2.0-beta.3",
+    "@formily/next": "^1.2.0-beta.5", 
+    "@formily/next-components": "^1.2.0-beta.5",
+    "react-eva": "^1.1.7",
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0"
   },
   "dependencies": {
-    "@alist/react": "^1.0.0-beta.30",
+    "@alist/next-components": "^1.0.0-beta.30",
     "@alist/react-schema-renderer": "^1.0.0-beta.30",
-    "@formily/next": "^1.2.0-beta.3",
-    "@formily/next-components": "^1.2.0-beta.3",
+    "@formily/next-components": "^1.2.0-beta.5",
     "@types/classnames": "^2.2.9",
-    "@types/styled-components": "4.1.8",
-    "styled-components": "^4.4.1"
+    "@types/styled-components": "4.1.8"
   },
   "repository": {
     "type": "git",

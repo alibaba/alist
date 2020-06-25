@@ -1,5 +1,10 @@
 import { Observable } from 'rxjs/internal/Observable'
-import { createAsyncActions, createActions } from 'react-eva'
+import {
+  mergeActions,
+  createAsyncActions,
+  createActions,
+  useEva
+} from 'react-eva'
 import { isFn } from './utils'
 import { IListEffect } from './types'
 import { ListLifeCycleTypes } from '@alist/core'
@@ -64,13 +69,17 @@ export const apiList = [
   'removeListener'
 ]
 
+export { createAsyncActions, createActions, useEva, mergeActions }
+
 export const createListActions = (mergedFns?: string[]) => {
   if (env.currentActions) {
     return env.currentActions
   }
 
   const mergedApiList = [...apiList, ...(mergedFns || [])]
-  return createActions(...mergedApiList)
+  const listActions = createActions(...mergedApiList)
+  listActions._isJSONSchemaObject = true
+  return listActions
 }
 
 export const createAsyncListActions = (mergedFns?: string[]) => {
