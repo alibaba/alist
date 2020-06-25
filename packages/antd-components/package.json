@@ -1,6 +1,6 @@
 {
   "name": "@alist/antd-components",
-  "version": "1.0.0-beta.30",
+  "version": "1.0.0-rc.0",
   "main": "lib",
   "engines": {
     "npm": ">=3.0.0"
@@ -17,13 +17,13 @@
   "peerDependencies": {
     "@babel/runtime": "^7.4.4",
     "@formily/antd": "^1.2.0-beta.5",
-    "react-eva": "^1.1.7",
     "antd": "4.x",
     "react": ">=16.8.0",
-    "react-dom": ">=16.8.0"
+    "react-dom": ">=16.8.0",
+    "react-eva": "^1.1.7"
   },
   "dependencies": {
-    "@alist/react": "^1.0.0-beta.30",
+    "@alist/react": "^1.0.0-rc.0",
     "@formily/antd": "^1.2.0-beta.5",
     "@types/classnames": "^2.2.9",
     "@types/styled-components": "^4.4.0"

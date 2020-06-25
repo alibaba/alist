@@ -1,6 +1,6 @@
 {
   "name": "@alist/react",
-  "version": "1.0.0-beta.30",
+  "version": "1.0.0-rc.0",
   "main": "lib",
   "types": "lib/index.d.ts",
   "engines": {
@@ -13,15 +13,15 @@
     "typescript": "^3.5.2"
   },
   "dependencies": {
-    "@alist/core": "^1.0.0-beta.30",    
+    "@alist/core": "^1.0.0-rc.0",
     "styled-components": "^4.4.1"
   },
   "peerDependencies": {
     "@babel/runtime": "^7.4.4",
     "@types/react": "^16.8.23",
-    "react-eva": "^1.1.7",
     "react": ">=16.8.0",
-    "react-dom": ">=16.8.0"
+    "react-dom": ">=16.8.0",
+    "react-eva": "^1.1.7"
   },
   "repository": {
     "type": "git",

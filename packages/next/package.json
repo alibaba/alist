@@ -1,6 +1,6 @@
 {
   "name": "@alist/next",
-  "version": "1.0.0-beta.30",
+  "version": "1.0.0-rc.0",
   "main": "lib",
   "engines": {
     "npm": ">=3.0.0"
@@ -17,15 +17,15 @@
   "peerDependencies": {
     "@alifd/next": "1.x",
     "@babel/runtime": "^7.4.4",
-    "@formily/next": "^1.2.0-beta.5", 
+    "@formily/next": "^1.2.0-beta.5",
     "@formily/next-components": "^1.2.0-beta.5",
-    "react-eva": "^1.1.7",
     "react": ">=16.8.0",
-    "react-dom": ">=16.8.0"
+    "react-dom": ">=16.8.0",
+    "react-eva": "^1.1.7"
   },
   "dependencies": {
-    "@alist/next-components": "^1.0.0-beta.30",
-    "@alist/react-schema-renderer": "^1.0.0-beta.30",
+    "@alist/next-components": "^1.0.0-rc.0",
+    "@alist/react-schema-renderer": "^1.0.0-rc.0",
     "@formily/next-components": "^1.2.0-beta.5",
     "@types/classnames": "^2.2.9",
     "@types/styled-components": "4.1.8"
