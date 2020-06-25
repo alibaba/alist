@@ -23,11 +23,16 @@
       - [同步URL参数](./demo/syncParams.md)
       - [自定义消费组件](./demo/consumer.md)
       - [通过Schema渲染](./schema/practise.md)
-      - [Hooks结合Formily使用](./demo/hooks.md)
    - 进阶教程
       - [实现自定义请求组件](./advanced/query.md)
-      - [实现自定义布局组件](./advanced/layout.md)
       - [实现自定义静默埋点](./advanced/dot.md)
+- 结合Formily
+   - [快速开始](./formily/basic.md)
+   - [搜索及Table区域展开收起](./formily/expand.md)
+   - [Table排序](./formily/tableSort.md)
+   - [Table筛选及消费](./formily/tableSelection.md)
+   - [自定义消费组件](./formily/listConsumer.md)
+   - [同步URL参数](./formily/params.md)
 - API手册
    - [API列表](./api/index.md)
    - [组件列表](./api/component.md)

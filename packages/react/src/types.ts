@@ -90,11 +90,14 @@ export interface IFilterProps {
 }
 
 export interface IConsumerProps {
+  form?: any
   selector?: Array<string> | string
   children?: React.ReactElement | ((...args: any) => React.ReactElement)
 }
 
 export interface IExpandProps {
+  form?: any
+  schema?: any
   useFieldState?: any
   targetPath?: string
   children?: React.ReactElement | ((...args: any) => React.ReactElement)

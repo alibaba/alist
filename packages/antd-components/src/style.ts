@@ -1,0 +1,5 @@
+import 'antd/lib/pagination/style/index'
+import 'antd/lib/button/style/index'
+import 'antd/lib/table/style/index'
+import 'antd/lib/input/style/index'
+import 'antd/lib/cascader/style/index'

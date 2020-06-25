@@ -1,26 +1,35 @@
-import { Consumer } from '@alist/react'
 import { registerListComponent } from '@alist/react-schema-renderer'
-import List from './components/List'
+export * from '@alist/react'
+import {
+  InternalList as List,
+  InternalSelection as Selection,
+  ExpandContainer,
+  InternalExpandTrigger as ExpandTrigger,
+  InternalToggleTrigger as ToggleTrigger,
+  InternalTable as Table,
+  InternalPagination as Pagination,
+  InternalClear as Clear,
+  InternalConsumer as Consumer,
+  InternalSearch as Search,
+  InternalReset as Reset,
+  createListActions,
+  createAsyncListActions,
+} from '@alist/antd-components'
+
 import SchemaList from './components/SchemaList'
 import Filter from './components/Filter'
-import Table from './components/Table'
-import Pagination from './components/Pagination'
 import Layout from './components/Layout'
-import Clear from './components/Clear'
-import Search from './components/Search'
-import Reset from './components/Reset'
-import Selection from './components/Selection'
-import ExpandContainer from './components/ExpandContainer'
-import ExpandTrigger from './components/ExpandTrigger'
-import ToggleTrigger from './components/ToggleTrigger'
-import { createAntdListActions, createAntdAsyncListActions } from './shared'
+
 import './fields'
-export * from '@formily/antd'
-export * from '@alist/react'
 export * from '@alist/react-schema-renderer'
+export * from '@formily/antd-components'
+export * from '@formily/antd'
+
+import { FormSlot } from '@formily/antd'
 
 // 传入默认组件
 registerListComponent({
+  FormSlot,
   List,
   Table,
   Filter,
@@ -48,8 +57,8 @@ export {
   Pagination,
   Clear,
   Layout,
-  createAntdListActions as createListActions,
-  createAntdAsyncListActions as createAsyncListActions,
+  createListActions,
+  createAsyncListActions,
   Consumer,
   Search,
   Reset

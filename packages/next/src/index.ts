@@ -1,30 +1,36 @@
-import { Consumer } from '@alist/react'
-import SchemaList from './components/SchemaList'
 import { registerListComponent } from '@alist/react-schema-renderer'
-import List from './components/List'
-import Filter from './components/Filter'
-import Table from './components/Table'
-import Pagination from './components/Pagination'
-import Layout from './components/Layout'
-import Selection from './components/Selection'
-import Clear from './components/Clear'
-import Search from './components/Search'
-import Reset from './components/Reset'
-import Sorter from './components/Sorter'
-import ExpandContainer from './components/ExpandContainer'
-import ExpandTrigger from './components/ExpandTrigger'
-import ToggleTrigger from './components/ToggleTrigger'
-import { createNextListActions, createNextAsyncListActions } from './shared'
-import './fields'
+export * from '@alist/react'
+import {
+  InternalList as List,
+  InternalSelection as Selection,
+  InternalSorter as Sorter,
+  ExpandContainer,
+  InternalExpandTrigger as ExpandTrigger,
+  InternalToggleTrigger as ToggleTrigger,
+  InternalTable as Table,
+  InternalPagination as Pagination,
+  InternalClear as Clear,
+  InternalConsumer as Consumer,
+  InternalSearch as Search,
+  InternalReset as Reset,
+  createListActions,
+  createAsyncListActions,
+} from '@alist/next-components'
 
+import SchemaList from './components/SchemaList'
+import Filter from './components/Filter'
+import Layout from './components/Layout'
+
+import './fields'
 export * from '@alist/react-schema-renderer'
 export * from '@formily/next-components'
 export * from '@formily/next'
-export * from '@alist/react'
-export * from './hooks'
+
+import { FormSlot } from '@formily/next'
 
 // 传入默认组件
 registerListComponent({
+  FormSlot,
   List,
   Table,
   Filter,
@@ -53,8 +59,8 @@ export {
   Table,
   Pagination,
   Clear,
-  createNextListActions as createListActions,
-  createNextAsyncListActions as createAsyncListActions,
+  createListActions,
+  createAsyncListActions,
   Consumer,
   Search,
   Reset

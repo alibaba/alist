@@ -73,7 +73,23 @@ const createDocs = async () => {
           __dirname,
           '../packages/next/node_modules/@alifd/next'
         ),
-        antd: path.resolve(__dirname, '../packages/antd/node_modules/antd')
+        antd: path.resolve(__dirname, '../packages/antd/node_modules/antd'),
+        '@formily/next': path.resolve(
+          __dirname,
+          '../packages/next/node_modules/@formily/next'
+        ),
+        '@formily/next-components': path.resolve(
+          __dirname,
+          '../packages/next/node_modules/@formily/next-components'
+        ),
+        '@formily/antd-components': path.resolve(
+          __dirname,
+          '../packages/antd/node_modules/@formily/antd-components'
+        ),
+        '@formily/antd': path.resolve(
+          __dirname,
+          '../packages/antd/node_modules/@formily/antd'
+        ),
       })
       webpackConfig.resolve.plugins = [
         new TsconfigPathsPlugin({

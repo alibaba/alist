@@ -30,9 +30,9 @@ const App = () => {
     <div>
       <List actions={actions} url={url} pageSize={5}>
         <Filter>
-          <Layout inset gap={[12, 16]} columns={4}>
+          <Layout inset columns={4}>
             <Filter.Item type="number" title="数字选择" name="number" />
-            <Filter.Item type="boolean" title="开关选择" name="boolean" />
+            <Filter.Item type="boolean" title="开关选择" name="boolean" x-mega-props={{ full: false }}/>
             <Filter.Item type="date" title="日期选择" name="date" />            
             <Filter.Item type="year" title="年份" name="year" />
             <ExpandContainer>

@@ -1,0 +1,41 @@
+{
+  "name": "@alist/next-components",
+  "version": "1.0.0-beta.30",
+  "main": "lib",
+  "engines": {
+    "npm": ">=3.0.0"
+  },
+  "scripts": {
+    "build": "ts-node --project ../../tsconfig.build.json build.ts"
+  },
+  "stylePath": "style.js",
+  "devDependencies": {
+    "@alifd/next": "1.x",
+    "typescript": "^3.5.2"
+  },
+  "types": "esm/index.d.ts",
+  "peerDependencies": {
+    "@alifd/next": "1.x",
+    "@babel/runtime": "^7.4.4",
+    "react-eva": "^1.1.7",
+    "@formily/next": "^1.2.0-beta.5",    
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "dependencies": {    
+    "@alist/react": "^1.0.0-beta.30",
+    "@formily/next": "^1.2.0-beta.5",
+    "@types/classnames": "^2.2.9",
+    "@types/styled-components": "4.1.8",
+    "styled-components": "^4.4.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.alibaba-inc.com:a-lib/alist.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "gitHead": "76f2ae551cdfe1a87e86f21b8647cfa46edc507a"
+}

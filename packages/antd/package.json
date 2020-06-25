@@ -16,17 +16,17 @@
   "types": "esm/index.d.ts",
   "peerDependencies": {
     "@babel/runtime": "^7.4.4",
-    "@formily/antd": "^1.2.0-beta.3",
-    "@formily/antd-components": "^1.2.0-beta.3",
+    "@formily/antd": "^1.2.0-beta.5",
+    "@formily/antd-components": "^1.2.0-beta.5",
+    "react-eva": "^1.1.7",
     "antd": "4.x",
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0"
   },
   "dependencies": {
-    "@alist/react": "^1.0.0-beta.30",
+    "@alist/antd-components": "^1.0.0-beta.30",
     "@alist/react-schema-renderer": "^1.0.0-beta.30",
-    "@formily/antd": "^1.2.0-beta.3",
-    "@formily/antd-components": "^1.2.0-beta.3",
+    "@formily/antd-components": "^1.2.0-beta.5",
     "@types/classnames": "^2.2.9",
     "@types/styled-components": "^4.4.0"
   },

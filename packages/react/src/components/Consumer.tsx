@@ -2,14 +2,15 @@ import React from 'react'
 import useConsumer from '../hooks/useConsumer'
 
 const ConsumerProvider: React.FC<any> = (props = {}) => {
-    const { children, ...others } = props
+    const { children, render, ...others } = props
     const list = useConsumer(others)
+    const comaptChildren = render || children
 
     let element
-    if (typeof children === 'function') {
-        element = children(list)
+    if (typeof comaptChildren === 'function') {
+        element = comaptChildren(list)
     } else {
-        element = children || React.Fragment
+        element = comaptChildren || React.Fragment
     }
 
     return element

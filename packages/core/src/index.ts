@@ -269,7 +269,8 @@ function createList(props: IListProps = {}): IList {
       list.resetPage()
     }
 
-    const defaultFilterValues = list.getState('defaultFilterValues')
+    const filterInitialValues = list.getFormState(state => state.initialValues)
+    const defaultFilterValues = filterInitialValues || list.getState('defaultFilterValues')
     if (defaultFilterValues !== undefined) {
       list.setFilterData(defaultFilterValues)
     } else {
@@ -447,7 +448,7 @@ function createList(props: IListProps = {}): IList {
   // 适配搜索区域副作用
   const getFilterEffects = props => {
     const noop = () => {}
-    const { effects = noop } = props
+    const { effects = noop } = props || {}
     return ($, actions) => {
       // 搜索区域初始化完成
       $('onFormMount').subscribe(state => {
@@ -508,14 +509,17 @@ function createList(props: IListProps = {}): IList {
   }
 
   const toggleExpandStatus = () => {
+    const filterInstance = list.getFilterInstance()
     if (expandStatus === 'expand') {
-      expandStatus = 'collapse'
+      expandStatus = 'collapse'      
+      filterInstance.notify(ListLifeCycleTypes.ON_LIST_FILTER_ITEM_COLLAPSE)
       lifeCycles.notify({
         type: ListLifeCycleTypes.ON_LIST_FILTER_ITEM_COLLAPSE,
         ctx: listAPI
       })
     } else {
       expandStatus = 'expand'
+      filterInstance.notify(ListLifeCycleTypes.ON_LIST_FILTER_ITEM_EXPAND)
       lifeCycles.notify({
         type: ListLifeCycleTypes.ON_LIST_FILTER_ITEM_EXPAND,
         ctx: listAPI
@@ -525,6 +529,33 @@ function createList(props: IListProps = {}): IList {
 
   const getExpandStatus = (): ExpandStatus => {
     return expandStatus
+  }
+
+  const initSyncFilterData = (executeNow = false) => {
+    // 同步params到搜索区域上
+    const syncFilterData = {}
+    Object.keys(params || {}).forEach(paramField => {
+      if (
+        [].concat(paramsFields || []).some(f => f === '*' || f === paramField)
+      ) {
+        syncFilterData[paramField] = params[paramField]
+      }
+    })
+
+    // 静默设置到filter上，避免重复通知死循环
+    if (Object.keys(syncFilterData).length > 0) {
+      lifeCycles.notify({
+        type: ListLifeCycleTypes.ON_LIST_INIT_PARAMS_SET,
+        ctx: listAPI,
+        payload: syncFilterData
+      })
+      listAPI.subscribe(ListLifeCycleTypes.ON_LIST_FILTER_MOUNT, () => {
+        list.setFilterData(syncFilterData)
+      })
+      if (executeNow) {
+        list.setFilterData(syncFilterData)
+      }
+    }
   }
 
   const listAPI: IList = {
@@ -596,30 +627,11 @@ function createList(props: IListProps = {}): IList {
     getExpandStatus,
     toggleExpandStatus,
     appendMirrorFilterInstance: list.appendMirrorFilterInstance,
-    getMirrorFilterInstanceList: list.getMirrorFilterInstanceList
+    getMirrorFilterInstanceList: list.getMirrorFilterInstanceList,
+    initSyncFilterData
   }
 
-  // 同步params到搜索区域上
-  const syncFilterData = {}
-  Object.keys(params || {}).forEach(paramField => {
-    if (
-      [].concat(paramsFields || []).some(f => f === '*' || f === paramField)
-    ) {
-      syncFilterData[paramField] = params[paramField]
-    }
-  })
-
-  // 静默设置到filter上，避免重复通知死循环
-  if (Object.keys(syncFilterData).length > 0) {
-    lifeCycles.notify({
-      type: ListLifeCycleTypes.ON_LIST_INIT_PARAMS_SET,
-      ctx: listAPI,
-      payload: syncFilterData
-    })
-    listAPI.subscribe(ListLifeCycleTypes.ON_LIST_FILTER_MOUNT, () => {
-      list.setFilterData(syncFilterData)
-    })
-  }
+  initSyncFilterData()
 
   if (params && Object.keys(params).length) {
     setParams(params)
