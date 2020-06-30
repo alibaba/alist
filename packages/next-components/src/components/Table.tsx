@@ -240,7 +240,10 @@ const SchemaTable = (props) => {
     }
     return null
 }
-const Table: React.FC<IVirtualBoxProps<AListTableProps>> & ExtendsProps = createControllerBox<AListTableProps>('alist-table', SchemaTable)
+
+
+type VirtualTableProps = React.FC<IVirtualBoxProps<AListTableProps>> & ExtendsProps
+const Table: VirtualTableProps = createControllerBox<AListTableProps>('alist-table', SchemaTable)
 
 Table.Column = createVirtualBox<ColumnProps>('alist-table-column', InternalTable.Column)
 Table.GroupHeader = createVirtualBox<GroupHeaderProps>('alist-table-group-header', InternalTable.GroupHeader)

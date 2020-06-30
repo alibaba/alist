@@ -1,6 +1,6 @@
 {
   "name": "@alist/antd",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "lib",
   "engines": {
     "npm": ">=3.0.0"
@@ -24,8 +24,8 @@
     "react-eva": "^1.1.7"
   },
   "dependencies": {
-    "@alist/antd-components": "^1.0.4",
-    "@alist/react-schema-renderer": "^1.0.4",
+    "@alist/antd-components": "^1.0.5",
+    "@alist/react-schema-renderer": "^1.0.5",
     "@formily/antd-components": "^1.2.1",
     "@types/classnames": "^2.2.9",
     "@types/styled-components": "^4.4.0"
