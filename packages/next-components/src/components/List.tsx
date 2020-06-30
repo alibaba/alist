@@ -25,7 +25,7 @@ const ListFilterSpy = (props) => {
     return null
 }
 
-const List = createControllerBox('alist', (props) => {
+const VirtualList = (props) => {
     const { form, children, schema } = props
     const componentProps = schema.getExtendsComponentProps()
 
@@ -33,9 +33,11 @@ const List = createControllerBox('alist', (props) => {
         <ListFilterSpy form={form} />
         {children}
     </InternalList>
-})
+}
+const List = createControllerBox('alist', VirtualList)
 
 export {
     List,
+    VirtualList,
     InternalList,
 }
