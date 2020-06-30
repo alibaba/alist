@@ -249,4 +249,6 @@ Table.ColumnGroup = createVirtualBox<ColumnGroupProps>('alist-table-column-group
 export {
     InternalTable,
     Table,
+    AListTableProps,
+    InternalTableType,
 }

@@ -103,6 +103,7 @@ const getDataSource = (len) => {
   return dataSource
 }
 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 const actions = createListActions()
 const App = () => {  
   const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
@@ -110,6 +111,7 @@ const App = () => {
   const customQuery = async (opts) => {
     const { data, url, method } = opts
     const { currentPage } = data
+    await sleep(500)
     return {
       dataList: getDataSource(10),
       pageSize: 5,
@@ -138,6 +140,150 @@ const App = () => {
 
 ReactDOM.render(<App />, document.getElementById('root'))
 ```
+
+## 自定义请求 Query 模式
+
+自定义请求模式，`query`模式必须要传入`url`， 可以打开 控制台 - network 查看请求格式。
+
+```jsx
+import React from 'react'
+import {
+  List, Table, Pagination,
+  createListActions, Search
+} from '@alist/next'
+import'@alifd/next/dist/next.css'
+
+const getDataSource = (len) => {
+  const dataSource = []
+  for ( let i = 0; i < len; i++ ) {
+    dataSource.push({ label: `id: #${Math.random().toString(36).slice(-8)}`, value: i })
+  }
+
+  return dataSource
+}
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+const actions = createListActions()
+const App = () => {  
+  const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
+  
+  const customQuery = async (opts) => {
+    const { data, url, method } = opts
+    const { currentPage } = data
+    await sleep(500)
+    return {
+      dataList: getDataSource(10),
+      pageSize: 5,
+      total: 20,
+      totalPages: 4,
+      currentPage,
+    }
+  }
+
+  return <div>
+    <List
+      actions={actions}
+      url={url}
+      pageSize={5}
+      query={customQuery}
+    >
+      <Search>搜索</Search>      
+      <Table>
+        <Table.Column title="label" dataIndex="label"/>
+        <Table.Column title="value" dataIndex="value"/>
+      </Table>
+      <Pagination />
+    </List>
+  </div>
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))
+```
+
+## 自定义请求 Query 模式
+
+自定义请求模式，`query`模式必须要传入`url`， 可以打开 控制台 - network 查看请求格式。
+
+```jsx
+import React from 'react'
+import {
+  List,
+  Table,
+  Pagination,
+  Filter,
+  Layout,
+  Search,
+  Clear,
+  createListActions
+} from '@alist/next'
+import'@alifd/next/dist/next.css'
+
+const getDataSource = (len) => {
+  const dataSource = []
+  for ( let i = 0; i < len; i++ ) {
+    dataSource.push({ label: `id: #${Math.random().toString(36).slice(-8)}`, value: i })
+  }
+
+  return dataSource
+}
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+const actions = createListActions()
+const App = () => {  
+  const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
+  
+  const customQuery = async (opts) => {
+    const { data, url, method } = opts
+    const { currentPage } = data
+    await sleep(500)
+    return {
+      dataList: getDataSource(10),
+      pageSize: 5,
+      total: 20,
+      totalPages: 4,
+      currentPage,
+    }
+  }
+
+  const formGroup = [
+    {
+      title: "用户ID：",
+      name: "userId",
+      type: "string",
+      required: true,
+      "x-component-props": { placeholder: "请输入用户ID" }
+    }
+  ];
+
+  return <div>
+    <List
+      actions={actions}
+      url={url}
+      pageSize={5}
+      // query={customQuery}
+    >
+      <Filter>
+        <Layout labelAlign="left">
+          {formGroup.map(formItem => (
+            <Filter.Item key={formItem.title} {...formItem} />
+          ))}
+        </Layout>
+        <Search>查询日志</Search>
+        <Clear>重置</Clear>
+      </Filter>     
+      <Table>
+        <Table.Column title="label" dataIndex="label"/>
+        <Table.Column title="value" dataIndex="value"/>
+      </Table>
+      <Pagination />
+    </List>
+  </div>
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))
+```
+
+
 
 ## 多实例 multiple 模式
 

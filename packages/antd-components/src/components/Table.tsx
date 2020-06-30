@@ -209,7 +209,7 @@ const ComponentMap = {
 
 type ExtendsProps = {
     Column?: React.FC<IVirtualBoxProps<ColumnProps<any>>>,
-    ColumnGroup?: React.FunctionComponent<ColumnGroupProps>,
+    ColumnGroup?: React.FunctionComponent<ColumnGroupProps<any>>,
 }
 
 const Table: React.FC<IVirtualBoxProps<AListTableProps>> & ExtendsProps = createControllerBox<AListTableProps>('alist-table', (props) => {
@@ -244,9 +244,11 @@ const Table: React.FC<IVirtualBoxProps<AListTableProps>> & ExtendsProps = create
 })
 
 Table.Column = createVirtualBox<ColumnProps<any>>('alist-table-column', InternalTable.Column)
-Table.ColumnGroup = createVirtualBox<ColumnGroupProps>('alist-table-column-group', InternalTable.ColumnGroup)
+Table.ColumnGroup = createVirtualBox<ColumnGroupProps<any>>('alist-table-column-group', InternalTable.ColumnGroup)
 
 export {
     InternalTable,
     Table,
+    AListTableProps,
+    InternalTableType,
 }

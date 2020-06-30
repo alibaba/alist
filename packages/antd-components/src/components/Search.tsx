@@ -1,5 +1,6 @@
 import React from 'react'
 import { Consumer } from '@alist/react'
+import { Button } from 'antd'
 import { createVirtualBox } from '@formily/antd'
 import { Submit } from '@formily/antd'
 
@@ -9,23 +10,31 @@ const InternalSearch = (props) => {
         {(list) => {
             if (list) {
                 const { search } = list
+                const filterInstance = list.getFilterInstance()
                 if (typeof render === 'function') {
                     return render(search)
                 }
 
-                return <Submit {...others} onClick={(...args) => {
-                    const filterInstance = list.getFilterInstance()
-                    if (!filterInstance) {
-                        search()
-                    }
-                    if (typeof props.onClick === 'function') {
-                        props.onClick(...args)   
-                    }
-                }} onSubmit={(values) => {
-                    search()
-                }}>
+                return <Button
+                    loading={list.getLoading()}
+                    type="primary"
+                    {...others}
+                    onClick={(...args) => {
+                        if (filterInstance) {
+                            filterInstance.submit(() => {
+                                search()
+                            })
+                        } else {
+                            search()
+                        }
+                        
+                        if (typeof props.onClick === 'function') {
+                            props.onClick(...args)   
+                        }
+                    }}
+                >
                     {content || children}
-                </Submit>
+                </Button>
             } else {
                 return <Submit {...others}>{content || children}</Submit>
             }
