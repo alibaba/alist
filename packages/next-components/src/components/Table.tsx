@@ -254,6 +254,7 @@ export {
     InternalTable,
     Table,
     SchemaTable,
+    VirtualTableProps,
     AListTableProps,
     InternalTableType,
 }
