@@ -1,26 +1,39 @@
 import React from 'react'
-import { Consumer } from '@alist/react'
-import { createVirtualBox } from '@formily/antd'
+import { Consumer, ListLifeCycleTypes } from '@alist/react'
+import { createVirtualBox, createControllerBox } from '@formily/antd'
 import { Button } from 'antd'
 
 const InternalReset = (props) => {
-    const { render, content, children, ...others } = props
+    const { form, render, content, children, ...others } = props
     return <Consumer>
-        {({ reset }) => {
-            if (typeof render === 'function') {
-                return render(reset)
+        {(list) => {            
+            if (list) {
+                const { reset } = list
+                if (typeof render === 'function') {
+                    return render(reset)
+                }
+                return <Button {...others} onClick={() => {
+                    reset()
+                }}>
+                    {content || children}
+                </Button>
+            } else {
+                return <Button {...others} onClick={() => {
+                    form.notify(ListLifeCycleTypes.ON_FORM_LIST_RESET, form)
+                }}>
+                    {content || children}
+                </Button>
             }
-            return <Button {...others} onClick={() => {
-                reset()
-            }}>
-                {content || children}
-            </Button>
         }}
     </Consumer>
 }
 
 createVirtualBox('reset', InternalReset)
-const Reset = createVirtualBox('alist-reset', InternalReset)
+const Reset = createControllerBox('alist-reset', (props) => {
+    const { form, schema } = props
+    const componentProps = schema.getExtendsComponentProps()
+    return <InternalReset {...componentProps} form={form} />
+})
 
 export {
     InternalReset,

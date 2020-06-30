@@ -16,14 +16,16 @@ export const useConsumer = (props: IConsumerProps, propsList?: IList): IList => 
     useEffect(() => {
         // 上帝模式，默认所有事件都监听, 命中相关事件会触发重绘
         // todo: reducer机制
-        const id = list.subscribe(ListLifeCycleTypes.LIST_LIFECYCLES_GOD_MODE, ({ type, payload, ctx }) => {
-            if (formatSelector.indexOf('*') !== -1 || (formatSelector.indexOf(type) !== -1)) {
-                refresh()
+        if (list) {
+            const id = list.subscribe(ListLifeCycleTypes.LIST_LIFECYCLES_GOD_MODE, ({ type, payload, ctx }) => {
+                if (formatSelector.indexOf('*') !== -1 || (formatSelector.indexOf(type) !== -1)) {
+                    refresh()
+                }
+            })
+            return function cleanup() {
+                list.unSubscribe(id)
             }
-        })
-        return function cleanup() {
-            list.unSubscribe(id)
-        }
+        }        
     })
 
     return list

@@ -16,7 +16,7 @@ const ListFilterSpy = (props) => {
     const effects = list.getFilterEffects()
     if (!settingRef.current) {
         list.setFilterInstance(form)        
-        const syncFilterData = list.initSyncFilterData(true)        
+        list.initSyncFilterData(true)        
         settingRef.current = true
     }
 

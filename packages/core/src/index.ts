@@ -557,6 +557,19 @@ function createList(props: IListProps = {}): IList {
         list.setFilterData(syncFilterData)
       }
     }
+
+    const filterInstance = list.getFilterInstance()
+    if (filterInstance) {
+      filterInstance.subscribe(({ type }) => {
+        if (type === 'onFormSubmit') {
+          listAPI.refresh()
+        } else if (type === ListLifeCycleTypes.ON_FORM_LIST_RESET) {
+          listAPI.reset()
+        } else if (type === ListLifeCycleTypes.ON_FORM_LIST_CLEAR) {
+          listAPI.clear()
+        }
+      })
+    }
   }
 
   const listAPI: IList = {

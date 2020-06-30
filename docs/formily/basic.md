@@ -72,13 +72,14 @@ const App = () => {
                 <Field name="f5" title="f5" x-component="Input" />
                 <Field name="f6" title="f6" x-component="Input" />
             </FormMegaLayout>
+
+            <ButtonGroup align="center" style={{ marginBottom: '24px' }}>
+                <Search content="搜索"/>
+                <Reset content="重置"/>
+                <Clear content="清空"/>
+            </ButtonGroup>
             
             <List url={url} actions={listActions}>
-                <ButtonGroup align="center" style={{ marginBottom: '20px' }}>
-                    <Search content="搜索"/>
-                    <Reset content="重置"/>
-                    <Clear content="清空"/>
-                </ButtonGroup>
                 <Table>
                     <Table.Column title="{{renderLabelTitle('标题')}}" dataIndex="label" cell="{{renderLabel}}" />
                     <Table.Column title="value" dataIndex="value" />
@@ -153,13 +154,14 @@ const App = () => {
                 <Field name="f5" title="f5" x-component="Input" />
                 <Field name="f6" title="f6" x-component="Input" />
             </FormMegaLayout>
+
+            <ButtonGroup align="center" style={{ marginBottom: '24px' }}>
+                <Search content="搜索"/>
+                <Reset content="重置"/>
+                <Clear content="清空"/>
+            </ButtonGroup>
             
             <List url={url} actions={listActions}>
-                <ButtonGroup align="center" style={{ marginBottom: '20px' }}>
-                    <Search content="搜索"/>
-                    <Reset content="重置"/>
-                    <Clear content="清空"/>
-                </ButtonGroup>
                 <Table>
                     <Table.Column title="{{renderLabelTitle('标题')}}" dataIndex="label" cell="{{renderLabel}}" />
                     <Table.Column title="value" dataIndex="value" />

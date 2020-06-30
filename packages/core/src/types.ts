@@ -199,7 +199,10 @@ export enum ListLifeCycleTypes {
   DID_LIST_UPDATE = 'didListUpdate',
   ON_LIST_BEFORE_QUERY = 'onListBeforeQuery',
   ON_LIST_AFTER_QUERY = 'onListAfterQuery',
-  ON_LIST_FILTER_VALUES_CHANGE = 'onListFilterValuesChange'
+  ON_LIST_FILTER_VALUES_CHANGE = 'onListFilterValuesChange',
+  ON_FORM_LIST_CLEAR = 'onFormListClear',
+  ON_FORM_LIST_RESET = 'onFormListReset',
+  ON_FORM_LIST_SEARCH = 'onFormListSearch'
 }
 
 export const LAZY_MOUNTED_SIGNAL = 'lazyMounted'
