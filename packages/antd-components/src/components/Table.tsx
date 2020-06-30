@@ -212,7 +212,7 @@ type ExtendsProps = {
     ColumnGroup?: React.FunctionComponent<ColumnGroupProps<any>>,
 }
 
-const Table: React.FC<IVirtualBoxProps<AListTableProps>> & ExtendsProps = createControllerBox<AListTableProps>('alist-table', (props) => {
+const SchemaTable = (props) => {
     const { schema, children } = props
     const componentProps = schema.getExtendsComponentProps()
     const { columns, ...others } = componentProps
@@ -241,7 +241,8 @@ const Table: React.FC<IVirtualBoxProps<AListTableProps>> & ExtendsProps = create
         </InternalTable>
     }
     return null
-})
+}
+const Table: React.FC<IVirtualBoxProps<AListTableProps>> & ExtendsProps = createControllerBox<AListTableProps>('alist-table', SchemaTable)
 
 Table.Column = createVirtualBox<ColumnProps<any>>('alist-table-column', InternalTable.Column)
 Table.ColumnGroup = createVirtualBox<ColumnGroupProps<any>>('alist-table-column-group', InternalTable.ColumnGroup)
@@ -249,6 +250,7 @@ Table.ColumnGroup = createVirtualBox<ColumnGroupProps<any>>('alist-table-column-
 export {
     InternalTable,
     Table,
+    SchemaTable,
     AListTableProps,
     InternalTableType,
 }
