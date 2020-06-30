@@ -13,7 +13,15 @@ const InternalSearch = (props) => {
                     return render(search)
                 }
 
-                return <Submit {...others} onSubmit={(values) => {
+                return <Submit {...others} onClick={(...args) => {
+                    const filterInstance = list.getFilterInstance()
+                    if (!filterInstance) {
+                        search()
+                    }
+                    if (typeof props.onClick === 'function') {
+                        props.onClick(...args)   
+                    }
+                }} onSubmit={(values) => {
                     search()
                 }}>
                     {content || children}

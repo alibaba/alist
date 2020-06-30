@@ -40,52 +40,6 @@ const App = () => {
 ReactDOM.render(<App />, document.getElementById('root'))
 ```
 
-```jsx
-import React, { useState, useEffect } from 'react'
-import {
-  List, Table, Pagination,
-  createListActions,
-} from '@alist/antd'
-
-const getDataSource = (len) => {
-  const dataSource = []
-  for ( let i = 0; i < len; i++ ) {
-    dataSource.push({ label: `id: #${Math.random().toString(36).slice(-8)}`, value: i })
-  }
-
-  return dataSource
-}
-
-const actions = createListActions()
-const App = () => {  
-  const [dataSource, setDs] = useState([])
-  useEffect(() => {      
-      setTimeout(() => {
-          const arr = getDataSource(20)
-          setDs(arr)
-      }, 500)        
-  }, [])
-        
-  return <div>
-    ds: {dataSource.length}
-    <List
-      actions={actions}
-      dataSource={dataSource}
-      pageSize={5}
-    >
-      <Table>
-        <Table.Column title="label" dataIndex="label" />
-        <Table.Column title="value" dataIndex="value" />
-      </Table>
-      <Pagination />
-    </List>
-  </div>
-}
-
-ReactDOM.render(<App />, document.getElementById('root'))
-
-```
-
 ## 本地 dataSource 模式
 
 传入 `dataSource` 就会设置为 `本地DataSource模式`，并且会根据传入的分页大小自动完成数据分页。
@@ -119,6 +73,63 @@ const App = () => {
       <Table>
         <Table.Column title="label" dataIndex="label" />
         <Table.Column title="value" dataIndex="value" />
+      </Table>
+      <Pagination />
+    </List>
+  </div>
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))
+```
+
+## 自定义请求 Query 模式
+
+自定义请求模式，`query`模式必须要传入`url`， 可以打开 控制台 - network 查看请求格式。
+
+```jsx
+import React from 'react'
+import {
+  List, Table, Pagination,
+  createListActions, Search
+} from '@alist/antd'
+import'antd/dist/antd.css'
+
+const getDataSource = (len) => {
+  const dataSource = []
+  for ( let i = 0; i < len; i++ ) {
+    dataSource.push({ label: `id: #${Math.random().toString(36).slice(-8)}`, value: i })
+  }
+
+  return dataSource
+}
+
+const actions = createListActions()
+const App = () => {  
+  const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
+  
+  const customQuery = async (opts) => {
+    const { data, url, method } = opts
+    const { currentPage } = data
+    return {
+      dataList: getDataSource(10),
+      pageSize: 5,
+      total: 20,
+      totalPages: 4,
+      currentPage,
+    }
+  }
+
+  return <div>
+    <List
+      actions={actions}
+      url={url}
+      pageSize={5}
+      query={customQuery}
+    >
+      <Search>搜索</Search>      
+      <Table>
+        <Table.Column title="label" dataIndex="label"/>
+        <Table.Column title="value" dataIndex="value"/>
       </Table>
       <Pagination />
     </List>
