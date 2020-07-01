@@ -45,7 +45,7 @@ const schema = {
                   {
                     componentName: 'Layout.ButtonGroup',
                     children: [
-                      { componentName: 'Search' },
+                      { componentName: 'Search', children: '搜索' },
                       { componentName: 'Clear', children: '清空' },
                       { componentName: 'Reset', children: '重置' }
                     ]
