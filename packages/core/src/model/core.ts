@@ -168,10 +168,15 @@ export default class ListCore extends EventEmitter {
 
     getFilterProps = () => {
         const { defaultFilterValues, filterValues } = this.state
-        return {
-            initialValues: defaultFilterValues || {},
-            values: filterValues,            
+        const opts: any = {}
+        if (defaultFilterValues && Object.keys(defaultFilterValues).length) {
+            opts.initialValues = defaultFilterValues
         }
+
+        if (filterValues  && Object.keys(filterValues).length) {
+            opts.values = filterValues
+        }
+        return opts
     }
 
     getFilterInstance = (): any => {
@@ -318,9 +323,9 @@ export default class ListCore extends EventEmitter {
 
     // 重置搜索数据
     resetFilterData = () => {
-        this.filterInstance && this.filterInstance.reset({ forceClear: false })
+        this.filterInstance && this.filterInstance.reset()
         this.mirrorFilterInstance.map(mirrorFilterInstance => {
-            mirrorFilterInstance.reset({ forceClear: false })
+            mirrorFilterInstance.reset()
         })
     }
 

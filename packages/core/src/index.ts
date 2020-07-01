@@ -269,14 +269,8 @@ function createList(props: IListProps = {}): IList {
       list.resetPage()
     }
 
-    const filterInitialValues = list.getFormState(state => state.initialValues)
-    const defaultFilterValues =
-      filterInitialValues || list.getState('defaultFilterValues')
-    if (defaultFilterValues !== undefined) {
-      list.setFilterData(defaultFilterValues)
-    } else {
-      list.clearFilterData()
-    }
+    list.resetFilterData()
+
     // 默认会执行请求
     if (!fnOpts || fnOpts.withFetch === true) {
       fetch()

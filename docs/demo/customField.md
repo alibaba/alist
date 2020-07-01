@@ -67,7 +67,7 @@ ReactDOM.render(<App />, document.getElementById('root'))
 import React, { useState } from 'react'
 import {
   List, Table, Pagination, Filter,
-  Layout, Search, Clear, ListEffectHooks,
+  Layout, Search, Clear, Reset, ListEffectHooks,
   createListActions,
 } from '@alist/antd'
 import { Select } from 'antd'
@@ -95,12 +95,13 @@ const App = () => {
             })
         }}
     >
-      <Filter inline>
+      <Filter inline initialValues={{ username: 'hello' }}>
         <Filter.Item type="input" name="username" title="username"/>
         <Filter.Item type="input" name="age" title="age"/>
         <Layout.ButtonGroup>
           <Search>搜索</Search>
-          <Clear>重置</Clear>
+          <Clear>清空</Clear>
+          <Reset>重置</Reset>
         </Layout.ButtonGroup>
       </Filter>
       <div>

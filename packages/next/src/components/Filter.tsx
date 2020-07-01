@@ -73,7 +73,13 @@ const Item = (props) => {
 
 const Filter: any = styled(props => {
     const { mode = 'schema', children, effects, mirror, ...others } = props
-    return <FilterProvider mirror={mirror} mode={mode} useForm={useForm} effects={effects}>
+    return <FilterProvider
+        mirror={mirror}
+        mode={mode}
+        {...others}
+        useForm={useForm}
+        effects={effects}
+    >
         {(connectProps) => {
             const { filterInstance } = connectProps
             return <SchemaForm form={filterInstance} {...others}>
