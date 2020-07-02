@@ -1,58 +1,76 @@
-# 使用ConnectProvider(推荐)
+# 使用 ConnectProvider(推荐)
 
-无须手动维护组件与AList的关系，简单包裹即可，方便在页面任何脱离搜索区域的地方使用改变搜索条件的组件。
+无须手动维护组件与 AList 的关系，简单包裹即可，方便在页面任何脱离搜索区域的地方使用改变搜索条件的组件。
 
-| 属性名       | 描述                             | 类型                 | 默认值                 |
-|:----------|:---------------------------------|:--------------------|:--------------------|
-| name    | 表单组件名                  | string |  |
-| searchOnChange    | 值改变时是否立即发起请求                  | boolean | false |
-| children    | 设置返回内容                  | ({ value, setValue }) |  |
-| defaultEmptyValue    | 设置默认空值                  | any | null |
+| 属性名            | 描述                     | 类型                  | 默认值 |
+| :---------------- | :----------------------- | :-------------------- | :----- |
+| name              | 表单组件名               | string                |        |
+| searchOnChange    | 值改变时是否立即发起请求 | boolean               | false  |
+| children          | 设置返回内容             | ({ value, setValue }) |        |
+| defaultEmptyValue | 设置默认空值             | any                   | null   |
 
 ```jsx
 import React, { useState } from 'react'
 import {
-  List, Table, Pagination, Filter,
-  Layout, Search, Clear, Reset,
-  createListActions, ConnectProvider
+  List,
+  Table,
+  Pagination,
+  Filter,
+  Layout,
+  Search,
+  Clear,
+  Reset,
+  createListActions,
+  ConnectProvider
 } from '@alist/antd'
 import { Select } from 'antd'
-import'antd/dist/antd.css'
+import 'antd/dist/antd.css'
 
 const actions = createListActions()
-const App = () => {  
+const App = () => {
   const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
 
-  return <div>
-    <List actions={actions} url={url} defaultFilterValues={{ username: 'hello' }}>
-      <Filter inline>
-        <Filter.Item type="input" name="username" title="username"/>
-        <Filter.Item type="input" name="age" title="age"/>
-        <Layout.ButtonGroup>
-          <Search>搜索</Search>
-          <Clear>清空</Clear>
-          <Reset>重置</Reset>
-        </Layout.ButtonGroup>
-      </Filter>
-      <div>
-        <h5>自定义组件搜索</h5>
-        <ConnectProvider name="custom" searchOnChange>
+  return (
+    <div>
+      <List
+        actions={actions}
+        url={url}
+        defaultFilterValues={{ username: 'hello' }}
+      >
+        <Filter inline>
+          <Filter.Item type="input" name="username" title="username" />
+          <Filter.Item type="input" name="age" title="age" />
+          <Layout.ButtonGroup>
+            <Search>搜索</Search>
+            <Clear>清空</Clear>
+            <Reset>重置</Reset>
+          </Layout.ButtonGroup>
+        </Filter>
+        <div>
+          <h5>自定义组件搜索</h5>
+          <ConnectProvider name="custom" searchOnChange>
             {({ value, setValue }) => {
-                console.log('===', value)
-                return <Select style={{ width: '200px' }} onChange={setValue} value={value}>
-                    <Select.Option value="a">a</Select.Option>
-                    <Select.Option value="b">b</Select.Option>
+              return (
+                <Select
+                  style={{ width: '200px' }}
+                  onChange={setValue}
+                  value={value}
+                >
+                  <Select.Option value="a">a</Select.Option>
+                  <Select.Option value="b">b</Select.Option>
                 </Select>
+              )
             }}
-        </ConnectProvider>
-      </div>
-      <Table>
-        <Table.Column title="label" dataIndex="label" sorter/>
-        <Table.Column title="value" dataIndex="value"/>
-      </Table>
-      <Pagination />
-    </List>
-  </div>
+          </ConnectProvider>
+        </div>
+        <Table>
+          <Table.Column title="label" dataIndex="label" sorter />
+          <Table.Column title="value" dataIndex="value" />
+        </Table>
+        <Pagination />
+      </List>
+    </div>
+  )
 }
 
 ReactDOM.render(<App />, document.getElementById('root'))
@@ -66,58 +84,71 @@ ReactDOM.render(<App />, document.getElementById('root'))
 ```jsx
 import React, { useState } from 'react'
 import {
-  List, Table, Pagination, Filter,
-  Layout, Search, Clear, Reset, ListEffectHooks,
-  createListActions,
+  List,
+  Table,
+  Pagination,
+  Filter,
+  Layout,
+  Search,
+  Clear,
+  Reset,
+  ListEffectHooks,
+  createListActions
 } from '@alist/antd'
 import { Select } from 'antd'
-import'antd/dist/antd.css'
+import 'antd/dist/antd.css'
 
 const { onListClear$ } = ListEffectHooks
 const actions = createListActions()
-const App = () => {  
+const App = () => {
   const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
 
   const [value, setValue] = useState('')
-  const changeHandler = (val) => {
-      setValue(val)
-      actions.setFilterData({ 'custom': val })
-      actions.refresh()
+  const changeHandler = val => {
+    setValue(val)
+    actions.setFilterData({ custom: val })
+    actions.refresh()
   }
 
-  return <div>
-    <List
+  return (
+    <div>
+      <List
         actions={actions}
         url={url}
         effects={() => {
-            onListClear$().subscribe(() => {
-                changeHandler(null)
-            })
+          onListClear$().subscribe(() => {
+            changeHandler(null)
+          })
         }}
-    >
-      <Filter inline initialValues={{ username: 'hello' }}>
-        <Filter.Item type="input" name="username" title="username"/>
-        <Filter.Item type="input" name="age" title="age"/>
-        <Layout.ButtonGroup>
-          <Search>搜索</Search>
-          <Clear>清空</Clear>
-          <Reset>重置</Reset>
-        </Layout.ButtonGroup>
-      </Filter>
-      <div>
-        <h5>自定义组件搜索</h5>
-        <Select style={{ width: '200px' }} onChange={changeHandler} value={value}>
+      >
+        <Filter inline initialValues={{ username: 'hello' }}>
+          <Filter.Item type="input" name="username" title="username" />
+          <Filter.Item type="input" name="age" title="age" />
+          <Layout.ButtonGroup>
+            <Search enableLoading>搜索</Search>
+            <Clear>清空</Clear>
+            <Reset>重置</Reset>
+          </Layout.ButtonGroup>
+        </Filter>
+        <div>
+          <h5>自定义组件搜索</h5>
+          <Select
+            style={{ width: '200px' }}
+            onChange={changeHandler}
+            value={value}
+          >
             <Select.Option value="a">a</Select.Option>
             <Select.Option value="b">b</Select.Option>
-        </Select>
-      </div>
-      <Table>
-        <Table.Column title="label" dataIndex="label" sorter/>
-        <Table.Column title="value" dataIndex="value"/>
-      </Table>
-      <Pagination />
-    </List>
-  </div>
+          </Select>
+        </div>
+        <Table>
+          <Table.Column title="label" dataIndex="label" sorter />
+          <Table.Column title="value" dataIndex="value" />
+        </Table>
+        <Pagination />
+      </List>
+    </div>
+  )
 }
 
 ReactDOM.render(<App />, document.getElementById('root'))
