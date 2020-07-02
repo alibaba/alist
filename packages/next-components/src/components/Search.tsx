@@ -16,7 +16,7 @@ const InternalSearch = (props) => {
                 }
 
                 return <Button
-                    loading={list.getLoading()}
+                    // loading={list.getLoading()}
                     type="primary"
                     {...others}
                     onClick={(...args) => {
