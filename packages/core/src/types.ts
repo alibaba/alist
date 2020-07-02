@@ -269,6 +269,7 @@ export interface IList {
   setLoading: (loading: boolean, fnOpts?: IListFunctionOptions) => void
   getLoading: () => boolean
   setUrl: (url: string, fnOpts?: IListFunctionOptions) => void
+  getUrl: () => string
   setQuery: (query: IListQuery, fnOpts?: IListFunctionOptions) => void
   setParams: (params: IListParams, fnOpts?: IListFunctionOptions) => void
   getParams: () => IListParams

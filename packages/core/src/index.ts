@@ -432,6 +432,10 @@ function createList(props: IListProps = {}): IList {
     }
   }
 
+  const getUrl = () => {
+    return url
+  }
+
   // 设置query
   const setQuery = (nextQuery: IListQuery, fnOpts?: IListFunctionOptions) => {
     query = nextQuery
@@ -588,6 +592,7 @@ function createList(props: IListProps = {}): IList {
     setValidateConfig,
     getValidateConfig: list.getValidateConfig,
     setUrl, // 动态切换url
+    getUrl, // 获取url
     setQuery, // 动态切换query
     getParams, // 获取url参数
     setParams, // 动态设置url参数
