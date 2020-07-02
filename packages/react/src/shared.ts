@@ -60,6 +60,7 @@ export const apiList = [
   'setLoading',
   'getLoading',
   'setUrl',
+  'getUrl',
   'setQuery',
   'setParams',
   'getParams',
