@@ -8,7 +8,7 @@
     "bootstrap:ci": "lerna bootstrap --no-ci",
     "clean": "lerna clean",
     "build": "rm -rf packages/*/lib packages/*/esm && lerna run build",
-    "build:docs": "node ./scripts/docs.js build -i docs -o docs",
+    "build:docs": "node ./scripts/docs.js build -i docs -o docs-build",
     "start": "node ./scripts/docs.js start -i docs",
     "test": "npm run lint && jest",
     "test:core": "jest --watch packages/core/src/__tests__/*.spec.ts",

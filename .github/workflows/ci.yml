@@ -22,4 +22,4 @@ jobs:
         access-key-id: ${{ secrets.OSS_KEY_ID }}
         access-key-secret: ${{ secrets.OSS_KEY_SECRET }}
     - name: Deply To OSS
-      run: ossutil cp docs oss://alist-docs/ -rf
+      run: ossutil cp docs-build oss://alist-wiki/ -rf
