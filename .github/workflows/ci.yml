@@ -13,7 +13,7 @@ jobs:
     - name: Build Blog
       run: |
         npm install
-        npm run bootstrap
+        npm run bootstrap:ci
         num run build:docs
     - name: setup aliyun oss
       uses: manyuanrong/setup-ossutil@master

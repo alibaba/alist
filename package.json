@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "bootstrap": "lerna bootstrap",
+    "bootstrap:ci": "lerna bootstrap --no-ci",
     "clean": "lerna clean",
     "build": "rm -rf packages/*/lib packages/*/esm && lerna run build",
     "build:docs": "node ./scripts/docs.js build -i docs -o docs",
