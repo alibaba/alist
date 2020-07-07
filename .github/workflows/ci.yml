@@ -1,0 +1,25 @@
+name: MainWorkflow
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: "12.x"
+    - name: Build Blog
+      run: |
+        npm install
+        npm run bootstrap
+        num run build:docs
+    - name: setup aliyun oss
+      uses: manyuanrong/setup-ossutil@master
+      with:
+        endpoint: "oss-cn-beijing.aliyuncs.com"
+        access-key-id: ${{ secrets.OSS_KEY_ID }}
+        access-key-secret: ${{ secrets.OSS_KEY_SECRET }}
+    - name: Deply To OSS
+      run: ossutil cp docs oss://alist-docs/ -rf
