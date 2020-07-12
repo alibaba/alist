@@ -16,6 +16,10 @@ const ListProvider: React.FC<any> = (props = {}) => {
 
   useEffect(() => {
     list.notify(ListLifeCycleTypes.ON_LIST_MOUNTED)
+    const filterInstance = list.getFilterInstance()
+    if (filterInstance) {
+      filterInstance.notify(ListLifeCycleTypes.ON_LIST_MOUNTED)
+    }
   }, [])
   
   return (

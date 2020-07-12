@@ -65,6 +65,11 @@ const App = () => {
               </div>
             )
           }}
+          effects={($) => {
+            $(ListLifeCycleTypes.ON_LIST_MOUNTED).subscribe(() => {
+              console.log('list mounted')
+            })
+          }}
           initialValues={{
             f1: 'default value1',
             f2: 'default value2'

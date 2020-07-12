@@ -242,7 +242,7 @@ export interface IList {
   setSelectionConfig: (selectionConfig: IListSelectionConfig) => void
   disableSelectionConfig: () => void
   getSelections: () => IListSelections
-  getFilterEffects: (filterProps: IFilterEffectsProps) => filterEffects
+  getFilterEffects: (filterProps?: IFilterEffectsProps) => filterEffects
   getTableProps: () => IListKVMap<any>
   setTableProps: (data: IListKVMap<any>) => void
   getDataSource: () => IListDataSource
