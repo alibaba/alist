@@ -28,7 +28,7 @@ import 'antd/dist/antd.css'
 
 const actions = createListActions()
 const App = () => {
-  const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
+  const url = 'https://alist-wiki.oss-cn-beijing.aliyuncs.com/data.json'
 
   return (
     <div>
@@ -101,7 +101,7 @@ import 'antd/dist/antd.css'
 const { onListClear$ } = ListEffectHooks
 const actions = createListActions()
 const App = () => {
-  const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
+  const url = 'https://alist-wiki.oss-cn-beijing.aliyuncs.com/data.json'
 
   const [value, setValue] = useState('')
   const changeHandler = val => {

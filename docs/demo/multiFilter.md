@@ -27,7 +27,7 @@ for (let i = 0; i < 10; i++) {
 
 const actions = createListActions()
 const App = () => {  
-  const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
+  const url = 'https://alist-wiki.oss-cn-beijing.aliyuncs.com/data.json'
   const [visible, setVisible] = useState(false)
   const [displayFields, setDisplayFields] = useState(['1', '2', '3', '4'])
 
@@ -92,7 +92,7 @@ for (let i = 0; i < 10; i++) {
 
 const actions = createListActions()
 const App = () => {  
-  const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
+  const url = 'https://alist-wiki.oss-cn-beijing.aliyuncs.com/data.json'
   const latestFields = useRef([])
   const [visible, setVisible] = useState(false)
   const [displayFields, setDisplayFields] = useState(['0', '1', '2', '3', '4'])

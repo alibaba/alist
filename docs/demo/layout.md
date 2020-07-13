@@ -30,7 +30,7 @@ import'antd/dist/antd.css'
 
 const actions = createListActions()
 const App = () => {  
-  const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
+  const url = 'https://alist-wiki.oss-cn-beijing.aliyuncs.com/data.json'
 
   return <div>
     <List
@@ -78,7 +78,7 @@ import'antd/dist/antd.css'
 
 const actions = createListActions()
 const App = () => {  
-  const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
+  const url = 'https://alist-wiki.oss-cn-beijing.aliyuncs.com/data.json'
 
   return <div>
     <List
@@ -158,7 +158,7 @@ import'antd/dist/antd.css'
 
 const actions = createListActions()
 const App = () => {  
-  const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
+  const url = 'https://alist-wiki.oss-cn-beijing.aliyuncs.com/data.json'
 
   return <div>
     <List
@@ -206,7 +206,7 @@ import'@alifd/next/dist/next.css'
 const DateRangePicker = DatePicker.RangePicker
 const actions = createListActions()
 const App = () => {  
-  const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
+  const url = 'https://alist-wiki.oss-cn-beijing.aliyuncs.com/data.json'
 
   return <div>
     <List
@@ -288,7 +288,7 @@ import'antd/dist/antd.css'
 
 const actions = createListActions()
 const App = () => {  
-  const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
+  const url = 'https://alist-wiki.oss-cn-beijing.aliyuncs.com/data.json'
 
   return <div>
     <List
@@ -329,7 +329,7 @@ import'antd/dist/antd.css'
 
 const actions = createListActions()
 const App = () => {  
-  const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
+  const url = 'https://alist-wiki.oss-cn-beijing.aliyuncs.com/data.json'
 
   return <div>
     <List
@@ -374,7 +374,7 @@ const { TabPane } = Tabs;
 const actions1 = createListActions()
 const actions2 = createListActions()
 const App = () => {  
-  const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
+  const url = 'https://alist-wiki.oss-cn-beijing.aliyuncs.com/data.json'
   const [visible, setVisible] = useState(true)
 
   const btn = <Button onClick={() => {

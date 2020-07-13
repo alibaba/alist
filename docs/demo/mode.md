@@ -14,8 +14,7 @@ import'antd/dist/antd.css'
 
 const actions = createListActions()
 const App = () => {  
-  const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
-
+  const url = 'https://alist-wiki.oss-cn-beijing.aliyuncs.com/data.json'
   return <div>
     <List
       actions={actions}
@@ -106,7 +105,7 @@ const getDataSource = (len) => {
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 const actions = createListActions()
 const App = () => {  
-  const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
+  const url = 'https://alist-wiki.oss-cn-beijing.aliyuncs.com/data.json'
   
   const customQuery = async (opts) => {
     const { data, url, method } = opts

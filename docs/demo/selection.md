@@ -43,7 +43,7 @@ const actions = createListActions()
 
 const App = props => {
   const { children, ...others } = props
-  const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
+  const url = 'https://alist-wiki.oss-cn-beijing.aliyuncs.com/data.json'
 
   return (
     <List

@@ -31,7 +31,7 @@ const listActions = createListActions()
 const actions = createFormActions()
 
 const App = () => {  
-  const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
+  const url = 'https://alist-wiki.oss-cn-beijing.aliyuncs.com/data.json'
 
   return <div>
     <Printer>
@@ -109,7 +109,7 @@ const listActions = createListActions()
 const actions = createFormActions()
 
 const App = () => {  
-  const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
+  const url = 'https://alist-wiki.oss-cn-beijing.aliyuncs.com/data.json'
 
   return <div>
     <Printer>

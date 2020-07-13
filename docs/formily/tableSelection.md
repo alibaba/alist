@@ -36,7 +36,7 @@ const listActions = createListActions()
 const actions = createFormActions()
 
 const App = () => {  
-  const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
+  const url = 'https://alist-wiki.oss-cn-beijing.aliyuncs.com/data.json'
 
   return <div>
     <h5>打开控制台查看Network发起的请求</h5>
@@ -142,7 +142,7 @@ const listActions = createListActions()
 const actions = createFormActions()
 
 const App = () => {  
-  const url = 'https://mocks.alibaba-inc.com/mock/alist/data'
+  const url = 'https://alist-wiki.oss-cn-beijing.aliyuncs.com/data.json'
 
   return <div>
     <h5>打开控制台查看Network发起的请求</h5>
