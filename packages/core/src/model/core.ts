@@ -4,7 +4,8 @@ import { ModeType, IListProps,
     IListSortConfig,
     IListMultipleData, IListMultiplePageSize, IListBaseResponse, IListKVMap,
     IListPageData,
-    IListSelectionConfig
+    IListSelectionConfig,
+    EmptyStatusType
 } from '../types'
 
 const defaultSortConfig: IListSortConfig = {
@@ -54,6 +55,7 @@ export default class ListCore extends EventEmitter {
             total, // 总数据条目数
             totalPages, // 总页面数
             loading: false,// 当前加载数据状态: true | false
+            emptyStatus: EmptyStatusType.INIT, // init初始化 | empty请求后无数据 | error请求后异常
             defaultFilterValues: props.defaultFilterValues,
             validateConfig: props.validateConfig || {},
             filterValues: props.defaultFilterValues || {},     
@@ -75,6 +77,12 @@ export default class ListCore extends EventEmitter {
         //     ]
         // })
     }
+
+    setEmptyStatus = (emptyStatus) => {
+        this.state.emptyStatus = emptyStatus
+    }
+
+    getEmptyStatus = () => this.state.emptyStatus
 
     setSortConfig = (sortConfig?: IListSortConfig) => {
         if ('mode' in sortConfig) {

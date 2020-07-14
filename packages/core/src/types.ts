@@ -143,6 +143,11 @@ export interface IListState {
   // params?: any,
   // method: IListQueryMethod,
   // query: IListQuery,
+  emptyStatus:
+    | EmptyStatusType.INIT
+    | EmptyStatusType.EMPTY
+    | EmptyStatusType.ERROR
+    | EmptyStatusType.VALID
   pageSize: number
   currentPage: number
   total: number
@@ -157,6 +162,12 @@ export interface IListState {
 export type IListEvent = (payload?: any) => void
 export type IListEventMap = IListKVMap<IListEvent[]>
 
+export enum EmptyStatusType {
+  INIT = 'init',
+  EMPTY = 'empty',
+  ERROR = 'error',
+  VALID = 'valid'
+}
 export enum ModeType {
   DATASOURCE = 'dataSource',
   URL = 'url',
@@ -242,6 +253,7 @@ export interface IList {
   setSelectionConfig: (selectionConfig: IListSelectionConfig) => void
   disableSelectionConfig: () => void
   getSelections: () => IListSelections
+  getEmptyStatus: () => EmptyStatusType
   getFilterEffects: (filterProps?: IFilterEffectsProps) => filterEffects
   getTableProps: () => IListKVMap<any>
   setTableProps: (data: IListKVMap<any>) => void

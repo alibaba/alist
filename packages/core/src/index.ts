@@ -13,7 +13,8 @@ import {
   IListMultipleDataParams,
   IListMultiplePageSize,
   IListSelectionConfig,
-  ExpandStatus
+  ExpandStatus,
+  EmptyStatusType
 } from './types'
 export * from './types'
 import { isFn } from './util'
@@ -141,6 +142,7 @@ function createList(props: IListProps = {}): IList {
         data: queryData
       })
     } catch (e) {
+      console.error(e && e.message ? e.message : e)
       if (e && e.message) {
         reqErr = e.message
       } else if (e) {
@@ -217,6 +219,14 @@ function createList(props: IListProps = {}): IList {
       },
       ctx: listAPI
     })
+
+    list.setEmptyStatus(
+      reqErr !== null
+        ? EmptyStatusType.ERROR
+        : reqEmpty
+        ? EmptyStatusType.EMPTY
+        : EmptyStatusType.VALID
+    )
 
     // 生命周期：即将更新
     lifeCycles.notify({
@@ -612,6 +622,7 @@ function createList(props: IListProps = {}): IList {
     setSelectionConfig,
     disableSelectionConfig,
     getSelections: list.getSelections,
+    getEmptyStatus: list.getEmptyStatus,
 
     // 渲染取数相关
     getTableProps: list.getTableProps,

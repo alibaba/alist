@@ -5,5 +5,6 @@ const ListSpy = createVirtualBox('alist-consumer', InternalConsumer)
 
 export {
     ListSpy,
+    InternalConsumer as InternalListSpy,
     InternalConsumer,
 }

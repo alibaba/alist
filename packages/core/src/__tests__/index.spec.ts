@@ -29,6 +29,7 @@ describe('createList', () => {
         "setSelectionConfig",
         "disableSelectionConfig",
         "getSelections",
+        "getEmptyStatus",
         "getTableProps",
         "setTableProps",
         "setPaginationDataSource",
