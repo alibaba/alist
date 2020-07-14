@@ -23,6 +23,14 @@ const pickInitialTableProps = (props) => {
 const VerCenterTitle = styled((props) => <div {...props} />)`
     display: flex;
     align-items: center;
+    justify-content: ${props => {
+        const alignMap = {
+            left: 'flex-start',
+            right: 'flex-end',
+            center: 'center'
+        }
+        return alignMap[props.align]
+    }};
 `
 
 const RecursionTable = (props) => {
@@ -133,10 +141,10 @@ const needComputeColumnProps = (itemProps) => ['moment', 'sortable'].filter(k =>
 const computeColumnProps = (itemProps, opts) => {
     const cloneProps = { ...(itemProps || {}) }
     const { onSort } = opts || {}
-    const { title, dataIndex } = cloneProps
+    const { title, dataIndex, alignHeader, align } = cloneProps
     if (itemProps.sortable) {
         cloneProps.sortable = undefined;
-        cloneProps.title = <VerCenterTitle>
+        cloneProps.title = <VerCenterTitle align={alignHeader || align || 'left'}>
             {title}
             <Sorter dataIndex={dataIndex} onSort={(dataIndex, order) => {
                 onSort(dataIndex, order)

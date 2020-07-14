@@ -49,6 +49,10 @@ const InternalSorter = styled((props) => {
     height: 1rem;
     cursor: pointer;
     margin-top: -4px;
+
+    &.next-table-sort {
+        width: auto;
+    }
     
     .alist-sorter {
         transform: scale(0.91666667) rotate(0deg);
