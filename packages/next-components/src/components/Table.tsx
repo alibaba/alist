@@ -91,6 +91,18 @@ const TableStyledWrapper = styled((props) => {
 
     .alist-recursion-table {
         table {
+            td.next-table-cell.first {
+                ${props => (props.hasTreeCtrl === false) && css`
+                    > div.next-table-cell-wrapper {
+                        padding-left: 16px !important;
+
+                        .next-table-tree-placeholder,
+                        .next-table-tree-arrow {
+                            display: none;
+                        }
+                    }
+                `}
+            }
             .next-table-expanded-row {        
                 td {
                     border-width: ${(props) => ((props.hasBorder === undefined ? true : !!props.hasBorder) ? 1 : 0)}px;
@@ -129,7 +141,7 @@ const TableStyledWrapper = styled((props) => {
     }
 `
 
-type AListTableProps = TableProps & { loopBackground?: boolean }
+type AListTableProps = TableProps & { loopBackground?: boolean, hasTreeCtrl?: boolean }
 type InternalTableType =  React.FunctionComponent<AListTableProps> & {
     Column: typeof NextTable.Column
     ColumnGroup: typeof NextTable.ColumnGroup,
@@ -178,6 +190,7 @@ const InternalTable: InternalTableType = props => {
     return <TableStyledWrapper
         hasBorder={props.hasBorder}
         loopBackground={props.loopBackground}
+        hasTreeCtrl={props.hasTreeCtrl}
     >
         <TableProvider pickInitialTableProps={pickInitialTableProps} {...others}>
             {(connectProps, list) => {

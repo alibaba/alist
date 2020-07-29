@@ -4,6 +4,10 @@ export * from './components/List'
 export * from './components/Selection'
 export * from './components/ExpandContainer'
 export * from './components/ExpandTrigger'
+export {
+  MultipleProvider,
+  InternalMultipleProvider
+} from './components/MultipleProvider'
 export * from './components/ToggleTrigger'
 export * from './components/Table'
 export * from './components/Pagination'

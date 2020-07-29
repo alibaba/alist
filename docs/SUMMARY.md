@@ -29,6 +29,7 @@
 - 结合 Formily
   - [快速开始](./formily/basic.md)
   - [搜索及 Table 区域展开收起](./formily/expand.md)
+  - [多实例嵌套展开收起](./formily/nested.md)
   - [Table 排序](./formily/tableSort.md)
   - [Table 筛选及消费](./formily/tableSelection.md)
   - [空状态](./formily/empty.md)

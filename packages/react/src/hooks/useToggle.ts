@@ -1,13 +1,21 @@
 import { useState, useContext, useEffect, useRef } from "react"
 import TableContext from "../context/table"
 
+const getFlatIds = (dataSource, primaryKey) => {
+    return (dataSource || []).reduce((buf, current) => {
+        const { children } = current
+        const id = current[primaryKey]
+        return [...buf, id, ...getFlatIds(children, primaryKey)]
+    }, [])
+}
+
 export const useToggle = (props) => {
     const { dataSource, defaultOpen, defaultOpenAll, toggleeKey } = props
     const { list, tableProps } = useContext(TableContext)
     const { primaryKey = 'id' } = tableProps
     const formatDataSource = dataSource || []
     const manualTriggered = useRef(false)
-    const isDefaultExpandMode = ('expandedRowRender' in props && !(toggleeKey in props))
+    const isDefaultExpandMode = (('expandedRowRender' in props || 'isTree' in props) && !(toggleeKey in props))
 
     let initOpenKey = []
     if (Array.isArray(defaultOpen)) {
@@ -16,7 +24,7 @@ export const useToggle = (props) => {
         initOpenKey = defaultOpen(formatDataSource)
     }
 
-    const allKeys = formatDataSource.map(item => item[primaryKey])
+    const allKeys = getFlatIds(formatDataSource, primaryKey)
     if (defaultOpenAll) {
         initOpenKey = [...allKeys]
     }
@@ -27,7 +35,7 @@ export const useToggle = (props) => {
             manualTriggered.current = true
         }
 
-        if (formatDataSource.find(item => item[primaryKey] === key)) {
+        if (allKeys.find(item => item === key)) {
             if (openRowKeys.indexOf(key) === -1) {
                 setOpenRowKeys([...openRowKeys, key])
             } else {

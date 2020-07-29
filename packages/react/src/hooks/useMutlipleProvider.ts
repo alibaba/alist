@@ -9,17 +9,20 @@ export const useMultipleProvider = (props: IMultipleProps): IMultipleHook => {
     const list = useContext(ListContext)
 
     useEffect(() => {
-        list.setMultiplePageSize({ [id]: pageSize })
+        list && list.setMultiplePageSize({ [id]: pageSize })
     }, [])
 
     const forceUpdate = useForceUpdate()
     const refresh = () => {
         forceUpdate()
     }
+    
     useEffect(() => {
-        const id = list.subscribe(ListLifeCycleTypes.ON_LIST_MULTIPLE_REFRESH, refresh)
-        return function cleanup() {
-            list.unSubscribe(id)
+        if (list) {
+            const id = list.subscribe(ListLifeCycleTypes.ON_LIST_MULTIPLE_REFRESH, refresh)
+            return function cleanup() {
+                list.unSubscribe(id)
+            }
         }
     })
 

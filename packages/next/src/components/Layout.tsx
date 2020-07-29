@@ -5,8 +5,9 @@ import {
 } from '@formily/next'
 import { FormItemGrid, MegaLayout } from '@formily/next-components'
 import { compatLayoutProps } from '@alist/react'
+import { ILayoutProps } from '..'
 
-let Layout: React.FC & {
+let Layout: React.FC<ILayoutProps> & {
     (): any;
     ButtonGroup: any;
     Grid: any;

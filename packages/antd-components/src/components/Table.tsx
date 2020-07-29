@@ -4,7 +4,7 @@ import { Table as AntdTable } from 'antd'
 import { TableProps, ColumnProps } from 'antd/lib/table'
 import { ColumnGroupProps } from 'antd/lib/table/ColumnGroup'
 import { IVirtualBoxProps, createVirtualBox, createControllerBox, FormExpressionScopeContext, complieExpression } from '@formily/antd'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import moment from 'moment'
 
 // 遵循最小可用原则来采集初始化的table属性
@@ -96,6 +96,21 @@ const TableStyledWrapper = styled((props) => {
             }
         }
         table {
+            td.ant-table-cell.ant-table-cell-with-append {
+                ${props => (props.hasTreeCtrl === false) && css`
+                    > span.ant-table-row-indent {
+                        padding-left: 16px !important;
+
+                        
+                    }
+                    .ant-table-row-expand-icon-expanded,
+                    .ant-table-row-expand-icon-collapsed,
+                    .ant-table-row-expand-icon-spaced {
+                        display: none;
+                    }
+                `}
+            }
+
             .ant-table-expanded-row {        
                 td {
                     border-width: ${(props) => ((props.bordered === undefined ? false : !!props.bordered) ? 1 : 0)}px;
@@ -131,7 +146,7 @@ const momentify = (val, propsMoment) => {
     return val ? moment(isNaN(val) ? val : Number(val)).format(format) : null;
 }
 
-type AListTableProps = TableProps<any> & { loopBackground?: boolean }
+type AListTableProps = TableProps<any> & { loopBackground?: boolean, hasTreeCtrl?: boolean }
 type InternalTableType =  React.FunctionComponent<AListTableProps> & {
     Column: typeof AntdTable.Column
     ColumnGroup: typeof AntdTable.ColumnGroup,
@@ -174,7 +189,10 @@ const InternalTable: InternalTableType = props => {
         })
     }
     
-    return <TableStyledWrapper bordered={props.bordered}>
+    return <TableStyledWrapper
+        bordered={props.bordered}
+        hasTreeCtrl={props.hasTreeCtrl}
+    >
         <TableProvider pickInitialTableProps={pickInitialTableProps} {...others}>
             {(connectProps, list) => {
                 return <RecursionTable
