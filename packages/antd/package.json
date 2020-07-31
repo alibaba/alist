@@ -1,6 +1,6 @@
 {
   "name": "@alist/antd",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "main": "lib",
   "engines": {
     "npm": ">=3.0.0"
@@ -17,16 +17,16 @@
   "peerDependencies": {
     "@babel/runtime": "^7.4.4",
     "@formily/antd": "^1.2.1",
-    "styled-components": "^4.4.1",
     "@formily/antd-components": "^1.2.1",
     "antd": "4.x",
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0",
-    "react-eva": "^1.1.7"
+    "react-eva": "^1.1.7",
+    "styled-components": "^4.4.1"
   },
   "dependencies": {
-    "@alist/antd-components": "^1.0.17",
-    "@alist/react-schema-renderer": "^1.0.17",
+    "@alist/antd-components": "^1.0.18",
+    "@alist/react-schema-renderer": "^1.0.18",
     "@formily/antd-components": "^1.2.1",
     "@types/classnames": "^2.2.9",
     "@types/styled-components": "^4.4.0"
