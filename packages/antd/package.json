@@ -17,6 +17,7 @@
   "peerDependencies": {
     "@babel/runtime": "^7.4.4",
     "@formily/antd": "^1.2.1",
+    "styled-components": "^4.4.1",
     "@formily/antd-components": "^1.2.1",
     "antd": "4.x",
     "react": ">=16.8.0",
