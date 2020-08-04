@@ -1,6 +1,6 @@
 {
   "name": "@alist/next",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "main": "lib",
   "engines": {
     "npm": ">=3.0.0"
@@ -24,8 +24,8 @@
     "react-eva": "^1.1.7"
   },
   "dependencies": {
-    "@alist/next-components": "^1.0.19",
-    "@alist/react-schema-renderer": "^1.0.19",
+    "@alist/next-components": "^1.0.20",
+    "@alist/react-schema-renderer": "^1.0.20",
     "@formily/next-components": "^1.2.1",
     "@types/classnames": "^2.2.9",
     "@types/styled-components": "4.1.8"
