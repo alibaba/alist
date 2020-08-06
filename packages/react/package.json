@@ -13,16 +13,14 @@
     "typescript": "^3.5.2"
   },
   "dependencies": {
-    "@alist/core": "^1.0.20",
-    "styled-components": "^4.4.1"
+    "@alist/core": "^1.0.20"
   },
   "peerDependencies": {
     "@babel/runtime": "^7.4.4",
     "@types/react": "^16.8.23",
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0",
-    "react-eva": "^1.1.7",
-    "styled-components": "^4.4.1"
+    "react-eva": "^1.1.7"
   },
   "repository": {
     "type": "git",
