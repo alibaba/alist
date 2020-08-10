@@ -1,5 +1,6 @@
 import { useContext, useEffect } from 'react'
 import ListContext from '../context'
+import ListPropsContext from '../context/listProps'
 import MultipleContext from '../context/multiple'
 import { ListLifeCycleTypes, IListKVMap, IListResponse, IList } from '@alist/core'
 import useForceUpdate from './useForceUpdate'
@@ -10,6 +11,8 @@ export const usePagination = (props: IPaginationProps = {}, propList?: IList): I
     const list = propList || useContext(ListContext)
     const { id: contextMultipleId } = useContext(MultipleContext) || {}
     const multipleId = propsMultipleId || contextMultipleId
+    const listProps = useContext(ListPropsContext) || {}
+    let hideWhenInvalid = listProps.hideWhenInvalid || false
 
     let pageData
     let setCurrentPage
@@ -54,6 +57,7 @@ export const usePagination = (props: IPaginationProps = {}, propList?: IList): I
         pageData,
         setCurrentPage,
         setPageSize: list.setPageSize,
+        hideWhenInvalid,
     }
 }
 

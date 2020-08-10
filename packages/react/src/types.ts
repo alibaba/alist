@@ -57,6 +57,7 @@ export interface IFilterMode {
 }
 
 export interface ITableProps {
+  hideWhenInvalid?: boolean
   primaryKey?: string
   pickInitialTableProps?: (props: ITableProps) => any
   children?: React.ReactElement | ((...args: any) => React.ReactElement)
@@ -203,6 +204,7 @@ export interface ITableHook {
   list: IList
   dataSource: any[]
   loading: boolean
+  hideWhenInvalid: boolean
 }
 
 export interface IPaginationHook {
@@ -210,6 +212,7 @@ export interface IPaginationHook {
   setCurrentPage: (page: number) => void
   setPageSize: (pageSize: number) => void
   pageData: IListPageData
+  hideWhenInvalid: boolean
 }
 
 export interface IFilterHook {

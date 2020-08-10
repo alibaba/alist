@@ -65,7 +65,7 @@ const App = () => {
               </div>
             )
           }}
-          effects={($) => {
+          effects={$ => {
             $(ListLifeCycleTypes.ON_LIST_MOUNTED).subscribe(() => {
               console.log('list mounted')
             })
@@ -191,6 +191,159 @@ const App = () => {
             </Table>
             <Pagination />
           </List>
+        </SchemaForm>
+      </Printer>
+    </div>
+  )
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))
+```
+
+## 直接使用 Table (Ant-Design)
+
+> 查看源码可以点击右下角到 `codesandbox查看` 或者 `本地查看`。
+
+```jsx
+import React, { useRef, useContext } from 'react'
+import {
+  List,
+  Table,
+  Pagination,
+  Search,
+  Clear,
+  Reset,
+  Consumer,
+  ButtonGroup,
+  createListActions,
+  ListLifeCycleTypes
+} from '@alist/antd-components'
+import {
+  SchemaForm,
+  SchemaMarkupField as Field,
+  Submit,
+  createFormActions,
+  createVirtualBox
+} from '@formily/antd'
+import { Button } from 'antd'
+import { FormMegaLayout, Input } from '@formily/antd-components'
+import { HomeOutlined } from '@ant-design/icons'
+import Printer from '@formily/printer'
+import 'antd/dist/antd.css'
+
+const SchemaButton = createVirtualBox('schema-btn', Button)
+
+const actions = createFormActions()
+const App = () => {
+  return (
+    <div>
+      <Printer>
+        <SchemaForm
+          actions={actions}
+          components={{ Input }}
+          expressionScope={{
+            renderLabel: (val, idx, record) => <div>---{val}</div>,
+            renderLabelTitle: title => (
+              <div>
+                <HomeOutlined />
+                {title}
+              </div>
+            ),
+            setDataSource: () => {
+              actions.setFieldState('ds', state => {
+                state.props['x-component-props'].dataSource = [
+                  { label: 'hello', value: 'world' },
+                  { label: 'alist', value: 'table' }
+                ]
+              })
+            }
+          }}
+        >
+          <Table name="ds" dataSource={[]}>
+            <Table.Column
+              title="{{renderLabelTitle('标题')}}"
+              dataIndex="label"
+              cell="{{renderLabel}}"
+            />
+            <Table.Column title="value" dataIndex="value" />
+          </Table>
+          <SchemaButton onClick="{{setDataSource}}" children="设置dataSource" />
+        </SchemaForm>
+      </Printer>
+    </div>
+  )
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))
+```
+
+## 直接使用 Table (Fusion-Next)
+
+> 查看源码可以点击右下角到 `codesandbox查看` 或者 `本地查看`。
+
+```jsx
+import React, { useRef, useContext } from 'react'
+import {
+  List,
+  Table,
+  Pagination,
+  Search,
+  Clear,
+  Reset,
+  Consumer,
+  ButtonGroup,
+  createListActions,
+  ListLifeCycleTypes
+} from '@alist/next-components'
+import {
+  SchemaForm,
+  SchemaMarkupField as Field,
+  Submit,
+  createFormActions,
+  createVirtualBox
+} from '@formily/next'
+import { FormMegaLayout, Input } from '@formily/next-components'
+import { Button, Icon } from '@alifd/next'
+import Printer from '@formily/printer'
+import '@alifd/next/dist/next.css'
+
+const SchemaButton = createVirtualBox('schema-btn', Button)
+
+const actions = createFormActions()
+const App = () => {
+  return (
+    <div>
+      <Printer>
+        <SchemaForm
+          actions={actions}
+          expressionScope={{
+            renderLabel: (val, idx, record) => <div>---{val}</div>,
+            renderLabelTitle: title => (
+              <div>
+                <Icon type="favorites-filling" size="xs" />
+                {title}
+              </div>
+            ),
+            setDataSource: () => {
+              actions.setFieldState('ds', state => {
+                state.props['x-component-props'].dataSource = [
+                  { label: 'hello', value: 'world' },
+                  { label: 'alist', value: 'table' }
+                ]
+              })
+            }
+          }}
+        >
+          <Table name="ds" dataSource={[]}>
+            <Table.Column
+              title="{{renderLabelTitle('标题')}}"
+              dataIndex="label"
+              cell="{{renderLabel}}"
+            />
+            <Table.Column title="value" dataIndex="value" />
+          </Table>
+
+          <SchemaButton onClick="{{setDataSource}}" children="设置dataSource" />
         </SchemaForm>
       </Printer>
     </div>

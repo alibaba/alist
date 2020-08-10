@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from 'react'
 import ListContext from '../context'
+import ListPropsContext from '../context/listProps'
 import useList from '../hooks/useList'
 import { ListLifeCycleTypes } from '@alist/core';
 
@@ -24,9 +25,11 @@ const ListProvider: React.FC<any> = (props = {}) => {
   
   return (
     <ListContext.Provider value={list}>
-      <div className={className} style={style}>
-        {element}
-      </div>
+      <ListPropsContext.Provider value={others}>
+        <div className={className} style={style}>
+          {element}
+        </div>
+      </ListPropsContext.Provider>
     </ListContext.Provider>
   )
 }

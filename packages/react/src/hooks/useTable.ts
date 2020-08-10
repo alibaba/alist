@@ -1,5 +1,6 @@
 import { useContext, useEffect, useMemo } from 'react'
 import ListContext from '../context'
+import ListPropsContext from '../context/listProps'
 import MultipleContext from '../context/multiple'
 import { ListLifeCycleTypes, IListKVMap, IListResponse, IList } from '@alist/core'
 import useForceUpdate from './useForceUpdate'
@@ -9,8 +10,10 @@ export const useTable = (props: ITableProps = {}, propList?: IList): ITableHook 
     const { pickInitialTableProps, multipleId: propsMultipleId } = props
     const list = propList || useContext(ListContext)
     const { id: contextMultipleId } = useContext(MultipleContext) || {}
+    const listProps = useContext(ListPropsContext) || {}
     const multipleId = propsMultipleId || contextMultipleId
     const loading = list ? list.getLoading() : props.loading
+    let hideWhenInvalid = listProps.hideWhenInvalid || false
     let dataSource: any[]
 
     let primaryKey: any
@@ -20,7 +23,7 @@ export const useTable = (props: ITableProps = {}, propList?: IList): ITableHook 
         if (typeof pickInitialTableProps === 'function') {
             const initialTableProps = pickInitialTableProps(props)
             primaryKey = initialTableProps.primaryKey
-            list.setTableProps(initialTableProps)
+            list && list.setTableProps(initialTableProps)
         }
     }, [])
 
@@ -63,7 +66,7 @@ export const useTable = (props: ITableProps = {}, propList?: IList): ITableHook 
         }
     })
 
-    const tableProps = list.getTableProps()
+    const tableProps = list ? list.getTableProps() : {}
 
     return {
         tableProps,
@@ -71,6 +74,7 @@ export const useTable = (props: ITableProps = {}, propList?: IList): ITableHook 
         dataSource,
         loading,
         primaryKey,
+        hideWhenInvalid,
     }
 }
 
