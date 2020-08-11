@@ -22,6 +22,7 @@
     - [设置及消费筛选状态](./demo/selection.md)
     - [同步 URL 参数](./demo/syncParams.md)
     - [自定义消费组件](./demo/consumer.md)
+    - [消费额外接口数据](./demo/consumerExtra.md)
     - [通过 Schema 渲染](./schema/practise.md)
   - 进阶教程
     - [实现自定义请求组件](./advanced/query.md)

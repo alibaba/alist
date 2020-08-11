@@ -132,15 +132,19 @@ import {
   SchemaForm,
   SchemaMarkupField as Field,
   Submit,
-  createFormActions
+  createFormActions,
+  createVirtualBox
 } from '@formily/next'
 import { FormMegaLayout, Input } from '@formily/next-components'
-import { Icon } from '@alifd/next'
+import { Icon, Button } from '@alifd/next'
 import Printer from '@formily/printer'
 import '@alifd/next/dist/next.css'
 
+const SchemaButton = createVirtualBox('schema-btn', Button)
+
 const listActions = createListActions()
 const actions = createFormActions()
+window.ll = listActions
 const App = () => {
   const url = 'https://alist-wiki.oss-cn-beijing.aliyuncs.com/data.json'
 
@@ -158,7 +162,13 @@ const App = () => {
                 <Icon type="favorites-filling" size="xs" />
                 {title}
               </div>
-            )
+            ),
+            setDataSource: () => {
+              listActions.setDataSource([
+                { label: 'hello', value: 'world' },
+                { label: 'alist', value: 'table' }
+              ])
+            }
           }}
           initialValues={{
             f1: 'default value1',

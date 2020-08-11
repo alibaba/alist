@@ -62,6 +62,7 @@ export default class ListCore extends EventEmitter {
             tableProps: {},       
             multipleData: {},
             multiplePageSize: {},
+            responseData: {},
             sortConfig,
             selectionConfig, // 当前勾选的项
         }
@@ -83,6 +84,12 @@ export default class ListCore extends EventEmitter {
     }
 
     getEmptyStatus = () => this.state.emptyStatus
+
+    setResponseData = (responseData) => {
+        this.state.responseData = responseData
+    }
+
+    getResponseData = () => this.state.responseData
 
     setSortConfig = (sortConfig?: IListSortConfig) => {
         if ('mode' in sortConfig) {
@@ -219,7 +226,10 @@ export default class ListCore extends EventEmitter {
 
     // 设置dataSource
     setDataSource = (dataSource?: any[]) => {
-        this.state.dataSource = dataSource || []        
+        this.state.dataSource = dataSource || []       
+        const { currentPage, pageSize } = this.state
+        const paginationDataSource = dataSource.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+        this.setPaginationDataSource(paginationDataSource)
     }
 
     getDataSource = () => this.state.dataSource

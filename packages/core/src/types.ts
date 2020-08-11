@@ -131,6 +131,7 @@ export type IListMode = ModeType.DATASOURCE | ModeType.URL | ModeType.QUERY
 
 // 列表核心实例运行时
 export interface IListState {
+  responseData: any
   sortConfig: IListSortConfig | null
   selectionConfig: IListSelectionConfig | null
   mode: IListMode
@@ -300,6 +301,8 @@ export interface IList {
   appendMirrorFilterInstance: (form?: any) => void
   getMirrorFilterInstanceList: () => any[]
   initSyncFilterData: (executeNow?: boolean) => void
+  setResponseData: (data: any) => void
+  getResponseData: () => any
 }
 
 export interface IMultiple {

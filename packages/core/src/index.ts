@@ -189,7 +189,6 @@ function createList(props: IListProps = {}): IList {
       ) {
         reqEmpty = true
       }
-
       list.setMultipleData(multipleData)
     } else {
       // 生命周期：返回空数据
@@ -201,6 +200,8 @@ function createList(props: IListProps = {}): IList {
       list.setDataSource(dataList)
       list.setPageData({ total, pageSize, currentPage, totalPages })
     }
+
+    list.setResponseData(result)
 
     // 生命周期：返回空数据
     lifeCycles.notify({
@@ -652,7 +653,9 @@ function createList(props: IListProps = {}): IList {
     toggleExpandStatus,
     appendMirrorFilterInstance: list.appendMirrorFilterInstance,
     getMirrorFilterInstanceList: list.getMirrorFilterInstanceList,
-    initSyncFilterData
+    initSyncFilterData,
+    setResponseData: list.setResponseData,
+    getResponseData: list.getResponseData
   }
 
   initSyncFilterData()

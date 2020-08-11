@@ -57,7 +57,9 @@ describe('createList', () => {
         "toggleExpandStatus",
         "appendMirrorFilterInstance",
         "getMirrorFilterInstanceList",
-        "initSyncFilterData"
+        "initSyncFilterData",
+        "setResponseData",
+        "getResponseData"
       ]
       expect(Object.keys(actions)).toEqual(apiList)
     })
