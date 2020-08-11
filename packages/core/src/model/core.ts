@@ -226,10 +226,7 @@ export default class ListCore extends EventEmitter {
 
     // 设置dataSource
     setDataSource = (dataSource?: any[]) => {
-        this.state.dataSource = dataSource || []       
-        const { currentPage, pageSize } = this.state
-        const paginationDataSource = dataSource.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-        this.setPaginationDataSource(paginationDataSource)
+        this.state.dataSource = dataSource || []
     }
 
     getDataSource = () => this.state.dataSource
