@@ -57,7 +57,7 @@ export const useList = (options: IListUIProps): IList & { actions: any } => {
     useEffect(() => {
       if ('dataSource' in options) {
         list.setDataSource(dataSource)
-      }      
+      }
     }, [dataSource])
     
     // 这里是为了在next/antd/其他顶层去实现搜索区域
