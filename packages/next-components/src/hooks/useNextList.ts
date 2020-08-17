@@ -25,6 +25,24 @@ const useNextList = (props: ITableProps = {}): ITableHook => {
                 rowSelection: undefined
             })
         },
+        getRowSelection: () => {
+            const selectionConfig = actionsRef.current.getSelectionConfig()        
+            let config = null
+            if (selectionConfig) {
+                const dataSource = actionsRef.current.getPaginationDataSource()
+                const { ids, primaryKey = 'id' } = selectionConfig
+                const allIds = dataSource.map(item => item[primaryKey])
+                config = {
+                    ...selectionConfig,
+                    allIds,
+                    dataSource,
+                    selectedAll: (dataSource.length === (ids || []).length) && dataSource.length > 0,
+                    selectedNone: (ids || []).length === 0
+                }
+            }
+
+            return config
+        },
         setRowSelection: (selectionConfig: IListSelectionConfig) => {
             actionsRef.current.setSelectionConfig(selectionConfig)
             const config = actionsRef.current.getSelectionConfig()

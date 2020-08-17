@@ -50,6 +50,8 @@ export default class ListCore extends EventEmitter {
             autoLoad: props.autoLoad || true,// 初始直接发起请求
             dataSource,// 列表数据
             paginationDataSource, // 本地分页列表数据
+            columns: props.columns || [], // 列数据
+            allColumns: props.columns || [],
             pageSize,// 分页数据
             currentPage,// 当前页数
             total, // 总数据条目数
@@ -77,6 +79,22 @@ export default class ListCore extends EventEmitter {
         //         })
         //     ]
         // })
+    }
+
+    getAllColumns = () => {
+        return this.state.allColumns
+    }
+
+    setAllColumns = (columns) => {
+        this.state.allColumns = columns
+    }
+
+    setColumns = (columns) => {
+        this.state.columns = columns
+    }
+
+    getColumns = () => {
+        return this.state.columns
     }
 
     setEmptyStatus = (emptyStatus) => {

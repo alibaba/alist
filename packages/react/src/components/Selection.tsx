@@ -14,7 +14,7 @@ const Selection: React.FC<any> = (props = {}) => {
         const selectionConfig = list.getSelectionConfig()        
         let config = null
         if (selectionConfig) {
-            const dataSource = list.getPaginationDataSource()            
+            const dataSource = list.getPaginationDataSource()
             const { ids, primaryKey = 'id' } = selectionConfig
             const allIds = dataSource.map(item => item[primaryKey])
             config = {

@@ -9,7 +9,9 @@ import {
 export const createNextListActions = () => {
   return mergeActions(
     createListActions(),
-    createActions('setSelections', 'setRowSelection', 'disableRowSelection')
+    createActions('setSelections',
+      'setRowSelection', 'getRowSelection',
+      'disableRowSelection')
   )
 }
 
@@ -19,6 +21,7 @@ export const createNextAsyncListActions = () =>
     createAsyncActions(
       'setSelections',
       'setRowSelection',
+      'getRowSelection',
       'disableRowSelection'
     )
   )

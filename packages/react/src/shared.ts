@@ -67,7 +67,11 @@ export const apiList = [
   'setCurrentPage',
   'setPageSize',
   'on',
-  'removeListener'
+  'removeListener',
+  'getColumns',
+  'setColumns',
+  'getAllColumns',
+  'setAllColumns',
 ]
 
 export { createAsyncActions, createActions, useEva, mergeActions }

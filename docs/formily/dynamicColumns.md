@@ -1,4 +1,4 @@
-## 快速开启筛选状态及消费筛选状态(Ant-Design)
+## 设置动态列(Ant-Design)
 
 ```jsx
 import React, { useEffect, useRef, useContext } from 'react'
@@ -48,27 +48,17 @@ const App = () => {
                 selectionRender: (opts, { actions: listActions }) => {
                     const { allIds, ids, selectedAll, selectedNone, dataSource } = opts || {};
                     return <div>
-                        已选中 {(ids || []).length} 条结果                        
                         <Button onClick={() => {
-                            listActions.setRowSelection({ ids: allIds })
-                        }}>全选</Button>
+                            const columns = listActions.getAllColumns()
+                            listActions.setColumns(columns.filter(item => {
+                                return item.props.title !== 'value2'
+                            }))
+                        }}>动态减少一列</Button>
 
                         <Button onClick={() => {
-                            listActions.setRowSelection({ ids: [] })
-                        }}>全不选</Button>
-
-                        <Button onClick={() => {
-                            listActions.disableRowSelection()
-                        }}>关闭筛选</Button>
-
-                        <Button onClick={() => {
-                            listActions.setRowSelection()
-                        }}>启用筛选</Button>
-
-                        <Button onClick={() => {
-                            const selections = listActions.getRowSelection()
-                            console.log('当前筛选项', selections)
-                        }}>获取当前筛选</Button>
+                            const columns = listActions.getAllColumns()
+                            listActions.setColumns(columns)
+                        }}>恢复动态列</Button>
                     </div>
                 },
                 listEffects: ($, listActions) => {
@@ -96,6 +86,8 @@ const App = () => {
                 <Table rowKey="value">
                     <Table.Column title="标题" dataIndex="label"/>
                     <Table.Column title="value" dataIndex="value" />
+                    <Table.Column title="value2" dataIndex="value" />
+                    <Table.Column title="value3" dataIndex="value" />
                 </Table>
                 <Pagination />
             </List>
@@ -109,7 +101,7 @@ ReactDOM.render(<App />, document.getElementById('root'))
 
 
 
-## 快速开启筛选状态及消费筛选状态(Fusion-Next)
+## 设置动态列(Fusion-Next)
 
 ```jsx
 import React, { useEffect, useRef, useContext } from 'react'
@@ -159,27 +151,17 @@ const App = () => {
                 selectionRender: (opts, { actions: listActions }) => {
                     const { allIds, ids, selectedAll, selectedNone, dataSource } = opts || {};
                     return <div>
-                        已选中 {(ids || []).length} 条结果                        
                         <Button onClick={() => {
-                            listActions.setRowSelection({ ids: allIds })
-                        }}>全选</Button>
+                            const columns = listActions.getAllColumns()
+                            listActions.setColumns(columns.filter(item => {
+                                return item.props.title !== 'value2'
+                            }))
+                        }}>动态减少一列</Button>
 
                         <Button onClick={() => {
-                            listActions.setRowSelection({ ids: [] })
-                        }}>全不选</Button>
-
-                        <Button onClick={() => {
-                            listActions.disableRowSelection()
-                        }}>关闭筛选</Button>
-
-                        <Button onClick={() => {
-                            listActions.setRowSelection()
-                        }}>启用筛选</Button>
-
-                        <Button onClick={() => {
-                            const selections = listActions.getRowSelection()
-                            console.log('当前筛选项', selections)
-                        }}>获取当前筛选</Button>
+                            const columns = listActions.getAllColumns()
+                            listActions.setColumns(columns)
+                        }}>恢复动态列</Button>
                     </div>
                 },
                 listEffects: ($, listActions) => {
@@ -207,6 +189,8 @@ const App = () => {
                 <Table primaryKey="value">
                     <Table.Column title="标题" dataIndex="label"/>
                     <Table.Column title="value" dataIndex="value" />
+                    <Table.Column title="value2" dataIndex="value" />
+                    <Table.Column title="value3" dataIndex="value" />
                 </Table>
                 <Pagination />
             </List>

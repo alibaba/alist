@@ -9,7 +9,7 @@ import {
 export const createAntdListActions = () => {
   return mergeActions(
     createListActions(),
-    createActions('setSelections', 'setRowSelection', 'disableRowSelection')
+    createActions('setSelections', 'setRowSelection', 'getRowSelection', 'disableRowSelection')
   )
 }
 
@@ -19,6 +19,7 @@ export const createAntdAsyncListActions = () =>
     createAsyncActions(
       'setSelections',
       'setRowSelection',
+      'getRowSelection',
       'disableRowSelection'
     )
   )

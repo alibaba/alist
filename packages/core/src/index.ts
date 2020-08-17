@@ -330,6 +330,11 @@ function createList(props: IListProps = {}): IList {
     }
   }
 
+  const setColumns = (cols: any[], notifyId?: string[]) => {
+    list.setColumns(cols)
+    refreshTable(notifyId)
+  }
+
   // 设置dataSource
   const setDataSource = (dataSource, fnOpts?: IListFunctionOptions) => {
     list.setDataSource(dataSource)
@@ -655,7 +660,11 @@ function createList(props: IListProps = {}): IList {
     getMirrorFilterInstanceList: list.getMirrorFilterInstanceList,
     initSyncFilterData,
     setResponseData: list.setResponseData,
-    getResponseData: list.getResponseData
+    getResponseData: list.getResponseData,
+    getAllColumns: list.getAllColumns,
+    setAllColumns: list.setAllColumns,
+    setColumns,
+    getColumns: list.getColumns,
   }
 
   initSyncFilterData()

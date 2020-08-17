@@ -109,6 +109,7 @@ export interface IListProps {
   method?: IListQueryMethod
   params?: any
   paramsFields?: string | string[]
+  columns?: any[]
   pageSize?: number
   currentPage?: number
   total?: number
@@ -140,6 +141,8 @@ export interface IListState {
   autoLoad: boolean
   dataSource: any[]
   paginationDataSource: any[]
+  columns: any[]
+  allColumns: any[]
   // url?: string,
   // params?: any,
   // method: IListQueryMethod,
@@ -303,6 +306,10 @@ export interface IList {
   initSyncFilterData: (executeNow?: boolean) => void
   setResponseData: (data: any) => void
   getResponseData: () => any
+  getAllColumns: () => any[],
+  setAllColumns: (columns: any[]) => void,
+  setColumns: (columns: any[], notifyId?: string[]) => void,
+  getColumns: () => any[],
 }
 
 export interface IMultiple {

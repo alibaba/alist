@@ -24,6 +24,7 @@
     - [自定义消费组件](./demo/consumer.md)
     - [消费额外接口数据](./demo/consumerExtra.md)
     - [通过 Schema 渲染](./schema/practise.md)
+    - [设置动态列](./demo/dynamicColumns.md)
   - 进阶教程
     - [实现自定义请求组件](./advanced/query.md)
     - [实现自定义静默埋点](./advanced/dot.md)
@@ -35,6 +36,7 @@
   - [Table 筛选及消费](./formily/tableSelection.md)
   - [空状态](./formily/empty.md)
   - [自定义消费组件](./formily/listConsumer.md)
+  - [设置动态列](./formily/dynamicColumns.md)
   - [同步 URL 参数](./formily/params.md)
 - API 手册
   - [API 列表](./api/index.md)
