@@ -20,9 +20,14 @@ const InternalSearch = (props) => {
                 {...others}
                 onClick={(...args) => {
                     if (filterInstance) {
-                        filterInstance.submit(() => {
+                        let cb = () => {
                             search()
-                        })
+                        }
+                        if (list && list.getMode() === 'dataSource') {
+                            cb = undefined
+                        }
+
+                        filterInstance.submit(cb)
                     } else {
                         search()
                     }
