@@ -664,7 +664,7 @@ function createList(props: IListProps = {}): IList {
     getAllColumns: list.getAllColumns,
     setAllColumns: list.setAllColumns,
     setColumns,
-    getColumns: list.getColumns,
+    getColumns: list.getColumns
   }
 
   initSyncFilterData()

@@ -71,7 +71,7 @@ export const apiList = [
   'getColumns',
   'setColumns',
   'getAllColumns',
-  'setAllColumns',
+  'setAllColumns'
 ]
 
 export { createAsyncActions, createActions, useEva, mergeActions }

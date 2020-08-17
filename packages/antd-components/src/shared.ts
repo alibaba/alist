@@ -9,7 +9,12 @@ import {
 export const createAntdListActions = () => {
   return mergeActions(
     createListActions(),
-    createActions('setSelections', 'setRowSelection', 'getRowSelection', 'disableRowSelection')
+    createActions(
+      'setSelections',
+      'setRowSelection',
+      'getRowSelection',
+      'disableRowSelection'
+    )
   )
 }
 

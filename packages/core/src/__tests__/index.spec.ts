@@ -59,7 +59,11 @@ describe('createList', () => {
         "getMirrorFilterInstanceList",
         "initSyncFilterData",
         "setResponseData",
-        "getResponseData"
+        "getResponseData",
+        "getAllColumns",
+        "setAllColumns",
+        "setColumns",
+        "getColumns",
       ]
       expect(Object.keys(actions)).toEqual(apiList)
     })

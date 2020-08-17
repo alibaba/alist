@@ -9,9 +9,12 @@ import {
 export const createNextListActions = () => {
   return mergeActions(
     createListActions(),
-    createActions('setSelections',
-      'setRowSelection', 'getRowSelection',
-      'disableRowSelection')
+    createActions(
+      'setSelections',
+      'setRowSelection',
+      'getRowSelection',
+      'disableRowSelection'
+    )
   )
 }
 

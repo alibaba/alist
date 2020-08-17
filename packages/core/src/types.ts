@@ -306,10 +306,10 @@ export interface IList {
   initSyncFilterData: (executeNow?: boolean) => void
   setResponseData: (data: any) => void
   getResponseData: () => any
-  getAllColumns: () => any[],
-  setAllColumns: (columns: any[]) => void,
-  setColumns: (columns: any[], notifyId?: string[]) => void,
-  getColumns: () => any[],
+  getAllColumns: () => any[]
+  setAllColumns: (columns: any[]) => void
+  setColumns: (columns: any[], notifyId?: string[]) => void
+  getColumns: () => any[]
 }
 
 export interface IMultiple {
