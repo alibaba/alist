@@ -52,6 +52,7 @@ function createList(props: IListProps = {}): IList {
     })
 
   // 请求相关
+  let columnsChange = false
   let url = props.url // 请求url
   let params = props.params || {} // url的param
   let paramsFields = props.paramsFields
@@ -330,7 +331,13 @@ function createList(props: IListProps = {}): IList {
     }
   }
 
-  const setColumns = (cols: any[], notifyId?: string[]) => {
+  const hasSetColumns = () => columnsChange
+
+  const setColumns = (cols: any[], opts) => {
+    const { notifyId, init = false } = opts || {}
+    if (!init) {
+      columnsChange = true
+    }
     list.setColumns(cols)
     refreshTable(notifyId)
   }
@@ -664,7 +671,9 @@ function createList(props: IListProps = {}): IList {
     getAllColumns: list.getAllColumns,
     setAllColumns: list.setAllColumns,
     setColumns,
-    getColumns: list.getColumns
+    getColumns: list.getColumns,
+    setEmptyStatus: list.setEmptyStatus,
+    hasSetColumns
   }
 
   initSyncFilterData()

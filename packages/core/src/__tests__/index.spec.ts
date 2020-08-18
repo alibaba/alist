@@ -64,6 +64,8 @@ describe('createList', () => {
         "setAllColumns",
         "setColumns",
         "getColumns",
+        "setEmptyStatus",
+        "hasSetColumns"
       ]
       expect(Object.keys(actions)).toEqual(apiList)
     })

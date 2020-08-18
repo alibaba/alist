@@ -310,6 +310,8 @@ export interface IList {
   setAllColumns: (columns: any[]) => void
   setColumns: (columns: any[], notifyId?: string[]) => void
   getColumns: () => any[]
+  hasSetColumns: () => boolean
+  setEmptyStatus: (status: EmptyStatusType) => void
 }
 
 export interface IMultiple {

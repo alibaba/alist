@@ -41,7 +41,7 @@ export const useTable = (props: ITableProps = {}, propList?: IList): ITableHook 
     }    
     
     const forceUpdate = useForceUpdate()
-    const refresh = (opts) => {        
+    const refresh = (opts) => {
         const { payload } = opts;
         const { notifyId } = payload || {}
         if (notifyId) {
