@@ -35,8 +35,8 @@ export default class ListCore extends EventEmitter {
         let dataSource = props.dataSource || []
         let selectionConfig = props.selectionConfig || null
         let sortConfig = props.sortConfig || defaultSortConfig
-        let mode = ModeType.URL // 默认模式是url模式
-        if (props.dataSource) {
+        let mode = ModeType.URL // 默认模式是url模式        
+        if (props.dataSource || (!props.url && !props.query)) {
             mode = ModeType.DATASOURCE
             paginationDataSource = dataSource.slice((currentPage - 1) * pageSize, currentPage * pageSize)
             total = dataSource.length

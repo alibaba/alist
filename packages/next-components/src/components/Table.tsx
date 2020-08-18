@@ -104,7 +104,7 @@ const RecursionTable = (props) => {
 }
 
 const TableStyledWrapper = styled((props) => {
-    const { loopBackground, hasBorder, ...others }  = props
+    const { loopBackground, hasBorder, hasTreeCtrl, ...others }  = props
     return <div {...others} />
 })`
     margin-bottom: 16px;

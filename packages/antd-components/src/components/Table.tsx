@@ -96,7 +96,8 @@ const RecursionTable = (props) => {
 }
 
 const TableStyledWrapper = styled((props) => {
-    return <div {...props} />
+    const { hasTreeCtrl, ...others } = props
+    return <div {...others} />
 })`
     margin-bottom: 16px;
 

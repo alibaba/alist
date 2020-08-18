@@ -38,7 +38,6 @@
   - [自定义消费组件](./formily/listConsumer.md)
   - [设置动态列](./formily/dynamicColumns.md)
   - [同步 URL 参数](./formily/params.md)
-  - [设置动态列](./formily/dynamicColumns.md)
 - API 手册
   - [API 列表](./api/index.md)
   - [组件列表](./api/component.md)
