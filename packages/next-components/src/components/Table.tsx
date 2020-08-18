@@ -48,22 +48,22 @@ const RecursionTable = (props) => {
     
     const columnsProps = {}
     const { columns, children } = others 
-    useEffect(() => {        
-        if (list) {
-            // 第一次会进入这里
-            if (list.hasSetColumns() === false) {
-                if (columns) {
-                    list.setAllColumns(columns)
-                    list.setColumns(columns, { init: true })
-                } else {
-                    list.setAllColumns(children || [])
-                    list.setColumns(children || [], { init: true })
-                }
+    if (list) {
+        // 第一次会进入这里
+        if (list.getAllColumns().length === 0) {
+            if (columns) {
+                list.setAllColumns(columns)
+                list.setColumns(columns, { init: true })
+            } else {
+                list.setAllColumns(children || [])
+                list.setColumns(children || [], { init: true })
             }
+        }
 
+        if (list.hasSetColumns()) {
             columnsProps[columns ? 'columns' : 'children'] = list.getColumns()
-        }        
-    }, [columns, children])
+        }
+    }
 
     useEffect(() => {
         if (isRoot && list) {

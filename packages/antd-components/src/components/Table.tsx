@@ -38,21 +38,22 @@ const RecursionTable = (props) => {
     
     const list: any = useContext(ListContext)
     const columnsProps = {}
+    const { columns, children } = others 
     if (list) {
-        const { columns, children } = others      
-        
         // 第一次会进入这里       
         if (list.getAllColumns().length === 0) {
             if (columns) {
                 list.setAllColumns(columns)
-                list.setColumns(columns)
+                list.setColumns(columns, { init: true })
             } else {
                 list.setAllColumns(children || [])
-                list.setColumns(children || [])
+                list.setColumns(children || [], { init: true })
             }
         }
 
-        columnsProps[columns ? 'columns' : 'children'] = list.getColumns()
+        if (list.hasSetColumns()) {
+            columnsProps[columns ? 'columns' : 'children'] = list.getColumns()
+        }
     }
 
     useEffect(() => {

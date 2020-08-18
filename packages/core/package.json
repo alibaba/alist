@@ -1,6 +1,6 @@
 {
   "name": "@alist/core",
-  "version": "1.0.33",
+  "version": "1.0.34",
   "description": "desc",
   "main": "lib",
   "types": "lib/index.d.ts",
