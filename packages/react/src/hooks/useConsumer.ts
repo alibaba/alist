@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect, useReducer } from 'react'
 import ListContext from '../context'
 import { ListLifeCycleTypes, IList } from '@alist/core'
-// import useForceUpdate from './useForceUpdate'
+import useForceUpdate from './useForceUpdate'
 import { IConsumerProps } from '../types'
 
 const noop = s => s
@@ -20,10 +20,10 @@ export const useConsumer = (props: IConsumerProps, propsList?: IList): {
         props.initialState || {}
     )
 
-    // const forceUpdate = useForceUpdate()
-    // const refresh = () => {
-    //     forceUpdate()
-    // }
+    const forceUpdate = useForceUpdate()
+    const refresh = () => {
+        forceUpdate()
+    }
 
     useEffect(() => {
         // 上帝模式，默认所有事件都监听, 命中相关事件会触发重绘
@@ -36,7 +36,7 @@ export const useConsumer = (props: IConsumerProps, propsList?: IList): {
                         type: currentType,
                         payload
                     })
-                    // refresh()
+                    refresh()
                 }
             })
             return function cleanup() {
