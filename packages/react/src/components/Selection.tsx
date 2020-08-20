@@ -4,7 +4,7 @@ import useConsumer from '../hooks/useConsumer'
 
 const Selection: React.FC<any> = (props = {}) => {
     const { children, selector, ...others } = props
-    const list = useConsumer({
+    const { list } = useConsumer({
         ...others,
         selector: selector || [ListLifeCycleTypes.ON_LIST_SELECTION_REFRESH, ListLifeCycleTypes.ON_LIST_TABLE_REFRESH]
     })

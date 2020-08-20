@@ -91,6 +91,12 @@ export interface IFilterProps {
 }
 
 export interface IConsumerProps {
+  reducer?: (
+    state: any,
+    action: { type: string; payload: any },
+    list: IList
+  ) => any
+  initialState?: any
   form?: any
   selector?: Array<string> | string
   children?: React.ReactElement | ((...args: any) => React.ReactElement)

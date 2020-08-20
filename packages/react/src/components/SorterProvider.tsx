@@ -4,7 +4,7 @@ import useConsumer from '../hooks/useConsumer'
 
 const Sorter: React.FC<any> = (props = {}) => {
     const { dataIndex, children, ...others } = props
-    const list = useConsumer({
+    const { list } = useConsumer({
         ...others,
         selector: [ListLifeCycleTypes.ON_LIST_SORT]
     })
