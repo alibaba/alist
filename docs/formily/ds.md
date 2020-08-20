@@ -1,3 +1,4 @@
+
 ## 手动控制数据源 (Fusion-Next)
 
 以下实例演示假如需
@@ -30,41 +31,14 @@ import { Icon, Button } from '@alifd/next'
 import Printer from '@formily/printer'
 import '@alifd/next/dist/next.css'
 
-const SchemaFormSpy = createVirtualBox('schema-form-spy', props => {
-  return <FormSpy {...props} />
-})
-const SchemaButton = createVirtualBox('schema-btn', props => {
-  const [loading, setLoading] = useState(false)
-  const { onClick, ...others } = props
-  return (
-    <Button
-      loading={loading}
-      {...others}
-      onClick={(...args) => {
-        const result = onClick(...args)
-        if (result.then) {
-          setLoading(true)
-          result.then(() => {
-            setLoading(false)
-          })
-        }
-      }}
-    />
-  )
-})
-
+const SchemaButton = createVirtualBox('schema-btn', Button)
 const listActions = createListActions()
 const actions = createFormActions()
 
-const getDataSource = len => {
+const getDataSource = (len) => {
   const dataSource = []
-  for (let i = 0; i < len; i++) {
-    dataSource.push({
-      label: `id: #${Math.random()
-        .toString(36)
-        .slice(-8)}`,
-      value: i
-    })
+  for ( let i = 0; i < len; i++ ) {
+    dataSource.push({ label: `id: #${Math.random().toString(36).slice(-8)}`, value: i })
   }
 
   return dataSource
@@ -72,13 +46,13 @@ const getDataSource = len => {
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 const asyncTask1 = async () => {
-  await sleep(500)
-  return getDataSource(5)
+    await sleep(500)
+    return getDataSource(5)
 }
 
 const asyncTask2 = async () => {
-  await sleep(1000)
-  return getDataSource(2)
+    await sleep(1000)
+    return getDataSource(2)
 }
 
 const App = () => {
@@ -97,73 +71,63 @@ const App = () => {
               </div>
             ),
             appendData: async () => {
-              // 发起异步请求
-              const latestData = listActions.getDataSource()
-              actions.notify('task1_query_loading')
-              actions.notify('task2_query_loading')
-              listActions.notify('task1_query_loading')
-              listActions.notify('task2_query_loading')
-              asyncTask1().then(data => {
-                actions.notify('task1_query_resolved', data)
-                listActions.notify('task1_query_resolved', data)
-              })
+                // 发起异步请求
+                const latestData = listActions.getDataSource()
+                actions.notify('task1_query_loading')
+                actions.notify('task2_query_loading')
+                listActions.notify('task1_query_loading')
+                listActions.notify('task2_query_loading')
+                asyncTask1().then((data) => {
+                    actions.notify('task1_query_resolved', data)
+                    listActions.notify('task1_query_resolved', data)
+                })
 
-              asyncTask2().then(data => {
-                actions.notify('task2_query_resolved', data)
-                listActions.notify('task2_query_resolved', data)
-              })
+                asyncTask2().then((data) => {
+                    actions.notify('task2_query_resolved', data)
+                    listActions.notify('task2_query_resolved', data)
+                })
             },
             listenSpy: (state, action) => {
-              switch (action.type) {
-                case 'task1_query_loading':
-                  return {
-                    ...state,
-                    loading1: true
-                  }
-                case 'task2_query_loading':
-                  return {
-                    ...state,
-                    loading2: true
-                  }
-                case 'task1_query_resolved':
-                  return {
-                    ...state,
-                    loading1: false,
-                    count1: action.payload.length
-                  }
-                case 'task2_query_resolved':
-                  return {
-                    ...state,
-                    loading2: false,
-                    count2: action.payload.length
-                  }
-                default:
-                  return state
-              }
+                switch (action.type) {
+                    case 'task1_query_loading':
+                        return {
+                            ...state,
+                            loading1: true
+                        }
+                    case 'task2_query_loading':
+                        return {
+                            ...state,
+                            loading2: true
+                        }
+                    case 'task1_query_resolved':
+                        return {
+                            ...state,
+                            loading1: false,
+                            count1: action.payload.length,
+                        }
+                    case 'task2_query_resolved':
+                        return {
+                            ...state,
+                            loading2: false,
+                            count2: action.payload.length,
+                        }
+                    default:
+                        return state
+                }
             },
             renderSpy: (list, { state, type }) => {
-              const { loading1, loading2, count1, count2 } = state
-              return (
-                <div>
-                  <div>
-                    {loading1
-                      ? '数据任务1请求中...'
-                      : loading1 === false
-                      ? '数据任务1请求完成'
-                      : null}
-                    {count1 ? '数据条数：' + count1 : null}
-                  </div>
+                const { loading1, loading2, count1, count2 } = state
+                return <div>
+                    <div>
+                        {loading1 ? '数据任务1请求中...' : (loading1 === false ? '数据任务1请求完成' : null )}
+                        {count1 ? '数据条数：' + count1 : null }
+                    </div>
 
-                  <div>
-                    {loading2
-                      ? '数据任务2请求中...'
-                      : loading2 === false
-                      ? '数据任务2请求完成'
-                      : null}
-                    {count2 ? '数据条数：' + count2 : null}
-                  </div>
+                    <div>
+                        {loading2 ? '数据任务2请求中...' : (loading2 === false ? '数据任务2请求完成' : null )}
+                        {count2 ? '数据条数：' + count2 : null }
+                    </div>
                 </div>
-              )
             }
           }}
           initialValues={{
@@ -196,14 +160,14 @@ const App = () => {
             <Pagination />
 
             <ListSpy
-              selector={[
-                'task1_query_loading',
-                'task2_query_loading',
-                'task1_query_resolved',
-                'task2_query_resolved'
-              ]}
-              reducer="{{listenSpy}}"
-              children="{{renderSpy}}"
+                selector={[
+                    'task1_query_loading',
+                    'task2_query_loading',
+                    'task1_query_resolved',
+                    'task2_query_resolved'
+                ]}
+                reducer="{{listenSpy}}"
+                children="{{renderSpy}}"
             />
           </List>
         </SchemaForm>
