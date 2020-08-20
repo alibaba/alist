@@ -100,6 +100,34 @@ const App = () => {
                     actions.notify('task2_query_resolved', data)
                 })
             },
+            listenSpy: (state, action) => {
+                switch (action.type) {
+                    case 'task1_query_loading':
+                        return {
+                            ...state,
+                            loading1: true
+                        }
+                    case 'task2_query_loading':
+                        return {
+                            ...state,
+                            loading2: true
+                        }
+                    case 'task1_query_resolved':
+                        return {
+                            ...state,
+                            loading1: false,
+                            count1: action.payload.length,
+                        }
+                    case 'task2_query_resolved':
+                        return {
+                            ...state,
+                            loading2: false,
+                            count2: action.payload.length,
+                        }
+                    default:
+                        return state
+                }
+            }
             renderSpy: ({ state, form }) => {
                 const { loading1, loading2, count1, count2 } = state
                 return <div>
@@ -151,34 +179,7 @@ const App = () => {
                     'task1_query_resolved',
                     'task2_query_resolved'
                 ]}
-                reducer={(state, action) => {
-                    switch (action.type) {
-                        case 'task1_query_loading':
-                            return {
-                                ...state,
-                                loading1: true
-                            }
-                        case 'task2_query_loading':
-                            return {
-                                ...state,
-                                loading2: true
-                            }
-                        case 'task1_query_resolved':
-                            return {
-                                ...state,
-                                loading1: false,
-                                count1: action.payload.length,
-                            }
-                        case 'task2_query_resolved':
-                            return {
-                                ...state,
-                                loading2: false,
-                                count2: action.payload.length,
-                            }
-                        default:
-                            return state
-                    }
-                }}
+                reducer="{{listenSpy}}"
                 children="{{renderSpy}}"
             />
           </List>
