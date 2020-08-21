@@ -217,7 +217,10 @@ export enum ListLifeCycleTypes {
   ON_LIST_FILTER_VALUES_CHANGE = 'onListFilterValuesChange',
   ON_FORM_LIST_CLEAR = 'onFormListClear',
   ON_FORM_LIST_RESET = 'onFormListReset',
-  ON_FORM_LIST_SEARCH = 'onFormListSearch'
+  ON_FORM_LIST_SEARCH = 'onFormListSearch',
+  ON_LIST_TOGGLE = 'onListToggle',
+  ON_LIST_TOGGLE_ALL = 'onListToggleAll',
+  ON_LIST_EXPAND_STATUS_SYNC = 'onListExpandStatusSync'
 }
 
 export const LAZY_MOUNTED_SIGNAL = 'lazyMounted'

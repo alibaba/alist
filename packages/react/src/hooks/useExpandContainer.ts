@@ -9,6 +9,8 @@ export const useExpandContainer = (props: IExpandProps) => {
     const componentProps = schema.getExtendsComponentProps()
     const { expandStatus: propExpandStatus } = componentProps
     const setDisplay = (display) => {
+        form.setFormState(state => state.expandStatus = display ? 'expand' : 'collapse')
+        form.notify(ListLifeCycleTypes.ON_LIST_EXPAND_STATUS_SYNC)
         form.setFieldState(targetPath, state => {
             state.display = display
         })
@@ -20,6 +22,7 @@ export const useExpandContainer = (props: IExpandProps) => {
             expandStatus = list.getExpandStatus()
         } else if (form) {
             expandStatus = propExpandStatus || 'collapse'
+            form.setFormState(state => state.expandStatus = expandStatus)
         }
         
         setDisplay(expandStatus === 'expand')

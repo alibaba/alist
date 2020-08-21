@@ -70,6 +70,17 @@ const RecursionTable = (props) => {
             list.actions.addAPI('toggle', toggle)
             list.actions.addAPI('toggleAll', toggleAll)
             list.actions.addAPI('getToggleState', () => toggleState)
+
+            const id = list.subscribe(ListLifeCycleTypes.ON_LIST_TOGGLE, (action) => {
+                if (props.onRowOpen) {
+                    const { openRowKeys, currentRowKey, expanded, currentRecord } = action.payload || {}
+                    props.onRowOpen(openRowKeys, currentRowKey, expanded, currentRecord)
+                }
+            })
+
+            return function cleanup() {
+                list.unSubscribe(id)
+            }
         }
     })
 

@@ -16,7 +16,9 @@ export const useExpand = (props: IConsumerProps) => {
     useEffect(() => {
         const fnRef = formInstance.subscribe(({ type }) => {
             if ([ListLifeCycleTypes.ON_LIST_FILTER_ITEM_EXPAND,
-                ListLifeCycleTypes.ON_LIST_FILTER_ITEM_COLLAPSE].includes(type)) {
+                ListLifeCycleTypes.ON_LIST_FILTER_ITEM_COLLAPSE,
+                ListLifeCycleTypes.ON_LIST_EXPAND_STATUS_SYNC,
+            ].includes(type)) {
                 refresh()
             }
         })
@@ -25,11 +27,21 @@ export const useExpand = (props: IConsumerProps) => {
         }
     })
 
-    const expandStatus = list.getExpandStatus()
+    const statsProps: any = {}
+    if (list) {
+        statsProps.expandStatus = list.getExpandStatus()
+        statsProps.toggleExpandStatus = list.toggleExpandStatus
+    } else if (formInstance) {
+        statsProps.expandStatus = form.getFormState(state => state.expandStatus)
+        statsProps.toggleExpandStatus = () => {
+            formInstance.notify(statsProps.expandStatus === 'expand' ?
+                ListLifeCycleTypes.ON_LIST_FILTER_ITEM_COLLAPSE : ListLifeCycleTypes.ON_LIST_FILTER_ITEM_EXPAND)
+        }
+    }
 
     return {
-        toggleExpandStatus: list.toggleExpandStatus,
-        expandStatus,
+        ...statsProps,
+        form: formInstance.
         list
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@alist/react",
-  "version": "1.0.36",
+  "version": "1.0.37",
   "main": "lib",
   "types": "lib/index.d.ts",
   "engines": {
@@ -13,7 +13,7 @@
     "typescript": "^3.5.2"
   },
   "dependencies": {
-    "@alist/core": "^1.0.36"
+    "@alist/core": "^1.0.37"
   },
   "peerDependencies": {
     "@babel/runtime": "^7.4.4",

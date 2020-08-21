@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect, useRef } from "react"
+import { ListLifeCycleTypes } from '@alist/core'
 import TableContext from "../context/table"
 
 const getFlatIds = (dataSource, primaryKey) => {
@@ -35,12 +36,19 @@ export const useToggle = (props) => {
             manualTriggered.current = true
         }
 
-        if (allKeys.find(item => item === key)) {
-            if (openRowKeys.indexOf(key) === -1) {
-                setOpenRowKeys([...openRowKeys, key])
-            } else {
-                setOpenRowKeys([...openRowKeys].filter(k => k !== key))
-            }
+        const currentRowKey = allKeys.find(item => item === key)
+        const currentRecord = formatDataSource.find(item => item[primaryKey] === key)
+        if (currentRowKey) {
+            const isHide = openRowKeys.indexOf(key) === -1
+            const nextOpenRowKeys = isHide ? [...openRowKeys, key] : [...openRowKeys].filter(k => k !== key)
+            list.notify(ListLifeCycleTypes.ON_LIST_TOGGLE, {
+                openRowKeys: nextOpenRowKeys,
+                expanded: isHide,
+                currentRecord,
+                currentRowKey
+            })
+            
+            setOpenRowKeys(nextOpenRowKeys)
         }
     }
 
