@@ -77,7 +77,12 @@ function createList(props: IListProps = {}): IList {
     // 请求时需要执行校验
     const filterInstance = list.getFilterInstance()
     if (filterInstance) {
-      await filterInstance.validate()
+      if (Array.isArray(filterInstance.ignoreValidationKeys)) {
+        const validatePath = filterInstance.ignoreValidationKeys.join(',')
+        await filterInstance.validate(`*(!${validatePath})`)
+      } else {
+        await filterInstance.validate()
+      }
       const { errors } = filterInstance.getFormState(state => {
         return { errors: state.errors }
       })
