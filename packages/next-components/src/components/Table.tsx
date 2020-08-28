@@ -226,9 +226,13 @@ const InternalTable: InternalTableType = props => {
     >
         <TableProvider pickInitialTableProps={pickInitialTableProps} {...others}>
             {(connectProps, list) => {
+                const extraProps: any = {}
+                if ('hasBorder' in connectProps) extraProps.hasBorder = connectProps.hasBorder
+
                 return <RecursionTable
                     {...connectProps}
                     {...props}
+                    {...extraProps}
                     children={columns}
                     isRoot
                     onFilter={(filterParams) => {
