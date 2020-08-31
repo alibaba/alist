@@ -16,21 +16,31 @@ export const useToggle = (props) => {
     const { primaryKey = 'id' } = tableProps
     const formatDataSource = dataSource || []
     const manualTriggered = useRef(false)
+    const isDefaultOpen = useRef(false)
     const isDefaultExpandMode = (('expandedRowRender' in props || 'isTree' in props) && !(toggleeKey in props))
 
     let initOpenKey = []
     if (Array.isArray(defaultOpen)) {
         initOpenKey = defaultOpen
+        isDefaultOpen.current = true
     } else if (typeof defaultOpen === 'function') {
         initOpenKey = defaultOpen(formatDataSource)
+        isDefaultOpen.current = true
     }
 
     const allKeys = getFlatIds(formatDataSource, primaryKey)
     if (defaultOpenAll) {
         initOpenKey = [...allKeys]
+        isDefaultOpen.current = true
     }
 
     const [openRowKeys, setOpenRowKeys] = useState(initOpenKey || [])
+
+    const applyOpenRowKeys = (keys, opts) => {
+        setOpenRowKeys(keys)
+        list.notify("onSetOpenRowKeys", opts)
+    }
+
     const toggle = (key: string | number) => {
         if (!manualTriggered.current) {
             manualTriggered.current = true
@@ -48,27 +58,41 @@ export const useToggle = (props) => {
                 currentRowKey
             })
             
-            setOpenRowKeys(nextOpenRowKeys)
+            applyOpenRowKeys(nextOpenRowKeys, {
+                expanded: isHide,
+                expandedAll: nextOpenRowKeys.length === 0 ? 'none' : (nextOpenRowKeys.length === allKeys.length && allKeys.length > 0) ? 'all' : 'some',
+            })
         }
     }
 
-    const toggleAll = () => {
-        if (openRowKeys.length === 0) {
-            setOpenRowKeys([...allKeys])
-        } else {
-            setOpenRowKeys([])
+    const toggleAll = (status) => {
+        if (!manualTriggered.current) {
+            manualTriggered.current = true
         }
+
+        const nextOpenRowKeys = status === 'expand' ? [] : [...allKeys]
+        list.notify(ListLifeCycleTypes.ON_LIST_TOGGLE, {
+            openRowKeys: nextOpenRowKeys,
+            expanded: nextOpenRowKeys.length === 0,
+        })
+
+        applyOpenRowKeys(nextOpenRowKeys, {
+            expandedAll: nextOpenRowKeys.length === 0 ? 'none' : (nextOpenRowKeys.length === allKeys.length && allKeys.length > 0) ? 'all' : 'some',
+        })
     }
 
     useEffect(() => {
-        setOpenRowKeys(initOpenKey)
+        const expandedAll = initOpenKey.length === 0 ? 'none' : (initOpenKey.length === allKeys.length && allKeys.length > 0) ? 'all' : 'some'
+        applyOpenRowKeys(initOpenKey, {
+            expandedAll,
+            defaultExpandAll: expandedAll === 'all'
+        })
     }, [dataSource])
 
     return {
-        enableHookCrtl: isDefaultExpandMode && manualTriggered.current,
+        enableHookCrtl: isDefaultOpen || (isDefaultExpandMode && manualTriggered.current),
         openRowKeys,
-        toggleState: openRowKeys.length === 0 ? 'none' :
-            (openRowKeys.length === allKeys.length && allKeys.length > 0) ? 'all' : 'some',
+        toggleState: openRowKeys.length === 0 ? 'none' : (openRowKeys.length === allKeys.length && allKeys.length > 0) ? 'all' : 'some',
         toggle,
         toggleAll,
         list,

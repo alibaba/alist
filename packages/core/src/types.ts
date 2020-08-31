@@ -250,6 +250,7 @@ export interface IListSelections {
 export type ExpandStatus = 'expand' | 'collapse'
 
 export interface IList {
+  actions?: any
   setFormState(cb?: (state: any) => any, silent?: boolean): void
   getFormState(cb?: (state: any) => any): any
   setFieldState(path: any, cb?: (state: any) => void, silent?: boolean): void
@@ -300,7 +301,7 @@ export interface IList {
   ) => string
   unSubscribe: (id: string) => void
   on: (key: EventType, cb?: IListEvent) => void
-  notify: (type: ListLifeCycleTypes, paylaod?: any) => void
+  notify: (type: ListLifeCycleTypes | string, paylaod?: any) => void
   removeListener: (key: EventType, cb?: IListEvent) => void
   getExpandStatus: () => ExpandStatus
   toggleExpandStatus: () => void
@@ -326,7 +327,7 @@ export type IContext = IList | null
 export type IMultipleContext = IMultiple | null
 
 export interface LifeCyclesOptions {
-  type: ListLifeCycleTypes
+  type: ListLifeCycleTypes | string
   payload?: any
   ctx?: any
 }

@@ -600,7 +600,7 @@ function createList(props: IListProps = {}): IList {
 
   const listAPI: IList = {
     // 监听相关
-    notify: (type: ListLifeCycleTypes, payload?: any) => {
+    notify: (type: string | ListLifeCycleTypes, payload?: any) => {
       lifeCycles.notify({ type, payload, ctx: listAPI })
     },
     subscribe: lifeCycles.subscribe,

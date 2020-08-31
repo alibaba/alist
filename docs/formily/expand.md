@@ -16,20 +16,25 @@ import {
   ListExpandContainer,
   ListExpandTrigger,
   ListToggleTrigger,
-  InternalExpandTrigger
+  InternalExpandTrigger,
+  InternalListSpy,
+  SchemaListToggleTrigger
 } from '@alist/antd-components'
 import {
   SchemaForm,
   SchemaMarkupField as Field,
   Submit,
-  createFormActions
+  createFormActions,
+  createVirtualBox
 } from '@formily/antd'
 import { FormMegaLayout, Input } from '@formily/antd-components'
 import Printer from '@formily/printer'
+import { Button } from 'antd'
 import 'antd/dist/antd.css'
 
 const listActions = createListActions()
 const actions = createFormActions()
+
 const App = () => {
   const url = 'https://alist-wiki.oss-cn-beijing.aliyuncs.com/data.json'
 
@@ -46,7 +51,7 @@ const App = () => {
           expressionScope={{
             renderToggle: (val, record) => (
               <ListToggleTrigger
-                id={record.id}
+                id={record.value}
                 expandText="展开"
                 unExpandText="收起"
               />
@@ -79,18 +84,27 @@ const App = () => {
           />
 
           <List
-            dataSource={[
-              { id: '1', label: 'label-a', value: 'a' },
-              { id: '2', label: 'label-b', value: 'b' }
-            ]}
+            url={url}
+            // dataSource={[
+            //   { id: '1', label: 'label-a', value: 'a' },
+            //   { id: '2', label: 'label-b', value: 'b' }
+            // ]}
             actions={listActions}
           >
             <ButtonGroup align="center" style={{ marginBottom: '20px' }}>
               <Search content="搜索" />
+              <SchemaListToggleTrigger
+                expandText="展开全部"
+                unExpandText="收起全部"
+              />
               {/* <ListExpandTrigger expandText="展开搜索字段" unExpandText="收起搜索字段" />                     */}
             </ButtonGroup>
 
-            <Table expandedRowRender="{{expandedRender}}" rowKey="id">
+            <Table
+              defaultOpenAll
+              expandedRowRender="{{expandedRender}}"
+              rowKey="value"
+            >
               <Table.Column title="label" dataIndex="label" />
               <Table.Column title="value" dataIndex="value" />
               <Table.Column title="操作" render="{{renderToggle}}" />
@@ -124,21 +138,26 @@ import {
   ListExpandContainer,
   ListExpandTrigger,
   ListToggleTrigger,
-  InternalExpandTrigger
+  InternalExpandTrigger,
+  InternalListSpy,
+  SchemaListToggleTrigger
 } from '@alist/next-components'
 import {
   SchemaForm,
   SchemaMarkupField as Field,
   Submit,
-  createFormActions
+  createFormActions,
+  createVirtualBox
 } from '@formily/next'
 import { FormMegaLayout, Input } from '@formily/next-components'
 import Printer from '@formily/printer'
+import { Button } from '@alifd/next'
 import '@alifd/next/dist/next.css'
 
 const listActions = createListActions()
 const actions = createFormActions()
 const App = () => {
+  const url = 'https://alist-wiki.oss-cn-beijing.aliyuncs.com/data.json'
   return (
     <div>
       <Printer>
@@ -152,11 +171,14 @@ const App = () => {
           expressionScope={{
             renderToggle: (val, idx, record) => (
               <ListToggleTrigger
-                id={record.id}
+                id={record.value}
                 expandText="展开"
                 unExpandText="收起"
               />
             ),
+            // handleDefaultOpen: (dataSource) => {
+
+            // },
             expandedRender: record => record.label + '-' + record.value,
             onRowOpen: (
               openRowKeys,
@@ -180,10 +202,11 @@ const App = () => {
           </FormMegaLayout>
 
           <List
-            dataSource={[
-              { id: '1', label: 'label-a', value: 'a' },
-              { id: '2', label: 'label-b', value: 'b' }
-            ]}
+            url={url}
+            // dataSource={[
+            //   { id: '1', label: 'label-a', value: 'a' },
+            //   { id: '2', label: 'label-b', value: 'b' }
+            // ]}
             actions={listActions}
           >
             <ButtonGroup align="center" style={{ marginBottom: '20px' }}>
@@ -192,9 +215,16 @@ const App = () => {
                 expandText="展开搜索字段"
                 unExpandText="收起搜索字段"
               />
+
+              <SchemaListToggleTrigger
+                expandText="展开全部"
+                unExpandText="收起全部"
+              />
             </ButtonGroup>
 
             <Table
+              primaryKey="value"
+              // defaultOpenAll
               hasExpandedRowCtrl={false}
               expandedRowRender="{{expandedRender}}"
               expandedRowIndent={[0, 0]}
