@@ -3,6 +3,8 @@ import { ListLifeCycleTypes } from '@alist/core'
 import ToggleContext from '../context/toggle'
 import { useConsumer } from '../hooks/useConsumer'
 
+const isValidId = (id) => ([null, undefined].indexOf(id) === -1)
+
 const Toggle = (props) => {
     const { id, children, ...others } = props
     const { list, state }= useConsumer({
@@ -35,7 +37,7 @@ const Toggle = (props) => {
     const { toggle, openRowKeys } = useContext(ToggleContext) || {}
     let expandStatus
     let expandedAllStatus
-    if (id) {
+    if (isValidId(id)) {
         expandStatus = openRowKeys.indexOf(id) !== -1 ? 'expand' : 'collapse'
     } else {
         if (state) {
@@ -53,7 +55,9 @@ const Toggle = (props) => {
     if (typeof children === 'function') {
         element = children({
             toggle: () => {
-                id && toggle(id)
+                if (isValidId(id)) {
+                    id && toggle(id)
+                }                
             },
             toggleAll : (...args) => {
                 if (list && list.actions && list.actions.toggleAll) {
