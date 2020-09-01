@@ -38,7 +38,9 @@ export const useToggle = (props) => {
 
     const applyOpenRowKeys = (keys, opts) => {
         setOpenRowKeys(keys)
-        list.notify("onSetOpenRowKeys", opts)
+        if (list) {
+            list.notify("onSetOpenRowKeys", opts)
+        }        
     }
 
     const toggle = (key: string | number) => {

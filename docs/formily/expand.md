@@ -86,8 +86,8 @@ const App = () => {
           <List
             url={url}
             // dataSource={[
-            //   { id: '1', label: 'label-a', value: 'a' },
-            //   { id: '2', label: 'label-b', value: 'b' }
+            //   { id: '1', label: 'label-a', value: '0' },
+            //   { id: '2', label: 'label-b', value: '1' }
             // ]}
             actions={listActions}
           >
