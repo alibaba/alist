@@ -180,18 +180,15 @@ function createList(props: IListProps = {}): IList {
       if (
         !multipleData ||
         Object.keys(multipleData).length === 0 ||
-        Object.keys(multipleData)
+        (Object.keys(multipleData)
           .map(k => {
             if (!multipleData[k]) return []
-            if (Array.isArray(multipleData[k] as any[])) {
-              return multipleData[k]
-            } else if (
-              Array.isArray((multipleData[k] as IListResponse).dataList)
-            ) {
+            if (Array.isArray(multipleData[k] as any[])) return multipleData[k]
+            if (Array.isArray((multipleData[k] as IListResponse).dataList))
               return (multipleData[k] as IListResponse).dataList
-            }
           })
-          .map(arr => arr && (arr as any[]).length > 0)
+          .reduce((buf: any[], cur: any[]) => [...buf, ...cur], []) as any[])
+          .length === 0
       ) {
         reqEmpty = true
       }
@@ -234,6 +231,14 @@ function createList(props: IListProps = {}): IList {
         ? EmptyStatusType.EMPTY
         : EmptyStatusType.VALID
     )
+
+    // 多实例模式
+    if (typeof multipleData === 'object') {
+      lifeCycles.notify({
+        type: ListLifeCycleTypes.ON_LIST_MULTIPLE_REFRESH,
+        ctx: listAPI
+      })
+    }
 
     // 生命周期：即将更新
     lifeCycles.notify({

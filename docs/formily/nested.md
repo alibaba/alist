@@ -17,7 +17,8 @@ import {
   ListExpandTrigger,
   ListToggleTrigger,
   InternalExpandTrigger,
-  MultipleProvider
+  MultipleProvider,
+  EmptyStatusType
 } from '@alist/antd-components'
 import {
   SchemaForm,
@@ -123,8 +124,11 @@ const App = () => {
               />
             </ButtonGroup>
 
-            <Desc>优选</Desc>
-            <MultipleProvider id="premium">
+            <MultipleProvider
+              hideWhen={[EmptyStatusType.INIT, EmptyStatusType.EMPTY]}
+              id="premium"
+            >
+              <Desc>优选</Desc>
               <Table indentSize={0} rowKey="id" hasTreeCtrl={false} isTree>
                 <Table.Column
                   title="路线"

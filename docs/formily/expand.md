@@ -225,7 +225,7 @@ const App = () => {
             <Table
               primaryKey="value"
               // defaultOpenAll
-              hasExpandedRowCtrl={false}
+              // hasExpandedRowCtrl={false}
               expandedRowRender="{{expandedRender}}"
               expandedRowIndent={[0, 0]}
               onRowOpen="{{onRowOpen}}"

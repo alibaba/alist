@@ -92,7 +92,7 @@ export const useToggle = (props) => {
     }, [dataSource])
 
     return {
-        enableHookCrtl: isDefaultOpen || (isDefaultExpandMode && manualTriggered.current),
+        enableHookCrtl: isDefaultOpen.current || (isDefaultExpandMode && manualTriggered.current),
         openRowKeys,
         toggleState: openRowKeys.length === 0 ? 'none' : (openRowKeys.length === allKeys.length && allKeys.length > 0) ? 'all' : 'some',
         toggle,
