@@ -1,6 +1,7 @@
 import React from 'react'
 import MultipleContext from '../context/multiple'
 import useMultipleProvider from '../hooks/useMutlipleProvider'
+import { EmptyStatusType } from '@alist/core'
 
 const MultipleProvider: React.FC<any> = (props = {}) => {
     const { children, hideWhen } = props
@@ -14,9 +15,19 @@ const MultipleProvider: React.FC<any> = (props = {}) => {
     }
 
     if (hideWhen) {
+        const arrHideWhen = [...hideWhen]
         const emptyStatus = list.getEmptyStatus()
-        const hit = [...hideWhen].findIndex(item => item === emptyStatus) !== -1
-        if (hit) {
+        let needHide = arrHideWhen.findIndex(item => item === emptyStatus) !== -1
+
+        if (hideWhen.indexOf(EmptyStatusType.EMPTY)) {
+            const multipleData = list.getMultipleData()
+            const { paginationDataList } = multipleData[id] || {}
+            if ((paginationDataList || []).length === 0) {
+                needHide = true
+            }
+        }
+
+        if (needHide) {
             element = null 
         }
     }
