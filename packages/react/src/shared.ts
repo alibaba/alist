@@ -73,7 +73,8 @@ export const apiList = [
   'getAllColumns',
   'setAllColumns',
   'getEmptyStatus',
-  'setEmptyStatus'
+  'setEmptyStatus',
+  'getResponseData'
 ]
 
 export { createAsyncActions, createActions, useEva, mergeActions }
