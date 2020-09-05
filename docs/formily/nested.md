@@ -115,6 +115,8 @@ const App = () => {
             </ListExpandContainer>
           </FormMegaLayout>
 
+          {/* <Search enableLoading content="搜索" /> */}
+
           <List url="https://alist-wiki.oss-cn-beijing.aliyuncs.com/multiple.json">
             <ButtonGroup align="center" style={{ marginBottom: '20px' }}>
               <Search content="搜索" />
@@ -261,9 +263,11 @@ const App = () => {
             </ListExpandContainer>
           </FormMegaLayout>
 
+          {/* <Search enableLoading content="搜索" /> */}
+
           <List url="https://alist-wiki.oss-cn-beijing.aliyuncs.com/multiple.json">
             <ButtonGroup align="center" style={{ marginBottom: '20px' }}>
-              <Search content="搜索" />
+              <Search enableLoading content="搜索" />
               <ListExpandTrigger
                 expandText="展开搜索字段"
                 unExpandText="收起搜索字段"

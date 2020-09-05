@@ -1,21 +1,41 @@
 import React from 'react'
-import { Consumer } from '@alist/react'
+import { Consumer, ListLifeCycleTypes } from '@alist/react'
 import { Button } from '@alifd/next'
 import { createVirtualBox, createControllerBox } from '@formily/next'
 
 const noop = () => {}
 const InternalSearch = (props) => {
     const { form, enableLoading, render, content, children, ...others } = props
-    return <Consumer>
-        {(list) => {
+    return <Consumer
+        form={form}
+        reducer={(state, action) => {
+            switch (action.type) {
+                case ListLifeCycleTypes.ON_LIST_BEFORE_QUERY:
+                    return {
+                        ...state,
+                        loading: true
+                    }
+                case ListLifeCycleTypes.ON_LIST_ERROR:
+                case ListLifeCycleTypes.DID_LIST_UPDATE:
+                    return {
+                        ...state,
+                        loading: false
+                    }
+                default:
+                    return state
+            }
+        }}
+    >
+        {(list, { state }) => {
             const filterInstance = form || list.getFilterInstance()
+            const { loading } = state
             const search = list?.search || noop
             if (typeof render === 'function') {
                 return render(search)
             }
 
             return <Button
-                loading={enableLoading ? list?.getLoading() : undefined}
+                loading={enableLoading ? list ? list.getLoading() : loading : undefined}
                 type="primary"
                 {...others}
                 onClick={(...args) => {

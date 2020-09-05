@@ -25,6 +25,17 @@ function createList(props: IListProps = {}): IList {
   const list = new ListCore(props)
   const lifeCycles = new LifeCylcesCore({ lifeCycles: props.lifeCycles })
 
+  const universalNotify = opts => {
+    lifeCycles.notify(opts)
+    const filterInstance = list.getFilterInstance()
+    if (filterInstance) {
+      filterInstance.notify(
+        ListLifeCycleTypes.LIST_LIFECYCLES_FORM_GOD_MODE,
+        opts
+      )
+    }
+  }
+
   const mode = list.getMode()
 
   // 通知UI重新渲染的方法
@@ -127,7 +138,7 @@ function createList(props: IListProps = {}): IList {
     refreshTable()
 
     // 请求前
-    lifeCycles.notify({
+    universalNotify({
       type: ListLifeCycleTypes.ON_LIST_BEFORE_QUERY,
       payload: {
         url,
@@ -158,7 +169,7 @@ function createList(props: IListProps = {}): IList {
       }
 
       // 异常流，触发生命周期 onError 钩子
-      lifeCycles.notify({
+      universalNotify({
         type: ListLifeCycleTypes.ON_LIST_ERROR,
         payload: reqErr,
         ctx: listAPI
@@ -253,7 +264,7 @@ function createList(props: IListProps = {}): IList {
     refreshTable()
 
     // 生命周期：已经触发更新
-    lifeCycles.notify({
+    universalNotify({
       type: ListLifeCycleTypes.DID_LIST_UPDATE,
       ctx: listAPI
     })

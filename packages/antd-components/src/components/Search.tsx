@@ -1,13 +1,33 @@
 import React from 'react'
-import { Consumer } from '@alist/react'
+import { Consumer, ListLifeCycleTypes } from '@alist/react'
 import { Button } from 'antd'
 import { createVirtualBox, createControllerBox } from '@formily/antd'
 
 const noop = () => {}
 const InternalSearch = (props) => {
     const { form, enableLoading, render, content, children, ...others } = props
-    return <Consumer>
-        {(list) => {
+    return <Consumer
+        form={form}
+        reducer={(state, action) => {
+            switch (action.type) {
+                case ListLifeCycleTypes.ON_LIST_BEFORE_QUERY:
+                    return {
+                        ...state,
+                        loading: true
+                    }
+                case ListLifeCycleTypes.ON_LIST_ERROR:
+                case ListLifeCycleTypes.DID_LIST_UPDATE:
+                    return {
+                        ...state,
+                        loading: false
+                    }
+                default:
+                    return state
+            }
+        }}
+    >
+        {(list, { state }) => {
+            const { loading } = state
             const filterInstance = form || list.getFilterInstance()
             const search = list?.search || noop
             if (typeof render === 'function') {
@@ -15,7 +35,7 @@ const InternalSearch = (props) => {
             }
 
             return <Button
-                loading={enableLoading ? list?.getLoading() : undefined}
+                loading={enableLoading ? list ? list.getLoading() : loading : undefined}
                 type="primary"
                 {...others}
                 onClick={(...args) => {

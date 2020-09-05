@@ -10,7 +10,7 @@ export const useConsumer = (props: IConsumerProps, propsList?: IList): {
     type: string,
     state: any
 } => {
-    const { selector, reducer = noop } = props
+    const { form, selector, reducer = noop } = props
     const formatSelector = selector || ['*']
     const list = propsList || useContext(ListContext)
     const [type, setType] = useState<string>(ListLifeCycleTypes.ON_LIST_INIT)
@@ -27,22 +27,35 @@ export const useConsumer = (props: IConsumerProps, propsList?: IList): {
 
     useEffect(() => {
         // 上帝模式，默认所有事件都监听, 命中相关事件会触发重绘
-    
+        const eventHandler = ({ type: currentType, payload, ctx }) => {
+            if (formatSelector.indexOf('*') !== -1 || (formatSelector.indexOf(currentType) !== -1)) {
+                setType(currentType)
+                dispatch({
+                    type: currentType,
+                    payload
+                })
+                refresh()
+            }
+        }
+
         if (list) {
-            const id = list.subscribe(ListLifeCycleTypes.LIST_LIFECYCLES_GOD_MODE, ({ type: currentType, payload, ctx }) => {
-                if (formatSelector.indexOf('*') !== -1 || (formatSelector.indexOf(currentType) !== -1)) {
-                    setType(currentType)
-                    dispatch({
-                        type: currentType,
-                        payload
-                    })
-                    refresh()
-                }
-            })
+            const id = list.subscribe(ListLifeCycleTypes.LIST_LIFECYCLES_GOD_MODE, eventHandler)
             return function cleanup() {
                 list.unSubscribe(id)
             }
         }        
+
+        if (form) {
+            const id = form.subscribe(({ type, payload }) => {
+                if (type === ListLifeCycleTypes.LIST_LIFECYCLES_FORM_GOD_MODE) {
+                    console.log('====<>', type, payload)
+                    eventHandler(payload)
+                }
+            })
+            return function cleanup() {
+                form.unsubscribe(id)
+            }
+        }
     })
 
     return {

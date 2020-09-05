@@ -198,6 +198,7 @@ export enum ListLifeCycleTypes {
   ON_LIST_SELECT_ALL = 'onListSelectAll',
   ON_LIST_SELECT_CHANGE = 'onListSelectChange',
   LIST_LIFECYCLES_GOD_MODE = '*',
+  LIST_LIFECYCLES_FORM_GOD_MODE = '*FORM*',
   ON_LIST_MOUNTED = 'onListMounted',
   ON_LIST_PARAMS_CHANGE = 'onListParamsChange',
   ON_LIST_INIT_PARAMS_SET = 'onListInitParamsSet',
