@@ -48,7 +48,6 @@ export const useConsumer = (props: IConsumerProps, propsList?: IList): {
         if (form) {
             const id = form.subscribe(({ type, payload }) => {
                 if (type === ListLifeCycleTypes.LIST_LIFECYCLES_FORM_GOD_MODE) {
-                    console.log('====<>', type, payload)
                     eventHandler(payload)
                 }
             })
