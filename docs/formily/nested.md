@@ -32,6 +32,7 @@ import Printer from '@formily/printer'
 import 'antd/dist/antd.css'
 
 const actions = createFormActions()
+const listActions = createListActions()
 
 const Desc = createVirtualBox('desc', props => <h3 {...props} />)
 
@@ -188,11 +189,16 @@ import {
   createFormActions,
   createVirtualBox
 } from '@formily/next'
+import { Button } from '@alifd/next'
 import { FormMegaLayout, Input } from '@formily/next-components'
 import Printer from '@formily/printer'
 import '@alifd/next/dist/next.css'
 
 const actions = createFormActions()
+const listActions = createListActions()
+window.listActions = listActions
+
+const SchemaButton = createVirtualBox('xxx', Button)
 
 const Desc = createVirtualBox('desc', props => <h3 {...props} />)
 
@@ -249,7 +255,19 @@ const App = () => {
                   colSpan: 3
                 }
               }
-            }
+            },
+            show: () => {
+              actions.setFieldState('list', state => (state.visible = true))
+              setTimeout(() => {
+                listActions.setMultipleData(window.tmp)
+                listActions.notify('onListMultipleRefresh')
+              })
+            },
+            hide: () => {
+              window.tmp = listActions.getMultipleData()
+              actions.setFieldState('list', state => (state.visible = false))
+            },
+            listActions
           }}
         >
           <FormMegaLayout grid autoRow full labelAlign="top">
@@ -264,8 +282,15 @@ const App = () => {
           </FormMegaLayout>
 
           {/* <Search enableLoading content="搜索" /> */}
+          <SchemaButton onClick="{{hide}}">隐藏</SchemaButton>
+          <SchemaButton onClick="{{show}}">恢复</SchemaButton>
 
-          <List url="https://alist-wiki.oss-cn-beijing.aliyuncs.com/multiple.json">
+          <List
+            name="list"
+            url="https://alist-wiki.oss-cn-beijing.aliyuncs.com/multiple.json"
+            actions="{{listActions}}"
+            autoLoad={false}
+          >
             <ButtonGroup align="center" style={{ marginBottom: '20px' }}>
               <Search enableLoading content="搜索" />
               <ListExpandTrigger
