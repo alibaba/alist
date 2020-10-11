@@ -168,6 +168,20 @@ export default class ListCore extends EventEmitter {
                 ...clearDataProps
             }
 
+            try {
+                const ignoreIds = this.getPaginationDataSource().filter((record, idx) => {
+                    const { disabled = false } = this.state.selectionConfig.getProps(record, idx) || {}
+                    return disabled === true
+                }).map(record => record[this.state.selectionConfig.primaryKey])
+    
+                this.state.selectionConfig.ids = this.state.selectionConfig.ids
+                    .filter(id => ignoreIds.indexOf(id) === -1)
+                this.state.selectionConfig.records = this.state.selectionConfig.records
+                    .filter(item => ignoreIds.indexOf(item[this.state.selectionConfig.primaryKey]) === -1)
+            } catch (e) {
+                // do nothing...
+            }
+
             if (!selectionConfig?.records) {
                 const { primaryKey } = this.state.selectionConfig
                 this.state.selectionConfig.records = this.getPaginationDataSource().filter(item => {

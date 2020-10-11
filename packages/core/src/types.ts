@@ -91,7 +91,7 @@ export interface IListSortConfig {
 }
 
 export interface IListSelectionConfig {
-  getProps: (record: any) => Record<string, any>
+  getProps: (record: any, idx?: number) => Record<string, any>
   mode: IListSelectionMode
   primaryKey: string
   ids: Array<string | number>
