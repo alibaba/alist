@@ -30,13 +30,12 @@ const useNextList = (props: ITableProps = {}): ITableHook => {
             let config = null
             if (selectionConfig) {
                 const dataSource = actionsRef.current.getPaginationDataSource()
-                const { ids, primaryKey = 'id' } = selectionConfig
-                const allIds = dataSource.map(item => item[primaryKey])
+                const { ids, allIds, validRecords } = selectionConfig
                 config = {
                     ...selectionConfig,
                     allIds,
                     dataSource,
-                    selectedAll: (dataSource.length === (ids || []).length) && dataSource.length > 0,
+                    selectedAll: (validRecords.length === (ids || []).length) && validRecords.length > 0,
                     selectedNone: (ids || []).length === 0
                 }
             }

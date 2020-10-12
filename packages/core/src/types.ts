@@ -96,6 +96,9 @@ export interface IListSelectionConfig {
   primaryKey: string
   ids: Array<string | number>
   records: Array<any>
+  ignoreIds?: Array<string | number>
+  allIds?: Array<string | number>
+  validRecords?: Array<any>
 }
 
 // 列表核心构建参数
