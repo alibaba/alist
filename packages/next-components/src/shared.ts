@@ -30,7 +30,8 @@ export const createNextAsyncListActions = () =>
   )
 
 export const setSelectionsByInstance = (instance, ids, records) => {
-  instance.setRowSelection({
+  const targetInstance = instance.actions ? instance.actions : instance
+  targetInstance.setRowSelection({
     ids,
     records
   })
