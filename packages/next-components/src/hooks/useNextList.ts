@@ -1,6 +1,6 @@
 import { useEva, useList, ListLifeCycleTypes, ITableProps, ITableHook, IListSelectionConfig, ListContext } from '@alist/react'
 import { useRef, useContext } from 'react'
-import { createNextListActions } from '../shared'
+import { createNextListActions, setSelectionsByInstance } from '../shared'
 
 const useNextList = (props: ITableProps = {}): ITableHook => {
     const actionsRef = useRef<any>(null)
@@ -15,10 +15,7 @@ const useNextList = (props: ITableProps = {}): ITableHook => {
 
     implementActions({
         setSelections: (ids, records) => {
-            actionsRef.current.setRowSelection({
-                ids,
-                records,
-            })
+            setSelectionsByInstance(actionsRef.current, ids, records)
         },
         disableRowSelection: () => {
             const { className = '' } = actionsRef.current.getTableProps()

@@ -30,14 +30,7 @@ export const createAntdAsyncListActions = () =>
   )
 
 export const setSelectionsByInstance = (instance, ids, records) => {
-  const { rowSelection } = instance.getTableProps()
-  instance.setTableProps({
-    rowSelection: {
-      ...rowSelection,
-      selectedRowKeys: ids
-    }
-  })
-  instance.setSelectionConfig({
+  instance.setRowSelection({
     ids,
     records
   })

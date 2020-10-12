@@ -15,7 +15,7 @@ const useAntdList = (props: ITableProps = {}): ITableHook => {
 
     implementActions({
         setSelections: (ids, records) => {
-            setSelectionsByInstance(actionsRef, ids, records)                
+            setSelectionsByInstance(actionsRef.current, ids, records)                
         },
         disableRowSelection: () => {
             const { className = '' } = actionsRef.current.getTableProps()
