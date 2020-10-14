@@ -1,6 +1,6 @@
 {
   "name": "@alist/next-components",
-  "version": "1.0.54",
+  "version": "1.0.55",
   "main": "lib",
   "engines": {
     "npm": ">=3.0.0"
@@ -27,7 +27,7 @@
     "styled-components": "^4.4.1"
   },
   "dependencies": {
-    "@alist/react": "^1.0.54",
+    "@alist/react": "^1.0.55",
     "@formily/next": "^1.2.1"
   },
   "repository": {

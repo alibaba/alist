@@ -1,18 +1,22 @@
 import { useState, useContext, useEffect, useReducer } from 'react'
 import ListContext from '../context'
+import ListDomainContext from '../context/listDomain'
 import { ListLifeCycleTypes, IList } from '@alist/core'
 import useForceUpdate from './useForceUpdate'
+import { ListDomain } from '../shared'
 import { IConsumerProps } from '../types'
 
 const noop = s => s
 export const useConsumer = (props: IConsumerProps, propsList?: IList): {
     list: IList,
     type: string,
-    state: any
+    state: any,
+    listDomain: ListDomain
 } => {
     const { form, selector, reducer = noop } = props
     const formatSelector = selector || ['*']
     const list = propsList || useContext(ListContext)
+    const listDomain = useContext(ListDomainContext) || {} as ListDomain
     const [type, setType] = useState<string>(ListLifeCycleTypes.ON_LIST_INIT)
 
     const [state, dispatch] = useReducer(
@@ -60,7 +64,8 @@ export const useConsumer = (props: IConsumerProps, propsList?: IList): {
     return {
         list,
         type,
-        state
+        state,
+        listDomain,
     }
 }
 

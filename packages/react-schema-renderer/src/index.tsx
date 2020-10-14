@@ -135,6 +135,7 @@ const SchemaSolver = props => {
       const localCtx = generateContext() || {}
 
       ctx.setContext({
+        schema,
         actions,
         effects,
         componentsRegistry: finalComponentsRegistry,
