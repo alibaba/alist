@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import { FilterProvider, FieldProvider, compatLayoutItemProps } from '@alist/react'
 import { InternalField as Field,
     FormItem as CompatAntdFormItem, useForm,
@@ -69,17 +69,17 @@ const Item = (props) => {
     </FieldProvider>    
 };
 
-const Filter: any = styled(props => {
+const Filter: any = styled(forwardRef(((props, ref) => {
     const { mode = 'schema', children, effects, mirror, ...others } = props
     return <FilterProvider mirror={mirror} mode={mode} {...others} useForm={useForm} effects={effects}>
         {(connectProps) => {
             const { filterInstance } = connectProps
-            return <SchemaForm form={filterInstance} {...others}>
+            return <SchemaForm form={filterInstance} {...others} ref={ref}>
                 {children}
             </SchemaForm>
         }}
     </FilterProvider>
-})`
+})))`
     margin-bottom: 16px;
 
     &.ant-form.ant-form-inline {

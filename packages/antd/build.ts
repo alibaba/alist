@@ -19,6 +19,7 @@ function buildESM() {
 }
 
 const TEMP_OUT_DIR = './temp_esm'
+const TEMP_OUT_DIR_UMD = './temp_umd'
 
 function buildTempESM() {
   const { fileNames, options } = getCompileConfig(require.resolve('./tsconfig.json'), {
@@ -36,6 +37,12 @@ function clearTempESM() {
   console.log('clear temporary esm build successfully')
 }
 
+function clearTempUMD() {
+  fs.removeSync(TEMP_OUT_DIR_UMD)
+
+  console.log('clear temporary umd build successfully')
+}
+
 function buildES5() {
   const rootNames = glob.sync(`${TEMP_OUT_DIR}/**/*.js`)
   compile(rootNames, {
@@ -50,6 +57,33 @@ function buildES5() {
   console.log('es5 build successfully')
 }
 
+function buildTempUMD() {
+  const { fileNames, options } = getCompileConfig(require.resolve('./tsconfig.json'), {
+    moduleResolution: ts.ModuleResolutionKind.Classic,
+    allowUmdGlobalAccess: true,
+    module: ts.ModuleKind.UMD,
+    outDir: TEMP_OUT_DIR_UMD,    
+  })
+  compile(fileNames, options, { before: [transformer] })
+
+  console.log('temporary umd build successfully')
+}
+
+function buildUMD() {
+  const rootNames = glob.sync(`${TEMP_OUT_DIR_UMD}/**/*.js`)
+  compile(rootNames, {
+    allowJs: true,
+    allowUmdGlobalAccess: true,
+    esModuleInterop: true,
+    moduleResolution: ts.ModuleResolutionKind.Classic,
+    module: ts.ModuleKind.UMD,
+    target: ts.ScriptTarget.ES5,
+    outDir: './dist',
+    declaration: false,
+  })
+  console.log('umd build successfully')
+}
+
 
 
 buildESM()
@@ -57,3 +91,7 @@ buildESM()
 buildTempESM()
 buildES5()
 clearTempESM()
+
+// buildTempUMD()
+// buildUMD()
+// clearTempUMD()

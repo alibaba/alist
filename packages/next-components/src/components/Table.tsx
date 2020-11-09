@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import React, { forwardRef, useEffect, useContext } from 'react'
 import { TableProvider, ListLifeCycleTypes, useToggle, ToggleContext, ListContext } from '@alist/react'
 import { TableProps } from '@alifd/next/types/table'
 import { IVirtualBoxProps, createVirtualBox, createControllerBox, FormExpressionScopeContext, complieExpression } from '@formily/next'
@@ -20,7 +20,7 @@ const pickInitialTableProps = (props) => {
     return result
 }
 
-const VerCenterTitle = styled((props) => <div {...props} />)`
+const VerCenterTitle = styled.div`
     display: flex;
     align-items: center;
     justify-content: ${props => {
@@ -115,10 +115,10 @@ const RecursionTable = (props) => {
     </ToggleContext.Provider>
 }
 
-const TableStyledWrapper = styled((props) => {
+const TableStyledWrapper = styled(forwardRef((props, ref) => {
     const { loopBackground, hasBorder, hasTreeCtrl, ...others }  = props
-    return <div {...others} />
-})`
+    return <div {...others} ref={ref} />
+}))`
     margin-bottom: 16px;
 
     .alist-recursion-table {

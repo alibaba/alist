@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { forwardRef, useContext, useEffect } from 'react'
 import { TableProvider, ListLifeCycleTypes, useToggle, ToggleContext, ListContext } from '@alist/react'
 import { Table as AntdTable } from 'antd'
 import { TableProps, ColumnProps } from 'antd/lib/table'
@@ -96,10 +96,10 @@ const RecursionTable = (props) => {
     </ToggleContext.Provider>
 }
 
-const TableStyledWrapper = styled((props) => {
+const TableStyledWrapper = styled(forwardRef((props, ref) => {
     const { hasTreeCtrl, ...others } = props
-    return <div {...others} />
-})`
+    return <div {...others} ref={ref} />
+}))`
     margin-bottom: 16px;
 
     .alist-recursion-table {
