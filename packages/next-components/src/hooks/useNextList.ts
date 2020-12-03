@@ -1,6 +1,6 @@
 import { useEva, useList, ListLifeCycleTypes, ITableProps, ITableHook, IListSelectionConfig, ListContext } from '@alist/react'
 import { useRef, useContext } from 'react'
-import { createNextListActions, setSelectionsByInstance } from '../shared'
+import { createNextListActions, setSelectionsByInstance, actionsRetHandler } from '../shared'
 
 const useNextList = (props: ITableProps = {}): ITableHook => {
     const actionsRef = useRef<any>(null)
@@ -26,7 +26,7 @@ const useNextList = (props: ITableProps = {}): ITableHook => {
             })
         },
         getRowSelection: () => {
-            const selectionConfig = actionsRef.current.getSelectionConfig()        
+            const selectionConfig = actionsRef.current.getSelectionConfig()
             let config = null
             if (selectionConfig) {
                 const dataSource = actionsRef.current.getPaginationDataSource()
@@ -44,52 +44,59 @@ const useNextList = (props: ITableProps = {}): ITableHook => {
         },
         setRowSelection: (selectionConfig: IListSelectionConfig) => {
             actionsRef.current.setSelectionConfig(selectionConfig)
-            const config = actionsRef.current.getSelectionConfig()
-            const { className = '', primaryKey: defaultPrimaryKey } = actionsRef.current.getTableProps()
-            if (config) {                    
-                const { mode, ids, primaryKey = defaultPrimaryKey, getProps, ...others } = config
-                actionsRef.current.setTableProps({ // 刷新
-                    className: className.indexOf(hasRowSelectionCls) !== -1 ? className : `${className} ${hasRowSelectionCls}`,
-                    rowSelection: {
-                        ...others,
-                        mode,
-                        selectedRowKeys: ids,
-                        primaryKey,
-                        onSelect: (selected, record, records) => {
-                            actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT, {
-                                selected, record, records
-                            })
-                        },
-                        onSelectAll: (selected, records) => {
-                            actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT_ALL, {
-                                selected, records
-                            })
-                        },
-                        onChange: (changeIds: string[], records: any[]) => {
-                            actionsRef.current.setSelectionConfig({
-                                ids: changeIds,
-                                records,
-                            })
-                            actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT_CHANGE, {
-                                ids: changeIds, records
-                            })
-                            const { rowSelection } = actionsRef.current.getTableProps()
-                            actionsRef.current.setTableProps({
-                                rowSelection: {
-                                    ...rowSelection,
-                                    selectedRowKeys: changeIds,
-                                }
-                            })
-                        },
-                        getProps,
+            const getSelectionConfigRet = actionsRef.current.getSelectionConfig()
+            actionsRetHandler(getSelectionConfigRet, (config) => {
+                const getTablePropsRet = actionsRef.current.getTableProps()
+                actionsRetHandler(getTablePropsRet, ({ className = '', primaryKey: defaultPrimaryKey }) => {
+                    if (config) {
+                        const { mode, ids, primaryKey = defaultPrimaryKey, getProps, ...others } = config
+                        actionsRef.current.setTableProps({ // 刷新
+                            className: className.indexOf(hasRowSelectionCls) !== -1 ? className : `${className} ${hasRowSelectionCls}`,
+                            rowSelection: {
+                                ...others,
+                                mode,
+                                selectedRowKeys: ids,
+                                primaryKey,
+                                onSelect: (selected, record, records) => {
+                                    actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT, {
+                                        selected, record, records
+                                    })
+                                },
+                                onSelectAll: (selected, records) => {
+                                    actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT_ALL, {
+                                        selected, records
+                                    })
+                                },
+                                onChange: (changeIds: string[], records: any[]) => {
+                                    actionsRef.current.setSelectionConfig({
+                                        ids: changeIds,
+                                        records,
+                                    })
+                                    actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT_CHANGE, {
+                                        ids: changeIds, records
+                                    })
+                                    const getTablePropsRet = actionsRef.current.getTableProps()
+                                    actionsRetHandler(getTablePropsRet, ({ rowSelection }) => {
+                                        actionsRef.current.setTableProps({
+                                            rowSelection: {
+                                                ...rowSelection,
+                                                selectedRowKeys: changeIds,
+                                            }
+                                        })
+                                    })
+                                },
+                                getProps,
+                            }
+                        })
+                    } else {
+                        actionsRef.current.setTableProps({ // 刷新
+                            className: className.replace(` ${hasRowSelectionCls}`, ''),
+                            rowSelection: undefined
+                        })
                     }
                 })
-            } else {
-                actionsRef.current.setTableProps({ // 刷新
-                    className: className.replace(` ${hasRowSelectionCls}`, ''),
-                    rowSelection: undefined
-                })
-            }
+
+            });
         }
     })
     const { effects } = props
