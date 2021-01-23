@@ -347,7 +347,7 @@ export default class ListCore extends EventEmitter {
                 const currentPage = Number(settingCurrentPage)
                 const prevMultipleData = this.state.multipleData[key] || {}
                 const dataList = currentMultipleData.dataList || prevMultipleData.dataList || []
-                const paginationDataList = dataList.slice((currentPage - 1) * pageSize, (currentPage) * pageSize)                
+                const paginationDataList = dataList.slice((currentPage - 1) * settingPageSize, (currentPage) * settingPageSize)                
                 formatMultipleData[key] = {
                     ...prevMultipleData,
                     currentPage,
