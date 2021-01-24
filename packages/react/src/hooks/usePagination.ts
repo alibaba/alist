@@ -50,7 +50,7 @@ export const usePagination = (props: IPaginationProps = {}, propList?: IList): I
         return function cleanup () {
             list.unSubscribe(id)
         }
-    })
+    }, [list])
 
     return {
         list,

@@ -38,7 +38,7 @@ export const useTable = (props: ITableProps = {}, propList?: IList): ITableHook 
         } else {
             dataSource = props.dataSource
         }        
-    }    
+    }
     
     const forceUpdate = useForceUpdate()
     const refresh = (opts) => {
@@ -64,7 +64,7 @@ export const useTable = (props: ITableProps = {}, propList?: IList): ITableHook 
                 list.unSubscribe(id)
             }
         }
-    })
+    }, [list])
 
     const tableProps = list ? list.getTableProps() : {}
 

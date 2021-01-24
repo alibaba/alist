@@ -39,7 +39,7 @@ export const useExpandContainer = (props: IExpandProps) => {
         return function cleanup() {
             form.unsubscribe(fnRef)
         }
-    })
+    }, [form])
 }
 
 export default useExpandContainer

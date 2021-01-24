@@ -24,7 +24,7 @@ export const useMultipleProvider = (props: IMultipleProps): IMultipleHook => {
                 list.unSubscribe(id)
             }
         }
-    })
+    }, [list])
 
     return {
         id,
