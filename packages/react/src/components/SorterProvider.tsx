@@ -6,7 +6,7 @@ const Sorter: React.FC<any> = (props = {}) => {
     const { dataIndex, children, ...others } = props
     const { list } = useConsumer({
         ...others,
-        selector: [ListLifeCycleTypes.ON_LIST_SORT]
+        selector: [ListLifeCycleTypes.ON_LIST_SORT, ListLifeCycleTypes.ON_LIST_TABLE_REFRESH]
     })
 
     if (!dataIndex) {

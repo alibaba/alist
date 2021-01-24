@@ -283,6 +283,7 @@ function createList(props: IListProps = {}): IList {
     if (!fnOpts || fnOpts.reset === true) {
       list.resetPage()
     }
+    list.setSortConfig({ sorter: undefined })
     list.clearFilterData()
     // 默认会执行请求
     if (!fnOpts || fnOpts.withFetch === true) {
@@ -302,6 +303,7 @@ function createList(props: IListProps = {}): IList {
       list.resetPage()
     }
 
+    list.setSortConfig({ sorter: undefined })
     list.resetFilterData()
 
     // 默认会执行请求

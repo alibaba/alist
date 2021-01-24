@@ -122,7 +122,7 @@ export default class ListCore extends EventEmitter {
         const { mode } = this.state.sortConfig
         let mergedSorter = {}
         if (mode === 'multiple') {
-            mergedSorter = { ...this.state.sortConfig.sorter }
+            mergedSorter = { ...(this.state.sortConfig.sorter || {}) }
         }
 
         this.state.sortConfig.sorter = {

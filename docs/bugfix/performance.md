@@ -5,7 +5,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { ListProvider, TableProvider, createListActions } from '@alist/react'
-import { List, Table, Pagination, ToggleTrigger } from '@alist/next'
+import { List, Table, Pagination, ToggleTrigger, Filter, Layout, Search, Clear } from '@alist/next'
 import { Button, Table as NextTable } from '@alifd/next'
 import '@alifd/next/dist/next.css'
 
@@ -106,6 +106,20 @@ const App = () => {
     {/* <List actions={actions} pageSize={50}> */}
     {/* <List actions={actions} pageSize={200}> */}
     <List actions={actions} url="test" query={customQuery}> 
+      <Filter >
+        <Layout columns={4}>
+          <Filter.Item type="input" name="a" title="a"/>
+          <Filter.Item type="input" name="b" title="b" x-mega-props={{ span: 2 }}/>
+          <Filter.Item type="input" name="c" title="c"/>
+          <Filter.Item type="input" name="d" title="d"/>
+          <Filter.Item type="input" name="e" title="e" x-mega-props={{ span: 3 }} />
+          <Filter.Item type="input" name="f" title="f" x-mega-props={{ span: 2 }}/>
+        </Layout>
+        <Layout.ButtonGroup>
+          <Search>搜索</Search>
+          <Clear>重置</Clear>
+        </Layout.ButtonGroup>
+      </Filter> 
         <Pagination />
         <Table
           // defaultOpenAll
@@ -118,9 +132,9 @@ const App = () => {
           // }}
           // hasExpandedRowCtrl={false}
         >
-            {/* <Table.Column title="op" dataIndex="id" cell={(val, idx, record) => {
+            <Table.Column sortable title="op" dataIndex="id" cell={(val, idx, record) => {
                 return <ToggleTrigger id={record.id} expandText="展开" unExpandText="收起" />
-            }} /> */}
+            }} />
             {columns.map(column => <Table.Column {...column} />)}
         </Table>
     </List>
