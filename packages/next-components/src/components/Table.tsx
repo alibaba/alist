@@ -82,7 +82,7 @@ const RecursionTable = (props) => {
                 list.unSubscribe(id)
             }
         }
-    })
+    }, [list, props.onRowOpen])
 
     let defaultExpandedRowIndent = [1, 0]
     if (isLoop) {

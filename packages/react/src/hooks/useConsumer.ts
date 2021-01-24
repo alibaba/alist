@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useReducer } from 'react'
+import { useState, useContext, useEffect, useReducer, useCallback } from 'react'
 import ListContext from '../context'
 import ListDomainContext from '../context/listDomain'
 import { ListLifeCycleTypes, IList } from '@alist/core'
@@ -29,26 +29,28 @@ export const useConsumer = (props: IConsumerProps, propsList?: IList): {
         forceUpdate()
     }
 
-    useEffect(() => {
-        // 上帝模式，默认所有事件都监听, 命中相关事件会触发重绘
-        const eventHandler = ({ type: currentType, payload, ctx }) => {
-            if (formatSelector.indexOf('*') !== -1 || (formatSelector.indexOf(currentType) !== -1)) {
-                setType(currentType)
-                dispatch({
-                    type: currentType,
-                    payload
-                })
-                refresh()
-            }
+    // 上帝模式，默认所有事件都监听, 命中相关事件会触发重绘
+    const eventHandler = useCallback(({ type: currentType, payload, ctx }) => {
+        if (formatSelector.indexOf('*') !== -1 || (formatSelector.indexOf(currentType) !== -1)) {
+            setType(currentType)
+            dispatch({
+                type: currentType,
+                payload
+            })
+            refresh()
         }
+    }, [dispatch])
 
+    useEffect(() => {
         if (list) {
             const id = list.subscribe(ListLifeCycleTypes.LIST_LIFECYCLES_GOD_MODE, eventHandler)
             return function cleanup() {
                 list.unSubscribe(id)
             }
-        }        
+        }     
+    }, [list])
 
+    useEffect(() => {
         if (form) {
             const id = form.subscribe(({ type, payload }) => {
                 if (type === ListLifeCycleTypes.LIST_LIFECYCLES_FORM_GOD_MODE) {
@@ -59,7 +61,7 @@ export const useConsumer = (props: IConsumerProps, propsList?: IList): {
                 form.unsubscribe(id)
             }
         }
-    })
+    }, [form])
 
     return {
         list,

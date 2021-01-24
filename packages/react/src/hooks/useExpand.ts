@@ -25,7 +25,7 @@ export const useExpand = (props: IConsumerProps) => {
         return function cleanup() {
             formInstance.unsubscribe(fnRef)
         }
-    })
+    }, [formInstance])
 
     const statsProps: any = {}
     if (list) {
