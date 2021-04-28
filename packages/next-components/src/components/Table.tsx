@@ -1,8 +1,8 @@
 import React, { forwardRef, useEffect, useContext } from 'react'
-import { TableProvider, ListLifeCycleTypes, useToggle, ToggleContext, ListContext } from '@alist/react'
+import { TableProvider, LoadingProvider, ListLifeCycleTypes, useToggle, ToggleContext, ListContext } from '@alist/react'
 import { TableProps } from '@alifd/next/types/table'
 import { IVirtualBoxProps, createVirtualBox, createControllerBox, FormExpressionScopeContext, complieExpression } from '@formily/next'
-import { Table as NextTable } from '@alifd/next'
+import { Table as NextTable, Loading } from '@alifd/next'
 import { ColumnProps, ColumnGroupProps, GroupFooterProps, GroupHeaderProps } from '@alifd/next/types/table'
 import moment from 'moment'
 import styled, { css } from 'styled-components'
@@ -38,6 +38,7 @@ const RecursionTable = (props) => {
         hasExpandedRowCtrl = true, expandedRowIndent,
         isLoop = false, loopProps = {},
         isRoot,
+        loading,
         ...others
     } = props
     const hasExtraRow = (dataSource || []).find(item => Array.isArray(item.children) && item.children.length > 0)
@@ -104,14 +105,20 @@ const RecursionTable = (props) => {
     }
 
     return <ToggleContext.Provider value={{ toggle, openRowKeys, toggleAll, toggleState }}>
-        <NextTable
-            dataSource={dataSource}
-            {...expandProps}
-            {...others}
-            {...columnsProps}
-            hasExpandedRowCtrl={hasExpandedRowCtrl}
-            expandedRowIndent={expandedRowIndent || defaultExpandedRowIndent}
-        />
+        <LoadingProvider>
+            {(loading) => {
+                return <Loading visible={loading} style={{ width: '100%' }}>
+                    <NextTable
+                        dataSource={dataSource}
+                        {...expandProps}
+                        {...others}
+                        {...columnsProps}
+                        hasExpandedRowCtrl={hasExpandedRowCtrl}
+                        expandedRowIndent={expandedRowIndent || defaultExpandedRowIndent}
+                    />
+                </Loading>
+            }}
+        </LoadingProvider>
     </ToggleContext.Provider>
 }
 

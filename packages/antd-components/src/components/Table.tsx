@@ -1,6 +1,6 @@
 import React, { forwardRef, useContext, useEffect } from 'react'
-import { TableProvider, ListLifeCycleTypes, useToggle, ToggleContext, ListContext } from '@alist/react'
-import { Table as AntdTable } from 'antd'
+import { LoadingProvider, TableProvider, ListLifeCycleTypes, useToggle, ToggleContext, ListContext } from '@alist/react'
+import { Table as AntdTable, Spin } from 'antd'
 import { TableProps, ColumnProps } from 'antd/lib/table'
 import { ColumnGroupProps } from 'antd/lib/table/ColumnGroup'
 import { IVirtualBoxProps, createVirtualBox, createControllerBox, FormExpressionScopeContext, complieExpression } from '@formily/antd'
@@ -30,6 +30,7 @@ const RecursionTable = (props) => {
     const { dataSource,
         isLoop = false, loopProps = {},
         isRoot,
+        loading,
         ...others
     } = props
     const hasExtraRow = (dataSource || []).find(item => Array.isArray(item.children) && item.children.length > 0)
@@ -86,13 +87,20 @@ const RecursionTable = (props) => {
     }
 
     return <ToggleContext.Provider value={{ toggle, toggleAll, toggleState, openRowKeys }}>
-        <AntdTable
-            className={`${props.className || ''} ${isLoop ? '.alist-recursion-loop' : ''}`}
-            dataSource={loopDataSource}
-            {...expandProps}
-            {...others}
-            {...columnsProps}
-        />
+        <LoadingProvider>
+            {(loading) => {
+                return <Spin spinning={loading} style={{ width: '100%' }}>
+                    <AntdTable
+                        className={`${props.className || ''} ${isLoop ? '.alist-recursion-loop' : ''}`}
+                        dataSource={loopDataSource}
+                        {...expandProps}
+                        {...others}
+                        {...columnsProps}
+                    />
+                </Spin>
+            }}
+        </LoadingProvider>
+        
     </ToggleContext.Provider>
 }
 

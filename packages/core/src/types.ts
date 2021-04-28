@@ -192,6 +192,7 @@ export enum ListLifeCycleTypes {
   ON_LIST_PAGINATION_REFRESH = 'onListPaginationRefresh',
   ON_LIST_CONSUMER_REFRESH = 'onListConsumerRefresh',
   ON_LIST_FILTER_REFRESH = 'onListFilterRefresh',
+  ON_LIST_LOADING_REFRESH = 'onListLoadingRefresh',
   ON_LIST_SORT = 'onListSort',
   ON_LIST_FILTER = 'onListFilter',
   ON_LIST_FILTER_CHANGE = 'onListFilterChange',

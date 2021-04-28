@@ -44,6 +44,11 @@ function createList(props: IListProps = {}): IList {
       type: ListLifeCycleTypes.ON_LIST_TABLE_REFRESH,
       payload: { notifyId }
     })
+   const refreshLoading = (notifyId?: string[]) =>
+    lifeCycles.notify({
+      type: ListLifeCycleTypes.ON_LIST_LOADING_REFRESH,
+      payload: { notifyId }
+    })
   const refreshPagination = (notifyId?: string[]) =>
     lifeCycles.notify({
       type: ListLifeCycleTypes.ON_LIST_PAGINATION_REFRESH,
@@ -134,8 +139,7 @@ function createList(props: IListProps = {}): IList {
     }
 
     // 刷新table状态
-    list.setLoading(true)
-    refreshTable()
+    listAPI.setLoading(true);
 
     // 请求前
     universalNotify({
@@ -258,7 +262,7 @@ function createList(props: IListProps = {}): IList {
     })
 
     // 请求结束
-    list.setLoading(false)
+    listAPI.setLoading(false);
 
     refreshPagination()
     refreshTable()
@@ -442,7 +446,8 @@ function createList(props: IListProps = {}): IList {
   const setLoading = (loading: boolean, fnOpts?: IListFunctionOptions) => {
     list.setLoading(loading)
     if (!fnOpts || fnOpts.withRender) {
-      refreshTable()
+      // refreshTable()
+      refreshLoading()
     }
   }
 

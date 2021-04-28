@@ -213,6 +213,11 @@ export interface ITableHook {
   hideWhenInvalid: boolean
 }
 
+export interface ILoadingHook {
+  loading: boolean
+}
+
+
 export interface IPaginationHook {
   list: IList
   setCurrentPage: (page: number) => void

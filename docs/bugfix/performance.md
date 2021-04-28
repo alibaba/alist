@@ -1,6 +1,46 @@
 # 性能测试
 
 ```jsx
+import React from 'react'
+import { createListActions, List, Table, Pagination, ToggleTrigger, Filter, Layout, Search, Clear } from '@alist/next'
+import { Button, Table as NextTable } from '@alifd/next'
+import '@alifd/next/dist/next.css'
+
+const actions = createListActions()
+const App = () => {  
+  const url = 'https://alist-wiki.oss-cn-beijing.aliyuncs.com/data.json'
+
+  return <div>
+    <h5>打开控制台查看Network发起的请求</h5>
+
+    <List
+      actions={actions}
+      url={url}
+      pageSize={5}
+    >
+      <Filter>
+        <Layout inline>
+            <Filter.Item type="input" name="username" title="username"/>
+            <Filter.Item type="input" name="age" title="age"/>
+        </Layout>
+        <Layout.ButtonGroup>
+          <Search>搜索</Search>
+          <Clear>重置</Clear>
+        </Layout.ButtonGroup>
+      </Filter>
+      <Table>
+        <Table.Column title="label" dataIndex="label" />
+        <Table.Column title="value" dataIndex="value" />
+      </Table>
+      <Pagination />
+    </List>
+  </div>
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))
+```
+
+```jsx
 
 import React, { useState, useCallback, useEffect } from 'react';
 import ReactDOM from 'react-dom';
