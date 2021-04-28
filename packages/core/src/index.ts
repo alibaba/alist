@@ -44,7 +44,7 @@ function createList(props: IListProps = {}): IList {
       type: ListLifeCycleTypes.ON_LIST_TABLE_REFRESH,
       payload: { notifyId }
     })
-   const refreshLoading = (notifyId?: string[]) =>
+  const refreshLoading = (notifyId?: string[]) =>
     lifeCycles.notify({
       type: ListLifeCycleTypes.ON_LIST_LOADING_REFRESH,
       payload: { notifyId }
@@ -139,7 +139,7 @@ function createList(props: IListProps = {}): IList {
     }
 
     // 刷新table状态
-    listAPI.setLoading(true);
+    listAPI.setLoading(true)
 
     // 请求前
     universalNotify({
@@ -262,7 +262,7 @@ function createList(props: IListProps = {}): IList {
     })
 
     // 请求结束
-    listAPI.setLoading(false);
+    listAPI.setLoading(false)
 
     refreshPagination()
     refreshTable()
