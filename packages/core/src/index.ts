@@ -446,7 +446,6 @@ function createList(props: IListProps = {}): IList {
   const setLoading = (loading: boolean, fnOpts?: IListFunctionOptions) => {
     list.setLoading(loading)
     if (!fnOpts || fnOpts.withRender) {
-      // refreshTable()
       refreshLoading()
     }
   }
