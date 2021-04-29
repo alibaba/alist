@@ -1,6 +1,7 @@
 import React, { forwardRef } from 'react'
 import { PaginationProvider } from '@alist/react'
 import { Pagination as NextPagination } from '@alifd/next'
+import { PaginationProps } from '@alifd/next/types/pagination'
 import { createVirtualBox } from '@formily/next'
 import styled from 'styled-components'
 
@@ -16,7 +17,7 @@ const InternalPagination = styled(forwardRef((props, ref) => {
 	text-align: ${props => (props.align || 'right')};
 `
 
-const Pagination = createVirtualBox('alist-pagination', InternalPagination)
+const Pagination = createVirtualBox<PaginationProps>('alist-pagination', InternalPagination)
 
 export {
 	Pagination,

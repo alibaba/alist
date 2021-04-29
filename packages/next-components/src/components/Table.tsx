@@ -33,6 +33,15 @@ const VerCenterTitle = styled.div`
     }};
 `
 
+const LoadingWrapper = styled((props) => {
+    return <Loading {...props} />
+})`
+    .next-loading-wrap {
+        height: 100%;
+        z-index: 3;
+    }
+`
+
 const RecursionTable = (props) => {
     const { dataSource,
         hasExpandedRowCtrl = true, expandedRowIndent,
@@ -105,20 +114,23 @@ const RecursionTable = (props) => {
     }
 
     return <ToggleContext.Provider value={{ toggle, openRowKeys, toggleAll, toggleState }}>
-        <LoadingProvider>
-            {(loading) => {
-                return <Loading visible={loading} style={{ width: '100%' }}>
-                    <NextTable
-                        dataSource={dataSource}
-                        {...expandProps}
-                        {...others}
-                        {...columnsProps}
-                        hasExpandedRowCtrl={hasExpandedRowCtrl}
-                        expandedRowIndent={expandedRowIndent || defaultExpandedRowIndent}
-                    />
-                </Loading>
-            }}
-        </LoadingProvider>
+        <div style={{ position: 'relative' }}>
+            <LoadingProvider>
+                {(loading) => {
+                    return <LoadingWrapper visible={loading} style={{ width: '100%', position: 'absolute', top: 0, bottom: 0 }} >
+                        <div style={{ height: '100%', background: '#fff', width: '100%' }} />
+                    </LoadingWrapper>
+                }}
+            </LoadingProvider>
+            <NextTable
+                dataSource={dataSource}
+                {...expandProps}
+                {...others}
+                {...columnsProps}
+                hasExpandedRowCtrl={hasExpandedRowCtrl}
+                expandedRowIndent={expandedRowIndent || defaultExpandedRowIndent}
+            />
+        </div>
     </ToggleContext.Provider>
 }
 
