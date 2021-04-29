@@ -293,7 +293,7 @@ const SchemaTable = (props) => {
 type VirtualTableProps = React.FC<IVirtualBoxProps<AListTableProps>> & ExtendsProps
 const Table: VirtualTableProps = createControllerBox<AListTableProps>('alist-table', SchemaTable)
 
-Table.Column = createVirtualBox<ColumnProps<any>>('alist-table-column', InternalTable.Column)
+Table.Column = createVirtualBox<ColumnProps<any> & { sortable: boolean }>('alist-table-column', InternalTable.Column)
 Table.ColumnGroup = createVirtualBox<ColumnGroupProps<any>>('alist-table-column-group', InternalTable.ColumnGroup)
 
 export {

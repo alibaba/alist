@@ -8,8 +8,8 @@ import styled from 'styled-components'
 const InternalPagination = styled(forwardRef((props: PaginationProps & { align: string }, ref) => {
 	return <PaginationProvider>
 		{(connectProps) => {
-			const { currentPage, setCurrentPage, setPageSize, totalPages, ...other } = connectProps;
-			return <NextPagination ref={ref} current={currentPage} onChange={setCurrentPage} onPageSizeChange={setPageSize} {...other} {...props} />
+			const { currentPage, setCurrentPage, setPageSize, totalPages, pageSize, ...other } = connectProps;
+			return <NextPagination ref={ref} pageSize={pageSize} current={currentPage} onChange={setCurrentPage} onPageSizeChange={setPageSize} {...other} {...props} />
 		}}
 	</PaginationProvider>
 }))`

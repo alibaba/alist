@@ -336,6 +336,7 @@ function createList(props: IListProps = {}): IList {
       refreshTable()
     } else {
       fetch() // 直接请求数据
+      refreshPagination()
     }
   }
 
