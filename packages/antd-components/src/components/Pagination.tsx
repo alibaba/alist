@@ -5,7 +5,7 @@ import { PaginationProps } from 'antd/lib/pagination/Pagination'
 import { createVirtualBox } from '@formily/antd'
 import styled from 'styled-components'
 
-const InternalPagination = styled(forwardRef<any, PaginationProps & { align: string }>((props, ref) => {
+const InternalPagination = styled(forwardRef<any, PaginationProps>((props, ref) => {
 	return <PaginationProvider>
 		{(connectProps) => {
 			const { currentPage, setCurrentPage, setPageSize, pageSize, ...other } = connectProps;
