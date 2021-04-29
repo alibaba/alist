@@ -5,7 +5,7 @@ import { PaginationProps } from '@alifd/next/types/pagination'
 import { createVirtualBox } from '@formily/next'
 import styled from 'styled-components'
 
-const InternalPagination = styled(forwardRef((props, ref) => {
+const InternalPagination = styled(forwardRef((props: PaginationProps & { align: string }, ref) => {
 	return <PaginationProvider>
 		{(connectProps) => {
 			const { currentPage, setCurrentPage, setPageSize, totalPages, ...other } = connectProps;

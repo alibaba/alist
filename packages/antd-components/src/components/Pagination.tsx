@@ -8,7 +8,9 @@ const InternalPagination = styled(forwardRef((props, ref) => {
 	return <PaginationProvider>
 		{(connectProps) => {
 			const { currentPage, setCurrentPage, setPageSize, ...other } = connectProps;
-			return <AntdPagination ref={ref} current={currentPage} onChange={setCurrentPage} onPageSizeChange={setPageSize} {...other} {...props} />
+			return <AntdPagination ref={ref} current={currentPage} onChange={setCurrentPage} onShowSizeChange={(current, pageSize) => {
+				setPageSize(pageSize);
+			}} onPageSizeChange={setPageSize} {...other} {...props} />
 		}}
 	</PaginationProvider>
 }))`

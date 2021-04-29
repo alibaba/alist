@@ -66,7 +66,7 @@ const App = () => {
         <Table.Column title="label" dataIndex="label" />
         <Table.Column title="value" dataIndex="value" />
       </Table>
-      <Pagination />
+      <Pagination showSizeChanger/>
     </List>
   </div>
 }
