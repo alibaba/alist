@@ -175,9 +175,10 @@ const momentify = (val, propsMoment) => {
     return val ? moment(isNaN(val) ? val : Number(val)).format(format) : null;
 }
 
+declare function ColumnType<RecordType>(_: ColumnProps<RecordType> & { sortable: boolean }): null;
 type AListTableProps = TableProps<any> & { loopBackground?: boolean, hasTreeCtrl?: boolean }
 type InternalTableType =  React.FunctionComponent<AListTableProps> & {
-    Column: typeof AntdTable.Column
+    Column: typeof ColumnType
     ColumnGroup: typeof AntdTable.ColumnGroup,
 }
 
