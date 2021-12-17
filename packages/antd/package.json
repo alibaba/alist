@@ -2,6 +2,7 @@
   "name": "@alist/antd",
   "version": "1.0.59-beta.0",
   "main": "lib",
+  "module": "./esm",
   "engines": {
     "npm": ">=3.0.0"
   },
