@@ -229,7 +229,24 @@ const noop = () => {}
 const InternalTable: InternalTableType = props => {
     const { onSort = noop, onFilter = noop, ...others } = props
     const columns = React.Children.map(props.children, (item: any) => {
-        if (!item) return item        
+        if (!item) return item
+        /* 处理嵌套类的情况 */
+        if (item.props && Array.isArray(item.props.children)) {
+          return {
+            ...item,
+            props: {
+              ...item.props,
+              children: item.props.children.map(subItem => {
+                if (needComputeColumnProps(subItem.props)) {
+                    const cloneProps = computeColumnProps(subItem.props, { onSort })
+                    return React.cloneElement(subItem, cloneProps)
+                } else {
+                    return subItem
+                }
+              })
+            }
+          }          
+        }
         if (needComputeColumnProps(item.props)) {
             const cloneProps = computeColumnProps(item.props, { onSort })
             return React.cloneElement(item, cloneProps)
