@@ -5,10 +5,15 @@
 > 默认 `selector` 为 *，即所有的变更都会引起重绘，可以选择指定的生命周期控制渲染次数。
 
 ```jsx
-import { createListActions, Consumer, List, Table, Pagination, Filter, Layout, Search, Clear } from '@alist/antd'
+import { createListActions, Consumer, List, Table, Pagination, Filter, Layout, Search, Clear,
+  FormSpy,
+  LifeCycleTypes
+} from '@alist/antd'
 import'antd/dist/antd.css'
 
 const actions = createListActions()
+
+console.log('FormSpy', FormSpy);
 
 const App = props => {
   const { children, ...others } = props
@@ -38,11 +43,21 @@ const App = props => {
           <Filter.Item type="input" name="username" title="username" />
           <Filter.Item type="input" name="age" title="age" />
         </Layout>
-          <Layout.ButtonGroup>
-            <Search>Search</Search>
-            <Clear>Clear</Clear>
-          </Layout.ButtonGroup>
-        </Filter>
+        <Layout.ButtonGroup>
+          <Search>Search</Search>
+          <Clear>Clear</Clear>
+        </Layout.ButtonGroup>
+        <FormSpy
+          selector={[LifeCycleTypes.ON_FIELD_VALUE_CHANGE]}
+          reducer={(state, action, form) => ({
+            count: state.count ? state.count + 1 : 1
+          })}
+        >
+          {({ state, type, form }) => {
+            return <div>count: {state.count || 0}</div>;
+          }}
+        </FormSpy>
+      </Filter>
       <Table primaryKey="value">
           <Table.Column title="label" dataIndex="label" />
           <Table.Column title="value" dataIndex="value" />
