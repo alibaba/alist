@@ -36,3 +36,15 @@ export const setSelectionsByInstance = (instance, ids, records) => {
     records
   })
 }
+
+export function actionsRetHandler(ret, callback, asyncErrCallback = console.warn) {
+  if (ret instanceof Promise) {
+    ret.then((...t) => {
+      typeof callback === 'function' && callback(...t);
+    }).catch((err) => {
+      typeof asyncErrCallback === 'function' && asyncErrCallback(err)
+    });
+  } else {
+    callback(ret);
+  }
+}

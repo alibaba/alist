@@ -12,6 +12,7 @@ import {
   Consumer,
   ButtonGroup,
   createListActions,
+  createAsyncListActions,
   ListLifeCycleTypes,
   ListSelection
 } from '@alist/antd-components'
@@ -32,7 +33,8 @@ import { Button } from 'antd'
 import Printer from '@formily/printer'
 import 'antd/dist/antd.css'
 
-const listActions = createListActions()
+// const listActions = createListActions()
+const listActions = createAsyncListActions()
 const actions = createFormActions()
 
 const App = () => {
@@ -140,6 +142,7 @@ import {
   Consumer,
   ButtonGroup,
   createListActions,
+  createAsyncListActions,
   ListLifeCycleTypes,
   ListSelection
 } from '@alist/next-components'
@@ -160,7 +163,8 @@ import { Icon, Button } from '@alifd/next'
 import Printer from '@formily/printer'
 import '@alifd/next/dist/next.css'
 
-const listActions = createListActions()
+// const listActions = createListActions()
+const listActions = createAsyncListActions()
 const actions = createFormActions()
 
 const App = () => {
